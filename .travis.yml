@@ -1,0 +1,30 @@
+dist: xenial
+notifications:
+  email:
+    on_success: always # default: change
+    on_failure: always # default: always
+services: 
+#addons:
+#  apt:
+#    sources:
+#      - mysql-5.7-trusty
+#    packages:
+#      - mysql-server
+#      - mysql-client
+
+sudo: true
+language: java
+jdk:
+  - openjdk8
+# install: ant default
+before_install:
+  - mkdir /home/travis/.ant
+  - mkdir /home/travis/.ant/lib
+  - cd /home/travis/.ant/lib
+  - sudo apt-get install wget
+  - wget -O jsh.jar https://search.maven.org/remotecontent?filepath=com/jcraft/jsch/0.1.55/jsch-0.1.55.jar
+  - wget -O ant-jsh.jar https://search.maven.org/remotecontent?filepath=org/apache/ant/ant-jsch/1.10.6/ant-jsch-1.10.6.jar
+#  - cd /usr/share/ant/lib
+#  - sudo wget -O jsh.jar https://search.maven.org/remotecontent?filepath=com/jcraft/jsch/0.1.55/jsch-0.1.55.jar
+  - cd /home/travis/build/jlawyerorg/j-lawyer-forms
+script: ant upload

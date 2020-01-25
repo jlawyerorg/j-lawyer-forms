@@ -3,7 +3,7 @@
     
     
     <!-- j-lawyer.org version 1.12.0.0 -->
-    <form name="rvg" version="2.1.2" for="1.12.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/1.12.0.0" files="rvg_meta.groovy,rvg_ui.groovy"/>
+    <form id="verkehr01" name="Verkehrsunfalldaten" description="Falldatenblatt zur Erfassung von Verkehrsunfalldaten" version="0.1.0" for="1.12.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/1.12.0.0" files="verkehr01_meta.groovy,verkehr01_ui.groovy"/>
     
     
 </calculations>

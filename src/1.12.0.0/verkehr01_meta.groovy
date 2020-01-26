@@ -662,11 +662,10 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 <https://www.gnu.org/licenses/>.
 */
 
-name = "RVG-Rechner"
-description = "j-lawyer.org RVG-Rechner"
-version = "0.3.0";
-author = "Anatol Anuschewski, Jens Kutschke"
-updated = "18.11.2019"
-supportedPlaceHolders = "{{RVG_TABELLE}}, {{RVG}}"
+name = "Verkehrsunfalldaten"
+description = "Verkehrsunfalldaten"
+version = "0.4.0";
+author = "Jens Kutschke"
+updated = "27.01.2020"
 
 

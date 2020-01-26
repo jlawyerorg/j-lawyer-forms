@@ -2,8 +2,8 @@
 <forms>
     
     
-    <form id="verkehr01" name="Verkehrsunfalldaten" description="Falldatenblatt zur Erfassung von Verkehrsunfalldaten" placeholder="VRKHR" version="0.2.0" for="1.12.0.0,1.12.0.1" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/1.12.0.0" files="verkehr01_meta.groovy,verkehr01_ui.groovy"/>
-    <form id="miete01" name="Mietrechtssachen" description="Falldatenblatt zur Erfassung von Mieter-/Vermieterinformationen" placeholder="MIETE" version="0.1.0" for="1.12.0.0,1.12.0.1" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/1.12.0.0" files="miete01_meta.groovy,miete01_ui.groovy"/>
+    <form id="verkehr01" name="Verkehrsunfalldaten" description="Falldatenblatt zur Erfassung von Verkehrsunfalldaten" placeholder="VRKHR" version="0.3.0" for="1.12.0.0,1.12.0.1" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/1.12.0.0" files="verkehr01_meta.groovy,verkehr01_ui.groovy,gkgtables_ui.groovy,rvgtables_ui.groovy,pkhtables_ui.groovy"/>
+    <form id="miete01" name="Mietrechtssachen" description="Falldatenblatt zur Erfassung von Mieter-/Vermieterinformationen" placeholder="MIETE" version="0.2.0" for="1.12.0.0,1.12.0.1" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/1.12.0.0" files="miete01_meta.groovy,miete01_ui.groovy,gkgtables_ui.groovy,rvgtables_ui.groovy,pkhtables_ui.groovy"/>
     
     
 </forms>

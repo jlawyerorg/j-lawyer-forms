@@ -1,3 +1,4 @@
+
 /*
 GNU AFFERO GENERAL PUBLIC LICENSE
 Version 3, 19 November 2007
@@ -669,8 +670,10 @@ import java.text.DecimalFormat
 import java.text.NumberFormat
 import javax.swing.SwingConstants
 import java.util.ArrayList
+import java.util.Hashtable
 import java.util.List
 import java.util.Locale
+import javax.swing.JComboBox
 import javax.swing.JTable
 import javax.swing.JPanel
 import javax.swing.JTextField
@@ -685,15 +688,44 @@ public class FormsLib {
     }
     
     
-    public static String printIt() {
-        System.out.println("test printit");
+    public static ArrayList<String> getPlaceHolders(String prefix, JPanel rootComponent) {
+        ArrayList<String> placeHolders=new ArrayList<String>();
+        collectComponents(prefix, rootComponent, placeHolders);
+        return placeHolders;
     }
     
+    public static Hashtable getPlaceHolderValues(String prefix, JPanel rootComponent) {
+        Hashtable<String,String> placeHolders=new Hashtable<String,String>();
+        collectComponents(prefix, rootComponent, placeHolders);
+        return placeHolders;
+    }
 
-    private void collectComponents (Component component, ArrayList<Component> list) {
-        list.add(component);
+    private static void collectComponents (String prefix, Component component, ArrayList<Component> holders) {
+        if(component.getName()!=null) {
+            if(component.getName().startsWith("_")) {
+                holders.add(prefix + component.getName());
+            }
+        }
+        
         for(Component c: ((Container)component).getComponents()) {
-            collectComponents(c, list);
+            collectComponents(prefix, c, holders);
+        }
+
+    }
+    
+    private static void collectComponents (String prefix, Component component, Hashtable holders) {
+        if(component.getName()!=null) {
+            if(component.getName().startsWith("_")) {
+                if(component instanceof JTextField) {
+                    holders.put(prefix + component.getName(), ((JTextField)component).getText());
+                } else if(component instanceof JComboBox) {
+                    holders.put(prefix + component.getName(), ((JComboBox)component).getSelectedItem().toString());
+                }
+            }
+        }
+        
+        for(Component c: ((Container)component).getComponents()) {
+            collectComponents(prefix, c, holders);
         }
 
     }

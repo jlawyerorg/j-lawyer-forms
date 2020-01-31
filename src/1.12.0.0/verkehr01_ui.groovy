@@ -677,7 +677,7 @@ import javax.swing.JTextField
 import java.awt.Component
 import java.awt.Container
 
-public class verkehr01_ui {
+public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
 
 JTextField txtMietwagenKosten=null;
 JPanel SCRIPTPANEL=null;
@@ -686,6 +686,16 @@ JPanel SCRIPTPANEL=null;
 public verkehr01_ui() {
     super();
 }
+
+    public ArrayList<String> getPlaceHolders(String prefix) {
+        ArrayList<String> placeHolders=FormsLib.getPlaceHolders(prefix, this.SCRIPTPANEL);
+        return placeHolders;
+    }
+    
+    public Hashtable getPlaceHolderValues(String prefix) {
+        Hashtable placeHolders=FormsLib.getPlaceHolderValues(prefix, this.SCRIPTPANEL);
+        return placeHolders;
+    }
 
     public List getResult() {
 
@@ -700,8 +710,6 @@ public verkehr01_ui() {
 
         irgendwas.add("nochwas");
         
-        FormsLib.printIt();
-    
         return irgendwas;
     }
 
@@ -1224,7 +1232,7 @@ swing.edt {
                                     label(text: 'Mietwagenkosten:')
                                 }
                                 td {
-                                    txtMietwagenKosten=formattedTextField(id: "nMietwagenKosten", name: "nMietwagenKosten", format: betragFormat, text: '', columns: 10, actionPerformed: {
+                                    txtMietwagenKosten=formattedTextField(id: "nMietwagenKosten", name: "_MIETWAGENKOSTEN", format: betragFormat, text: '', columns: 10, actionPerformed: {
                                             calculate()
                                             })
                                 }
@@ -1233,7 +1241,7 @@ swing.edt {
                                     
                                 }
                                 td {
-                                    txtSonstigeKosten=formattedTextField(id: 'nSonstigeKosten', format: betragFormat, text: '', columns: 10, actionPerformed: {
+                                    txtSonstigeKosten=formattedTextField(id: 'nSonstigeKosten', name: "_SONSTKOSTEN", format: betragFormat, text: '', columns: 10, actionPerformed: {
                                             calculate()
                                         })
                                 }

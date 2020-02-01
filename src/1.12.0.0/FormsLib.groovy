@@ -673,9 +673,13 @@ import java.util.ArrayList
 import java.util.Hashtable
 import java.util.List
 import java.util.Locale
+import javax.swing.JCheckBox
 import javax.swing.JComboBox
 import javax.swing.JTable
+import javax.swing.JTextArea
 import javax.swing.JPanel
+import javax.swing.JRadioButton
+import javax.swing.JSpinner
 import javax.swing.JTextField
 import java.awt.Component
 import java.awt.Container
@@ -699,6 +703,54 @@ public class FormsLib {
         collectComponents(prefix, rootComponent, placeHolders);
         return placeHolders;
     }
+    
+    public static void setPlaceHolderValues(String prefix, Hashtable placeHolderValues, JPanel rootComponent) {
+        setToComponents(prefix, placeHolderValues, rootComponent);
+        
+    }
+    
+    private static void setToComponents (String prefix, Hashtable placeHolderValues, Component component) {
+        if(component.getName()!=null) {
+            if(component.getName().startsWith("_")) {
+                for(Object key: placeHolderValues.keySet()) {
+                    String keyString=key.toString();
+                    String value=placeHolderValues.get(key).toString();
+                    if((prefix + component.getName()).equals(keyString)) {
+                        if(component instanceof JTextField) {
+                            ((JTextField)component).setText(value);
+                        } else if(component instanceof JComboBox) {
+                            ((JComboBox)component).setSelectedItem(value);
+                        } else if (component instanceof JCheckBox) {
+                            ((JCheckBox)component).setSelected(false);
+                            if("1".equals(value)) {
+                                ((JCheckBox)component).setSelected(true);
+                            }
+                        } else if(component instanceof JTextArea) {
+                            ((JTextArea)component).setText(value);
+                        } else if(component instanceof JSpinner) {
+                            int intValue=1;
+                            try {
+                                intValue=Integer.parseInt(value);
+                                ((JSpinner)component).setValue(intValue);
+                            } catch (Throwable t) {
+                                
+                            }
+                        } else if(component instanceof JRadioButton) {
+                            ((JRadioButton)component).setSelected(false);
+                            if("1".equals(value)) {
+                                ((JRadioButton)component).setSelected(true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        for(Component c: ((Container)component).getComponents()) {
+            setToComponents(prefix, placeHolderValues, c);
+        }
+
+    }
 
     private static void collectComponents (String prefix, Component component, ArrayList<Component> holders) {
         if(component.getName()!=null) {
@@ -720,6 +772,23 @@ public class FormsLib {
                     holders.put(prefix + component.getName(), ((JTextField)component).getText());
                 } else if(component instanceof JComboBox) {
                     holders.put(prefix + component.getName(), ((JComboBox)component).getSelectedItem().toString());
+                } else if (component instanceof JCheckBox) {
+                    if(((JCheckBox)component).isSelected()) {
+                        holders.put(prefix + component.getName(), "1");
+                    } else {
+                        holders.put(prefix + component.getName(), "0");
+                    }
+                    
+                } else if(component instanceof JTextArea) {
+                    holders.put(prefix + component.getName(), ((JTextArea)component).getText());
+                } else if(component instanceof JSpinner) {
+                    holders.put(prefix + component.getName(), ""+((JSpinner)component).getValue());
+                } else if(component instanceof JRadioButton) {
+                    if(((JRadioButton)component).isSelected()) {
+                        holders.put(prefix + component.getName(), "1");
+                    } else {
+                        holders.put(prefix + component.getName(), "0");
+                    }
                 }
             }
         }

@@ -722,7 +722,7 @@ public class FormsLib {
                             ((JComboBox)component).setSelectedItem(value);
                         } else if (component instanceof JCheckBox) {
                             ((JCheckBox)component).setSelected(false);
-                            if("1".equals(value)) {
+                            if("1".equals(value) || "ja".equals(value)) {
                                 ((JCheckBox)component).setSelected(true);
                             }
                         } else if(component instanceof JTextArea) {
@@ -737,7 +737,7 @@ public class FormsLib {
                             }
                         } else if(component instanceof JRadioButton) {
                             ((JRadioButton)component).setSelected(false);
-                            if("1".equals(value)) {
+                            if("1".equals(value) || "ja".equals(value)) {
                                 ((JRadioButton)component).setSelected(true);
                             }
                         }
@@ -774,9 +774,9 @@ public class FormsLib {
                     holders.put(prefix + component.getName(), ((JComboBox)component).getSelectedItem().toString());
                 } else if (component instanceof JCheckBox) {
                     if(((JCheckBox)component).isSelected()) {
-                        holders.put(prefix + component.getName(), "1");
+                        holders.put(prefix + component.getName(), "ja");
                     } else {
-                        holders.put(prefix + component.getName(), "0");
+                        holders.put(prefix + component.getName(), "nein");
                     }
                     
                 } else if(component instanceof JTextArea) {
@@ -785,9 +785,9 @@ public class FormsLib {
                     holders.put(prefix + component.getName(), ""+((JSpinner)component).getValue());
                 } else if(component instanceof JRadioButton) {
                     if(((JRadioButton)component).isSelected()) {
-                        holders.put(prefix + component.getName(), "1");
+                        holders.put(prefix + component.getName(), "ja");
                     } else {
-                        holders.put(prefix + component.getName(), "0");
+                        holders.put(prefix + component.getName(), "nein");
                     }
                 }
             }

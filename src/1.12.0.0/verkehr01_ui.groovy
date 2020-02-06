@@ -850,6 +850,185 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                             }     
                         }
                     }
+                    
+                    tr {
+                        td (colfill:true, align: 'left') {
+                            panel(border: titledBorder(title: 'Zeugen')) {
+                                tableLayout (cellpadding: 5) {
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'Zeuge 1:')
+                                        }
+                                        td {
+                                            
+                                            label(text: 'Name: ')
+                                            
+                                        }
+                                        td {
+                                            
+                                            textField(name: "_ZEUGE1NAME", text: '', columns:20)
+                                            
+                                        }
+                                        td {
+                                            label(text: 'Vorname:')
+                                        }
+                                        td {
+                                            
+                                            textField(name: "_ZEUGE1VORNAME", text: '', columns:20)
+                                            
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            label(text: 'PLZ: ')
+                                        }
+                                        td {
+                                            textField(name: "_ZEUGE1PLZ", text: '', columns:6)
+                                        }
+                                        td {
+                                            label(text: 'Ort:')
+                                        }
+                                        td {
+                                            textField(name: "_ZEUGE1ORT", text: '', columns:20)
+                                            
+                                        }
+                                    }
+                                    
+                                    tr {
+                                        td {
+                                            label(text: '   ')
+                                        }
+                                        
+                                        td {
+                                            label(text: 'Strasse:')
+                                        }
+                                        td {
+                                            textField(name: "_ZEUGE1STRASSE", text: '', columns:20)
+                                        }
+                                    
+                                    }
+
+                                     tr {
+                                        td (colfill:true) {
+                                            label(text: 'Zeuge 2:')
+                                        }
+                                        td {
+                                            
+                                            label(text: 'Name: ')
+                                            
+                                        }
+                                        td {
+                                            
+                                            textField(name: "_ZEUGE2NAME", text: '', columns:20)
+                                            
+                                        }
+                                        td {
+                                            label(text: 'Vorname:')
+                                        }
+                                        td {
+                                            
+                                            textField(name: "_ZEUGE2VORNAME", text: '', columns:20)
+                                            
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            label(text: 'PLZ: ')
+                                        }
+                                        td {
+                                            textField(name: "_ZEUGE2PLZ", text: '', columns:6)
+                                        }
+                                        td {
+                                            label(text: 'Ort:')
+                                        }
+                                        td {
+                                            textField(name: "_ZEUGE2ORT", text: '', columns:20)
+                                            
+                                        }
+                                    }
+                                    
+                                    tr {
+                                        td {
+                                            label(text: '   ')
+                                        }
+                                        
+                                        td {
+                                            label(text: 'Strasse:')
+                                        }
+                                        td {
+                                            textField(name: "_ZEUGE2STRASSE", text: '', columns:20)
+                                        }
+                                    
+                                    }
+                                    
+                                     tr {
+                                        td (colfill:true) {
+                                            label(text: 'Zeuge 3:')
+                                        }
+                                        td {
+                                            
+                                            label(text: 'Name: ')
+                                            
+                                        }
+                                        td {
+                                            
+                                            textField(name: "_ZEUGE3NAME", text: '', columns:20)
+                                            
+                                        }
+                                        td {
+                                            label(text: 'Vorname:')
+                                        }
+                                        td {
+                                            
+                                            textField(name: "_ZEUGE3VORNAME", text: '', columns:20)
+                                            
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            label(text: 'PLZ: ')
+                                        }
+                                        td {
+                                            textField(name: "_ZEUGE3PLZ", text: '', columns:6)
+                                        }
+                                        td {
+                                            label(text: 'Ort:')
+                                        }
+                                        td {
+                                            textField(name: "_ZEUGE3ORT", text: '', columns:20)
+                                            
+                                        }
+                                    }
+                                    
+                                    tr {
+                                        td {
+                                            label(text: '   ')
+                                        }
+                                        
+                                        td {
+                                            label(text: 'Strasse:')
+                                        }
+                                        td {
+                                            textField(name: "_ZEUGE3STRASSE", text: '', columns:20)
+                                        }
+                                    
+                                    }
+                                    
+                            
+                                }   
+                        
+                            }     
+                        }
+                    }
 
                     tr {
                         td (colfill:true, align: 'left') {
@@ -1084,6 +1263,21 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     }
                                     tr {
                                         td {
+                                            label(text: 'Unfallpauschale:')
+                                        }
+                                        td {
+                                            txtUnfallPauschale=formattedTextField(id: 'nUnfallPauschale', name: "_UNFALLPAUSCH", format: betragFormat, text: '25,00', columns: 10)
+                                        }
+                                        td {
+                                            label(text: '   ')
+                                    
+                                        }
+                                        td {
+                                            label(text: '   ')
+                                        }
+                                    }
+                                    tr {
+                                        td {
                                             label(text: 'Nutzungsausfall:')
                                         }
                                         td {
@@ -1202,23 +1396,6 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         return SCRIPTPANEL;
 
     }
-
-    //public List getResult() {
-    //
-    //    ArrayList list=new ArrayList();
-    //    list.add("stringi");
-    //    return list;
-    //}
-    //
-    //public List setResult(List irgendwas) {
-    //
-    //    txtMietwagenKosten.setText("liste: " + irgendwas.size);
-    //
-    //    irgendwas.add("nochwas");
-    //    
-    //    return irgendwas;
-    //}
-
 
 
 }

@@ -674,6 +674,7 @@ import java.util.Locale
 import javax.swing.JTable
 import javax.swing.JPanel
 import javax.swing.JTextField
+import javax.swing.JRadioButton
 import java.awt.Component
 import java.awt.Container
 
@@ -681,6 +682,11 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
 
     JTextField txtMietwagenKosten=null;
     JPanel SCRIPTPANEL=null;
+    JRadioButton radioReparaturSchaden;
+    JTextField txtReparaturKosten;
+    JTextField txtWertminderung;
+    JTextField txtWiederbeschaffungswert;
+    JTextField txtRestwert;
 
 
     public verkehr01_ui() {
@@ -699,6 +705,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     
     public void setPlaceHolderValues(String prefix, Hashtable placeHolderValues) {
         FormsLib.setPlaceHolderValues(prefix, placeHolderValues, this.SCRIPTPANEL);
+        toggleSchadentyp();
     }
 
 
@@ -834,17 +841,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             } 
                                         }
                                     }
-                                    tr {
-                                        td (colfill:true, valign: 'TOP') {
-                                            label(text: 'Zeugen:')
-                                        }
-                                        td {
-                                            scrollPane{
-                                                textArea(id:'sZeugen', name: "_ZEUGEN", lineWrap:true,wrapStyleWord:true, columns:50, rows:4,editable:true)
-                                            } 
-                                        }
-                                    }
-                            
+                                    
                                 }   
                         
                             }     
@@ -1167,7 +1164,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Selbstbeteiligung')
                                         }
                                         td {
-                                            txtTeilkaskoSB=formattedTextField(id: 'nTeilkaskoSB', name: "_TEILKASKOSB", format: betragFormat, text: '', columns: 10)
+                                            txtTeilkaskoSB=formattedTextField(id: 'nTeilkaskoSB', name: "_TEILKASKOSB", format: betragFormat, text: '0,00', columns: 10)
                                         }
                                 
                                     }
@@ -1183,7 +1180,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Selbstbeteiligung')
                                         }
                                         td {
-                                            txtVollkaskoSB=formattedTextField(id: 'nVollkaskoSB', name: "_VOLLKASKOSB", format: betragFormat, text: '', columns: 10)
+                                            txtVollkaskoSB=formattedTextField(id: 'nVollkaskoSB', name: "_VOLLKASKOSB", format: betragFormat, text: '0,00', columns: 10)
                                         }
                                     }
                             
@@ -1201,7 +1198,10 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     tr {
                                         td {
                                             btnGrpSchadenArt = buttonGroup(id:'grpSchadenArt')
-                                            radioReparaturSchaden = radioButton (text: 'Reparaturschaden', name: "_REPASCHADEN", buttonGroup: btnGrpSchadenArt, selected: true)
+                                            radioReparaturSchaden = radioButton (text: 'Reparaturschaden', name: "_REPASCHADEN", buttonGroup: btnGrpSchadenArt, selected: true, actionPerformed: {
+                                                toggleSchadentyp()
+                                                
+                                            })
                                         }
                                         td {
                                             label(text: '   ')
@@ -1210,7 +1210,10 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: '   ')
                                         }
                                         td {
-                                            radioTotalSchaden = radioButton (text: 'Totalschaden', name: "_TOTALSCHADEN", buttonGroup: btnGrpSchadenArt)
+                                            radioTotalSchaden = radioButton (text: 'Totalschaden', name: "_TOTALSCHADEN", buttonGroup: btnGrpSchadenArt, actionPerformed: {
+                                                toggleSchadentyp()
+                                                
+                                            })
                                     
                                         }
                                         td {
@@ -1223,7 +1226,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Reparaturkosten:')
                                         }
                                         td {
-                                            txtReparaturKosten=formattedTextField(id: 'nReparaturKosten', name: "_REPAKOSTEN", format: betragFormat, text: '', columns: 10)
+                                            txtReparaturKosten=formattedTextField(id: 'nReparaturKosten', name: "_REPAKOSTEN", format: betragFormat, text: '0,00', columns: 10)
                                         }
                                         td {
                                             label(text: '   ')
@@ -1233,7 +1236,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     
                                         }
                                         td {
-                                            txtWiederbeschaffungswert=formattedTextField(id: 'nWiederbeschaffungswert', name: "_WIEDERBESCHAWERT", format: betragFormat, text: '', columns: 10)
+                                            txtWiederbeschaffungswert=formattedTextField(id: 'nWiederbeschaffungswert', name: "_WIEDERBESCHAWERT", format: betragFormat, text: '0,00', columns: 10)
                                         }
                                     }
                                 
@@ -1242,7 +1245,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Merkantile Wertminderung:')
                                         }
                                         td {
-                                            txtWertminderung=formattedTextField(id: 'nWertminderung', name: "_WERTMINDERG", format: betragFormat, text: '', columns: 10)
+                                            txtWertminderung=formattedTextField(id: 'nWertminderung', name: "_WERTMINDERG", format: betragFormat, text: '0,00', columns: 10)
                                         }
                                         td {
                                             label(text: '   ')
@@ -1252,7 +1255,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     
                                         }
                                         td {
-                                            txtRestwert=formattedTextField(id: 'nRestwert', name: "_RESTWERT", format: betragFormat, text: '', columns: 10)
+                                            txtRestwert=formattedTextField(id: 'nRestwert', name: "_RESTWERT", format: betragFormat, text: '0,00', columns: 10)
                                         }
                                     }
                                     tr {
@@ -1281,7 +1284,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Nutzungsausfall:')
                                         }
                                         td {
-                                            txtNutzungsAusfall=formattedTextField(id: 'nNutzungsAusfall', name: "_NUTZUNGSAUSF", format: betragFormat, text: '', columns: 10)
+                                            txtNutzungsAusfall=formattedTextField(id: 'nNutzungsAusfall', name: "_NUTZUNGSAUSF", format: betragFormat, text: '0,00', columns: 10)
                                         }
                                         td {
                                             label(text: '   ')
@@ -1296,7 +1299,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Kosten des Gutachtens:')
                                         }
                                         td {
-                                            txtKostenGutachten=formattedTextField(id: 'nKostenGutachten', name: "_KOSTENGUTACHTEN", format: betragFormat, text: '', columns: 10)
+                                            txtKostenGutachten=formattedTextField(id: 'nKostenGutachten', name: "_KOSTENGUTACHTEN", format: betragFormat, text: '0,00', columns: 10)
                                         }
                                         td {
                                             label(text: '   ')
@@ -1331,14 +1334,14 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Abschleppkosten:')
                                         }
                                         td {
-                                            txtAbschleppKosten=formattedTextField(id: 'nAbschleppKosten', name: "_KOSTENABSCHLEPP", format: betragFormat, text: '', columns: 10)
+                                            txtAbschleppKosten=formattedTextField(id: 'nAbschleppKosten', name: "_KOSTENABSCHLEPP", format: betragFormat, text: '0,00', columns: 10)
                                         }
                                         td {
                                             label(text: 'Abmeldekosten:')
                                     
                                         }
                                         td {
-                                            txtAbmeldeKosten=formattedTextField(id: 'nAbmeldeKosten', name: "_KOSTENABMELDE", format: betragFormat, text: '', columns: 10)
+                                            txtAbmeldeKosten=formattedTextField(id: 'nAbmeldeKosten', name: "_KOSTENABMELDE", format: betragFormat, text: '0,00', columns: 10)
                                         }
                                     }
                 
@@ -1347,14 +1350,14 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Standgeld:')
                                         }
                                         td {
-                                            txtStandgeld=formattedTextField(id: 'nStandgeld', name: "_KOSTENSTANDGELD", format: betragFormat, text: '', columns: 10)
+                                            txtStandgeld=formattedTextField(id: 'nStandgeld', name: "_KOSTENSTANDGELD", format: betragFormat, text: '0,00', columns: 10)
                                         }
                                         td {
                                             label(text: 'Anmeldekosten:')
                                     
                                         }
                                         td {
-                                            txtAnmeldeKosten=formattedTextField(id: 'nAnmeldeKosten', name: "_KOSTENANMELDE", format: betragFormat, text: '', columns: 10)
+                                            txtAnmeldeKosten=formattedTextField(id: 'nAnmeldeKosten', name: "_KOSTENANMELDE", format: betragFormat, text: '0,00', columns: 10)
                                         }
                                     }
                                 
@@ -1363,14 +1366,14 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Mietwagenkosten:')
                                         }
                                         td {
-                                            txtMietwagenKosten=formattedTextField(id: "nMietwagenKosten", name: "_KOSTENMIETW", format: betragFormat, text: '', columns: 10)
+                                            txtMietwagenKosten=formattedTextField(id: "nMietwagenKosten", name: "_KOSTENMIETW", format: betragFormat, text: '0,00', columns: 10)
                                         }
                                         td {
                                             label(text: 'Sonstiges:')
                                     
                                         }
                                         td {
-                                            txtSonstigeKosten=formattedTextField(id: 'nSonstigeKosten', name: "_KOSTENSONST", format: betragFormat, text: '', columns: 10)
+                                            txtSonstigeKosten=formattedTextField(id: 'nSonstigeKosten', name: "_KOSTENSONST", format: betragFormat, text: '0,00', columns: 10)
                                         }
                                     }
                             
@@ -1395,6 +1398,26 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
 
         return SCRIPTPANEL;
 
+    }
+    
+    private void toggleSchadentyp() {
+    
+        if(radioReparaturSchaden.isSelected()) {
+            txtReparaturKosten.setEnabled(true);
+            txtWertminderung.setEnabled(true);
+            txtWiederbeschaffungswert.setEnabled(false);
+            txtWiederbeschaffungswert.setText("0,00");
+            txtRestwert.setEnabled(false);
+            txtRestwert.setText("0,00");
+        } else {
+            txtReparaturKosten.setEnabled(false);
+            txtReparaturKosten.setText("0,00");
+            txtWertminderung.setEnabled(false);
+            txtWertminderung.setText("0,00");
+            txtWiederbeschaffungswert.setEnabled(true);
+            txtRestwert.setEnabled(true);
+        }
+    
     }
 
 

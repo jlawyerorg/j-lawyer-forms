@@ -698,6 +698,7 @@ public class miete01_ui implements com.jdimension.jlawyer.client.plugins.form.Fo
     
     public void setPlaceHolderValues(String prefix, Hashtable placeHolderValues) {
         FormsLib.setPlaceHolderValues(prefix, placeHolderValues, this.SCRIPTPANEL);
+        toggleSchadentyp();
     }
 
 
@@ -705,7 +706,8 @@ public class miete01_ui implements com.jdimension.jlawyer.client.plugins.form.Fo
 
 
         SwingBuilder swing=new SwingBuilder()
-        NumberFormat betragFormat = new DecimalFormat("0.00")
+
+
 
                     
         swing.edt {
@@ -714,217 +716,19 @@ public class miete01_ui implements com.jdimension.jlawyer.client.plugins.form.Fo
                 tableLayout (id: 'pluginParent', cellpadding: 5) {
             
                     tr {
-                        td (colfill:true, align: 'left') {
-                            panel(border: titledBorder(title: 'Objekt')) {
-                                tableLayout (cellpadding: 5) {
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Anschrift:')
-                                        }
-                                        td {
-                                            textField(name: "_OBJANSCHRIFT", text: '', columns:50)
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Stockwerk:')
-                                        }
-                                        td {
-                                            textField(name: "_OBJSTOCKWERK", text: '', columns:10)
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Lage:')
-                                        }
-                                        td {
-                                            textField(name: "_OBJLAGE", text: '', columns:30)
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Fläche (qm):')
-                                        }
-                                        td {
-                                            textField(name: "_OBJFLAECHE", text: '', columns:10)
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Anzahl Zimmer:')
-                                        }
-                                        td {
-                                            spinner(name: "_OBJZIMMER", 
-                                                model:spinnerNumberModel(minimum:1, 
-                                                    maximum: 20,
-                                                    value:2,
-                                                    stepSize:1))
-                                        }
-                                    }
-                                }
-                            }
+                        td  {
+                            
+                           label(text: 'Bezeichnung:')      
+                        }
+                        
+                        td  {
+                            
+                           textField(id: 'sWertefeld', name: "_PLATHALTERNAME", text: '', columns:50)
                         }
                     }
-
-                    
-                    
-                    
-                    tr {
-                        td (colfill:true, align: 'left') {
-                            panel(border: titledBorder(title: 'Mietvertrag')) {
-                                tableLayout (cellpadding: 5) {
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Vertrag vom:')
-                                        }
-                                        td {
-                                            textField(name: "_VVOM", text: '', columns:10)
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Ende des Mietverhältnisses:')
-                                        }
-                                        td {
-                                            textField(name: "_VENDE", text: '', columns:10)
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Nettomiete:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_VNETTO", text: '', columns:10, format: betragFormat)
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Nebenkosten:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_VNK", text: '', columns:10, format: betragFormat)
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'monatliche Miete (inkl. Nebenkosten):')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_VMIETEMONAT", text: '', columns:10, format: betragFormat)
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Jahresmietwert:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_VJAHRMIETWERT", text: '', columns:10, format: betragFormat)
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kündigungsfrist:')
-                                        }
-                                        td {
-                                            textField(name: "_VKUENDFRIST", text: '', columns:10)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    
-                    
-                    
-                    tr {
-                        td (colfill:true, align: 'left') {
-                            panel(border: titledBorder(title: 'Kaution')) {
-                                tableLayout (cellpadding: 5) {
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kautionsart:')
-                                        }
-                                        td {
-                                            textField(name: "_KART", text: '', columns:50)
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Rechtsgrundlage:')
-                                        }
-                                        td {
-                                            textField(name: "_KGRUNDLAGE", text: '', columns:50)
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Betrag:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_KBETRAG", text: '', columns:10, format: betragFormat)
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kreditinstitut:')
-                                        }
-                                        td {
-                                            textField(name: "_KBANK", text: '', columns:50)
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'IBAN:')
-                                        }
-                                        td {
-                                            textField(name: "_KBANKIBAN", text: '', columns:30)
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'BIC:')
-                                        }
-                                        td {
-                                            textField(name: "_KBANKBIC", text: '', columns:30)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    
-                    
-                    tr {
-                        td (colfill:true, align: 'left') {
-                            panel(border: titledBorder(title: 'Kündigung')) {
-                                tableLayout (cellpadding: 5) {
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'vom:')
-                                        }
-                                        td {
-                                            textField(name: "_KUENDVOM", text: '', columns:50)
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true, valign: 'TOP') {
-                                            label(text: 'Grund:')
-                                        }
-                                        td {
-                                            scrollPane{
-                                                textArea(name: "_KUENDGRUND", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
-                                            } 
-                                        }
-                                    }
-                                    
-                                }
-                            }
-                        }
-                    }
-                    
                     
                
-                }
+                }  
             }
         }
 

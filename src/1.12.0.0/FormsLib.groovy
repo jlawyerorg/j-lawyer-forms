@@ -710,6 +710,12 @@ public class FormsLib {
     }
     
     private static void setToComponents (String prefix, Hashtable placeHolderValues, Component component) {
+        
+        if(component==null) {
+            System.out.println("component is null");
+            return;
+        }
+        
         if(component.getName()!=null) {
             if(component.getName().startsWith("_")) {
                 for(Object key: placeHolderValues.keySet()) {

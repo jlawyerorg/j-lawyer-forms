@@ -1029,7 +1029,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
 
                     tr {
                         td (colfill:true, align: 'left') {
-                            panel(border: titledBorder(title: 'Fahrzeugdaten')) {
+                            panel(border: titledBorder(title: 'Fahrzeugdaten Mandant')) {
                                 tableLayout (cellpadding: 5) {
                                     tr {
                                         td (colfill:true) {
@@ -1137,6 +1137,128 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         }
                                         td {
                                             chkFahrerIstHalter = checkBox(text: 'Fahrer ist Fahrzeughalter', name: "_FAHRERHALTER", selected: true)
+                                        }
+                                        td {
+                                    
+                                        }
+                                    }
+                            
+                                }   
+                        
+                            }     
+                        }
+                    }
+                    
+                    tr {
+                        td (colfill:true, align: 'left') {
+                            panel(border: titledBorder(title: 'Fahrzeugdaten Unfallgegner')) {
+                                tableLayout (cellpadding: 5) {
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'Fahrzeugart:')
+                                        }
+                                        td (colspan: 2) {
+                                            cmbGFahrzeugart = comboBox(items: [
+                                            'PKW',
+                                            'LKW',
+                                            'Motorrad',
+                                            'andere'
+                                                ], name: "_G_FHRZGART", editable: true
+                                            )
+                                        }
+                                    }
+                
+                            
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'Kennzeichen:')
+                                    
+                                        }
+                                        td {
+                                            txtGKennzeichen=textField(id: 'sGKennzeichen', name: "_G_KENNZEICHEN", text: '', columns:20)
+                                        }
+                                        td {
+                                    
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Fahrzeugmarke:')
+                                    
+                                        }
+                                        td {
+                                            txtGFahrzeugmarke=textField(id: 'sGFahrzeigmarke', name: "_G_FHRZGMARKE", text: '', columns:20)
+                                        }
+                                        td {
+                                    
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            label(text: 'Modellbezeichnung:')
+                                        }
+                                        td {
+                                            txtGModellbezeichnung=textField(id: 'sGModellbezeichnung', name: "_G_FHRZGMODELL", text: '', columns:20)
+                                        }
+                                        td {
+                                    
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'Fahrgestellnr.:')
+                                    
+                                        }
+                                        td {
+                                            txtGFahrgestellNr=textField(id: 'sGFahrgestellNr', name: "_G_FAHRGESTELLNR", text: '', columns:20)
+                                        }
+                                        td {
+                                    
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            label(text: 'Erstzulassung:')
+                                        }
+                                        td {
+                                            txtGErstzulassung=textField(id: 'sGErstzulassung', name: "_G_ERSTZLSSG", text: '', columns:20)
+                                        }
+                                        td {
+                                    
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            label(text: 'km-Stand:')
+                                        }
+                                        td {
+                                            txtGKmStand=textField(id: 'sGKilometerstand', name: "_G_KMSTAND", text: '', columns:20)
+                                        }
+                                        td {
+                                    
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            label(text: 'Anzahl Vorbesitzer:')
+                                        }
+                                        td {
+                                            spn_GVorbesitzer = spinner(id: 'nGVorbesitzer', name: "_G_ANZVORBESITZER", 
+                                                model:spinnerNumberModel(minimum:1, 
+                                                    maximum: 30,
+                                                    value:1,
+                                                    stepSize:1))
+                                        }
+                                        td {
+                                    
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            chkGFahrerIstHalter = checkBox(text: 'Fahrer ist Fahrzeughalter', name: "_G_FAHRERHALTER", selected: true)
                                         }
                                         td {
                                     

@@ -698,7 +698,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
     
     public void setPlaceHolderValues(String prefix, Hashtable placeHolderValues) {
         FormsLib.setPlaceHolderValues(prefix, placeHolderValues, this.SCRIPTPANEL);
-        toggleSchadentyp();
+        
     }
 
 
@@ -718,16 +718,104 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                     tr {
                         td  {
                             
-                           label(text: 'Bezeichnung:')      
+                           label(text: 'Eingang Beschluss:')      
                         }
                         
                         td  {
                             
-                           textField(id: 'sWertefeld', name: "_PLATHALTERNAME", text: '', columns:50)
+                           textField(id: 'sDatumBeschluss', name: "_BESCHLUSS", text: '', columns:50)
                         }
                     }
-                    
-               
+                    tr {
+                        td  {
+                            
+                           label(text: 'Datum eigene Bestellung:')      
+                        }
+                        
+                        td  {
+                            
+                           textField(id: 'sDatumBestellung', name: "_BESTELLUNG", text: '', columns:50)
+                        }
+                    }
+                    tr {
+                        td  {
+                            
+                           label(text: 'Ende der Betreuung:')      
+                        }
+                        
+                        td  {
+                            
+                           textField(id: 'sDatumBestellungEnde', name: "_BESTELLUNG_ENDE", text: '', columns:50)
+                        }
+                    }
+                    tr {
+                        td  {
+                            
+                           label(text: 'Geschäftsnummer bei Gericht:')      
+                        }
+                        
+                        td  {
+                            
+                           textField(id: 'sGeschaeftsNr', name: "_GESCH_NR", text: '', columns:50)
+                        }
+                    }
+                    tr {
+                        td  {
+                            
+                           label(text: 'Vergütungstabelle:')      
+                        }
+                        
+                        td  {
+                           panel {
+                                tableLayout (cellpadding: 5) {
+                                    tr {
+                                        td {
+                                            btnGrpVerguetung = buttonGroup(id:'grpVerguetung')
+                                            radioVerguetungA = radioButton (text: 'A / Vergütungsgruppe 1', name: "_VERGUETUNG_A", buttonGroup: btnGrpVerguetung, selected: true, actionPerformed: {
+                                                // toggleSchadentyp()
+                                                
+                                            })
+                                        }
+//                                        td {
+//                                            label(text: '   ')
+//                                        }
+//                                        td {
+//                                            label(text: '   ')
+//                                        }
+                                        td {
+                                            radioVerguetungB = radioButton (text: 'B / Vergütungsgruppe 2', name: "_VERGUETUNG_B", buttonGroup: btnGrpVerguetung, actionPerformed: {
+                                                // toggleSchadentyp()
+                                                
+                                            })
+                                    
+                                        }
+                                        td {
+                                            radioVerguetungC = radioButton (text: 'C / Vergütungsgruppe 3', name: "_VERGUETUNG_C", buttonGroup: btnGrpVerguetung, actionPerformed: {
+                                                // toggleSchadentyp()
+                                                
+                                            })
+                                    
+                                        }
+                                        td {
+                                    
+                                        }
+                                    }
+                                }
+                           }
+                        }
+                    }
+                    tr {
+                        td  {
+                            
+                           label(text: 'verwaltetes Vermögen:')      
+                        }
+                        
+                        td  {
+                            
+                           chkVermoegend = checkBox(text: 'Betreuter ist vermögend', name: "_VERMOEGEND", selected: false)
+                        }
+                        
+                    }
                 }  
             }
         }

@@ -662,10 +662,10 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 <https://www.gnu.org/licenses/>.
 */
 
-name = "Mietrechtssachen"
-description = "Mietrechtssachen"
-version = "0.1.0";
+name = "Betreuung"
+description = "Betreuung"
+version = "0.2.0";
 author = "Jens Kutschke"
-updated = "21.02.2020"
+updated = "04.04.2020"
 
 

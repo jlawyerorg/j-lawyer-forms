@@ -723,7 +723,7 @@ public class miete01_ui implements com.jdimension.jlawyer.client.plugins.form.Fo
                         
                         td  {
                             
-                           textField(id: 'sWertefeld', name: "_PLATHALTERNAME", text: '', columns:50)
+                           textField(id: 'sWertefeld', name: "_PLATZHALTERNAME", text: '', columns:50)
                         }
                     }
                     

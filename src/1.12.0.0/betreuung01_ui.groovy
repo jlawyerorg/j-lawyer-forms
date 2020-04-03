@@ -735,7 +735,8 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         
                         td  {
                             
-                           textField(id: 'sDatumBestellung', name: "_BESTELLUNG", text: '', columns:50)
+                           //textField(id: 'sDatumBestellung', name: "_BESTELLUNG", text: '', columns:50)
+                           formattedTextField(id: 'sDatumBestellung', name: "_BESTELLUNG", format: datumsFormat, columns: 10)
                         }
                     }
                     tr {
@@ -746,7 +747,8 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         
                         td  {
                             
-                           textField(id: 'sDatumBestellungEnde', name: "_BESTELLUNG_ENDE", text: '', columns:50)
+                           //textField(id: 'sDatumBestellungEnde', name: "_BESTELLUNG_ENDE", text: '', columns:50)
+                           formattedTextField(id: 'sDatumBestellungEnde', name: "_BESTELLUNG_ENDE", format: datumsFormat, columns: 10)
                         }
                     }
                     tr {
@@ -757,7 +759,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         
                         td  {
                             
-                           textField(id: 'sGeschaeftsNr', name: "_GESCH_NR", text: '', columns:50)
+                           textField(id: 'sGeschaeftsNr', name: "_GESCH_NR", text: '', columns:35)
                         }
                     }
                     tr {

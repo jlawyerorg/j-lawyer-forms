@@ -1,3 +1,4 @@
+
 /*
 GNU AFFERO GENERAL PUBLIC LICENSE
 Version 3, 19 November 2007
@@ -665,8 +666,7 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 import groovy.swing.SwingBuilder
 import java.awt.BorderLayout as BL
 import groovy.beans.Bindable
-import java.text.DecimalFormat
-import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import javax.swing.SwingConstants
 import java.util.ArrayList
 import java.util.List
@@ -706,7 +706,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
 
 
         SwingBuilder swing=new SwingBuilder()
-
+        SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
 
 
                     
@@ -723,7 +723,8 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         
                         td  {
                             
-                           textField(id: 'sDatumBeschluss', name: "_BESCHLUSS", text: '', columns:50)
+                           //textField(id: 'sDatumBeschluss', name: "_BESCHLUSS", text: '', columns:50)
+                           formattedTextField(id: 'sDatumBeschluss', name: "_BESCHLUSS", format: datumsFormat, columns: 10)
                         }
                     }
                     tr {

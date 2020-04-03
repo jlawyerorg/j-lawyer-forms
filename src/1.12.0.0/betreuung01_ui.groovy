@@ -774,7 +774,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                     tr {
                                         td {
                                             btnGrpVerguetung = buttonGroup(id:'grpVerguetung')
-                                            radioVerguetungA = radioButton (text: 'A / Vergütungsgruppe 1', name: "_VERGUETUNG_A", buttonGroup: btnGrpVerguetung, selected: true, actionPerformed: {
+                                            radioVerguetungA = radioButton (text: 'A / Gruppe 1', name: "_VERGUETUNG_A", buttonGroup: btnGrpVerguetung, selected: true, actionPerformed: {
                                                 // toggleSchadentyp()
                                                 
                                             })
@@ -786,14 +786,14 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
 //                                            label(text: '   ')
 //                                        }
                                         td {
-                                            radioVerguetungB = radioButton (text: 'B / Vergütungsgruppe 2', name: "_VERGUETUNG_B", buttonGroup: btnGrpVerguetung, actionPerformed: {
+                                            radioVerguetungB = radioButton (text: 'B / Gruppe 2', name: "_VERGUETUNG_B", buttonGroup: btnGrpVerguetung, actionPerformed: {
                                                 // toggleSchadentyp()
                                                 
                                             })
                                     
                                         }
                                         td {
-                                            radioVerguetungC = radioButton (text: 'C / Vergütungsgruppe 3', name: "_VERGUETUNG_C", buttonGroup: btnGrpVerguetung, actionPerformed: {
+                                            radioVerguetungC = radioButton (text: 'C / Gruppe 3', name: "_VERGUETUNG_C", buttonGroup: btnGrpVerguetung, actionPerformed: {
                                                 // toggleSchadentyp()
                                                 
                                             })

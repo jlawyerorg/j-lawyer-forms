@@ -751,17 +751,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                            formattedTextField(id: 'sDatumBestellungEnde', name: "_BESTELLUNG_ENDE", format: datumsFormat, columns: 10)
                         }
                     }
-                    tr {
-                        td  {
-                            
-                           label(text: 'Geschäftsnummer bei Gericht:')      
-                        }
-                        
-                        td  {
-                            
-                           textField(id: 'sGeschaeftsNr', name: "_GESCH_NR", text: '', columns:35)
-                        }
-                    }
+                    
                     tr {
                         td  {
                             

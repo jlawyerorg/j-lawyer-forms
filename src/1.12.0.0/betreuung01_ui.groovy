@@ -695,7 +695,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
     JTextField lblstart;
     JTextField lblende;
     JLabel lblnr;
-    JTextField lblsum;
+    JLabel lblsum;
     JTable customTable;
     JRadioButton radioVerguetungA;
     JRadioButton radioVerguetungB;
@@ -703,6 +703,9 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
     JRadioButton radiostationaer;
     JRadioButton radiosonstige;
     JCheckBox chkVermoegend;
+    JCheckBox chkZuschlag;
+    JCheckBox chkPauschale1;
+    JCheckBox chkPauschale2;
     
 
     public betreuung01_ui() {
@@ -810,6 +813,18 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         }
                                     }
                                     tr {
+                                        td  {
+                                        label(text: 'Zuschläge/Pauschalen:')      
+                                        }
+                                        td  {
+                                            panel {
+                                                chkZuschlag = checkBox(text: '§ 5a Abs. 1 VBVG', name: "_Zuschlag", selected: false)
+                                                chkPauschale1 = checkBox(text: '§ 5a Abs. 2 VBVG', name: "_Pauschale1", selected: false)
+                                                chkPauschale2 = checkBox(text: '§ 5a Abs. 3 VBVG', name: "_Pauschale2", selected: false)
+                                            }
+                                        }
+                                    }
+                                    tr {
                                         td {
                                             label(text: 'Abrechnungszeitraum von ')
                                         }
@@ -852,7 +867,8 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         td (align: 'right') {
                                             panel {
                                                 label(text: 'Summe')
-                                                lblsum = formattedTextField(id: 'nlabelsum', /*name: "_labelsum", */text: '0,00', columns: 5)
+                                                lblsum = label('0,00')
+                                                //lblsum = formattedTextField(id: 'nlabelsum', /*name: "_labelsum", */text: '0,00', columns: 5)
                                                 }
                                             }   
                                         }
@@ -907,17 +923,36 @@ def float calculate() {
     def calcdate = datestart+1
     def vondate = datestart+1
     def bisdate = new Date()
-    float betrag =0f
+    float betrag = 0f
+    float pauschale = 0f
+    if ((chkPauschale1.isSelected())&&(bestellungdate==datestart)) {
+            lblnr.text = '§ 5a Abs. 2 VBVG'
+            addPauschale(lblnr, 200)
+        }
     while (calcdate <= dateende) {
         if (stop(calcdate)) {
             bisdate = calcdate
-            betrag = calculatehonorar(vondate, bisdate)
+            pauschale = calculatehonorar(vondate, bisdate)
+            if ((vondate.date==bestellungdate.date+1)&&(bisdate.date==bestellungdate.date)) {
+                betrag = pauschale
+            } else {
+                betrag =  (bisdate - vondate)*pauschale/30
+            }
             add(vondate, bisdate, lblnr, betrag)
+            if ((chkZuschlag.isSelected())&&(chkVermoegend.isSelected())) {
+                lblnr.text = '§ 5a Abs. 1 VBVG'
+                add(vondate, bisdate, lblnr, 30)
+            }
             vondate=calcdate+1
-            lblnr.text = ''
         }
         calcdate=calcdate+1
     }
+    if (chkPauschale2.isSelected()) {
+            lblnr.text = '§ 5a Abs. 3 VBVG'
+            betrag = pauschale * 1.5
+            addPauschale(lblnr, betrag)
+        }
+    lblnr.text = ''
     def customRows=customTable.getRowCount()
     float sum = 0f
     for(int i=0;i<customRows;i++) {
@@ -941,7 +976,6 @@ def stop(date) {
 def calculatehonorar(vondate, bisdate) {
       def beschlussdate = new Date().parse("dd.MM.yyy", lblbeschluss.text)
     def bestellungdate = new Date().parse("dd.MM.yyy", lblbestellung.text)
-    float betrag =0f
     float pauschale =0f
     
     if (radioVerguetungA.isSelected()) {
@@ -1221,12 +1255,7 @@ def calculatehonorar(vondate, bisdate) {
             }
         }
     }
-    if ((vondate.date==bestellungdate.date+1)&&(bisdate.date==bestellungdate.date)) {
-        betrag = pauschale
-    } else {
-        betrag =  (bisdate - vondate)*pauschale/30
-    }
-    return betrag
+    return pauschale
 }
 
 def void add(vondate, bisdate, nr, betrag) {
@@ -1235,6 +1264,16 @@ def void add(vondate, bisdate, nr, betrag) {
     df.setMinimumFractionDigits(2);
 
     def newEntry = ['von': vondate.format('dd.MM.yyyy'), 'bis': bisdate.format('dd.MM.yyyy'), 'nr': nr.text, 'betrag': df.format(betrag)]
+    customTable.model.rowsModel.value.add(newEntry)
+    customTable.model.fireTableDataChanged()
+}
+
+def void addPauschale(nr, betrag) {
+    NumberFormat df = NumberFormat.getInstance(Locale.GERMANY).getNumberInstance();
+    df.setMaximumFractionDigits(2);
+    df.setMinimumFractionDigits(2);
+
+    def newEntry = ['von': '', 'bis': '', 'nr': nr.text, 'betrag': df.format(betrag)]
     customTable.model.rowsModel.value.add(newEntry)
     customTable.model.fireTableDataChanged()
 }

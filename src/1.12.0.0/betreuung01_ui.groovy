@@ -810,8 +810,8 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         td {
                                             panel {
                                                 btnGrpWohnform = buttonGroup(id:'grpWohnform')
-                                                radiostationaer = radioButton (text: 'stationär o.ä.', name: "_stationaer", buttonGroup: btnGrpWohnform, selected: true)
-                                                radiosonstige = radioButton (text: 'andere Wohnform', name: "_sonstige", buttonGroup: btnGrpWohnform)
+                                                radiostationaer = radioButton (text: 'stationär o.ä.', name: "_WOHN_STATIONAER", buttonGroup: btnGrpWohnform, selected: true)
+                                                radiosonstige = radioButton (text: 'andere Wohnform', name: "_WOHN_SONSTIGE", buttonGroup: btnGrpWohnform)
                                             }
                                         }
                                     }
@@ -829,9 +829,9 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         }
                                         td  {
                                             panel {
-                                                chkZuschlag = checkBox(text: '§ 5a Abs. 1 VBVG', name: "_Zuschlag", selected: false)
-                                                chkPauschale1 = checkBox(text: '§ 5a Abs. 2 VBVG', name: "_Pauschale1", selected: false)
-                                                chkPauschale2 = checkBox(text: '§ 5a Abs. 3 VBVG', name: "_Pauschale2", selected: false)
+                                                chkZuschlag = checkBox(text: '§ 5a Abs. 1 VBVG', name: "_ZUSCHLAG_PAR5ABS1", selected: false)
+                                                chkPauschale1 = checkBox(text: '§ 5a Abs. 2 VBVG', name: "_ZUSCHLAG_PAR5ABS2", selected: false)
+                                                chkPauschale2 = checkBox(text: '§ 5a Abs. 3 VBVG', name: "_ZUSCHLAG_PAR5ABS3", selected: false)
                                             }
                                         }
                                     }
@@ -841,9 +841,9 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         }
                                         td {
                                             panel {
-                                                lblstart = formattedTextField(id: 'lblstart', name: "_datestart", format: datumsFormat, columns:6,)
+                                                lblstart = formattedTextField(id: 'lblstart', name: "_ABRECHNG_VON", format: datumsFormat, columns:6,)
                                                 label(text: 'bis')
-                                                lblende = formattedTextField(id: 'lblende', name: "_dateende", format: datumsFormat, columns:6,)
+                                                lblende = formattedTextField(id: 'lblende', name: "_ABRECHNG_BIS", format: datumsFormat, columns:6,)
                                             }
                                         }
                                         td (align: 'right') {

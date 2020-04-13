@@ -672,6 +672,7 @@ import java.util.ArrayList
 import java.util.List
 import java.util.Locale
 import javax.swing.JTable
+import javax.swing.JButton
 import javax.swing.JPanel
 import javax.swing.JTextField
 import javax.swing.JRadioButton
@@ -707,6 +708,8 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
     JCheckBox chkZuschlag;
     JCheckBox chkPauschale1;
     JCheckBox chkPauschale2;
+    
+    JButton cmdCopy;
     
     FormPluginCallback callback=null;
     
@@ -751,15 +754,15 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                 tableLayout (cellpadding: 5) {
                                     tr {
                                         td  {
-                                        label(text: 'Eingang Beschluss:')      
+                                            label(text: 'Eingang Beschluss:')      
                                         }
                                         td  {
-                                        lblbeschluss = formattedTextField(id: 'sDatumBeschluss', name: "_BESCHLUSS", format: datumsFormat, columns: 10,)
+                                            lblbeschluss = formattedTextField(id: 'sDatumBeschluss', name: "_BESCHLUSS", format: datumsFormat, columns: 10,)
                                         }
                                     }
                                     tr {
                                         td  {
-                                        label(text: 'Datum eigene Bestellung:')      
+                                            label(text: 'Datum eigene Bestellung:')      
                                         }
                                         
                                         td  {
@@ -767,21 +770,21 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         }
                                     }
                                     /*tr {
-                                        td  {
-                                        label(text: 'Ende der Betreuung:')      
-                                        }
+                                    td  {
+                                    label(text: 'Ende der Betreuung:')      
+                                    }
                                         
-                                        td  {
-                                        formattedTextField(id: 'sDatumBestellungEnde', name: "_BESTELLUNG_ENDE", format: datumsFormat, columns: 10)
-                                        }
+                                    td  {
+                                    formattedTextField(id: 'sDatumBestellungEnde', name: "_BESTELLUNG_ENDE", format: datumsFormat, columns: 10)
+                                    }
                                     }*/
                                     
                                     tr {
                                         td  {
-                                        label(text: 'Vergütungstabelle:')      
+                                            label(text: 'Vergütungstabelle:')      
                                         }
                                         td  {
-                                        panel {
+                                            panel {
                                                 tableLayout (cellpadding: 5) {
                                                     tr {
                                                         td {
@@ -796,13 +799,13 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                         }
                                                     }
                                                 }
-                                        }
+                                            }
                                         }
                                     }
                                     tr {
                                         td {
                                             label(text: 'Wohnform')
-                                            }
+                                        }
                                         td {
                                             panel {
                                                 btnGrpWohnform = buttonGroup(id:'grpWohnform')
@@ -813,15 +816,15 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                     }
                                     tr {
                                         td  {
-                                        label(text: 'verwaltetes Vermögen:')      
+                                            label(text: 'verwaltetes Vermögen:')      
                                         }
                                         td  {
-                                        chkVermoegend = checkBox(text: 'Betreuter ist vermögend', name: "_VERMOEGEND", selected: false)
+                                            chkVermoegend = checkBox(text: 'Betreuter ist vermögend', name: "_VERMOEGEND", selected: false)
                                         }
                                     }
                                     tr {
                                         td  {
-                                        label(text: 'Zuschläge/Pauschalen:')      
+                                            label(text: 'Zuschläge/Pauschalen:')      
                                         }
                                         td  {
                                             panel {
@@ -876,13 +879,13 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 label(text: 'Summe')
                                                 lblsum = label('0,00')
                                                 //lblsum = formattedTextField(id: 'nlabelsum', /*name: "_labelsum", */text: '0,00', columns: 5)
-                                                }
-                                            }   
-                                        }
+                                            }
+                                        }   
                                     }
                                 }
                             }
                         }
+                    }
                     
                     tr  {
                         td (align: 'right') {
@@ -892,17 +895,17 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                     })
                                     
                                 cmdCopy = button(text: 'Kopieren', enabled: false, toolTipText: 'In Zwischenablage kopieren', actionPerformed: {
-                                    if(callback != null)
-                                    callback.processResultToClipboard(copyToClipboard())
-                                    // do not close the window - have user do it.
-                                    // java.awt.Container container=com.jdimension.jlawyer.client.utils.FrameUtils.getDialogOfComponent(SCRIPTPANEL)
-                                    // container.setVisible(false)
-                                    // ((javax.swing.JDialog)container).dispose()        
-                                })
+                                        if(callback != null)
+                                        callback.processResultToClipboard(copyToClipboard())
+                                        // do not close the window - have user do it.
+                                        // java.awt.Container container=com.jdimension.jlawyer.client.utils.FrameUtils.getDialogOfComponent(SCRIPTPANEL)
+                                        // container.setVisible(false)
+                                        // ((javax.swing.JDialog)container).dispose()        
+                                    })
                         
                                 /*cmdDocument = button(text: 'Dokument erstellen', enabled: false, toolTipText: 'Ergebnis in Dokument uebernehmen', actionPerformed: {
-                                    if(binding.callback != null)
-                                    binding.callback.processResultToDocument(copyToDocument(), SCRIPTPANEL)     
+                                if(binding.callback != null)
+                                binding.callback.processResultToDocument(copyToDocument(), SCRIPTPANEL)     
                                 })*/
                             }
                         }                
@@ -914,414 +917,414 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
     }
 
 
-def float calculate() {
-    NumberFormat df = NumberFormat.getInstance(Locale.GERMANY).getNumberInstance();
-    df.setMaximumFractionDigits(2);
-    df.setMinimumFractionDigits(2);
+    def float calculate() {
+        NumberFormat df = NumberFormat.getInstance(Locale.GERMANY).getNumberInstance();
+        df.setMaximumFractionDigits(2);
+        df.setMinimumFractionDigits(2);
 
-    def beschlussdate = new Date().parse("dd.MM.yyy", lblbeschluss.text)
-    def bestellungdate = new Date().parse("dd.MM.yyy", lblbestellung.text)
-    def datestart = new Date().parse("dd.MM.yyy", lblstart.text)
-    def dateende = new Date().parse("dd.MM.yyy", lblende.text)
+        def beschlussdate = new Date().parse("dd.MM.yyy", lblbeschluss.text)
+        def bestellungdate = new Date().parse("dd.MM.yyy", lblbestellung.text)
+        def datestart = new Date().parse("dd.MM.yyy", lblstart.text)
+        def dateende = new Date().parse("dd.MM.yyy", lblende.text)
 
-    customTable.model.getRows().clear() //Tabelle beim Aufruf löschen
-    customTable.model.fireTableDataChanged()
+        customTable.model.getRows().clear() //Tabelle beim Aufruf löschen
+        customTable.model.fireTableDataChanged()
 
-    def calcdate = datestart+1
-    def vondate = datestart+1
-    def bisdate = new Date()
-    float betrag = 0f
-    float pauschale = 0f
-    if ((chkPauschale1.isSelected())&&(bestellungdate==datestart)) {
+        def calcdate = datestart+1
+        def vondate = datestart+1
+        def bisdate = new Date()
+        float betrag = 0f
+        float pauschale = 0f
+        if ((chkPauschale1.isSelected())&&(bestellungdate==datestart)) {
             lblnr.text = '§ 5a Abs. 2 VBVG'
             addPauschale(lblnr, 200)
         }
-    while (calcdate <= dateende) {
-        if (stop(calcdate)) {
-            bisdate = calcdate
-            pauschale = calculatehonorar(vondate, bisdate)
-            if ((vondate.date==bestellungdate.date+1)&&(bisdate.date==bestellungdate.date)) {
-                betrag = pauschale
-            } else {
-                betrag =  (bisdate - vondate)*pauschale/30
+        while (calcdate <= dateende) {
+            if (stop(calcdate)) {
+                bisdate = calcdate
+                pauschale = calculatehonorar(vondate, bisdate)
+                if ((vondate.date==bestellungdate.date+1)&&(bisdate.date==bestellungdate.date)) {
+                    betrag = pauschale
+                } else {
+                    betrag =  (bisdate - vondate)*pauschale/30
+                }
+                add(vondate, bisdate, lblnr, betrag)
+                if ((chkZuschlag.isSelected())&&(chkVermoegend.isSelected())) {
+                    lblnr.text = '§ 5a Abs. 1 VBVG'
+                    add(vondate, bisdate, lblnr, 30)
+                }
+                vondate=calcdate+1
             }
-            add(vondate, bisdate, lblnr, betrag)
-            if ((chkZuschlag.isSelected())&&(chkVermoegend.isSelected())) {
-                lblnr.text = '§ 5a Abs. 1 VBVG'
-                add(vondate, bisdate, lblnr, 30)
-            }
-            vondate=calcdate+1
+            calcdate=calcdate+1
         }
-        calcdate=calcdate+1
-    }
-    if (chkPauschale2.isSelected()) {
+        if (chkPauschale2.isSelected()) {
             lblnr.text = '§ 5a Abs. 3 VBVG'
             betrag = pauschale * 1.5
             addPauschale(lblnr, betrag)
         }
-    lblnr.text = ''
-    def customRows=customTable.getRowCount()
-    float sum = 0f
-    for(int i=0;i<customRows;i++) {
-        sum=sum+df.parse(customTable.getValueAt(i, 3))
-    }
+        lblnr.text = ''
+        def customRows=customTable.getRowCount()
+        float sum = 0f
+        for(int i=0;i<customRows;i++) {
+            sum=sum+df.parse(customTable.getValueAt(i, 3))
+        }
         lblsum.text = df.format(sum)
         
         cmdCopy.enabled=true
-}
-
-def stop(date) {
-    def beschlussdate = new Date().parse("dd.MM.yyy", lblbeschluss.text)
-    def bestellungdate = new Date().parse("dd.MM.yyy", lblbestellung.text)
-    def dateende = new Date().parse("dd.MM.yyy", lblende.text)
-    if (date==dateende) {return true}
-    if (date.date==bestellungdate.date) {return true}
-    if (date==addmonth(beschlussdate, 3)) {return true}
-    if (date==addmonth(beschlussdate, 6)) {return true}
-    if (date==addmonth(beschlussdate, 12)) {return true}
-    if (date==addmonth(beschlussdate, 24)) {return true}
-}
-
-def calculatehonorar(vondate, bisdate) {
-      def beschlussdate = new Date().parse("dd.MM.yyy", lblbeschluss.text)
-    def bestellungdate = new Date().parse("dd.MM.yyy", lblbestellung.text)
-    float pauschale =0f
-    
-    if (radioVerguetungA.isSelected()) {
-        if (bisdate <= addmonth(beschlussdate, 3)) {
-            if (radiostationaer.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=200
-                    lblnr.text = 'A1.1.2'
-                } else {
-                    pauschale=194
-                    lblnr.text = 'A1.1.1'
-                }
-            } else if (radiosonstige.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=298
-                    lblnr.text = 'A1.2.2'
-                } else {
-                    pauschale=208
-                    lblnr.text = 'A1.2.1'
-                }
-            }
-        } else if ((bisdate > addmonth(beschlussdate, 3)) && (bisdate <= addmonth(beschlussdate, 6))) { 
-            if (radiostationaer.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=158
-                    lblnr.text = 'A2.1.2'
-                } else {
-                    pauschale=129
-                    lblnr.text = 'A2.1.1'
-                }
-            } else if (radiosonstige.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=208
-                    lblnr.text = 'A2.2.2'
-                } else {
-                    pauschale=170
-                    lblnr.text = 'A2.2.1'
-                }
-            }
-        } else if ((bisdate > addmonth(beschlussdate, 6)) && (bisdate <= addmonth(beschlussdate, 12))) {
-            if (radiostationaer.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=140
-                    lblnr.text = 'A3.1.2'
-                } else {
-                    pauschale=124
-                    lblnr.text = 'A3.1.1'
-                }
-            } else if (radiosonstige.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=192
-                    lblnr.text = 'A3.2.2'
-                } else {
-                    pauschale=151
-                    lblnr.text = 'A3.2.1'
-                }
-            }
-        } else if ((bisdate > addmonth(beschlussdate, 12)) && (bisdate <= addmonth(beschlussdate, 24))) {
-            if (radiostationaer.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=91
-                    lblnr.text = 'A4.1.2'
-                } else {
-                    pauschale=87
-                    lblnr.text = 'A4.1.1'
-                }
-            } else if (radiosonstige.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=158
-                    lblnr.text = 'A4.2.2'
-                } else {
-                    pauschale=122
-                    lblnr.text = 'A4.2.1'
-                }
-            }
-        } else {
-            if (radiostationaer.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=78
-                    lblnr.text = 'A5.1.2'
-                } else {
-                    pauschale=62
-                    lblnr.text = 'A5.1.1'
-                }
-            } else if (radiosonstige.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=130
-                    lblnr.text = 'A5.2.2'
-                } else {
-                    pauschale=105
-                    lblnr.text = 'A5.2.1'
-                }
-            }
-        }
-    } else if (radioVerguetungB.isSelected()) {
-        if (bisdate <= addmonth(beschlussdate, 3)) {
-            if (radiostationaer.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=249
-                    lblnr.text = 'B1.1.2'
-                } else {
-                    pauschale=241
-                    lblnr.text = 'B1.1.1'
-                }
-            } else if (radiosonstige.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=370
-                    lblnr.text = 'B1.2.2'
-                } else {
-                    pauschale=258
-                    lblnr.text = 'B1.2.1'
-                }
-            }
-        } else if ((bisdate > addmonth(beschlussdate, 3)) && (bisdate <= addmonth(beschlussdate, 6))) { 
-            if (radiostationaer.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=194
-                    lblnr.text = 'B2.1.2'
-                } else {
-                    pauschale=158
-                    lblnr.text = 'B2.1.1'
-                }
-            } else if (radiosonstige.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=258
-                    lblnr.text = 'B2.2.2'
-                } else {
-                    pauschale=211
-                    lblnr.text = 'B2.2.1'
-                }
-            }
-        } else if ((bisdate > addmonth(beschlussdate, 6)) && (bisdate <= addmonth(beschlussdate, 12))) {
-            if (radiostationaer.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=174
-                    lblnr.text = 'B3.1.2'
-                } else {
-                    pauschale=154
-                    lblnr.text = 'B3.1.1'
-                }
-            } else if (radiosonstige.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=238
-                    lblnr.text = 'B3.2.2'
-                } else {
-                    pauschale=188
-                    lblnr.text = 'B3.2.1'
-                }
-            }
-        } else if ((bisdate > addmonth(beschlussdate, 12)) && (bisdate <= addmonth(beschlussdate, 24))) {
-            if (radiostationaer.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=113
-                    lblnr.text = 'B4.1.2'
-                } else {
-                    pauschale=107
-                    lblnr.text = 'B4.1.1'
-                }
-            } else if (radiosonstige.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=196
-                    lblnr.text = 'B4.2.2'
-                } else {
-                    pauschale=151
-                    lblnr.text = 'B4.2.1'
-                }
-            }
-        } else {
-            if (radiostationaer.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=96
-                    lblnr.text = 'B5.1.2'
-                } else {
-                    pauschale=78
-                    lblnr.text = 'B5.1.1'
-                }
-            } else if (radiosonstige.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=161
-                    lblnr.text = 'B5.2.2'
-                } else {
-                    pauschale=130
-                    lblnr.text = 'B5.2.1'
-                }
-            }
-        }
-    } else if (radioVerguetungC.isSelected()) {
-        if (bisdate <= addmonth(beschlussdate, 3)) {
-            if (radiostationaer.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=327
-                    lblnr.text = 'C1.1.2'
-                } else {
-                    pauschale=317
-                    lblnr.text = 'C1.1.1'
-                }
-            } else if (radiosonstige.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=486
-                    lblnr.text = 'C1.2.2'
-                } else {
-                    pauschale=339
-                    lblnr.text = 'C1.2.1'
-                }
-            }
-        } else if ((bisdate > addmonth(beschlussdate, 3)) && (bisdate <= addmonth(beschlussdate, 6))) { 
-            if (radiostationaer.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=257
-                    lblnr.text = 'C2.1.2'
-                } else {
-                    pauschale=208
-                    lblnr.text = 'C2.1.1'
-                }
-            } else if (radiosonstige.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=339
-                    lblnr.text = 'C2.2.2'
-                } else {
-                    pauschale=277
-                    lblnr.text = 'C2.2.1'
-                }
-            }
-        } else if ((bisdate > addmonth(beschlussdate, 6)) && (bisdate <= addmonth(beschlussdate, 12))) {
-            if (radiostationaer.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=229
-                    lblnr.text = 'C3.1.2'
-                } else {
-                    pauschale=202
-                    lblnr.text = 'C3.1.1'
-                }
-            } else if (radiosonstige.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=312
-                    lblnr.text = 'C3.2.2'
-                } else {
-                    pauschale=246
-                    lblnr.text = 'C3.2.1'
-                }
-            }
-        } else if ((bisdate > addmonth(beschlussdate, 12)) && (bisdate <= addmonth(beschlussdate, 24))) {
-            if (radiostationaer.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=149
-                    lblnr.text = 'C4.1.2'
-                } else {
-                    pauschale=141
-                    lblnr.text = 'C4.1.1'
-                }
-            } else if (radiosonstige.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=257
-                    lblnr.text = 'C4.2.2'
-                } else {
-                    pauschale=198
-                    lblnr.text = 'C4.2.1'
-                }
-            }
-        } else {
-            if (radiostationaer.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=127
-                    lblnr.text = 'C5.1.2'
-                } else {
-                    pauschale=102
-                    lblnr.text = 'C5.1.1'
-                }
-            } else if (radiosonstige.isSelected()) {
-                if (chkVermoegend.isSelected()){
-                    pauschale=211
-                    lblnr.text = 'C5.2.2'
-                } else {
-                    pauschale=171
-                    lblnr.text = 'C5.2.1'
-                }
-            }
-        }
     }
-    return pauschale
-}
 
-def void add(vondate, bisdate, nr, betrag) {
-    NumberFormat df = NumberFormat.getInstance(Locale.GERMANY).getNumberInstance();
-    df.setMaximumFractionDigits(2);
-    df.setMinimumFractionDigits(2);
+    def stop(date) {
+        def beschlussdate = new Date().parse("dd.MM.yyy", lblbeschluss.text)
+        def bestellungdate = new Date().parse("dd.MM.yyy", lblbestellung.text)
+        def dateende = new Date().parse("dd.MM.yyy", lblende.text)
+        if (date==dateende) {return true}
+        if (date.date==bestellungdate.date) {return true}
+        if (date==addmonth(beschlussdate, 3)) {return true}
+        if (date==addmonth(beschlussdate, 6)) {return true}
+        if (date==addmonth(beschlussdate, 12)) {return true}
+        if (date==addmonth(beschlussdate, 24)) {return true}
+    }
 
-    def newEntry = ['von': vondate.format('dd.MM.yyyy'), 'bis': bisdate.format('dd.MM.yyyy'), 'nr': nr.text, 'betrag': df.format(betrag)]
-    customTable.model.rowsModel.value.add(newEntry)
-    customTable.model.fireTableDataChanged()
-}
-
-def void addPauschale(nr, betrag) {
-    NumberFormat df = NumberFormat.getInstance(Locale.GERMANY).getNumberInstance();
-    df.setMaximumFractionDigits(2);
-    df.setMinimumFractionDigits(2);
-
-    def newEntry = ['von': '', 'bis': '', 'nr': nr.text, 'betrag': df.format(betrag)]
-    customTable.model.rowsModel.value.add(newEntry)
-    customTable.model.fireTableDataChanged()
-}
-
-def addmonth(date, month) {
-    def newdate = new Date().parse("dd.MM.yyyy", '01.01.2000')
-    newdate[YEAR] = date.year+1900
-    newdate[MONTH] = date.month + month
-    newdate[DATE] = date.date
-    return newdate 
-}
-
-def String copyToClipboard() {
-
-    StyledCalculationTable st=copyToDocument();
-    return st.toHtml();
+    def calculatehonorar(vondate, bisdate) {
+        def beschlussdate = new Date().parse("dd.MM.yyy", lblbeschluss.text)
+        def bestellungdate = new Date().parse("dd.MM.yyy", lblbestellung.text)
+        float pauschale =0f
     
-}
+        if (radioVerguetungA.isSelected()) {
+            if (bisdate <= addmonth(beschlussdate, 3)) {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=200
+                        lblnr.text = 'A1.1.2'
+                    } else {
+                        pauschale=194
+                        lblnr.text = 'A1.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=298
+                        lblnr.text = 'A1.2.2'
+                    } else {
+                        pauschale=208
+                        lblnr.text = 'A1.2.1'
+                    }
+                }
+            } else if ((bisdate > addmonth(beschlussdate, 3)) && (bisdate <= addmonth(beschlussdate, 6))) { 
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=158
+                        lblnr.text = 'A2.1.2'
+                    } else {
+                        pauschale=129
+                        lblnr.text = 'A2.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=208
+                        lblnr.text = 'A2.2.2'
+                    } else {
+                        pauschale=170
+                        lblnr.text = 'A2.2.1'
+                    }
+                }
+            } else if ((bisdate > addmonth(beschlussdate, 6)) && (bisdate <= addmonth(beschlussdate, 12))) {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=140
+                        lblnr.text = 'A3.1.2'
+                    } else {
+                        pauschale=124
+                        lblnr.text = 'A3.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=192
+                        lblnr.text = 'A3.2.2'
+                    } else {
+                        pauschale=151
+                        lblnr.text = 'A3.2.1'
+                    }
+                }
+            } else if ((bisdate > addmonth(beschlussdate, 12)) && (bisdate <= addmonth(beschlussdate, 24))) {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=91
+                        lblnr.text = 'A4.1.2'
+                    } else {
+                        pauschale=87
+                        lblnr.text = 'A4.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=158
+                        lblnr.text = 'A4.2.2'
+                    } else {
+                        pauschale=122
+                        lblnr.text = 'A4.2.1'
+                    }
+                }
+            } else {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=78
+                        lblnr.text = 'A5.1.2'
+                    } else {
+                        pauschale=62
+                        lblnr.text = 'A5.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=130
+                        lblnr.text = 'A5.2.2'
+                    } else {
+                        pauschale=105
+                        lblnr.text = 'A5.2.1'
+                    }
+                }
+            }
+        } else if (radioVerguetungB.isSelected()) {
+            if (bisdate <= addmonth(beschlussdate, 3)) {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=249
+                        lblnr.text = 'B1.1.2'
+                    } else {
+                        pauschale=241
+                        lblnr.text = 'B1.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=370
+                        lblnr.text = 'B1.2.2'
+                    } else {
+                        pauschale=258
+                        lblnr.text = 'B1.2.1'
+                    }
+                }
+            } else if ((bisdate > addmonth(beschlussdate, 3)) && (bisdate <= addmonth(beschlussdate, 6))) { 
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=194
+                        lblnr.text = 'B2.1.2'
+                    } else {
+                        pauschale=158
+                        lblnr.text = 'B2.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=258
+                        lblnr.text = 'B2.2.2'
+                    } else {
+                        pauschale=211
+                        lblnr.text = 'B2.2.1'
+                    }
+                }
+            } else if ((bisdate > addmonth(beschlussdate, 6)) && (bisdate <= addmonth(beschlussdate, 12))) {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=174
+                        lblnr.text = 'B3.1.2'
+                    } else {
+                        pauschale=154
+                        lblnr.text = 'B3.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=238
+                        lblnr.text = 'B3.2.2'
+                    } else {
+                        pauschale=188
+                        lblnr.text = 'B3.2.1'
+                    }
+                }
+            } else if ((bisdate > addmonth(beschlussdate, 12)) && (bisdate <= addmonth(beschlussdate, 24))) {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=113
+                        lblnr.text = 'B4.1.2'
+                    } else {
+                        pauschale=107
+                        lblnr.text = 'B4.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=196
+                        lblnr.text = 'B4.2.2'
+                    } else {
+                        pauschale=151
+                        lblnr.text = 'B4.2.1'
+                    }
+                }
+            } else {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=96
+                        lblnr.text = 'B5.1.2'
+                    } else {
+                        pauschale=78
+                        lblnr.text = 'B5.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=161
+                        lblnr.text = 'B5.2.2'
+                    } else {
+                        pauschale=130
+                        lblnr.text = 'B5.2.1'
+                    }
+                }
+            }
+        } else if (radioVerguetungC.isSelected()) {
+            if (bisdate <= addmonth(beschlussdate, 3)) {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=327
+                        lblnr.text = 'C1.1.2'
+                    } else {
+                        pauschale=317
+                        lblnr.text = 'C1.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=486
+                        lblnr.text = 'C1.2.2'
+                    } else {
+                        pauschale=339
+                        lblnr.text = 'C1.2.1'
+                    }
+                }
+            } else if ((bisdate > addmonth(beschlussdate, 3)) && (bisdate <= addmonth(beschlussdate, 6))) { 
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=257
+                        lblnr.text = 'C2.1.2'
+                    } else {
+                        pauschale=208
+                        lblnr.text = 'C2.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=339
+                        lblnr.text = 'C2.2.2'
+                    } else {
+                        pauschale=277
+                        lblnr.text = 'C2.2.1'
+                    }
+                }
+            } else if ((bisdate > addmonth(beschlussdate, 6)) && (bisdate <= addmonth(beschlussdate, 12))) {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=229
+                        lblnr.text = 'C3.1.2'
+                    } else {
+                        pauschale=202
+                        lblnr.text = 'C3.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=312
+                        lblnr.text = 'C3.2.2'
+                    } else {
+                        pauschale=246
+                        lblnr.text = 'C3.2.1'
+                    }
+                }
+            } else if ((bisdate > addmonth(beschlussdate, 12)) && (bisdate <= addmonth(beschlussdate, 24))) {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=149
+                        lblnr.text = 'C4.1.2'
+                    } else {
+                        pauschale=141
+                        lblnr.text = 'C4.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=257
+                        lblnr.text = 'C4.2.2'
+                    } else {
+                        pauschale=198
+                        lblnr.text = 'C4.2.1'
+                    }
+                }
+            } else {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=127
+                        lblnr.text = 'C5.1.2'
+                    } else {
+                        pauschale=102
+                        lblnr.text = 'C5.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=211
+                        lblnr.text = 'C5.2.2'
+                    } else {
+                        pauschale=171
+                        lblnr.text = 'C5.2.1'
+                    }
+                }
+            }
+        }
+        return pauschale
+    }
 
-def StyledCalculationTable copyToDocument() {
-    StyledCalculationTable ct=new StyledCalculationTable();
-/*    ct.addHeaders("von", "bis", "nr" "Betrag");
+    def void add(vondate, bisdate, nr, betrag) {
+        NumberFormat df = NumberFormat.getInstance(Locale.GERMANY).getNumberInstance();
+        df.setMaximumFractionDigits(2);
+        df.setMinimumFractionDigits(2);
+
+        def newEntry = ['von': vondate.format('dd.MM.yyyy'), 'bis': bisdate.format('dd.MM.yyyy'), 'nr': nr.text, 'betrag': df.format(betrag)]
+        customTable.model.rowsModel.value.add(newEntry)
+        customTable.model.fireTableDataChanged()
+    }
+
+    def void addPauschale(nr, betrag) {
+        NumberFormat df = NumberFormat.getInstance(Locale.GERMANY).getNumberInstance();
+        df.setMaximumFractionDigits(2);
+        df.setMinimumFractionDigits(2);
+
+        def newEntry = ['von': '', 'bis': '', 'nr': nr.text, 'betrag': df.format(betrag)]
+        customTable.model.rowsModel.value.add(newEntry)
+        customTable.model.fireTableDataChanged()
+    }
+
+    def addmonth(date, month) {
+        def newdate = new Date().parse("dd.MM.yyyy", '01.01.2000')
+        newdate[YEAR] = date.year+1900
+        newdate[MONTH] = date.month + month
+        newdate[DATE] = date.date
+        return newdate 
+    }
+
+    def String copyToClipboard() {
+
+        StyledCalculationTable st=copyToDocument();
+        return st.toHtml();
+    
+    }
+
+    def StyledCalculationTable copyToDocument() {
+        StyledCalculationTable ct=new StyledCalculationTable();
+        /*    ct.addHeaders("von", "bis", "nr" "Betrag");
 
 
-    ct.setColumnAlignment(2, Cell.ALIGNMENT_RIGHT);
-    ct.getCellAt(0,1).setAlignment(Cell.ALIGNMENT_LEFT);
-    ct.setRowFontSize(0, 12);
-    ct.setColumnWidth(0, 25);
-    ct.setColumnWidth(1, 120);
-    ct.setColumnWidth(2, 35);
-    ct.setFontFamily("Arial");
-    if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.table.lines", true)) {
+        ct.setColumnAlignment(2, Cell.ALIGNMENT_RIGHT);
+        ct.getCellAt(0,1).setAlignment(Cell.ALIGNMENT_LEFT);
+        ct.setRowFontSize(0, 12);
+        ct.setColumnWidth(0, 25);
+        ct.setColumnWidth(1, 120);
+        ct.setColumnWidth(2, 35);
+        ct.setFontFamily("Arial");
+        if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.table.lines", true)) {
         ct.setLineBorder(true);
-    } else {
+        } else {
         ct.setLineBorder(false);
+        }
+        ct.setBorderColor(new TablePropertiesUtils().getTableLineColor());
+         */
+        return ct;
     }
-    ct.setBorderColor(new TablePropertiesUtils().getTableLineColor());
-*/
-    return ct;
-}
 
 }

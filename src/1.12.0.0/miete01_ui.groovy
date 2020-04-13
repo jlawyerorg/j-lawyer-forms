@@ -677,10 +677,12 @@ import javax.swing.JTextField
 import javax.swing.JRadioButton
 import java.awt.Component
 import java.awt.Container
+import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 
 public class miete01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
 
     JPanel SCRIPTPANEL=null;
+    FormPluginCallback callback=null;
 
     public miete01_ui() {
         super();
@@ -700,6 +702,9 @@ public class miete01_ui implements com.jdimension.jlawyer.client.plugins.form.Fo
         FormsLib.setPlaceHolderValues(prefix, placeHolderValues, this.SCRIPTPANEL);
     }
 
+    public void setCallback(FormPluginCallback callback) {
+        this.callback=callback;
+    }
 
     public JPanel getUi() {
 

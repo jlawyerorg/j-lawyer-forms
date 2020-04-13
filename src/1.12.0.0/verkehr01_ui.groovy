@@ -677,6 +677,7 @@ import javax.swing.JTextField
 import javax.swing.JRadioButton
 import java.awt.Component
 import java.awt.Container
+import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 
 public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
 
@@ -687,6 +688,8 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     JTextField txtWertminderung;
     JTextField txtWiederbeschaffungswert;
     JTextField txtRestwert;
+    
+    FormPluginCallback callback=null;
 
 
     public verkehr01_ui() {
@@ -708,6 +711,9 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         toggleSchadentyp();
     }
 
+    public void setCallback(FormPluginCallback callback) {
+        this.callback=callback;
+    }
 
     public JPanel getUi() {
 

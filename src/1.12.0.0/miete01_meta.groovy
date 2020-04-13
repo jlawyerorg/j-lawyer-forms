@@ -664,8 +664,8 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "Mietrechtssachen"
 description = "Mietrechtssachen"
-version = "0.2.0";
+version = "0.3.0";
 author = "Jens Kutschke"
-updated = "21.02.2020"
+updated = "13.04.2020"
 
 

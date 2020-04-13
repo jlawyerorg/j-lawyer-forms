@@ -685,6 +685,7 @@ import org.jlawyer.plugins.calculation.StyledCalculationTable
 import org.jlawyer.plugins.calculation.CalculationTable
 import org.jlawyer.plugins.calculation.Cell
 import com.jdimension.jlawyer.client.settings.ServerSettings
+import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 import static java.util.Calendar.*
 
 public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
@@ -707,11 +708,17 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
     JCheckBox chkPauschale1;
     JCheckBox chkPauschale2;
     
+    FormPluginCallback callback=null;
+    
 
     public betreuung01_ui() {
         super();
     }
 
+    public void setCallback(FormPluginCallback callback) {
+        this.callback=callback;
+    }
+    
     public ArrayList<String> getPlaceHolders(String prefix) {
         ArrayList<String> placeHolders=FormsLib.getPlaceHolders(prefix, this.SCRIPTPANEL);
         return placeHolders;
@@ -885,8 +892,8 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                     })
                                     
                                 cmdCopy = button(text: 'Kopieren', enabled: false, toolTipText: 'In Zwischenablage kopieren', actionPerformed: {
-                                    if(binding.callback != null)
-                                    binding.callback.processResultToClipboard(copyToClipboard())
+                                    if(callback != null)
+                                    callback.processResultToClipboard(copyToClipboard())
                                     // do not close the window - have user do it.
                                     // java.awt.Container container=com.jdimension.jlawyer.client.utils.FrameUtils.getDialogOfComponent(SCRIPTPANEL)
                                     // container.setVisible(false)
@@ -959,6 +966,8 @@ def float calculate() {
         sum=sum+df.parse(customTable.getValueAt(i, 3))
     }
         lblsum.text = df.format(sum)
+        
+        cmdCopy.enabled=true
 }
 
 def stop(date) {

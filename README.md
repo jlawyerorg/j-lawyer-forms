@@ -19,6 +19,22 @@ You need one entry per j-lawyer.org version, for each of the versions that you w
 
 * Once you commit and push the changes, the plugin will automatically be uploaded so that all users can use it.
 
+## Local forms plugin development
+
+Developing a new form is an iterative process. There is a way to first develop plugins locally before pushing changes to the GitHub repository. This will also avoid your changes to be overwritten during client restarts.
+
+* Create a directory /home/<username>/.j-lawyer-client/forms-internal/
+* Put a file j-lawyer-forms-internal.xml into this directory
+* Edit the file and put in the plugin that you are working on, e.g. like below. Note that the url points to a local directory.
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<forms>
+    <form id="verkehr01int" type="plugin" depends="formslib" name="Verkehrsunfalldaten-int" description="Falldatenblatt zur Erfassung von Verkehrsunfalldaten" placeholder="VRKHRINT" version="0.9.0" for="1.12.0.1,1.12.0.2" url="file:///home/<username>/.j-lawyer-client/forms-internal" files="verkehr01int_meta.groovy,verkehr01int_ui.groovy"/>
+</forms>
+```
+* Edit your form plugins files in the local directory. When changed, use the settings dialog to update them. There is no need to restart the client, just reload the case ("Akte").
+* Once done, you may upload the files to the official repository. Remove any "internal" names.
+
 ## Documentation
 
 Groovy scripting: http://groovy-lang.org

@@ -662,10 +662,119 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 <https://www.gnu.org/licenses/>.
 */
 
-name = "Formularbibliothek"
-description = "Formularbibliothek"
-version = "0.3.0";
-author = "Jens Kutschke"
-updated = "13.04.2020"
+import groovy.swing.SwingBuilder
+import java.awt.BorderLayout as BL
+import groovy.beans.Bindable
+import java.text.DecimalFormat
+import java.util.List
+import java.awt.Color
+import com.jdimension.jlawyer.client.settings.ServerSettings
 
 
+class TablePropertiesUtils { 
+
+public static final String KEY_TABLE_LINES_COLOR="plugins.global.tableproperties.table.lines.color";
+public static final Color DEFAULT_TABLE_LINE_COLOR=Color.BLACK;
+
+public static final String KEY_HEADER_FORE_COLOR="plugins.global.tableproperties.header.fore.color";
+public static final Color DEFAULT_HEADER_FORE_COLOR=Color.BLACK;
+
+public static final String KEY_HEADER_BACK_COLOR="plugins.global.tableproperties.header.back.color";
+public static final Color DEFAULT_HEADER_BACK_COLOR=Color.LIGHT_GRAY;
+
+public static final String KEY_ZWISCHENSUMME_FORE_COLOR="plugins.global.tableproperties.zwischensumme.fore.color";
+public static final Color DEFAULT_ZWISCHENSUMME_FORE_COLOR=Color.BLACK;
+
+public static final String KEY_ZWISCHENSUMME_BACK_COLOR="plugins.global.tableproperties.zwischensumme.back.color";
+public static final Color DEFAULT_ZWISCHENSUMME_BACK_COLOR=Color.LIGHT_GRAY;
+
+public static final String KEY_FOOTERROW_FORE_COLOR="plugins.global.tableproperties.footerrow.fore.color";
+public static final Color DEFAULT_FOOTERROW_FORE_COLOR=Color.BLACK;
+
+public static final String KEY_FOOTERROW_BACK_COLOR="plugins.global.tableproperties.footerrow.back.color";
+public static final Color DEFAULT_FOOTERROW_BACK_COLOR=Color.LIGHT_GRAY;
+
+
+    TablePropertiesUtils() {
+        
+    }
+    
+    Color getTableLineColor() { 
+
+        int rgb=ServerSettings.getInstance().getSettingAsInt(KEY_TABLE_LINES_COLOR, DEFAULT_TABLE_LINE_COLOR.getRGB());
+        return new Color(rgb);
+    
+    }
+
+    void setTableLineColor(Color c) {
+        if(c!=null) {
+            ServerSettings.getInstance().setSetting(KEY_TABLE_LINES_COLOR,""+c.getRGB());
+        }
+    }
+
+    Color getHeaderForeColor() { 
+        int rgb=ServerSettings.getInstance().getSettingAsInt(KEY_HEADER_FORE_COLOR, DEFAULT_HEADER_FORE_COLOR.getRGB());
+        return new Color(rgb);
+    }
+    
+    void setHeaderForeColor(Color c) {
+        if(c!=null) {
+            ServerSettings.getInstance().setSetting(KEY_HEADER_FORE_COLOR,""+c.getRGB());
+        }
+    }
+
+    Color getHeaderBackColor() { 
+        int rgb=ServerSettings.getInstance().getSettingAsInt(KEY_HEADER_BACK_COLOR, DEFAULT_HEADER_BACK_COLOR.getRGB());
+        return new Color(rgb);
+    }
+    
+    void setHeaderBackColor(Color c) {
+        if(c!=null) {
+            ServerSettings.getInstance().setSetting(KEY_HEADER_BACK_COLOR,""+c.getRGB());
+        }
+    }
+
+  Color getZwischensummeForeColor() { 
+        int rgb=ServerSettings.getInstance().getSettingAsInt(KEY_ZWISCHENSUMME_FORE_COLOR, DEFAULT_ZWISCHENSUMME_FORE_COLOR.getRGB());
+        return new Color(rgb);
+    }
+    
+    void setZwischensummeForeColor(Color c) {
+        if(c!=null) {
+            ServerSettings.getInstance().setSetting(KEY_ZWISCHENSUMME_FORE_COLOR,""+c.getRGB());
+        }
+    }
+
+    Color getZwischensummeBackColor() { 
+        int rgb=ServerSettings.getInstance().getSettingAsInt(KEY_ZWISCHENSUMME_BACK_COLOR, DEFAULT_ZWISCHENSUMME_BACK_COLOR.getRGB());
+        return new Color(rgb);
+    }
+    
+    void setZwischensummeBackColor(Color c) {
+        if(c!=null) {
+            ServerSettings.getInstance().setSetting(KEY_ZWISCHENSUMME_BACK_COLOR,""+c.getRGB());
+        }
+    }
+
+    Color getFooterRowForeColor() { 
+        int rgb=ServerSettings.getInstance().getSettingAsInt(KEY_FOOTERROW_FORE_COLOR, DEFAULT_FOOTERROW_FORE_COLOR.getRGB());
+        return new Color(rgb);
+    }
+    
+    void setFooterRowForeColor(Color c) {
+        if(c!=null) {
+            ServerSettings.getInstance().setSetting(KEY_FOOTERROW_FORE_COLOR,""+c.getRGB());
+        }
+    }
+
+    Color getFooterRowBackColor() { 
+        int rgb=ServerSettings.getInstance().getSettingAsInt(KEY_FOOTERROW_BACK_COLOR, DEFAULT_FOOTERROW_BACK_COLOR.getRGB());
+        return new Color(rgb);
+    }
+    
+    void setFooterRowBackColor(Color c) {
+        if(c!=null) {
+            ServerSettings.getInstance().setSetting(KEY_FOOTERROW_BACK_COLOR,""+c.getRGB());
+        }
+    }
+}

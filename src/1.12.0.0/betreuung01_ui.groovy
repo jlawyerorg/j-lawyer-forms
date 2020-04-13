@@ -710,6 +710,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
     JCheckBox chkPauschale2;
     
     JButton cmdCopy;
+    JButton cmdDocument;
     
     FormPluginCallback callback=null;
     
@@ -903,10 +904,10 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         // ((javax.swing.JDialog)container).dispose()        
                                     })
                         
-                                /*cmdDocument = button(text: 'Dokument erstellen', enabled: false, toolTipText: 'Ergebnis in Dokument uebernehmen', actionPerformed: {
-                                if(binding.callback != null)
-                                binding.callback.processResultToDocument(copyToDocument(), SCRIPTPANEL)     
-                                })*/
+                                cmdDocument = button(text: 'Dokument erstellen', enabled: false, toolTipText: 'Ergebnis in Dokument uebernehmen', actionPerformed: {
+                                        if(callback != null)
+                                            callback.processResultToDocument(copyToDocument(), SCRIPTPANEL)     
+                                    })
                             }
                         }                
                     }
@@ -917,7 +918,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
     }
 
 
-    def float calculate() {
+    def calculate() {
         NumberFormat df = NumberFormat.getInstance(Locale.GERMANY).getNumberInstance();
         df.setMaximumFractionDigits(2);
         df.setMinimumFractionDigits(2);
@@ -970,7 +971,8 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
         }
         lblsum.text = df.format(sum)
         
-        cmdCopy.enabled=true
+        cmdCopy.setEnabled(true);
+        cmdDocument.setEnabled(true);
     }
 
     def stop(date) {
@@ -1307,7 +1309,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
 
     def StyledCalculationTable copyToDocument() {
         StyledCalculationTable ct=new StyledCalculationTable();
-        /*    ct.addHeaders("von", "bis", "nr" "Betrag");
+        ct.addHeaders("von", "bis", "nr", "Betrag");
 
 
         ct.setColumnAlignment(2, Cell.ALIGNMENT_RIGHT);
@@ -1318,12 +1320,12 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
         ct.setColumnWidth(2, 35);
         ct.setFontFamily("Arial");
         if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.table.lines", true)) {
-        ct.setLineBorder(true);
+            ct.setLineBorder(true);
         } else {
-        ct.setLineBorder(false);
+            ct.setLineBorder(false);
         }
         ct.setBorderColor(new TablePropertiesUtils().getTableLineColor());
-         */
+         
         return ct;
     }
 

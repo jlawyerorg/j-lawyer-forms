@@ -664,8 +664,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "Betreuung"
 description = "Betreuung"
-version = "0.9.1";
+version = "0.10.0";
 author = "Jens Kutschke, Anatol Anuschewski"
-updated = "13.04.2020"
-
-
+updated = "15.04.2020"

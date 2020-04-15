@@ -758,7 +758,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             label(text: 'Eingang Beschluss:')      
                                         }
                                         td  {
-                                            lblbeschluss = formattedTextField(id: 'sDatumBeschluss', name: "_BESCHLUSS", format: datumsFormat, columns: 10,)
+                                            lblbeschluss = formattedTextField(id: 'sDatumBeschluss', name: "_BESCHLUSS", format: datumsFormat, columns: 10, text: '')
                                         }
                                     }
                                     tr {
@@ -767,7 +767,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         }
                                         
                                         td  {
-                                            lblbestellung = formattedTextField(id: 'sDatumBestellung', name: "_BESTELLUNG", format: datumsFormat, columns: 10,)
+                                            lblbestellung = formattedTextField(id: 'sDatumBestellung', name: "_BESTELLUNG", format: datumsFormat, columns: 10, text: '')
                                         }
                                     }
                                     /*tr {
@@ -841,9 +841,9 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         }
                                         td {
                                             panel {
-                                                lblstart = formattedTextField(id: 'lblstart', name: "_ABRECHNG_VON", format: datumsFormat, columns:6,)
+                                                lblstart = formattedTextField(id: 'lblstart', name: "_ABRECHNG_VON", format: datumsFormat, columns:6, text: '')
                                                 label(text: 'bis')
-                                                lblende = formattedTextField(id: 'lblende', name: "_ABRECHNG_BIS", format: datumsFormat, columns:6,)
+                                                lblende = formattedTextField(id: 'lblende', name: "_ABRECHNG_BIS", format: datumsFormat, columns:6, text: '')
                                             }
                                         }
                                         td (align: 'right') {
@@ -1301,23 +1301,80 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
     }
 
     def String copyToClipboard() {
-
         StyledCalculationTable st=copyToDocument();
         return st.toHtml();
-    
     }
 
     def StyledCalculationTable copyToDocument() {
         StyledCalculationTable ct=new StyledCalculationTable();
-        ct.addHeaders("von", "bis", "nr", "Betrag");
+        
+        ct.addHeaders("von", "bis", "Nr.", "Betrag");
+        
+        if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.table.emptyRows", true)) {
+            ct.addRow("", "", "", "");
+        }
 
+        def customRows=customTable.getRowCount()
+        for(int i=0;i<customRows;i++) {
+            def rowCustomEntryVon=customTable.getValueAt(i, 0);
+            def rowCustomEntryBis=customTable.getValueAt(i, 1);
+            def rowCustomEntryNr=customTable.getValueAt(i, 2);
+            def rowCustomEntryBetrag=customTable.getValueAt(i, 3);
+            ct.addRow(rowCustomEntryVon, rowCustomEntryBis, rowCustomEntryNr, rowCustomEntryBetrag + " €");
+        }
+        
+        if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.table.emptyRows", true)) {
+            ct.addRow("", "", "", "");
+        }
 
-        ct.setColumnAlignment(2, Cell.ALIGNMENT_RIGHT);
+        int footerRow=ct.addRow(" "," ", "Zahlbetrag", lblsum.text + " €");
+        
+        //HeaderRow
+        ct.setRowForeGround(0, new TablePropertiesUtils().getHeaderForeColor());
+        ct.setRowBackGround(0, new TablePropertiesUtils().getHeaderBackColor());
+        if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.header.Bold", true)) {
+            ct.setRowBold(0, true);
+        } else {
+            ct.setRowBold(0, false);
+        }
+
+        //FooterRow
+        if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.footerRow.Bold", true)) {
+            ct.setRowBold(footerRow, true);
+        } else {
+            ct.setRowBold(footerRow, false);
+        }
+        if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.footerRow.Underline", true)) {
+            ct.getCellAt(footerRow, 1).setUnderline(true);
+            ct.getCellAt(footerRow, 2).setUnderline(true);
+        } else {
+            ct.getCellAt(footerRow, 1).setUnderline(false);
+            ct.getCellAt(footerRow, 2).setUnderline(false);
+        }
+        if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.vorSumme.Underline", true)) {
+            ct.getCellAt(ct.getRowCount()-2, 2).setUnderline(true);
+        } else {
+            ct.getCellAt(ct.getRowCount()-2, 2).setUnderline(false);
+        }
+        if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.footerRow.Italic", true)) {
+            ct.getCellAt(footerRow, 1).setItalic(true);
+            ct.getCellAt(footerRow, 2).setItalic(true);
+        } else {
+            ct.getCellAt(footerRow, 1).setItalic(false);
+            ct.getCellAt(footerRow, 2).setItalic(false);
+        }
+        ct.setRowForeGround(footerRow, new TablePropertiesUtils().getFooterRowForeColor());
+        ct.setRowBackGround(footerRow, new TablePropertiesUtils().getFooterRowBackColor());
+        
+        //TableLayout
+        ct.setColumnAlignment(3, Cell.ALIGNMENT_RIGHT);
+        ct.getCellAt(0,0).setAlignment(Cell.ALIGNMENT_LEFT);
         ct.getCellAt(0,1).setAlignment(Cell.ALIGNMENT_LEFT);
+        ct.getCellAt(0,2).setAlignment(Cell.ALIGNMENT_LEFT);
         ct.setRowFontSize(0, 12);
-        ct.setColumnWidth(0, 25);
-        ct.setColumnWidth(1, 120);
-        ct.setColumnWidth(2, 35);
+        //ct.setColumnWidth(0, 25);
+        //ct.setColumnWidth(1, 120);
+        //ct.setColumnWidth(2, 35);
         ct.setFontFamily("Arial");
         if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.table.lines", true)) {
             ct.setLineBorder(true);

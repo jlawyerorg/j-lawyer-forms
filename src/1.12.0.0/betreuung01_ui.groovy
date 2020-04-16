@@ -704,7 +704,6 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
     JRadioButton radioVerguetungC;
     JRadioButton radiostationaer;
     JRadioButton radiosonstige;
-    JCheckBox chkVermoegend;
     JCheckBox chkZuschlag;
     JCheckBox chkPauschale1;
     JCheckBox chkPauschale2;
@@ -817,14 +816,6 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                     }
                                     tr {
                                         td  {
-                                            label(text: 'verwaltetes Vermögen:')      
-                                        }
-                                        td  {
-                                            chkVermoegend = checkBox(text: 'Betreuter ist vermögend', name: "_VERMOEGEND", selected: false)
-                                        }
-                                    }
-                                    tr {
-                                        td  {
                                             label(text: 'Zuschläge/Pauschalen:')      
                                         }
                                         td  {
@@ -832,17 +823,17 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 tableLayout {
                                                     tr {
                                                         td {
-                                                            chkZuschlag = checkBox(text: '§ 5a Abs. 1 VBVG', name: "_ZUSCHLAG_PAR5ABS1", selected: false)
+                                                            chkZuschlag = checkBox(text: '§ 5a Abs. 1 VBVG (Geldvermögen min. 150K EUR / weiterer nicht selbst bewohnter Wohnraum / Gewerbebetrieb)', name: "_ZUSCHLAG_PAR5ABS1", selected: false)
                                                         }
                                                     }
                                                     tr {
                                                         td {
-                                                            chkPauschale1 = checkBox(text: '§ 5a Abs. 2 VBVG', name: "_ZUSCHLAG_PAR5ABS2", selected: false)
+                                                            chkPauschale1 = checkBox(text: '§ 5a Abs. 2 VBVG (Übernahme einer ehrenamtlichen Betreuung)', name: "_ZUSCHLAG_PAR5ABS2", selected: false)
                                                         }
                                                     }
                                                     tr {
                                                         td {
-                                                            chkPauschale2 = checkBox(text: '§ 5a Abs. 3 VBVG', name: "_ZUSCHLAG_PAR5ABS3", selected: false)
+                                                            chkPauschale2 = checkBox(text: '§ 5a Abs. 3 VBVG (Übergabe an einen Ehrenamtler)', name: "_ZUSCHLAG_PAR5ABS3", selected: false)
                                                         }
                                                     }
                                                 
@@ -967,7 +958,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                     betrag =  (bisdate - vondate)*pauschale/30
                 }
                 add(vondate, bisdate, lblnr, betrag)
-                if ((chkZuschlag.isSelected())&&(chkVermoegend.isSelected())) {
+                if (chkZuschlag.isSelected()) {
                     lblnr.text = '§ 5a Abs. 1 VBVG'
                     add(vondate, bisdate, lblnr, 30)
                 }
@@ -1012,7 +1003,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
         if (radioVerguetungA.isSelected()) {
             if (bisdate <= addmonth(beschlussdate, 3)) {
                 if (radiostationaer.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=200
                         lblnr.text = 'A1.1.2'
                     } else {
@@ -1020,7 +1011,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         lblnr.text = 'A1.1.1'
                     }
                 } else if (radiosonstige.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=298
                         lblnr.text = 'A1.2.2'
                     } else {
@@ -1030,7 +1021,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                 }
             } else if ((bisdate > addmonth(beschlussdate, 3)) && (bisdate <= addmonth(beschlussdate, 6))) { 
                 if (radiostationaer.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=158
                         lblnr.text = 'A2.1.2'
                     } else {
@@ -1038,7 +1029,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         lblnr.text = 'A2.1.1'
                     }
                 } else if (radiosonstige.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=208
                         lblnr.text = 'A2.2.2'
                     } else {
@@ -1048,7 +1039,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                 }
             } else if ((bisdate > addmonth(beschlussdate, 6)) && (bisdate <= addmonth(beschlussdate, 12))) {
                 if (radiostationaer.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=140
                         lblnr.text = 'A3.1.2'
                     } else {
@@ -1056,7 +1047,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         lblnr.text = 'A3.1.1'
                     }
                 } else if (radiosonstige.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=192
                         lblnr.text = 'A3.2.2'
                     } else {
@@ -1066,7 +1057,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                 }
             } else if ((bisdate > addmonth(beschlussdate, 12)) && (bisdate <= addmonth(beschlussdate, 24))) {
                 if (radiostationaer.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=91
                         lblnr.text = 'A4.1.2'
                     } else {
@@ -1074,7 +1065,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         lblnr.text = 'A4.1.1'
                     }
                 } else if (radiosonstige.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=158
                         lblnr.text = 'A4.2.2'
                     } else {
@@ -1084,7 +1075,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                 }
             } else {
                 if (radiostationaer.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=78
                         lblnr.text = 'A5.1.2'
                     } else {
@@ -1092,7 +1083,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         lblnr.text = 'A5.1.1'
                     }
                 } else if (radiosonstige.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=130
                         lblnr.text = 'A5.2.2'
                     } else {
@@ -1104,7 +1095,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
         } else if (radioVerguetungB.isSelected()) {
             if (bisdate <= addmonth(beschlussdate, 3)) {
                 if (radiostationaer.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=249
                         lblnr.text = 'B1.1.2'
                     } else {
@@ -1112,7 +1103,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         lblnr.text = 'B1.1.1'
                     }
                 } else if (radiosonstige.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=370
                         lblnr.text = 'B1.2.2'
                     } else {
@@ -1122,7 +1113,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                 }
             } else if ((bisdate > addmonth(beschlussdate, 3)) && (bisdate <= addmonth(beschlussdate, 6))) { 
                 if (radiostationaer.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=194
                         lblnr.text = 'B2.1.2'
                     } else {
@@ -1130,7 +1121,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         lblnr.text = 'B2.1.1'
                     }
                 } else if (radiosonstige.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=258
                         lblnr.text = 'B2.2.2'
                     } else {
@@ -1140,7 +1131,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                 }
             } else if ((bisdate > addmonth(beschlussdate, 6)) && (bisdate <= addmonth(beschlussdate, 12))) {
                 if (radiostationaer.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=174
                         lblnr.text = 'B3.1.2'
                     } else {
@@ -1148,7 +1139,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         lblnr.text = 'B3.1.1'
                     }
                 } else if (radiosonstige.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=238
                         lblnr.text = 'B3.2.2'
                     } else {
@@ -1158,7 +1149,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                 }
             } else if ((bisdate > addmonth(beschlussdate, 12)) && (bisdate <= addmonth(beschlussdate, 24))) {
                 if (radiostationaer.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=113
                         lblnr.text = 'B4.1.2'
                     } else {
@@ -1166,7 +1157,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         lblnr.text = 'B4.1.1'
                     }
                 } else if (radiosonstige.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=196
                         lblnr.text = 'B4.2.2'
                     } else {
@@ -1176,7 +1167,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                 }
             } else {
                 if (radiostationaer.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=96
                         lblnr.text = 'B5.1.2'
                     } else {
@@ -1184,7 +1175,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         lblnr.text = 'B5.1.1'
                     }
                 } else if (radiosonstige.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=161
                         lblnr.text = 'B5.2.2'
                     } else {
@@ -1196,7 +1187,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
         } else if (radioVerguetungC.isSelected()) {
             if (bisdate <= addmonth(beschlussdate, 3)) {
                 if (radiostationaer.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=327
                         lblnr.text = 'C1.1.2'
                     } else {
@@ -1204,7 +1195,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         lblnr.text = 'C1.1.1'
                     }
                 } else if (radiosonstige.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=486
                         lblnr.text = 'C1.2.2'
                     } else {
@@ -1214,7 +1205,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                 }
             } else if ((bisdate > addmonth(beschlussdate, 3)) && (bisdate <= addmonth(beschlussdate, 6))) { 
                 if (radiostationaer.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=257
                         lblnr.text = 'C2.1.2'
                     } else {
@@ -1222,7 +1213,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         lblnr.text = 'C2.1.1'
                     }
                 } else if (radiosonstige.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=339
                         lblnr.text = 'C2.2.2'
                     } else {
@@ -1232,7 +1223,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                 }
             } else if ((bisdate > addmonth(beschlussdate, 6)) && (bisdate <= addmonth(beschlussdate, 12))) {
                 if (radiostationaer.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=229
                         lblnr.text = 'C3.1.2'
                     } else {
@@ -1240,7 +1231,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         lblnr.text = 'C3.1.1'
                     }
                 } else if (radiosonstige.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=312
                         lblnr.text = 'C3.2.2'
                     } else {
@@ -1250,7 +1241,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                 }
             } else if ((bisdate > addmonth(beschlussdate, 12)) && (bisdate <= addmonth(beschlussdate, 24))) {
                 if (radiostationaer.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=149
                         lblnr.text = 'C4.1.2'
                     } else {
@@ -1258,7 +1249,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         lblnr.text = 'C4.1.1'
                     }
                 } else if (radiosonstige.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=257
                         lblnr.text = 'C4.2.2'
                     } else {
@@ -1268,7 +1259,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                 }
             } else {
                 if (radiostationaer.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=127
                         lblnr.text = 'C5.1.2'
                     } else {
@@ -1276,7 +1267,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                         lblnr.text = 'C5.1.1'
                     }
                 } else if (radiosonstige.isSelected()) {
-                    if (chkVermoegend.isSelected()){
+                    if (chkZuschlag.isSelected()){
                         pauschale=211
                         lblnr.text = 'C5.2.2'
                     } else {

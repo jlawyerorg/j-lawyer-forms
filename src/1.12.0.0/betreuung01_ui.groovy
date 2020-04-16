@@ -755,7 +755,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                 tableLayout (cellpadding: 5) {
                                     tr {
                                         td  {
-                                            label(text: 'Eingang Beschluss:')      
+                                            label(text: 'Erstbeschluss vom:')      
                                         }
                                         td  {
                                             lblbeschluss = formattedTextField(id: 'sDatumBeschluss', name: "_BESCHLUSS", format: datumsFormat, columns: 10, text: '')
@@ -829,9 +829,26 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         }
                                         td  {
                                             panel {
-                                                chkZuschlag = checkBox(text: '§ 5a Abs. 1 VBVG', name: "_ZUSCHLAG_PAR5ABS1", selected: false)
-                                                chkPauschale1 = checkBox(text: '§ 5a Abs. 2 VBVG', name: "_ZUSCHLAG_PAR5ABS2", selected: false)
-                                                chkPauschale2 = checkBox(text: '§ 5a Abs. 3 VBVG', name: "_ZUSCHLAG_PAR5ABS3", selected: false)
+                                                tableLayout {
+                                                    tr {
+                                                        td {
+                                                            chkZuschlag = checkBox(text: '§ 5a Abs. 1 VBVG', name: "_ZUSCHLAG_PAR5ABS1", selected: false)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            chkPauschale1 = checkBox(text: '§ 5a Abs. 2 VBVG', name: "_ZUSCHLAG_PAR5ABS2", selected: false)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            chkPauschale2 = checkBox(text: '§ 5a Abs. 3 VBVG', name: "_ZUSCHLAG_PAR5ABS3", selected: false)
+                                                        }
+                                                    }
+                                                
+                                                
+                                                
+                                                }
                                             }
                                         }
                                     }

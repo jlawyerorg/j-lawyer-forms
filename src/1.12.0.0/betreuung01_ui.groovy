@@ -963,10 +963,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             addFollowUp();
                                         }
                                         setLastRun();
-                                        // do not close the window - have user do it.
-                                        // java.awt.Container container=com.jdimension.jlawyer.client.utils.FrameUtils.getDialogOfComponent(SCRIPTPANEL)
-                                        // container.setVisible(false)
-                                        // ((javax.swing.JDialog)container).dispose()        
+  
                                     })
                         
                                 cmdDocument = button(text: 'Dokument erstellen', enabled: false, toolTipText: 'Ergebnis in Dokument uebernehmen', actionPerformed: {

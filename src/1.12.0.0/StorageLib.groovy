@@ -686,11 +686,13 @@ import java.awt.Container
 import com.jdimension.jlawyer.client.settings.ClientSettings;
 import com.jdimension.jlawyer.client.utils.ThreadUtils;
 import com.jdimension.jlawyer.persistence.ArchiveFileBean;
+import com.jdimension.jlawyer.persistence.ArchiveFileReviewsBean;
 import com.jdimension.jlawyer.services.ArchiveFileServiceRemote;
 import com.jdimension.jlawyer.services.JLawyerServiceLocator;
 import com.jdimension.jlawyer.client.settings.UserSettings;
 import com.jdimension.jlawyer.client.events.EventBroker;
 import com.jdimension.jlawyer.client.events.ReviewAddedEvent;
+import com.jdimension.jlawyer.client.editors.EditorsRegistry;
 
 public class StorageLib {
     
@@ -699,21 +701,29 @@ public class StorageLib {
 
     }
     
-    
+    // erstellt neue Wiedervorlage
     public static void addReminder(String caseId, String reason, String userId, Date dueDate) {
+        addDueDate(caseId, reason, userId, dueDate, ArchiveFileReviewsBean.REVIEWTYPE_FOLLOWUP);
+    }
+    
+    // erstellt neue Frist
+    public void addRespite(String caseId, String reason, String userId, Date dueDate) {
+        addDueDate(caseId, reason, userId, dueDate, ArchiveFileReviewsBean.REVIEWTYPE_RESPITE);
+    }
+    
+    private static addDueDate(String caseId, String reason, String userId, Date dueDate, int type) {
         ClientSettings settings = ClientSettings.getInstance();
         try {
             JLawyerServiceLocator locator = JLawyerServiceLocator.getInstance(settings.getLookupProperties());
             ArchiveFileServiceRemote afs = locator.lookupArchiveFileServiceRemote();
             ArchiveFileReviewsBean due=new ArchiveFileReviewsBean();
-            due.setReason(reason);
             if(userId==null) {
                 userId=UserSettings.getInstance().getCurrentUser().getPrincipalId()
             } 
             due.setAssignee(userId);
             due.setReviewReason(reason);
             due.setReviewDate(dueDate);
-            due.setReviewType(ArchiveFileReviewsBean.REVIEWTYPE_FOLLOWUP);
+            due.setReviewType(type);
             due=afs.addReview(caseId, due);
             
             EventBroker eb = EventBroker.getInstance();
@@ -721,13 +731,8 @@ public class StorageLib {
                 
 
         } catch (Exception ex) {
-            log.error(ex);
             ThreadUtils.showErrorDialog(EditorsRegistry.getInstance().getMainWindow(), "Fehler beim Speichern der Wiedervorlage: " + ex.getMessage(), "Fehler");
         }
-    }
-    
-    public void addRespite() {
-        
     }
 
 }

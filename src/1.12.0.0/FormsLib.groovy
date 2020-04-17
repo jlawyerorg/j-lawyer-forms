@@ -677,6 +677,7 @@ import javax.swing.JCheckBox
 import javax.swing.JComboBox
 import javax.swing.JTable
 import javax.swing.JTextArea
+import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.JRadioButton
 import javax.swing.JSpinner
@@ -724,6 +725,8 @@ public class FormsLib {
                     if((prefix + component.getName()).equals(keyString)) {
                         if(component instanceof JTextField) {
                             ((JTextField)component).setText(value);
+                        } else if(component instanceof JLabel) {
+                            ((JLabel)component).setText(value);
                         } else if(component instanceof JComboBox) {
                             ((JComboBox)component).setSelectedItem(value);
                         } else if (component instanceof JCheckBox) {
@@ -787,6 +790,8 @@ public class FormsLib {
                     
                 } else if(component instanceof JTextArea) {
                     holders.put(prefix + component.getName(), ((JTextArea)component).getText());
+                } else if(component instanceof JLabel) {
+                    holders.put(prefix + component.getName(), ((JLabel)component).getText());
                 } else if(component instanceof JSpinner) {
                     holders.put(prefix + component.getName(), ""+((JSpinner)component).getValue());
                 } else if(component instanceof JRadioButton) {

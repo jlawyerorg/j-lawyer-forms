@@ -678,6 +678,7 @@ import javax.swing.JTextField
 import javax.swing.JRadioButton
 import javax.swing.JCheckBox
 import javax.swing.JLabel
+import javax.swing.JOptionPane
 import java.awt.Component
 import java.awt.Container
 import java.text.DecimalFormat
@@ -699,6 +700,8 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
     JLabel lblnr;
     JLabel lblsum;
     JTable customTable;
+    JLabel lblLastRun;
+    JLabel lblLastRunQuarter;
     JRadioButton radioVerguetungA;
     JRadioButton radioVerguetungB;
     JRadioButton radioVerguetungC;
@@ -751,6 +754,35 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                 tableLayout (id: 'pluginParent', cellpadding: 5) {
                     tr {
                         td (colfill:true) {
+                            panel {
+                                tableLayout (cellpadding: 5) {
+                                    tr {
+                                        td  {
+                                            label(text: 'Zuletzt berechnet am:')      
+                                        }
+                                        td  {
+                                            lblLastRun = label(text: '-', name: "_ZULETZTBERECHNET_AM");
+                                            
+                                        }
+                                    }
+                                    tr {
+                                        td  {
+                                            label(text: 'Zuletzt berechnet für Zeitraum:')      
+                                        }
+                                        td  {
+                                            lblLastRunQuarter = label(text: '-', name: "_ZULETZTBERECHNET_QRT");
+                                            
+                                        }
+                                    }
+                                }
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                    tr {
+                        td (colfill:true) {
                             panel(border: titledBorder(title: 'Betreuervergütung')) {
                                 tableLayout (cellpadding: 5) {
                                     tr {
@@ -764,7 +796,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                     tr {
                                         td  {
                                             label(text: 'Datum eigene Bestellung:')      
-                                            }
+                                        }
                                         td {
                                             panel {
                                                 tableLayout (cellpadding: 5) {
@@ -774,8 +806,8 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                         }
                                                         td {
                                                             chkBestellung = checkBox(text: 'entspricht dem Erstbeschluss', selected: false, actionPerformed: {
-                                                                lblbestellung.text = lblbeschluss.text
-                                                            })
+                                                                    lblbestellung.text = lblbeschluss.text
+                                                                })
                                                         }
                                                     }
                                                 }
@@ -872,9 +904,9 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 lblende = formattedTextField(id: 'lblende', name: "_ABRECHNG_BIS", format: datumsFormat, columns:6, text: '')
                                                 label(text: 'das nächste Quartal abrechnen')
                                                 button(text: 'Hinzufügen', actionPerformed: {
-                                                    setAbrechnungszeitraum()
-                                                    calculate()
-                                                })
+                                                        setAbrechnungszeitraum()
+                                                        calculate()
+                                                    })
                                             }
                                         }
                                         td (align: 'right') {
@@ -926,10 +958,11 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                     })
                                     
                                 cmdCopy = button(text: 'Kopieren', enabled: false, toolTipText: 'In Zwischenablage kopieren', actionPerformed: {
-                                        if(callback != null)
+                                        if(callback != null) {
                                             callback.processResultToClipboard(copyToClipboard());
-                                            String caseId=callback.getCaseId();
-                                            StorageLib.addReminder(caseId, "neue Abrechnung", null, new Date());
+                                            addFollowUp();
+                                        }
+                                        setLastRun();
                                         // do not close the window - have user do it.
                                         // java.awt.Container container=com.jdimension.jlawyer.client.utils.FrameUtils.getDialogOfComponent(SCRIPTPANEL)
                                         // container.setVisible(false)
@@ -937,8 +970,11 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                     })
                         
                                 cmdDocument = button(text: 'Dokument erstellen', enabled: false, toolTipText: 'Ergebnis in Dokument uebernehmen', actionPerformed: {
-                                        if(callback != null)
+                                        if(callback != null) {
                                             callback.processResultToDocument(copyToDocument(), SCRIPTPANEL)     
+                                            addFollowUp();
+                                        }
+                                        setLastRun();
                                     })
                             }
                         }                
@@ -946,7 +982,28 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                 }  
             }
         }
+        setLastRun();
         return SCRIPTPANEL;
+    }
+    
+    def setLastRun() {
+        if(callback==null)
+            return;
+            
+        lblLastRun.setText(new java.text.SimpleDateFormat("dd.MM.yyyy").format(new Date()));
+        lblLastRunQuarter.setText(lblstart.text + " - " + lblende.text);
+    }
+    
+    def addFollowUp() {
+        if(callback==null)
+            return;
+            
+        String caseId=callback.getCaseId();
+        int response=GuiLib.askYesNo("Wiedervorlage anlegen?", "Soll eine Wiedervorlage für die nächste Abrechnung erstellt werden?");
+        if(response==javax.swing.JOptionPane.YES_OPTION) {
+            //StorageLib.addReminder(caseId, "neue Abrechnung für " + lblstart.text + " - " + lblende.text, null, new Date().parse("dd.MM.yyy", lblende.text));
+            StorageLib.addReminder(caseId, "neue Abrechnung erstellen", null, new Date().parse("dd.MM.yyy", lblende.text));
+        }
     }
 
     def setAbrechnungszeitraum() {

@@ -927,7 +927,9 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                     
                                 cmdCopy = button(text: 'Kopieren', enabled: false, toolTipText: 'In Zwischenablage kopieren', actionPerformed: {
                                         if(callback != null)
-                                        callback.processResultToClipboard(copyToClipboard())
+                                            callback.processResultToClipboard(copyToClipboard());
+                                            String caseId=callback.getCaseId();
+                                            StorageLib.addReminder(caseId, "neue Abrechnung", null, new Date());
                                         // do not close the window - have user do it.
                                         // java.awt.Container container=com.jdimension.jlawyer.client.utils.FrameUtils.getDialogOfComponent(SCRIPTPANEL)
                                         // container.setVisible(false)

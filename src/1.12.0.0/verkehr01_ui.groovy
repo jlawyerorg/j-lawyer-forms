@@ -1046,6 +1046,8 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             'PKW',
                                             'LKW',
                                             'Motorrad',
+                                            'S-Pedelec',
+                                            'E-Scooter',
                                             'andere'
                                                 ], name: "_FHRZGART", editable: true
                                             )
@@ -1168,6 +1170,8 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             'PKW',
                                             'LKW',
                                             'Motorrad',
+                                            'S-Pedelec',
+                                            'E-Scooter',
                                             'andere'
                                                 ], name: "_G_FHRZGART", editable: true
                                             )

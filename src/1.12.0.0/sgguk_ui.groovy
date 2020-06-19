@@ -103,7 +103,7 @@ public class sgguk_ui implements com.jdimension.jlawyer.client.plugins.form.Form
                         }
     
                         td  {
-                            txtBescheidTitel=textField(name: "_BESCHEID-TITEL", text: '', columns:60, keyPressed: { erstellen() })
+                            txtBescheidTitel=textField(name: "_BESCHEID-TITEL", text: '', columns:60, keyReleased: { erstellen() })
                             
                         }
                     } 
@@ -114,7 +114,7 @@ public class sgguk_ui implements com.jdimension.jlawyer.client.plugins.form.Form
                         }
     
                         td  {
-                            txtBescheidDatum=textField(name: "_BESCHEID-DATUM", text: '', columns:10, keyPressed: { erstellen() })
+                            txtBescheidDatum=textField(name: "_BESCHEID-DATUM", text: '', columns:10, keyReleased: { erstellen() })
                         }
                     }
 					
@@ -124,7 +124,7 @@ public class sgguk_ui implements com.jdimension.jlawyer.client.plugins.form.Form
                         }
     
                         td  {
-                            txtWsDatum=textField(name: "_WS-DATUM", text: '', columns:10, keyPressed: { erstellen() })
+                            txtWsDatum=textField(name: "_WS-DATUM", text: '', columns:10, keyReleased: { erstellen() })
                         }
                     }
 
@@ -134,7 +134,7 @@ public class sgguk_ui implements com.jdimension.jlawyer.client.plugins.form.Form
                         }
     
                         td  {
-                            txtWsSendeDatum=textField(name: "_SENDE-DATUM", text: '', columns:10, keyPressed: { erstellen() })
+                            txtWsSendeDatum=textField(name: "_SENDE-DATUM", text: '', columns:10, keyReleased: { erstellen() })
                         }
                     }
 					
@@ -181,7 +181,7 @@ public class sgguk_ui implements com.jdimension.jlawyer.client.plugins.form.Form
                         }
     
                         td  {
-                            txtWsBestaetigungDatum=textField(name: "_BESTAETIGUNG-DATUM", text: '', columns:10, keyPressed: { erstellen() })
+                            txtWsBestaetigungDatum=textField(name: "_BESTAETIGUNG-DATUM", text: '', columns:10, keyReleased: { erstellen() })
                         }
                     }
 					

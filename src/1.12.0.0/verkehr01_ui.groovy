@@ -771,6 +771,23 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     public void setPlaceHolderValues(String prefix, Hashtable placeHolderValues) {
         FormsLib.setPlaceHolderValues(prefix, placeHolderValues, this.SCRIPTPANEL);
         toggleSchadentyp();
+        
+        berechnen(txtReparaturKosten, txtReparaturKostenReg, txtReparaturKostenDiff);
+        berechnen(txtWertminderung, txtWertminderungReg, txtWertminderungDiff);
+        berechnen(txtWiederbeschaffungswert, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff);
+        berechnen(txtRestwertReg, txtRestwert, txtRestwertDiff);
+        berechnen(txtUnfallPauschale, txtUnfallPauschaleReg, txtUnfallPauschaleDiff);
+        berechnen(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff);
+        berechnen(txtKostenGutachten, txtKostenGutachtenReg, txtKostenGutachtenDiff);
+        berechnen(txtAbschleppKosten, txtAbschleppKostenReg, txtAbschleppKostenDiff);
+        berechnen(txtStandgeld, txtStandgeldReg, txtStandgeldDiff);
+        berechnen(txtMietwagenKosten, txtMietwagenKostenReg, txtMietwagenKostenDiff);
+        berechnen(txtAbmeldeKosten, txtAbmeldeKostenReg, txtAbmeldeKostenDiff);
+        berechnen(txtAnmeldeKosten, txtAnmeldeKostenReg, txtAnmeldeKostenDiff);
+        berechnen(txtSonstigeKosten, txtSonstigeKostenReg, txtSonstigeKostenDiff);
+
+        berechnen();
+        
     }
 
     public void setCallback(FormPluginCallback callback) {

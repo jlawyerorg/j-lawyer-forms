@@ -1,4 +1,8 @@
 dist: xenial
+# safelist
+branches:
+  only:
+  - master
 notifications:
   email:
     on_success: always # default: change

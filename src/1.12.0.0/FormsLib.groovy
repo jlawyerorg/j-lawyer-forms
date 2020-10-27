@@ -699,9 +699,21 @@ public class FormsLib {
         return placeHolders;
     }
     
+    public static ArrayList<String> getPlaceHolders(String prefix, JPanel rootComponent, String checkboxTrue, String checkboxFalse) {
+        ArrayList<String> placeHolders=new ArrayList<String>();
+        collectComponents(prefix, rootComponent, placeHolders, checkboxTrue, checkboxFalse);
+        return placeHolders;
+    }
+    
     public static Hashtable getPlaceHolderValues(String prefix, JPanel rootComponent) {
         Hashtable<String,String> placeHolders=new Hashtable<String,String>();
         collectComponents(prefix, rootComponent, placeHolders);
+        return placeHolders;
+    }
+    
+    public static Hashtable getPlaceHolderValues(String prefix, JPanel rootComponent, String checkboxTrue, String checkboxFalse) {
+        Hashtable<String,String> placeHolders=new Hashtable<String,String>();
+        collectComponents(prefix, rootComponent, placeHolders, checkboxTrue, checkboxFalse);
         return placeHolders;
     }
     
@@ -731,7 +743,7 @@ public class FormsLib {
                             ((JComboBox)component).setSelectedItem(value);
                         } else if (component instanceof JCheckBox) {
                             ((JCheckBox)component).setSelected(false);
-                            if("1".equals(value) || "ja".equals(value)) {
+                            if("1".equals(value) || "ja".equals(value) || "x".equalsIgnoreCase(value)) {
                                 ((JCheckBox)component).setSelected(true);
                             }
                         } else if(component instanceof JTextArea) {
@@ -746,7 +758,7 @@ public class FormsLib {
                             }
                         } else if(component instanceof JRadioButton) {
                             ((JRadioButton)component).setSelected(false);
-                            if("1".equals(value) || "ja".equals(value)) {
+                            if("1".equals(value) || "ja".equals(value) || "x".equalsIgnoreCase(value)) {
                                 ((JRadioButton)component).setSelected(true);
                             }
                         }
@@ -762,6 +774,10 @@ public class FormsLib {
     }
 
     private static void collectComponents (String prefix, Component component, ArrayList<Component> holders) {
+        collectComponents(prefix, component, holders, "ja", "nein");
+    }
+    
+    private static void collectComponents (String prefix, Component component, ArrayList<Component> holders, String checkboxTrue, String checkboxFalse) {
         if(component.getName()!=null) {
             if(component.getName().startsWith("_")) {
                 holders.add(prefix + component.getName());
@@ -769,12 +785,16 @@ public class FormsLib {
         }
         
         for(Component c: ((Container)component).getComponents()) {
-            collectComponents(prefix, c, holders);
+            collectComponents(prefix, c, holders, checkboxTrue, checkboxFalse);
         }
 
     }
     
     private static void collectComponents (String prefix, Component component, Hashtable holders) {
+        collectComponents (prefix, component, holders, "ja", "nein");
+    }
+    
+    private static void collectComponents (String prefix, Component component, Hashtable holders, String checkboxTrue, String checkboxFalse) {
         if(component.getName()!=null) {
             if(component.getName().startsWith("_")) {
                 if(component instanceof JTextField) {
@@ -783,9 +803,9 @@ public class FormsLib {
                     holders.put(prefix + component.getName(), ((JComboBox)component).getSelectedItem().toString());
                 } else if (component instanceof JCheckBox) {
                     if(((JCheckBox)component).isSelected()) {
-                        holders.put(prefix + component.getName(), "ja");
+                        holders.put(prefix + component.getName(), checkboxTrue);
                     } else {
-                        holders.put(prefix + component.getName(), "nein");
+                        holders.put(prefix + component.getName(), checkboxFalse);
                     }
                     
                 } else if(component instanceof JTextArea) {
@@ -805,7 +825,7 @@ public class FormsLib {
         }
         
         for(Component c: ((Container)component).getComponents()) {
-            collectComponents(prefix, c, holders);
+            collectComponents(prefix, c, holders, checkboxTrue, checkboxFalse);
         }
 
     }

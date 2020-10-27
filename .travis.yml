@@ -21,4 +21,5 @@ before_install:
   - wget -O jsh.jar https://search.maven.org/remotecontent?filepath=com/jcraft/jsch/0.1.55/jsch-0.1.55.jar
   - wget -O ant-jsh.jar https://search.maven.org/remotecontent?filepath=org/apache/ant/ant-jsch/1.10.6/ant-jsch-1.10.6.jar
   - cd /home/travis/build/jlawyerorg/j-lawyer-forms
-script: ant upload
+script:
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ant upload; fi'

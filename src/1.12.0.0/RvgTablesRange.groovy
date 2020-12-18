@@ -662,10 +662,16 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 <https://www.gnu.org/licenses/>.
 */
 
-name = "Verkehrsunfalldaten"
-description = "Verkehrsunfalldaten"
-version = "2.1.0";
-author = "Jens Kutschke"
-updated = "18.12.2020"
-
-
+class RvgTablesRange { 
+    float low
+    float high
+    float mappedValue
+    
+    RvgTablesRange(low, high, mappedValue) {
+        this.low=low
+        this.high=high
+        this.mappedValue=mappedValue
+    }
+    
+    boolean contains(float number){(number > low && number <= high)}
+}

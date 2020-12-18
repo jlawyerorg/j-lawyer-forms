@@ -667,14 +667,19 @@ import java.awt.BorderLayout as BL
 import groovy.beans.Bindable
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import javax.swing.SwingConstants
 import java.util.ArrayList
 import java.util.List
+import java.util.Hashtable
 import java.util.Locale
+import java.util.Date
+import java.lang.String
 import javax.swing.JTable
 import javax.swing.JPanel
 import javax.swing.JTextField
 import javax.swing.JCheckBox
+import javax.swing.JComboBox
 import javax.swing.JRadioButton
 import java.awt.Component
 import java.awt.Container
@@ -683,16 +688,27 @@ import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
 
     JPanel SCRIPTPANEL=null;
+    JRadioButton radioFahrzeugGesch;
+    JRadioButton radioFahrzeugPrivat;
     JRadioButton radioReparaturSchaden;
+    JRadioButton radioTotalSchadenStRegel;
+    JRadioButton radioTotalSchadenStDiff;
+    JRadioButton radioTotalSchadenStNeutral;
     JTextField txtReparaturKosten;
+    JTextField txtReparaturKostenMwst;
     JTextField txtReparaturKostenReg;
     JTextField txtReparaturKostenDiff;
+    JTextField txtReparaturKostenGutachten;
+    JTextField txtReparaturKostenRegGutachten;
+    JTextField txtReparaturKostenDiffGutachten;
     JCheckBox chkReparaturKostenDiff;
+    JCheckBox chkReparaturKostenDiffGutachten;
     JTextField txtWertminderung;
     JTextField txtWertminderungReg;
     JTextField txtWertminderungDiff;
     JCheckBox chkWertminderungDiff;
     JTextField txtWiederbeschaffungswert;
+    JTextField txtWiederbeschaffungswertMwst;
     JTextField txtWiederbeschaffungswertReg;
     JTextField txtWiederbeschaffungswertDiff;
     JCheckBox chkWiederbeschaffungswertDiff;
@@ -704,9 +720,13 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     JTextField txtUnfallPauschale;
     JTextField txtNutzungsAusfall;
     JTextField txtKostenGutachten;
+    JTextField txtKostenGutachtenMwst;
     JTextField txtAbschleppKosten;
+    JTextField txtAbschleppKostenMwst;
     JTextField txtStandgeld;
+    JTextField txtStandgeldMwst;
     JTextField txtMietwagenKosten;
+    JTextField txtMietwagenKostenMwst;
     JTextField txtAbmeldeKosten;
     JTextField txtAnmeldeKosten;
     JTextField txtSonstigeKosten;
@@ -741,21 +761,57 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     JCheckBox chkAnmeldeKostenDiff;
     JCheckBox chkSonstigeKostenDiff;
     
+    JComboBox cmbNutzAusfallGruppe;
+    JComboBox cmbFahrzeugart;
+    JTextField txtNutzungsAusfallVon;
+    JTextField txtNutzungsAusfallBis;
+    
     JTextField txtSummeSchaden;
     JTextField txtSummeReguliert;
     JTextField txtSummeDifferenz;
+    
+    JTextField txtAnwaltskostenNetto;
+    JTextField txtAnwaltskostenMwst;
+    JTextField txtAnwaltskostenDiff;
+    JTextField txtAnwaltskostenReg;
     
     FormPluginCallback callback=null;
     
     NumberFormat betragFormat = NumberFormat.getInstance(Locale.GERMANY).getNumberInstance();
         
-
+    Hashtable<String,Float> ausfallTabellePkw=new Hashtable<String,Float>();
+    Hashtable<String,Float> ausfallTabelleKrad=new Hashtable<String,Float>();
 
     public verkehr01_ui() {
         super();
         
         betragFormat.setMaximumFractionDigits(2);
         betragFormat.setMinimumFractionDigits(2);
+        
+        ausfallTabellePkw.put("A",23f);
+        ausfallTabellePkw.put("B",29f);
+        ausfallTabellePkw.put("C",35f);
+        ausfallTabellePkw.put("D",38f);
+        ausfallTabellePkw.put("E",43f);
+        ausfallTabellePkw.put("F",50f);
+        ausfallTabellePkw.put("G",59f);
+        ausfallTabellePkw.put("H",65f);
+        ausfallTabellePkw.put("J",79f);
+        ausfallTabellePkw.put("K",119f);
+        ausfallTabellePkw.put("L",175f);
+        
+        ausfallTabelleKrad.put("A",10f);
+        ausfallTabelleKrad.put("B",15f);
+        ausfallTabelleKrad.put("C",19f);
+        ausfallTabelleKrad.put("D",23f);
+        ausfallTabelleKrad.put("E",28f);
+        ausfallTabelleKrad.put("F",35f);
+        ausfallTabelleKrad.put("G",45f);
+        ausfallTabelleKrad.put("H",56f);
+        ausfallTabelleKrad.put("J",76f);
+        ausfallTabelleKrad.put("K",76f);
+        ausfallTabelleKrad.put("L",76f);
+        
     }
 
     public ArrayList<String> getPlaceHolders(String prefix) {
@@ -771,20 +827,22 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     public void setPlaceHolderValues(String prefix, Hashtable placeHolderValues) {
         FormsLib.setPlaceHolderValues(prefix, placeHolderValues, this.SCRIPTPANEL);
         toggleSchadentyp();
+        togglePrivatGeschaeft();
         
-        berechnen(txtReparaturKosten, txtReparaturKostenReg, txtReparaturKostenDiff);
-        berechnen(txtWertminderung, txtWertminderungReg, txtWertminderungDiff);
-        berechnen(txtWiederbeschaffungswert, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff);
-        berechnen(txtRestwertReg, txtRestwert, txtRestwertDiff);
-        berechnen(txtUnfallPauschale, txtUnfallPauschaleReg, txtUnfallPauschaleDiff);
-        berechnen(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff);
-        berechnen(txtKostenGutachten, txtKostenGutachtenReg, txtKostenGutachtenDiff);
-        berechnen(txtAbschleppKosten, txtAbschleppKostenReg, txtAbschleppKostenDiff);
-        berechnen(txtStandgeld, txtStandgeldReg, txtStandgeldDiff);
-        berechnen(txtMietwagenKosten, txtMietwagenKostenReg, txtMietwagenKostenDiff);
-        berechnen(txtAbmeldeKosten, txtAbmeldeKostenReg, txtAbmeldeKostenDiff);
-        berechnen(txtAnmeldeKosten, txtAnmeldeKostenReg, txtAnmeldeKostenDiff);
-        berechnen(txtSonstigeKosten, txtSonstigeKostenReg, txtSonstigeKostenDiff);
+        berechnen(txtReparaturKosten, txtReparaturKostenMwst, txtReparaturKostenReg, txtReparaturKostenDiff);
+        berechnen(txtReparaturKostenGutachten, null, txtReparaturKostenRegGutachten, txtReparaturKostenDiffGutachten);
+        berechnen(txtWertminderung, null, txtWertminderungReg, txtWertminderungDiff);
+        berechnenTotalschaden(txtWiederbeschaffungswert, txtWiederbeschaffungswertMwst, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff, radioTotalSchadenStRegel.isSelected(), radioTotalSchadenStDiff.isSelected(), radioTotalSchadenStNeutral.isSelected());
+        berechnen(txtRestwertReg, null, txtRestwert, txtRestwertDiff);
+        berechnen(txtUnfallPauschale, null, txtUnfallPauschaleReg, txtUnfallPauschaleDiff);
+        berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString());
+        berechnen(txtKostenGutachten, txtKostenGutachtenMwst, txtKostenGutachtenReg, txtKostenGutachtenDiff);
+        berechnen(txtAbschleppKosten, txtAbschleppKostenMwst, txtAbschleppKostenReg, txtAbschleppKostenDiff);
+        berechnen(txtStandgeld, txtStandgeldMwst, txtStandgeldReg, txtStandgeldDiff);
+        berechnen(txtMietwagenKosten, txtMietwagenKostenMwst, txtMietwagenKostenReg, txtMietwagenKostenDiff);
+        berechnen(txtAbmeldeKosten, null, txtAbmeldeKostenReg, txtAbmeldeKostenDiff);
+        berechnen(txtAnmeldeKosten, null, txtAnmeldeKostenReg, txtAnmeldeKostenDiff);
+        berechnen(txtSonstigeKosten, null, txtSonstigeKostenReg, txtSonstigeKostenDiff);
 
         berechnen();
         
@@ -796,7 +854,8 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
 
     public JPanel getUi() {
 
-        int count = 0
+        int count = 0;
+        SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
         
         // betragFormat = NumberFormat.getInstance(Locale.GERMANY).getCurrency();
         //        NumberFormat betragFormat = NumberFormat.getInstance(Locale.GERMANY).getNumberInstance();
@@ -1114,6 +1173,22 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                 tableLayout (cellpadding: 5) {
                                     tr {
                                         td (colfill:true) {
+                                            grpPrivatGeschaeft = buttonGroup(id:'grpPrivatGeschaeft')
+                                            radioFahrzeugPrivat = radioButton (text: 'Privatfahrzeug', name: "_FHRZGPRIVAT", buttonGroup: grpPrivatGeschaeft, selected: true, actionPerformed: {
+                                                    togglePrivatGeschaeft()
+                                                
+                                                })
+                                        }
+                                        td (colspan: 2) {
+                                            radioFahrzeugGesch = radioButton (text: 'Betriebsfahrzeug', name: "_FHRZGBETRIEB", buttonGroup: grpPrivatGeschaeft, selected: false, actionPerformed: {
+                                                    togglePrivatGeschaeft()
+                                                
+                                                })
+                                        }
+                                    }
+                                    
+                                    tr {
+                                        td (colfill:true) {
                                             label(text: 'Fahrzeugart:')
                                         }
                                         td (colspan: 2) {
@@ -1124,7 +1199,9 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             'S-Pedelec',
                                             'E-Scooter',
                                             'andere'
-                                                ], name: "_FHRZGART", editable: true
+                                                ], name: "_FHRZGART", editable: true, actionPerformed: {
+                                                    berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString())
+                                                }
                                             )
                                         }
                                     }
@@ -1154,6 +1231,11 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     
                                         }
                                     }
+                                    
+                                    
+                                    
+                                    
+                                    
                                     tr {
                                         td (colfill:true, align: 'left') {
                                             label(text: 'Modellbezeichnung:')
@@ -1224,6 +1306,60 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         td {
                                     
                                         }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Nutzungsausfallgruppe:')
+                                    
+                                        }
+                                        td {
+                                            cmbNutzAusfallGruppe = comboBox(items: [
+                                            'A',
+                                            'B',
+                                            'C',
+                                            'D',
+                                            'E',
+                                            'F',
+                                            'G',
+                                            'H',
+                                            'J',
+                                            'K',
+                                            'L'
+                                                ], name: "_NUTZAUSFALLGRP", editable: true, actionPerformed: {
+                                                    berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString())
+                                                }
+                                            )
+                                        }
+                                        td {
+                                            
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: '   von:')
+                                    
+                                        }
+                                        td {
+                                            txtNutzungsAusfallVon=formattedTextField(id: 'sNutzungsAusfallVon', name: "_NUTZAUSFALLVON", format: datumsFormat, columns: 10, text: '', keyReleased: { berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString()) })
+                                        }
+                                        td {
+                                            
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: '   bis:')
+                                    
+                                        }
+                                        td {
+                                            txtNutzungsAusfallBis=formattedTextField(id: 'sNutzungsAusfallBis', name: "_NUTZAUSFALLBIS", format: datumsFormat, columns: 10, text: '', keyReleased: { berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString()) })
+                                        }
+                                        td {
+                                            
+                                        }
+                                        
                                     }
                             
                                 }   
@@ -1421,6 +1557,9 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Betrag')
                                         }
                                         td {
+                                            label(text: 'zzgl. MwSt.')
+                                        }
+                                        td {
                                             label(text: 'reguliert')
                                     
                                         }
@@ -1433,13 +1572,40 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     }
                                     tr {
                                         td {
-                                            label(text: 'Reparaturkosten:')
+                                            label(text: 'Reparaturkosten lt. Gutachten:')
                                         }
                                         td {
-                                            txtReparaturKosten=formattedTextField(id: 'nReparaturKosten', name: "_REPAKOSTEN", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtReparaturKosten, txtReparaturKostenReg, txtReparaturKostenDiff) })
+                                            txtReparaturKostenGutachten=formattedTextField(id: 'nReparaturKostenGutachten', name: "_REPAKOSTEN_G", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtReparaturKostenGutachten, null, txtReparaturKostenRegGutachten, txtReparaturKostenDiffGutachten) })
                                         }
                                         td {
-                                            txtReparaturKostenReg=formattedTextField(id: 'nReparaturKostenReg', name: "_REPAKOSTEN_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtReparaturKosten, txtReparaturKostenReg, txtReparaturKostenDiff) })
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            txtReparaturKostenRegGutachten=formattedTextField(id: 'nReparaturKostenRegGutachten', name: "_REPAKOSTEN_G_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtReparaturKostenGutachten, null, txtReparaturKostenRegGutachten, txtReparaturKostenDiffGutachten) })
+                                        }
+                                        td {
+                                            txtReparaturKostenDiffGutachten=formattedTextField(id: 'nReparaturKostenDiffGutachten', name: "_REPAKOSTEN_G_DIFF", format: betragFormat, text: '0,00', columns: 10, enabled: false)
+                                    
+                                        }
+                                        td {
+                                            chkReparaturKostenDiffGutachten = checkBox(text: '', name: "_REPAKOSTEN_G_DIFF_AN", selected: true, actionPerformed: {
+                                                    berechnen()
+                                                
+                                                })
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Reparaturkosten lt. Rechnung:')
+                                        }
+                                        td {
+                                            txtReparaturKosten=formattedTextField(id: 'nReparaturKosten', name: "_REPAKOSTEN", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtReparaturKosten, txtReparaturKostenMwst, txtReparaturKostenReg, txtReparaturKostenDiff) })
+                                        }
+                                        td {
+                                            txtReparaturKostenMwst=formattedTextField(id: 'nReparaturKostenMwst', name: "_REPAKOSTEN_MWST", format: betragFormat, text: '0,00', columns: 10, enabled: false, keyReleased: { berechnen(txtReparaturKosten, txtReparaturKostenMwst, txtReparaturKostenReg, txtReparaturKostenDiff) })
+                                        }
+                                        td {
+                                            txtReparaturKostenReg=formattedTextField(id: 'nReparaturKostenReg', name: "_REPAKOSTEN_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtReparaturKosten, txtReparaturKostenMwst, txtReparaturKostenReg, txtReparaturKostenDiff) })
                                         }
                                         td {
                                             txtReparaturKostenDiff=formattedTextField(id: 'nReparaturKostenDiff', name: "_REPAKOSTEN_DIFF", format: betragFormat, text: '0,00', columns: 10, enabled: false)
@@ -1458,10 +1624,13 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Merkantile Wertminderung:')
                                         }
                                         td {
-                                            txtWertminderung=formattedTextField(id: 'nWertminderung', name: "_WERTMINDERG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtWertminderung, txtWertminderungReg, txtWertminderungDiff) })
+                                            txtWertminderung=formattedTextField(id: 'nWertminderung', name: "_WERTMINDERG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtWertminderung, null, txtWertminderungReg, txtWertminderungDiff) })
                                         }
                                         td {
-                                            txtWertminderungReg=formattedTextField(id: 'nWertminderungReg', name: "_WERTMINDERG_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtWertminderung, txtWertminderungReg, txtWertminderungDiff) })
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            txtWertminderungReg=formattedTextField(id: 'nWertminderungReg', name: "_WERTMINDERG_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtWertminderung, null, txtWertminderungReg, txtWertminderungDiff) })
                                         }
                                         td {
                                             txtWertminderungDiff=formattedTextField(id: 'nWertminderungDiff', name: "_WERTMINDERG_DIFF", format: betragFormat, text: '0,00', columns: 10, enabled: false)
@@ -1492,10 +1661,41 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     }
                                     tr {
                                         td {
+                                            label(text: '  ')
+                                        }
+                                        td {
+                                            btnGrpTotalschadenBesteuerung = buttonGroup(id:'btnGrpTotalschadenBesteuerung')
+                                            radioTotalSchadenStRegel = radioButton (text: 'regelbesteuert (19%)', name: "_STR_REGEL", buttonGroup: btnGrpTotalschadenBesteuerung, selected: true, actionPerformed: {
+                                                    berechnenTotalschaden(txtWiederbeschaffungswert, txtWiederbeschaffungswertMwst, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff, radioTotalSchadenStRegel.isSelected(), radioTotalSchadenStDiff.isSelected(), radioTotalSchadenStNeutral.isSelected())
+                                                
+                                                })
+                                        }
+                                        td {
+                                            radioTotalSchadenStDiff = radioButton (text: 'differenzbesteuert (2,5%)', name: "_STR_DIFF", buttonGroup: btnGrpTotalschadenBesteuerung, selected: false, actionPerformed: {
+                                                    berechnenTotalschaden(txtWiederbeschaffungswert, txtWiederbeschaffungswertMwst, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff, radioTotalSchadenStRegel.isSelected(), radioTotalSchadenStDiff.isSelected(), radioTotalSchadenStNeutral.isSelected())
+                                                
+                                                })
+                                    
+                                        }
+                                        td {
+                                            radioTotalSchadenStNeutral = radioButton (text: 'steuerneutral (0%)', name: "_STR_NEUTRAL", buttonGroup: btnGrpTotalschadenBesteuerung, selected: false, actionPerformed: {
+                                                    berechnenTotalschaden(txtWiederbeschaffungswert, txtWiederbeschaffungswertMwst, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff, radioTotalSchadenStRegel.isSelected(), radioTotalSchadenStDiff.isSelected(), radioTotalSchadenStNeutral.isSelected())
+                                                
+                                                })
+                                        }
+                                        td {
+                                            
+                                        }
+                                    }
+                                    tr {
+                                        td {
                                             label(text: 'Position')
                                         }
                                         td {
                                             label(text: 'Betrag')
+                                        }
+                                        td {
+                                            label(text: 'inkl. MwSt.')
                                         }
                                         td {
                                             label(text: 'reguliert')
@@ -1513,10 +1713,13 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Wiederbeschaffungswert:')
                                         }
                                         td {
-                                            txtWiederbeschaffungswert=formattedTextField(id: 'nWiederbeschaffungswert', name: "_WIEDERBESCHAWERT", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtWiederbeschaffungswert, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff) })
+                                            txtWiederbeschaffungswert=formattedTextField(id: 'nWiederbeschaffungswert', name: "_WIEDERBESCHAWERT", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnenTotalschaden(txtWiederbeschaffungswert, txtWiederbeschaffungswertMwst, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff, radioTotalSchadenStRegel.isSelected(), radioTotalSchadenStDiff.isSelected(), radioTotalSchadenStNeutral.isSelected()) })
                                         }
                                         td {
-                                            txtWiederbeschaffungswertReg=formattedTextField(id: 'nWiederbeschaffungswertReg', name: "_WIEDERBESCHAWERT_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtWiederbeschaffungswert, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff) })
+                                            txtWiederbeschaffungswertMwst=formattedTextField(id: 'nWiederbeschaffungswertMwst', name: "_WIEDERBESCHAWERT_MWST", format: betragFormat, text: '0,00', columns: 10, enabled: false, keyReleased: { berechnenTotalschaden(txtWiederbeschaffungswert, txtWiederbeschaffungswertMwst, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff, radioTotalSchadenStRegel.isSelected(), radioTotalSchadenStDiff.isSelected(), radioTotalSchadenStNeutral.isSelected()) })
+                                        }
+                                        td {
+                                            txtWiederbeschaffungswertReg=formattedTextField(id: 'nWiederbeschaffungswertReg', name: "_WIEDERBESCHAWERT_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnenTotalschaden(txtWiederbeschaffungswert, txtWiederbeschaffungswertMwst, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff, radioTotalSchadenStRegel.isSelected(), radioTotalSchadenStDiff.isSelected(), radioTotalSchadenStNeutral.isSelected()) })
                                         }
                                         td {
                                             txtWiederbeschaffungswertDiff=formattedTextField(id: 'nWiederbeschaffungswertDiff', name: "_WIEDERBESCHAWERT_DIFF", format: betragFormat, text: '0,00', columns: 10, enabled: false)
@@ -1534,10 +1737,13 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Abzüglich Restwert:')
                                         }
                                         td {
-                                            txtRestwert=formattedTextField(id: 'nRestwert', name: "_RESTWERT", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtRestwertReg, txtRestwert, txtRestwertDiff) })
+                                            txtRestwert=formattedTextField(id: 'nRestwert', name: "_RESTWERT", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtRestwertReg, null, txtRestwert, txtRestwertDiff) })
                                         }
                                         td {
-                                            txtRestwertReg=formattedTextField(id: 'nRestwertReg', name: "_RESTWERT_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtRestwertReg, txtRestwert, txtRestwertDiff) })
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            txtRestwertReg=formattedTextField(id: 'nRestwertReg', name: "_RESTWERT_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtRestwertReg, null, txtRestwert, txtRestwertDiff) })
                                         }
                                         td {
                                             txtRestwertDiff=formattedTextField(id: 'nRestwertDiff', name: "_RESTWERT_DIFF", format: betragFormat, text: '0,00', columns: 10, enabled: false)
@@ -1558,93 +1764,6 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                 
                                     }
                                     
-                                    tr {
-                                        td {
-                                            label(text: 'Position')
-                                        }
-                                        td {
-                                            label(text: 'Betrag')
-                                        }
-                                        td {
-                                            label(text: 'reguliert')
-                                    
-                                        }
-                                        td {
-                                            label(text: 'Differenz')
-                                        }
-                                        td {
-                                            //label(text: 'Differenz')
-                                        }
-                                    }
-                                    tr {
-                                        td {
-                                            label(text: 'Unfallpauschale:')
-                                        }
-                                        td {
-                                            txtUnfallPauschale=formattedTextField(id: 'nUnfallPauschale', name: "_UNFALLPAUSCH", format: betragFormat, text: '25,00', columns: 10, keyReleased: { berechnen(txtUnfallPauschale, txtUnfallPauschaleReg, txtUnfallPauschaleDiff) })
-                                        }
-                                        td {
-                                            txtUnfallPauschaleReg=formattedTextField(id: 'nUnfallPauschaleReg', name: "_UNFALLPAUSCH_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtUnfallPauschale, txtUnfallPauschaleReg, txtUnfallPauschaleDiff) })
-                                    
-                                        }
-                                        td {
-                                            txtUnfallPauschaleDiff=formattedTextField(id: 'nUnfallPauschaleDiff', name: "_UNFALLPAUSCH_DIFF", format: betragFormat, text: '0,00', columns: 10, enabled: false)
-                                        }
-                                        td {
-                                            chkUnfallPauschaleDiff = checkBox(text: '', name: "_UNFALLPAUSCH_DIFF_AN", selected: true, actionPerformed: {
-                                                    berechnen()
-                                                
-                                                }) 
-                                        }
-                                    }
-                                    tr {
-                                        td {
-                                            label(text: 'Nutzungsausfall:')
-                                        }
-                                        td {
-                                            txtNutzungsAusfall=formattedTextField(id: 'nNutzungsAusfall', name: "_NUTZUNGSAUSF", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff) })
-                                        }
-                                        td {
-                                            txtNutzungsAusfallReg=formattedTextField(id: 'nNutzungsAusfallReg', name: "_NUTZUNGSAUSF_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff) })
-                                    
-                                        }
-                                        td {
-                                            txtNutzungsAusfallDiff=formattedTextField(id: 'nNutzungsAusfallDiff', name: "_NUTZUNGSAUSF_DIFF", format: betragFormat, text: '0,00', columns: 10, enabled: false)
-                                        }
-                                        td {
-                                            chkNutzungsAusfallDiff = checkBox(text: '', name: "_NUTZUNGSAUSF_DIFF_AN", selected: true, actionPerformed: {
-                                                    berechnen()
-                                                
-                                                }) 
-                                        }
-                                    }
-                                    tr {
-                                        td {
-                                            label(text: 'Kosten des Gutachtens:')
-                                        }
-                                        td {
-                                            txtKostenGutachten=formattedTextField(id: 'nKostenGutachten', name: "_KOSTENGUTACHTEN", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtKostenGutachten, txtKostenGutachtenReg, txtKostenGutachtenDiff) })
-                                        }
-                                        td {
-                                            txtKostenGutachtenReg=formattedTextField(id: 'nKostenGutachtenReg', name: "_KOSTENGUTACHTEN_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtKostenGutachten, txtKostenGutachtenReg, txtKostenGutachtenDiff) })
-                                    
-                                        }
-                                        td {
-                                            txtKostenGutachtenDiff=formattedTextField(id: 'nKostenGutachtenDiff', name: "_KOSTENGUTACHTEN_DIFF", format: betragFormat, text: '0,00', columns: 10, enabled: false)
-                                        }
-                                        td {
-                                            chkKostenGutachtenDiff = checkBox(text: '', name: "_KOSTENGUTACHTEN_DIFF_AN", selected: true, actionPerformed: {
-                                                    berechnen()
-                                                
-                                                }) 
-                                        }
-                                    }
-                                    tr {
-                                        td (colspan: 4) {
-                                            label(text: '   ')
-                                        }
-                                
-                                    }
                                     tr {
                                         td {
                                             label(text: '   ')
@@ -1676,6 +1795,9 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Betrag')
                                         }
                                         td {
+                                            label(text: 'zzgl. MwSt.')
+                                        }
+                                        td {
                                             label(text: 'reguliert')
                                     
                                         }
@@ -1688,13 +1810,88 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     }
                                     tr {
                                         td {
+                                            label(text: 'Unfallpauschale:')
+                                        }
+                                        td {
+                                            txtUnfallPauschale=formattedTextField(id: 'nUnfallPauschale', name: "_UNFALLPAUSCH", format: betragFormat, text: '25,00', columns: 10, keyReleased: { berechnen(txtUnfallPauschale, null, txtUnfallPauschaleReg, txtUnfallPauschaleDiff) })
+                                        }
+                                        td {
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            txtUnfallPauschaleReg=formattedTextField(id: 'nUnfallPauschaleReg', name: "_UNFALLPAUSCH_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtUnfallPauschale, null, txtUnfallPauschaleReg, txtUnfallPauschaleDiff) })
+                                    
+                                        }
+                                        td {
+                                            txtUnfallPauschaleDiff=formattedTextField(id: 'nUnfallPauschaleDiff', name: "_UNFALLPAUSCH_DIFF", format: betragFormat, text: '0,00', columns: 10, enabled: false)
+                                        }
+                                        td {
+                                            chkUnfallPauschaleDiff = checkBox(text: '', name: "_UNFALLPAUSCH_DIFF_AN", selected: true, actionPerformed: {
+                                                    berechnen()
+                                                
+                                                }) 
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Nutzungsausfall:')
+                                        }
+                                        td {
+                                            txtNutzungsAusfall=formattedTextField(id: 'nNutzungsAusfall', name: "_NUTZUNGSAUSF", format: betragFormat, text: '0,00', columns: 10, enabled: false, keyReleased: { berechnen(txtNutzungsAusfall, null, txtNutzungsAusfallReg, txtNutzungsAusfallDiff) })
+                                        }
+                                        td {
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            txtNutzungsAusfallReg=formattedTextField(id: 'nNutzungsAusfallReg', name: "_NUTZUNGSAUSF_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtNutzungsAusfall, null, txtNutzungsAusfallReg, txtNutzungsAusfallDiff) })
+                                    
+                                        }
+                                        td {
+                                            txtNutzungsAusfallDiff=formattedTextField(id: 'nNutzungsAusfallDiff', name: "_NUTZUNGSAUSF_DIFF", format: betragFormat, text: '0,00', columns: 10, enabled: false)
+                                        }
+                                        td {
+                                            chkNutzungsAusfallDiff = checkBox(text: '', name: "_NUTZUNGSAUSF_DIFF_AN", selected: true, actionPerformed: {
+                                                    berechnen()
+                                                
+                                                }) 
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Kosten des Gutachtens:')
+                                        }
+                                        td {
+                                            txtKostenGutachten=formattedTextField(id: 'nKostenGutachten', name: "_KOSTENGUTACHTEN", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtKostenGutachten, txtKostenGutachtenMwst, txtKostenGutachtenReg, txtKostenGutachtenDiff) })
+                                        }
+                                        td {
+                                            txtKostenGutachtenMwst=formattedTextField(id: 'nKostenGutachtenMwst', name: "_KOSTENGUTACHTEN_MWST", format: betragFormat, text: '0,00', columns: 10, enabled: false, keyReleased: { berechnen(txtKostenGutachten, txtKostenGutachtenMwst, txtKostenGutachtenReg, txtKostenGutachtenDiff) })
+                                        }
+                                        td {
+                                            txtKostenGutachtenReg=formattedTextField(id: 'nKostenGutachtenReg', name: "_KOSTENGUTACHTEN_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtKostenGutachten, txtKostenGutachtenMwst, txtKostenGutachtenReg, txtKostenGutachtenDiff) })
+                                    
+                                        }
+                                        td {
+                                            txtKostenGutachtenDiff=formattedTextField(id: 'nKostenGutachtenDiff', name: "_KOSTENGUTACHTEN_DIFF", format: betragFormat, text: '0,00', columns: 10, enabled: false)
+                                        }
+                                        td {
+                                            chkKostenGutachtenDiff = checkBox(text: '', name: "_KOSTENGUTACHTEN_DIFF_AN", selected: true, actionPerformed: {
+                                                    berechnen()
+                                                
+                                                }) 
+                                        }
+                                    }
+                                    tr {
+                                        td {
                                             label(text: 'Abschleppkosten:')
                                         }
                                         td {
-                                            txtAbschleppKosten=formattedTextField(id: 'nAbschleppKosten', name: "_KOSTENABSCHLEPP", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtAbschleppKosten, txtAbschleppKostenReg, txtAbschleppKostenDiff) })
+                                            txtAbschleppKosten=formattedTextField(id: 'nAbschleppKosten', name: "_KOSTENABSCHLEPP", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtAbschleppKosten, txtAbschleppKostenMwst, txtAbschleppKostenReg, txtAbschleppKostenDiff) })
                                         }
                                         td {
-                                            txtAbschleppKostenReg=formattedTextField(id: 'nAbschleppKostenReg', name: "_KOSTENABSCHLEPP_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtAbschleppKosten, txtAbschleppKostenReg, txtAbschleppKostenDiff) })
+                                            txtAbschleppKostenMwst=formattedTextField(id: 'nAbschleppKostenMwst', name: "_KOSTENABSCHLEPP_MWST", format: betragFormat, text: '0,00', columns: 10, enabled: false, keyReleased: { berechnen(txtAbschleppKosten, txtAbschleppKostenMwst, txtAbschleppKostenReg, txtAbschleppKostenDiff) })
+                                        }
+                                        td {
+                                            txtAbschleppKostenReg=formattedTextField(id: 'nAbschleppKostenReg', name: "_KOSTENABSCHLEPP_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtAbschleppKosten, txtAbschleppKostenMwst, txtAbschleppKostenReg, txtAbschleppKostenDiff) })
                                     
                                         }
                                         td {
@@ -1713,10 +1910,13 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Standgeld:')
                                         }
                                         td {
-                                            txtStandgeld=formattedTextField(id: 'nStandgeld', name: "_KOSTENSTANDGELD", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtStandgeld, txtStandgeldReg, txtStandgeldDiff) })
+                                            txtStandgeld=formattedTextField(id: 'nStandgeld', name: "_KOSTENSTANDGELD", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtStandgeld, txtStandgeldMwst, txtStandgeldReg, txtStandgeldDiff) })
                                         }
                                         td {
-                                            txtStandgeldReg=formattedTextField(id: 'nStandgeldReg', name: "_KOSTENSTANDGELD_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtStandgeld, txtStandgeldReg, txtStandgeldDiff) })
+                                            txtStandgeldMwst=formattedTextField(id: 'nStandgeldMwst', name: "_KOSTENSTANDGELD_MWST", format: betragFormat, text: '0,00', columns: 10, enabled: false, keyReleased: { berechnen(txtStandgeld, txtStandgeldMwst, txtStandgeldReg, txtStandgeldDiff) })
+                                        }
+                                        td {
+                                            txtStandgeldReg=formattedTextField(id: 'nStandgeldReg', name: "_KOSTENSTANDGELD_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtStandgeld, txtStandgeldMwst, txtStandgeldReg, txtStandgeldDiff) })
                                     
                                         }
                                         td {
@@ -1735,10 +1935,13 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Mietwagenkosten:')
                                         }
                                         td {
-                                            txtMietwagenKosten=formattedTextField(id: "nMietwagenKosten", name: "_KOSTENMIETW", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtMietwagenKosten, txtMietwagenKostenReg, txtMietwagenKostenDiff) })
+                                            txtMietwagenKosten=formattedTextField(id: "nMietwagenKosten", name: "_KOSTENMIETW", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtMietwagenKosten, txtMietwagenKostenMwst, txtMietwagenKostenReg, txtMietwagenKostenDiff) })
                                         }
                                         td {
-                                            txtMietwagenKostenReg=formattedTextField(id: "nMietwagenKostenReg", name: "_KOSTENMIETW_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtMietwagenKosten, txtMietwagenKostenReg, txtMietwagenKostenDiff) })
+                                            txtMietwagenKostenMwst=formattedTextField(id: "nMietwagenKostenMwst", name: "_KOSTENMIETW_MWST", format: betragFormat, text: '0,00', columns: 10, enabled: false, keyReleased: { berechnen(txtMietwagenKosten, txtMietwagenKostenMwst, txtMietwagenKostenReg, txtMietwagenKostenDiff) })
+                                        }
+                                        td {
+                                            txtMietwagenKostenReg=formattedTextField(id: "nMietwagenKostenReg", name: "_KOSTENMIETW_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtMietwagenKosten, txtMietwagenKostenMwst, txtMietwagenKostenReg, txtMietwagenKostenDiff) })
                                     
                                         }
                                         td {
@@ -1757,10 +1960,13 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Abmeldekosten:')
                                         }
                                         td {
-                                            txtAbmeldeKosten=formattedTextField(id: 'nAbmeldeKosten', name: "_KOSTENABMELDE", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtAbmeldeKosten, txtAbmeldeKostenReg, txtAbmeldeKostenDiff) })
+                                            txtAbmeldeKosten=formattedTextField(id: 'nAbmeldeKosten', name: "_KOSTENABMELDE", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtAbmeldeKosten, null, txtAbmeldeKostenReg, txtAbmeldeKostenDiff) })
                                         }
                                         td {
-                                            txtAbmeldeKostenReg=formattedTextField(id: 'nAbmeldeKostenReg', name: "_KOSTENABMELDE_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtAbmeldeKosten, txtAbmeldeKostenReg, txtAbmeldeKostenDiff) })
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            txtAbmeldeKostenReg=formattedTextField(id: 'nAbmeldeKostenReg', name: "_KOSTENABMELDE_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtAbmeldeKosten, null, txtAbmeldeKostenReg, txtAbmeldeKostenDiff) })
                                     
                                         }
                                         td {
@@ -1779,10 +1985,13 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Anmeldekosten:')
                                         }
                                         td {
-                                            txtAnmeldeKosten=formattedTextField(id: 'nAnmeldeKosten', name: "_KOSTENANMELDE", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtAnmeldeKosten, txtAnmeldeKostenReg, txtAnmeldeKostenDiff) })
+                                            txtAnmeldeKosten=formattedTextField(id: 'nAnmeldeKosten', name: "_KOSTENANMELDE", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtAnmeldeKosten, null, txtAnmeldeKostenReg, txtAnmeldeKostenDiff) })
                                         }
                                         td {
-                                            txtAnmeldeKostenReg=formattedTextField(id: 'nAnmeldeKostenReg', name: "_KOSTENANMELDE_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtAnmeldeKosten, txtAnmeldeKostenReg, txtAnmeldeKostenDiff) })
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            txtAnmeldeKostenReg=formattedTextField(id: 'nAnmeldeKostenReg', name: "_KOSTENANMELDE_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtAnmeldeKosten, null, txtAnmeldeKostenReg, txtAnmeldeKostenDiff) })
                                     
                                         }
                                         td {
@@ -1801,10 +2010,13 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Sonstiges:')
                                         }
                                         td {
-                                            txtSonstigeKosten=formattedTextField(id: 'nSonstigeKosten', name: "_KOSTENSONST", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtSonstigeKosten, txtSonstigeKostenReg, txtSonstigeKostenDiff) })
+                                            txtSonstigeKosten=formattedTextField(id: 'nSonstigeKosten', name: "_KOSTENSONST", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtSonstigeKosten, null, txtSonstigeKostenReg, txtSonstigeKostenDiff) })
                                         }
                                         td {
-                                            txtSonstigeKostenReg=formattedTextField(id: 'nSonstigeKostenReg', name: "_KOSTENSONST_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtSonstigeKosten, txtSonstigeKostenReg, txtSonstigeKostenDiff) })
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            txtSonstigeKostenReg=formattedTextField(id: 'nSonstigeKostenReg', name: "_KOSTENSONST_REG", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtSonstigeKosten, null, txtSonstigeKostenReg, txtSonstigeKostenDiff) })
                                     
                                         }
                                         td {
@@ -1817,7 +2029,22 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 })
                                         }
                                     }
-                            
+                                    tr {
+                                        td {
+                                            label(text: 'Sonstiges (auflisten):')
+                                        }
+                                        td (colspan: 5) {
+                                            textField(id: 'sSonstigesListe', name: "_KOSTENSONST_LISTE", text: '', columns: 60)
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'davon reguliert (auflisten):')
+                                        }
+                                        td (colspan: 5) {
+                                            textField(id: 'sSonstigesListeReg', name: "_KOSTENSONST_REG_LISTE", text: '', columns: 60)
+                                        }
+                                    }
                             
                                 }   
                         
@@ -1874,6 +2101,58 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                             }     
                         }
                     }
+                    tr {
+                        td (colfill:true, align: 'left') {
+                            panel(border: titledBorder(title: 'Anwaltskosten:')) {
+                                tableLayout (cellpadding: 5) {
+                                    tr {
+                                        td {
+                                            label(text: '')
+                                        }
+                                        td {
+                                            label(text: 'Betrag')
+                                        }
+                                        td {
+                                            label(text: 'zzgl. MwSt.')
+                                    
+                                        }
+                                        td {
+                                            label(text: 'reguliert')
+                                        }
+                                        td {
+                                            label(text: 'Differenz')
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'VV2300 / VV7002:')
+                                        }
+                                        td {
+                                            txtAnwaltskostenNetto=formattedTextField(id: 'nAnwaltskostenNetto', name: "_ANW_NETTO", format: betragFormat, text: '0,00', columns: 10, enabled: false, disabledTextColor: java.awt.Color.BLACK)
+                                        }
+                                        td {
+                                            txtAnwaltskostenMwst=formattedTextField(id: 'nAnwaltskostenMwst', name: "_ANW_MWST", format: betragFormat, text: '0,00', columns: 10, enabled: false, disabledTextColor: java.awt.Color.BLACK)
+                                    
+                                        }
+                                        td {
+                                            txtAnwaltskostenReg=formattedTextField(id: 'nAnwaltskostenReg', name: "_ANW_REG", format: betragFormat, text: '0,00', columns: 10, enabled: true, disabledTextColor: java.awt.Color.BLACK, keyReleased: {
+                                                    berechnen()
+                                                
+                                                })
+                                        }
+                                        td {
+                                            txtAnwaltskostenDiff=formattedTextField(id: 'nAnwaltskostenDiff', name: "_ANW_DIFF", format: betragFormat, text: '0,00', columns: 10, enabled: false, disabledTextColor: java.awt.Color.BLACK)
+                                        }
+                                    }
+                
+                                    
+                            
+                            
+                                }   
+                        
+                            }     
+                        }
+                    }
             
             
                     tr  {
@@ -1891,15 +2170,30 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
 
     }
     
+    private void togglePrivatGeschaeft() {
+        berechnen(txtReparaturKosten, txtReparaturKostenMwst, txtReparaturKostenReg, txtReparaturKostenDiff);
+        berechnen(txtKostenGutachten, txtKostenGutachtenMwst, txtKostenGutachtenReg, txtKostenGutachtenDiff);
+        berechnen(txtAbschleppKosten, txtAbschleppKostenMwst, txtAbschleppKostenReg, txtAbschleppKostenDiff);
+        berechnen(txtStandgeld, txtStandgeldMwst, txtStandgeldReg, txtStandgeldDiff);
+        berechnen(txtMietwagenKosten, txtMietwagenKostenMwst, txtMietwagenKostenReg, txtMietwagenKostenDiff);
+        berechnenTotalschaden(txtWiederbeschaffungswert, txtWiederbeschaffungswertMwst, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff, radioTotalSchadenStRegel.isSelected(), radioTotalSchadenStDiff.isSelected(), radioTotalSchadenStNeutral.isSelected());
+        
+        berechnen();
+    }
+    
     private void toggleSchadentyp() {
     
         if(radioReparaturSchaden.isSelected()) {
             txtReparaturKosten.setEnabled(true);
+            txtReparaturKostenGutachten.setEnabled(true);
             txtReparaturKostenReg.setEnabled(true);
+            txtReparaturKostenRegGutachten.setEnabled(true);
             txtWertminderung.setEnabled(true);
             txtWertminderungReg.setEnabled(true);
             txtWiederbeschaffungswert.setEnabled(false);
             txtWiederbeschaffungswert.setText("0,00");
+            txtWiederbeschaffungswertMwst.setEnabled(false);
+            txtWiederbeschaffungswertMwst.setText("0,00");
             txtWiederbeschaffungswertReg.setEnabled(false);
             txtWiederbeschaffungswertReg.setText("0,00");
             txtWiederbeschaffungswertDiff.setText("0,00");
@@ -1910,10 +2204,19 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
             txtRestwertDiff.setText("0,00");
         } else {
             txtReparaturKosten.setEnabled(false);
+            txtReparaturKostenGutachten.setEnabled(false);
             txtReparaturKosten.setText("0,00");
+            
+            txtReparaturKostenMwst.setEnabled(false);
+            txtReparaturKostenMwst.setText("0,00");
+            
+            txtReparaturKostenGutachten.setText("0,00");
             txtReparaturKostenReg.setEnabled(false);
+            txtReparaturKostenRegGutachten.setEnabled(false);
             txtReparaturKostenReg.setText("0,00");
+            txtReparaturKostenRegGutachten.setText("0,00");
             txtReparaturKostenDiff.setText("0,00");
+            txtReparaturKostenDiffGutachten.setText("0,00");
             txtWertminderung.setEnabled(false);
             txtWertminderung.setText("0,00");
             txtWertminderungReg.setEnabled(false);
@@ -1930,17 +2233,36 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     }
     
     private void berechnen() {
-        berechnen(null, null, null);
+        berechnen(null, null, null, null);
     }
     
-    private void berechnen(JTextField value, JTextField reg, JTextField diff) {
+    private void berechnen(JTextField value, JTextField mwst, JTextField reg, JTextField diff) {
+        
+        float vat=0f;
+        try {
+            if(mwst!=null) {
+                vat=betragFormat.parse(value.text).floatValue() * 0.19f;
+            }
+        } catch (Throwable t) {
+            // do nothing
+            
+        }
+        
+        if(radioFahrzeugGesch.isSelected() && mwst!=null) {
+            // Übergeordnet ist die Frage, ob es sich um ein Privatfahrzeug oder Betriebsfahrzeug handelt. Denn soweit es sich um ein Betriebsfahrzeug handelt und der Geschädigte vorsteuerabzugsberechtigt ist, können ausnahmslos alle Schadenpositionen nur netto geltend gemacht werden.
+            vat=0;
+            mwst.setText(betragFormat.format(0f));
+        }
+        if(radioFahrzeugPrivat.isSelected() && mwst!=null) {
+            mwst.setText(betragFormat.format(vat));
+        }
         
         if(value !=null && reg!=null && diff !=null) {
         
             float v=betragFormat.parse(value.text).floatValue();
             float r=betragFormat.parse(reg.text).floatValue();
-            diff.setText(betragFormat.format((float)(v-r)));
-            if((v-r)>0) {
+            diff.setText(betragFormat.format((float)(v+vat-r)));
+            if((v+vat-r)>0) {
                 diff.setDisabledTextColor(java.awt.Color.RED);
             } else {
                 diff.setDisabledTextColor(java.awt.Color.BLACK);
@@ -1948,10 +2270,13 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         }
         
         // Summe
+        float fStreitwert=0f;
         try {
             float currentSum=0f;
             if(radioReparaturSchaden.selected) {
                 currentSum+=betragFormat.parse(txtReparaturKosten.text)
+                currentSum+=betragFormat.parse(txtReparaturKostenMwst.text)
+                currentSum+=betragFormat.parse(txtReparaturKostenGutachten.text)
                 currentSum+=betragFormat.parse(txtWertminderung.text)
             } else {
                 currentSum+=betragFormat.parse(txtWiederbeschaffungswert.text)
@@ -1961,14 +2286,20 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
             currentSum+=betragFormat.parse(txtUnfallPauschale.text)
             currentSum+=betragFormat.parse(txtNutzungsAusfall.text)
             currentSum+=betragFormat.parse(txtKostenGutachten.text)
+            currentSum+=betragFormat.parse(txtKostenGutachtenMwst.text)
             currentSum+=betragFormat.parse(txtAbschleppKosten.text)
+            currentSum+=betragFormat.parse(txtAbschleppKostenMwst.text)
             currentSum+=betragFormat.parse(txtStandgeld.text)
+            currentSum+=betragFormat.parse(txtStandgeldMwst.text)
             currentSum+=betragFormat.parse(txtMietwagenKosten.text)
+            currentSum+=betragFormat.parse(txtMietwagenKostenMwst.text)
             currentSum+=betragFormat.parse(txtAbmeldeKosten.text)
             currentSum+=betragFormat.parse(txtAnmeldeKosten.text)
             currentSum+=betragFormat.parse(txtSonstigeKosten.text)
             
             txtSummeSchaden.text="" + betragFormat.format(currentSum);
+            
+            fStreitwert=currentSum;
         } catch (Throwable t) {
             t.printStackTrace();
             txtSummeSchaden.text="? ungueltiger Betrag";
@@ -1979,6 +2310,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
             float currentSum=0f;
             if(radioReparaturSchaden.selected) {
                 currentSum+=betragFormat.parse(txtReparaturKostenReg.text)
+                currentSum+=betragFormat.parse(txtReparaturKostenRegGutachten.text)
                 currentSum+=betragFormat.parse(txtWertminderungReg.text)
             } else {
                 currentSum+=betragFormat.parse(txtWiederbeschaffungswertReg.text)
@@ -2007,6 +2339,8 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
             if(radioReparaturSchaden.selected) {
                 if(chkReparaturKostenDiff.selected)
                 currentSum+=betragFormat.parse(txtReparaturKostenDiff.text)
+                if(chkReparaturKostenDiffGutachten.selected)
+                currentSum+=betragFormat.parse(txtReparaturKostenDiffGutachten.text)
                 if(chkWertminderungDiff.selected)
                 currentSum+=betragFormat.parse(txtWertminderungDiff.text)
             } else {
@@ -2041,6 +2375,118 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
             txtSummeDifferenz.text="? ungueltiger Betrag";
         }
         
+        // Anwaltskosten
+        try {
+            float vv7002=20f;
+            float vv2300=0f;
+            
+            float faktor=1.3f;
+            
+            RvgTablesRangeList rl = new RvgTablesRangeList()
+            vv2300=Math.max(rl.getMappedValue(fStreitwert) * faktor, 0);
+            
+            
+            txtAnwaltskostenNetto.text=betragFormat.format(vv2300+vv7002);
+            txtAnwaltskostenMwst.text=betragFormat.format((vv2300+vv7002)*0.19f);
+            //txtAnwaltskostenReg
+            txtAnwaltskostenDiff.text=betragFormat.format(vv2300 +vv7002 + ((vv2300+vv7002)*0.19f) - betragFormat.parse(txtAnwaltskostenReg.text));
+            
+        } catch (Throwable t) {
+            t.printStackTrace();
+            txtSummeDifferenz.text="? ungueltiger Betrag";
+        }
+        
+        
+    }
+    
+    private void berechnenTotalschaden(JTextField value, JTextField mwst, JTextField reg, JTextField diff, boolean stRegel, boolean stDiff, boolean stNeutral) {
+        
+        float vat=0f;
+        try {
+            if(mwst!=null) {
+                if(stRegel) {
+                   vat=betragFormat.parse(value.text).floatValue() / 119f * 19f;
+                } else if(stDiff) {
+                    vat=betragFormat.parse(value.text).floatValue() * 0.025f;
+                } else if(stNeutral) {
+                    vat=0f;
+                }
+                
+            }
+        } catch (Throwable t) {
+            // do nothing
+            
+        }
+        
+        if(mwst!=null) {
+            mwst.setText(betragFormat.format(vat));
+        }
+        
+        if(value !=null && reg!=null && diff !=null) {
+        
+            float v=betragFormat.parse(value.text).floatValue();
+            float r=betragFormat.parse(reg.text).floatValue();
+            
+            if(radioFahrzeugGesch.isSelected() && mwst!=null) {
+                diff.setText(betragFormat.format((float)(v-r-vat)));
+                if((v-r-vat)>0) {
+                    diff.setDisabledTextColor(java.awt.Color.RED);
+                } else {
+                    diff.setDisabledTextColor(java.awt.Color.BLACK);
+                }
+            }
+            if(radioFahrzeugPrivat.isSelected() && mwst!=null) {
+                diff.setText(betragFormat.format((float)(v-r)));
+                if((v-r)>0) {
+                    diff.setDisabledTextColor(java.awt.Color.RED);
+                } else {
+                    diff.setDisabledTextColor(java.awt.Color.BLACK);
+                }
+            }
+            
+            
+        }
+        
+        berechnen(null, null, null, null);
+        
+    }
+    
+    private void berechnenNutzungsausfall(JTextField value, JTextField reg, JTextField diff, String ausfallGruppe, JTextField from, JTextField to, String fahrzeugTyp) {
+        
+        float perDay=0f;
+        if("PKW".equalsIgnoreCase(fahrzeugTyp)) {
+            perDay=ausfallTabellePkw.get(ausfallGruppe);
+        } else if("Motorrad".equalsIgnoreCase(fahrzeugTyp)) {
+            perDay=ausfallTabelleKrad.get(ausfallGruppe);
+        }
+        float nutzungsAusfall=0f;
+        try {
+            def fromDate = new Date().parse("dd.MM.yyyy", from.text);
+            def toDate = new Date().parse("dd.MM.yyyy", to.text);
+            
+            def duration = toDate - fromDate;
+            nutzungsAusfall=duration * perDay;
+            if(nutzungsAusfall<0)
+                nutzungsAusfall=0f;
+        } catch (Throwable t) {
+            
+        }
+            
+            
+        if(value !=null && reg!=null && diff !=null) {
+            value.setText(betragFormat.format(nutzungsAusfall));
+            float v=nutzungsAusfall;
+            float r=betragFormat.parse(reg.text).floatValue();
+            diff.setText(betragFormat.format((float)(v-r)));
+            if((v-r)>0) {
+                diff.setDisabledTextColor(java.awt.Color.RED);
+            } else {
+                diff.setDisabledTextColor(java.awt.Color.BLACK);
+            }
+        }
+        
+        
+        berechnen(null, null, null, null);
         
     }
 

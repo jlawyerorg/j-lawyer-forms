@@ -547,6 +547,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "Inkasso"
 description = "Inkasso und Forderungsmanagement"
-version = "2.0.0";
+version = "2.0.3";
 author = "Christian Pieters"
-updated = "12.12.2020"
+updated = "19.12.2020"

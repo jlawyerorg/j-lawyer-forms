@@ -681,6 +681,7 @@ import javax.swing.JTextField
 import javax.swing.JCheckBox
 import javax.swing.JComboBox
 import javax.swing.JRadioButton
+import javax.swing.JLabel
 import java.awt.Component
 import java.awt.Container
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
@@ -701,6 +702,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     JTextField txtReparaturKostenGutachten;
     JTextField txtReparaturKostenRegGutachten;
     JTextField txtReparaturKostenDiffGutachten;
+    JLabel lblReparaturKostenDoppelt;
     JCheckBox chkReparaturKostenDiff;
     JCheckBox chkReparaturKostenDiffGutachten;
     JTextField txtWertminderung;
@@ -1618,6 +1620,14 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 })
                                         }
                                     }
+                                    tr {
+                                        td {
+                                            label(text: '')
+                                        }
+                                        td (colspan: 5) {
+                                            lblReparaturKostenDoppelt=label(text: '')
+                                        }
+                                    }
                                 
                                     tr {
                                         td {
@@ -2238,6 +2248,18 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     
     private void berechnen(JTextField value, JTextField mwst, JTextField reg, JTextField diff) {
         
+        try {
+            float f1=betragFormat.parse(txtReparaturKosten.getText()).floatValue();
+            float f2=betragFormat.parse(txtReparaturKostenGutachten.getText()).floatValue();
+            if(f1>0 && f2>0) {
+                lblReparaturKostenDoppelt.text="<html><font color=\"red\">Reparaturkosten mglw. doppelt erfasst (lt. Gutachten und Rechnung)</font></html>";
+            } else {
+                lblReparaturKostenDoppelt.text="";
+            }
+        } catch (Throwable t) {
+            t.printStacktrace();
+        }
+        
         float vat=0f;
         try {
             if(mwst!=null) {
@@ -2280,6 +2302,8 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                 currentSum+=betragFormat.parse(txtWertminderung.text)
             } else {
                 currentSum+=betragFormat.parse(txtWiederbeschaffungswert.text)
+                // need to subtract mwst
+                currentSum-=betragFormat.parse(txtWiederbeschaffungswertMwst.text)
                 // this value is subtracted
                 currentSum-=betragFormat.parse(txtRestwert.text)
             }
@@ -2382,12 +2406,15 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
             
             float faktor=1.3f;
             
-            RvgTablesRangeList rl = new RvgTablesRangeList()
+            RvgTablesRangeList2021 rl = new RvgTablesRangeList2021()
             vv2300=Math.max(rl.getMappedValue(fStreitwert) * faktor, 0);
-            
+            //System.out.println("vv2300: " + vv2300);
             
             txtAnwaltskostenNetto.text=betragFormat.format(vv2300+vv7002);
+            //System.out.println("netto: " + betragFormat.format(vv2300+vv7002));
+            
             txtAnwaltskostenMwst.text=betragFormat.format((vv2300+vv7002)*0.19f);
+            //System.out.println("mwst: " + betragFormat.format((vv2300+vv7002)*0.19f));
             //txtAnwaltskostenReg
             txtAnwaltskostenDiff.text=betragFormat.format(vv2300 +vv7002 + ((vv2300+vv7002)*0.19f) - betragFormat.parse(txtAnwaltskostenReg.text));
             

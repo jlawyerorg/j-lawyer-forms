@@ -1,0 +1,50 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '8' # The JDK version to make available on the path.
+          java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
+          architecture: x64 # (x64 or x86) - defaults to x64
+
+      - name: Install wget
+        run: sudo apt-get install wget
+
+      - name: Get JSch libraries
+        run:  |
+          mkdir /home/runner/.ant
+          mkdir /home/runner/.ant/lib
+          wget -O /home/runner/.ant/lib/jsh.jar https://search.maven.org/remotecontent?filepath=com/jcraft/jsch/0.1.55/jsch-0.1.55.jar
+          wget -O /home/runner/.ant/lib/ant-jsh.jar https://search.maven.org/remotecontent?filepath=org/apache/ant/ant-jsch/1.10.6/ant-jsch-1.10.6.jar
+
+      - name: Upload to server
+        run: ant upload
+        env:
+          UPLOADUSER: ${{ secrets.UPLOADUSER }}
+          UPLOADPWD: ${{ secrets.UPLOADPWD }}
+          UPLOADMETAXML: ${{ secrets.UPLOADMETAXML }}
+          UPLOADPLUGINS: ${{ secrets.UPLOADPLUGINS }}
+          UPLOADPLUGINS111: ${{ secrets.UPLOADPLUGINS111 }}

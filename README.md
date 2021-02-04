@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.org/jlawyerorg/j-lawyer-forms.svg?branch=master)](https://travis-ci.org/jlawyerorg/j-lawyer-forms)
+![CI](https://github.com/jlawyerorg/j-lawyer-forms/workflows/CI/badge.svg)
 
 # j-lawyer-forms
 This is the j-lawyer.org plugin repository. Form plugins can be rolled out without updating the j-lawyer.org client or server. 

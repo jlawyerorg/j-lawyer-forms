@@ -664,6 +664,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "Familienrecht"
 description = "Familienrecht"
-version = "0.9.2";
+version = "1.0.0";
 author = "Jens Kutschke"
-updated = "13.02.2021"
+updated = "15.02.2021"

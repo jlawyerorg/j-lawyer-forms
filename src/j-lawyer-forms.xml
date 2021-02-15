@@ -10,6 +10,6 @@
     <form id="inkasso02" type="plugin" depends="formslib" name="Inkasso" description="Inkasso und Forderungsmanagement (Autoren: BAUMFALK SERVICES)" placeholder="INKASSO" version="2.0.4" for="1.13.0.5,1.14.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/1.12.0.0" files="inkasso02_meta.groovy,inkasso02_ui.groovy"/>
     <form id="arbeitsrecht02" type="plugin" depends="formslib" name="Kündigungsschutzklage" description="Arbeitsrecht Kündigungsschutzklage (Autoren: BAUMFALK SERVICES)" placeholder="KSCHUTZ" version="2.0.6" for="1.13.0.5,1.14.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/1.12.0.0" files="arbeitsrecht02_meta.groovy,arbeitsrecht02_ui.groovy"/>
     
-    <form id="famr01" type="plugin" depends="formslib" name="Familienrecht" description="Familienrecht" placeholder="FAMR" version="0.9.2" for="1.13.0.5,1.14.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/1.12.0.0" files="famr01_meta.groovy,famr01_ui.groovy"/>
+    <form id="famr01" type="plugin" depends="formslib" name="Familienrecht" description="Familienrecht" placeholder="FAMR" version="1.0.0" for="1.13.0.5,1.14.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/1.12.0.0" files="famr01_meta.groovy,famr01_ui.groovy"/>
     
 </forms>

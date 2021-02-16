@@ -720,6 +720,58 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
             
                     tr {
                         td (colfill:true, align: 'left') {
+                            panel(border: titledBorder(title: 'Persönliche Angaben')) {
+                                tableLayout (cellpadding: 5) {
+                                    
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'Geburtsname:')
+                                        }
+                                        td {
+                                            textField(name: "_PA_GEBNAME", text: '', columns:30)
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'jetzige ausländische Staatsangehörigkeit:')
+                                        }
+                                        td {
+                                            textField(name: "_PA_STAANG", text: '', columns:30)
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'sichere Postadresse:')
+                                        }
+                                        td {
+                                            textField(name: "_PA_ADRESSE", text: '', columns:50)
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'sichere E-Mail-Adresse:')
+                                        }
+                                        td {
+                                            textField(name: "_PA_EMAIL", text: '', columns:30)
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'sichere Telefonnummer:')
+                                        }
+                                        td {
+                                            textField(name: "_PA_TEL", text: '', columns:30)
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        }
+                    }
+
+                    
+                    tr {
+                        td (colfill:true, align: 'left') {
                             panel(border: titledBorder(title: 'Hochzeit')) {
                                 tableLayout (cellpadding: 5) {
                                     tr {
@@ -791,7 +843,6 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             }
                         }
                     }
-
                     
                     
                     

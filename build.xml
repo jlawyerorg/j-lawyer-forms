@@ -79,7 +79,7 @@
           <fileset dir="src/1.12.0.0"/>
         </scp>
         
-        <scp todir="${env.UPLOADUSER}:${env.UPLOADPWD}@/var/www/vhosts/j-lawyer.org/httpdocs/downloads/j-lawyer-plugins/forms/1.14.0.0" trust="true">
+        <scp todir="${env.UPLOADUSER}:${env.UPLOADPWD}@www.j-lawyer.org:${env.UPLOADFORMSBASE}/1.14.0.0/" trust="true">
           <fileset dir="src/1.14.0.0"/>
         </scp>
         

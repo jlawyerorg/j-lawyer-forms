@@ -970,7 +970,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: '     ')
                                         }
                                         td {
-                                            checkBox(text: 'es liegt ein notarieller Vertrag vor', name: "_TR_NOTARVERTRAG", selected: false, clientPropertyJlawyerdescription: "")
+                                            checkBox(text: 'es liegt ein notarieller Vertrag vor', name: "_TR_NOTARVERTRAG", selected: false, clientPropertyJlawyerdescription: "es liegt ein notarieller Vertrag vor")
                                         }
                                     }
 

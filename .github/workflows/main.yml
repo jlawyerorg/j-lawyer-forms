@@ -46,5 +46,4 @@ jobs:
           UPLOADUSER: ${{ secrets.UPLOADUSER }}
           UPLOADPWD: ${{ secrets.UPLOADPWD }}
           UPLOADFORMSMETAXML: ${{ secrets.UPLOADFORMSMETAXML }}
-          UPLOADFORMS: ${{ secrets.UPLOADFORMS }}
           UPLOADFORMSBASE: ${{ secrets.UPLOADFORMSBASE }}

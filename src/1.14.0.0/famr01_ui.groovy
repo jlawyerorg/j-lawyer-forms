@@ -741,7 +741,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'jetzige ausländische Staatsangehörigkeit:')
                                         }
                                         td {
-                                            textField(name: "_PA_STAANG", text: '', columns:30)
+                                            textField(name: "_PA_STAANG", text: '', columns:30, clientPropertyJlawyerdescription: "jetzige ausländische Staatsangehörigkeit:")
                                         }
                                     }
                                     tr {
@@ -749,7 +749,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'sichere Postadresse:')
                                         }
                                         td {
-                                            textField(name: "_PA_ADRESSE", text: '', columns:50)
+                                            textField(name: "_PA_ADRESSE", text: '', columns:50, clientPropertyJlawyerdescription: "sichere Postadresse")
                                         }
                                     }
                                     tr {
@@ -757,7 +757,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'sichere E-Mail-Adresse:')
                                         }
                                         td {
-                                            textField(name: "_PA_EMAIL", text: '', columns:30)
+                                            textField(name: "_PA_EMAIL", text: '', columns:30, clientPropertyJlawyerdescription: "sichere E-Mail-Adresse")
                                         }
                                     }
                                     tr {
@@ -765,7 +765,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'sichere Telefonnummer:')
                                         }
                                         td {
-                                            textField(name: "_PA_TEL", text: '', columns:30)
+                                            textField(name: "_PA_TEL", text: '', columns:30, clientPropertyJlawyerdescription: "sichere Telefonnummer")
                                         }
                                     }
                                     
@@ -784,7 +784,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Tag der Eheschließung:')
                                         }
                                         td {
-                                            textField(name: "_EHE_TAG", text: '', columns:10)
+                                            textField(name: "_EHE_TAG", text: '', columns:10, clientPropertyJlawyerdescription: "Tag der Eheschließung")
                                         }
                                     }
 
@@ -793,7 +793,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Eheregisternummer:')
                                         }
                                         td {
-                                            textField(name: "_EHE_REGNR", text: '', columns:30)
+                                            textField(name: "_EHE_REGNR", text: '', columns:30, clientPropertyJlawyerdescription: "Eheregisternummer")
                                         }
                                     }
 
@@ -805,7 +805,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Standesamt:')
                                         }
                                         td {
-                                            textField(name: "_EHE_STA", text: '', columns:50)
+                                            textField(name: "_EHE_STA", text: '', columns:50, clientPropertyJlawyerdescription: "Standesamt")
                                         }
                                     }
 
@@ -818,7 +818,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             'Zugewinn',
                                             'Gütergemeinschaft',
                                             'Gütertrennung'
-                                                ], name: "_EHE_VERTRAG", editable: true, actionPerformed: {
+                                                ], name: "_EHE_VERTRAG", clientPropertyJlawyerdescription: "Ehevertrag", editable: true, actionPerformed: {
                                                     
                                                 }
                                             )
@@ -831,7 +831,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Internationales Recht:')
                                         }
                                         td {
-                                            textField(name: "_EHE_INTRECHT", text: '', columns:30)
+                                            textField(name: "_EHE_INTRECHT", text: '', columns:30, clientPropertyJlawyerdescription: "Internationales Recht")
                                         }
                                     }
                                     
@@ -840,7 +840,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Staatsangehörigkeit z.Zt. der Eheschließung:')
                                         }
                                         td {
-                                            textField(name: "_EHE_STAANG", text: '', columns:30)
+                                            textField(name: "_EHE_STAANG", text: '', columns:30, clientPropertyJlawyerdescription: "Staatsangehörigkeit z.Zt. der Eheschließung")
                                         }
                                     }
 
@@ -862,7 +862,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Nettoeinkommen Mandant:')
                                         }
                                         td {
-                                            formattedTextField(name: "_TR_EINK_MDT", text: '', columns:10, format: betragFormat)
+                                            formattedTextField(name: "_TR_EINK_MDT", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Nettoeinkommen Mandant")
                                         }
                                     }
                                     
@@ -871,7 +871,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Beruf Mandant:')
                                         }
                                         td {
-                                            textField(name: "_TR_BERUF_MDT", text: '', columns:30)
+                                            textField(name: "_TR_BERUF_MDT", text: '', columns:30, clientPropertyJlawyerdescription: "Beruf Mandant")
                                         }
                                     }
 
@@ -880,7 +880,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Nettoeinkommen Ehegatte:')
                                         }
                                         td {
-                                            formattedTextField(name: "_TR_EINK_GATTE", text: '', columns:10, format: betragFormat)
+                                            formattedTextField(name: "_TR_EINK_GATTE", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Nettoeinkommen Ehegatte")
                                         }
                                     }
                                     tr {
@@ -888,7 +888,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Beruf Ehegatte:')
                                         }
                                         td {
-                                            textField(name: "_TR_BERUF_GATTE", text: '', columns:30)
+                                            textField(name: "_TR_BERUF_GATTE", text: '', columns:30, clientPropertyJlawyerdescription: "Beruf Ehegatte")
                                         }
                                     }
 
@@ -899,7 +899,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: '     ')
                                         }
                                         td {
-                                            checkBox(text: 'Gütliche Trennung', name: "_TR_GUETLICH", selected: false)
+                                            checkBox(text: 'Gütliche Trennung', name: "_TR_GUETLICH", selected: false, clientPropertyJlawyerdescription: "Gütliche Trennung")
                                         }
                                     }
                                     
@@ -908,7 +908,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: '     ')
                                         }
                                         td {
-                                            checkBox(text: 'Versorgungsausgleich geklärt (Verzicht)', name: "_TR_VAUSGLEICH", selected: false)
+                                            checkBox(text: 'Versorgungsausgleich geklärt (Verzicht)', name: "_TR_VAUSGLEICH", selected: false, clientPropertyJlawyerdescription: "Versorgungsausgleich geklärt (Verzicht)")
                                         }
                                     }
 
@@ -917,7 +917,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: '     ')
                                         }
                                         td {
-                                            checkBox(text: 'Hausrat geklärt', name: "_TR_HAUSRAT", selected: false)
+                                            checkBox(text: 'Hausrat geklärt', name: "_TR_HAUSRAT", selected: false, clientPropertyJlawyerdescription: "Hausrat geklärt")
                                         }
                                     }
 
@@ -926,7 +926,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: '     ')
                                         }
                                         td {
-                                            checkBox(text: 'Zugewinn geklärt', name: "_TR_ZUGEWINN", selected: false)
+                                            checkBox(text: 'Zugewinn geklärt', name: "_TR_ZUGEWINN", selected: false, clientPropertyJlawyerdescription: "Zugewinn geklärt")
                                         }
                                     }
 
@@ -935,7 +935,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: '     ')
                                         }
                                         td {
-                                            checkBox(text: 'Trennungsunterhalt geklärt', name: "_TR_UNTERH_TR", selected: false)
+                                            checkBox(text: 'Trennungsunterhalt geklärt', name: "_TR_UNTERH_TR", selected: false, clientPropertyJlawyerdescription: "Trennungsunterhalt geklärt")
                                         }
                                     }
 
@@ -944,7 +944,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: '     ')
                                         }
                                         td {
-                                            checkBox(text: 'Kindesunterhalt geklärt', name: "_TR_UNTERH_KIND", selected: false)
+                                            checkBox(text: 'Kindesunterhalt geklärt', name: "_TR_UNTERH_KIND", selected: false, clientPropertyJlawyerdescription: "Kindesunterhalt geklärt")
                                         }
                                     }
 
@@ -953,7 +953,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: '     ')
                                         }
                                         td {
-                                            checkBox(text: 'Sorgerecht geklärt', name: "_TR_SORGERE", selected: false)
+                                            checkBox(text: 'Sorgerecht geklärt', name: "_TR_SORGERE", selected: false, clientPropertyJlawyerdescription: "Sorgerecht geklärt")
                                         }
                                     }
 
@@ -962,7 +962,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: '     ')
                                         }
                                         td {
-                                            checkBox(text: 'Umgangsrecht geklärt', name: "_TR_UMGARE", selected: false)
+                                            checkBox(text: 'Umgangsrecht geklärt', name: "_TR_UMGARE", selected: false, clientPropertyJlawyerdescription: "Umgangsrecht geklärt")
                                         }
                                     }
                                     tr {
@@ -970,7 +970,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: '     ')
                                         }
                                         td {
-                                            checkBox(text: 'es liegt ein notarieller Vertrag vor', name: "_TR_NOTARVERTRAG", selected: false)
+                                            checkBox(text: 'es liegt ein notarieller Vertrag vor', name: "_TR_NOTARVERTRAG", selected: false, clientPropertyJlawyerdescription: "")
                                         }
                                     }
 
@@ -979,7 +979,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Tag der Trennung:')
                                         }
                                         td {
-                                            textField(name: "_TR_TAG", text: '', columns:10)
+                                            textField(name: "_TR_TAG", text: '', columns:10, clientPropertyJlawyerdescription: "Tag der Trennung")
                                         }}
 
                                     tr {
@@ -987,7 +987,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'letzte gemeinsame Wohnung:')
                                         }
                                         td {
-                                            textField(name: "_TR_LETZTWOHN", text: '', columns:50)
+                                            textField(name: "_TR_LETZTWOHN", text: '', columns:50, clientPropertyJlawyerdescription: "letzte gemeinsame Wohnung")
                                         }
                                     }
 
@@ -996,7 +996,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: '     ')
                                         }
                                         td {
-                                            checkBox(text: 'Kinder vorhanden', name: "_TR_KINDVORH", selected: false)
+                                            checkBox(text: 'Kinder vorhanden', name: "_TR_KINDVORH", selected: false, clientPropertyJlawyerdescription: "Kinder vorhanden")
                                         }
                                     }
 
@@ -1008,7 +1008,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Kind 1 Name:')
                                         }
                                         td {
-                                            textField(name: "_K1_NAME", text: '', columns:30)
+                                            textField(name: "_K1_NAME", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 1 Name")
                                         }
                                     }
 
@@ -1018,7 +1018,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Kind 1 Geburtsdatum:')
                                         }
                                         td {
-                                            textField(name: "_K1_GEB", text: '', columns:10)
+                                            textField(name: "_K1_GEB", text: '', columns:10, clientPropertyJlawyerdescription: "Kind 1 Geburtsdatum")
                                         }
                                     }
                                     tr {
@@ -1026,7 +1026,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Kind 1 Geburtsort:')
                                         }
                                         td {
-                                            textField(name: "_K1_GEBORT", text: '', columns:30)
+                                            textField(name: "_K1_GEBORT", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 1 Geburtsort")
                                         }
                                     }
                                     tr {
@@ -1034,7 +1034,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Kind 1 eigenes Einkommen:')
                                         }
                                         td {
-                                            formattedTextField(name: "_K1_EINK", text: '', columns:10, format: betragFormat)
+                                            formattedTextField(name: "_K1_EINK", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Kind 1 eigenes Einkommen")
                                         }
                                     }
                                     
@@ -1043,7 +1043,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Kind 2 Name:')
                                         }
                                         td {
-                                            textField(name: "_K2_NAME", text: '', columns:30)
+                                            textField(name: "_K2_NAME", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 2 Name")
                                         }
                                     }
 
@@ -1053,7 +1053,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Kind 2 Geburtsdatum:')
                                         }
                                         td {
-                                            textField(name: "_K2_GEB", text: '', columns:10)
+                                            textField(name: "_K2_GEB", text: '', columns:10, clientPropertyJlawyerdescription: "Kind 2 Geburtsdatum")
                                         }
                                     }
                                     tr {
@@ -1061,7 +1061,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Kind 2 Geburtsort:')
                                         }
                                         td {
-                                            textField(name: "_K2_GEBORT", text: '', columns:30)
+                                            textField(name: "_K2_GEBORT", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 2 Geburtsort")
                                         }
                                     }
                                     tr {
@@ -1069,7 +1069,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Kind 2 eigenes Einkommen:')
                                         }
                                         td {
-                                            formattedTextField(name: "_K2_EINK", text: '', columns:10, format: betragFormat)
+                                            formattedTextField(name: "_K2_EINK", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Kind 2 eigenes Einkommen")
                                         }
 
                                     }
@@ -1079,7 +1079,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Kind 3 Name:')
                                         }
                                         td {
-                                            textField(name: "_K3_NAME", text: '', columns:30)
+                                            textField(name: "_K3_NAME", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 3 Name")
                                         }
                                     }
                                     tr {
@@ -1087,7 +1087,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Kind 3 Geburtsort:')
                                         }
                                         td {
-                                            textField(name: "_K3_GEBORT", text: '', columns:30)
+                                            textField(name: "_K3_GEBORT", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 3 Geburtsort")
                                         }
                                     }
 
@@ -1096,7 +1096,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Kind 3 Geburtsdatum:')
                                         }
                                         td {
-                                            textField(name: "_K3_GEB", text: '', columns:10)
+                                            textField(name: "_K3_GEB", text: '', columns:10, clientPropertyJlawyerdescription: "Kind 3 Geburtsdatum")
                                         }
                                     }
                                     tr {
@@ -1104,7 +1104,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Kind 3 eigenes Einkommen:')
                                         }
                                         td {
-                                            formattedTextField(name: "_K3_EINK", text: '', columns:10, format: betragFormat)
+                                            formattedTextField(name: "_K3_EINK", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Kind 3 eigenes Einkommen")
                                         }
 
                                     }
@@ -1114,7 +1114,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Kind 4 Name:')
                                         }
                                         td {
-                                            textField(name: "_K4_NAME", text: '', columns:30)
+                                            textField(name: "_K4_NAME", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 4 Name")
                                         }
                                     }
                                     tr {
@@ -1122,7 +1122,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Kind 4 Geburtsort:')
                                         }
                                         td {
-                                            textField(name: "_K4_GEBORT", text: '', columns:30)
+                                            textField(name: "_K4_GEBORT", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 4 Geburtsort")
                                         }
                                     }
 
@@ -1131,7 +1131,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Kind 4 Geburtsdatum:')
                                         }
                                         td {
-                                            textField(name: "_K4_GEB", text: '', columns:10)
+                                            textField(name: "_K4_GEB", text: '', columns:10, clientPropertyJlawyerdescription: "Kind 4 Geburtsdatum")
                                         }
                                     }
                                     tr {
@@ -1139,7 +1139,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             label(text: 'Kind 4 eigenes Einkommen:')
                                         }
                                         td {
-                                            formattedTextField(name: "_K4_EINK", text: '', columns:10, format: betragFormat)
+                                            formattedTextField(name: "_K4_EINK", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Kind 4 eigenes Einkommen")
                                         }
 
                                     }
@@ -1152,7 +1152,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             comboBox(items: [
                                             'Mandant',
                                             'Ehegatte'
-                                                ], name: "_TR_KINDGELD", editable: true, actionPerformed: {
+                                                ], name: "_TR_KINDGELD", clientPropertyJlawyerdescription: "Kindergeldbezug", editable: true, actionPerformed: {
                                                     
                                                 }
                                             )
@@ -1167,7 +1167,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                             'Mandant',
                                             'Ehegatte',
                                             'weder noch'
-                                                ], name: "_TR_KINDER_WO", editable: true, actionPerformed: {
+                                                ], name: "_TR_KINDER_WO", clientPropertyJlawyerdescription: "bei minderjährigen Kindern Wohnort bei welchem Elternteil", editable: true, actionPerformed: {
                                                     
                                                 }
                                             )
@@ -1188,7 +1188,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                                 label(text: '     ')
                                             }
                                             td {
-                                                checkBox(text: 'Härtefallentscheidung', name: "_SCH_HFALL", selected: false)
+                                                checkBox(text: 'Härtefallentscheidung', name: "_SCH_HFALL", selected: false, clientPropertyJlawyerdescription: "Härtefallentscheidung")
                                             }
                                         }
                                         tr {
@@ -1196,7 +1196,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                                 label(text: 'Tag Zustellung Scheidung:')
                                             }
                                             td {
-                                                textField(name: "_SCH_ZUSTELLTAG", text: '', columns:10)
+                                                textField(name: "_SCH_ZUSTELLTAG", text: '', columns:10, clientPropertyJlawyerdescription: "Tag Zustellung Scheidung")
                                             }
                                         }
                                         
@@ -1205,7 +1205,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                                 label(text: '     ')
                                             }
                                             td {
-                                                checkBox(text: 'VKH', name: "_SCH_VKH", selected: false)
+                                                checkBox(text: 'VKH', name: "_SCH_VKH", selected: false, clientPropertyJlawyerdescription: "VKH")
                                             }
                                         }
                                         

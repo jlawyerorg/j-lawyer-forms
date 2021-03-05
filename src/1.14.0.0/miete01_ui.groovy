@@ -764,7 +764,7 @@ public class miete01_ui implements com.jdimension.jlawyer.client.plugins.form.Fo
                                             label(text: 'Anzahl Zimmer:')
                                         }
                                         td {
-                                            spinner(name: "_OBJZIMMER", 
+                                            spinner(name: "_OBJZIMMER", clientPropertyJlawyerdescription: "Anzahl Zimmer", 
                                                 model:spinnerNumberModel(minimum:1, 
                                                     maximum: 20,
                                                     value:2, clientPropertyJlawyerdescription: "Anzahl Zimmer",

@@ -679,12 +679,13 @@ import java.awt.Component
 import java.awt.Container
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 
-public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
+public class miete01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
 
     JPanel SCRIPTPANEL=null;
+    
     FormPluginCallback callback=null;
 
-    public famr01_ui() {
+    public miete01_ui() {
         super();
     }
 
@@ -705,6 +706,7 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
     
     public void setPlaceHolderValues(String prefix, Hashtable placeHolderValues) {
         FormsLib.setPlaceHolderValues(prefix, placeHolderValues, this.SCRIPTPANEL);
+        toggleSchadentyp();
     }
 
     public void setCallback(FormPluginCallback callback) {
@@ -715,7 +717,8 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
 
 
         SwingBuilder swing=new SwingBuilder()
-        NumberFormat betragFormat = new DecimalFormat("0.00")
+
+
 
                     
         swing.edt {
@@ -724,504 +727,25 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                 tableLayout (id: 'pluginParent', cellpadding: 5) {
             
                     tr {
-                        td (colfill:true, align: 'left') {
-                            panel(border: titledBorder(title: 'Persönliche Angaben')) {
-                                tableLayout (cellpadding: 5) {
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Geburtsname:')
-                                        }
-                                        td {
-                                            textField(name: "_PA_GEBNAME", text: '', columns:30, clientPropertyJlawyerdescription: "Geburtsname")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'jetzige ausländische Staatsangehörigkeit:')
-                                        }
-                                        td {
-                                            textField(name: "_PA_STAANG", text: '', columns:30, clientPropertyJlawyerdescription: "jetzige ausländische Staatsangehörigkeit:")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'sichere Postadresse:')
-                                        }
-                                        td {
-                                            textField(name: "_PA_ADRESSE", text: '', columns:50, clientPropertyJlawyerdescription: "sichere Postadresse")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'sichere E-Mail-Adresse:')
-                                        }
-                                        td {
-                                            textField(name: "_PA_EMAIL", text: '', columns:30, clientPropertyJlawyerdescription: "sichere E-Mail-Adresse")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'sichere Telefonnummer:')
-                                        }
-                                        td {
-                                            textField(name: "_PA_TEL", text: '', columns:30, clientPropertyJlawyerdescription: "sichere Telefonnummer")
-                                        }
-                                    }
-                                    
-                                }
-                            }
+                        td  {
+                            
+                           label(text: 'Bezeichnung:')      
+                        }
+                        
+                        td  {
+                            
+                           textField(id: 'sWertefeld', name: "_PLATZHALTERNAME", clientPropertyJlawyerdescription: "Beschreibung des Eingabefeldes", text: '', columns:50)
                         }
                     }
-
-                    
-                    tr {
-                        td (colfill:true, align: 'left') {
-                            panel(border: titledBorder(title: 'Hochzeit')) {
-                                tableLayout (cellpadding: 5) {
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Tag der Eheschließung:')
-                                        }
-                                        td {
-                                            textField(name: "_EHE_TAG", text: '', columns:10, clientPropertyJlawyerdescription: "Tag der Eheschließung")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Eheregisternummer:')
-                                        }
-                                        td {
-                                            textField(name: "_EHE_REGNR", text: '', columns:30, clientPropertyJlawyerdescription: "Eheregisternummer")
-                                        }
-                                    }
-
-
-
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Standesamt:')
-                                        }
-                                        td {
-                                            textField(name: "_EHE_STA", text: '', columns:50, clientPropertyJlawyerdescription: "Standesamt")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Ehevertrag:')
-                                        }
-                                        td {
-                                            comboBox(items: [
-                                            'Zugewinn',
-                                            'Gütergemeinschaft',
-                                            'Gütertrennung'
-                                                ], name: "_EHE_VERTRAG", clientPropertyJlawyerdescription: "Ehevertrag", editable: true, actionPerformed: {
-                                                    
-                                                }
-                                            )
-                                        }
-                                    }
-
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Internationales Recht:')
-                                        }
-                                        td {
-                                            textField(name: "_EHE_INTRECHT", text: '', columns:30, clientPropertyJlawyerdescription: "Internationales Recht")
-                                        }
-                                    }
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Staatsangehörigkeit z.Zt. der Eheschließung:')
-                                        }
-                                        td {
-                                            textField(name: "_EHE_STAANG", text: '', columns:30, clientPropertyJlawyerdescription: "Staatsangehörigkeit z.Zt. der Eheschließung")
-                                        }
-                                    }
-
-                                }
-                            }
-                        }
-                    }
-                    
-                    
-                    
-                    tr {
-                        td (colfill:true, align: 'left') {
-                            panel(border: titledBorder(title: 'Trennung')) {
-                                tableLayout (cellpadding: 5) {
-
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Nettoeinkommen Mandant:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_TR_EINK_MDT", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Nettoeinkommen Mandant")
-                                        }
-                                    }
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Beruf Mandant:')
-                                        }
-                                        td {
-                                            textField(name: "_TR_BERUF_MDT", text: '', columns:30, clientPropertyJlawyerdescription: "Beruf Mandant")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Nettoeinkommen Ehegatte:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_TR_EINK_GATTE", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Nettoeinkommen Ehegatte")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Beruf Ehegatte:')
-                                        }
-                                        td {
-                                            textField(name: "_TR_BERUF_GATTE", text: '', columns:30, clientPropertyJlawyerdescription: "Beruf Ehegatte")
-                                        }
-                                    }
-
-
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Gütliche Trennung', name: "_TR_GUETLICH", selected: false, clientPropertyJlawyerdescription: "Gütliche Trennung")
-                                        }
-                                    }
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Versorgungsausgleich geklärt (Verzicht)', name: "_TR_VAUSGLEICH", selected: false, clientPropertyJlawyerdescription: "Versorgungsausgleich geklärt (Verzicht)")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Hausrat geklärt', name: "_TR_HAUSRAT", selected: false, clientPropertyJlawyerdescription: "Hausrat geklärt")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Zugewinn geklärt', name: "_TR_ZUGEWINN", selected: false, clientPropertyJlawyerdescription: "Zugewinn geklärt")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Trennungsunterhalt geklärt', name: "_TR_UNTERH_TR", selected: false, clientPropertyJlawyerdescription: "Trennungsunterhalt geklärt")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Kindesunterhalt geklärt', name: "_TR_UNTERH_KIND", selected: false, clientPropertyJlawyerdescription: "Kindesunterhalt geklärt")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Sorgerecht geklärt', name: "_TR_SORGERE", selected: false, clientPropertyJlawyerdescription: "Sorgerecht geklärt")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Umgangsrecht geklärt', name: "_TR_UMGARE", selected: false, clientPropertyJlawyerdescription: "Umgangsrecht geklärt")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'es liegt ein notarieller Vertrag vor', name: "_TR_NOTARVERTRAG", selected: false, clientPropertyJlawyerdescription: "es liegt ein notarieller Vertrag vor")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Tag der Trennung:')
-                                        }
-                                        td {
-                                            textField(name: "_TR_TAG", text: '', columns:10, clientPropertyJlawyerdescription: "Tag der Trennung")
-                                        }}
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'letzte gemeinsame Wohnung:')
-                                        }
-                                        td {
-                                            textField(name: "_TR_LETZTWOHN", text: '', columns:50, clientPropertyJlawyerdescription: "letzte gemeinsame Wohnung")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Kinder vorhanden', name: "_TR_KINDVORH", selected: false, clientPropertyJlawyerdescription: "Kinder vorhanden")
-                                        }
-                                    }
-
-
-
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 1 Name:')
-                                        }
-                                        td {
-                                            textField(name: "_K1_NAME", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 1 Name")
-                                        }
-                                    }
-
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 1 Geburtsdatum:')
-                                        }
-                                        td {
-                                            textField(name: "_K1_GEB", text: '', columns:10, clientPropertyJlawyerdescription: "Kind 1 Geburtsdatum")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 1 Geburtsort:')
-                                        }
-                                        td {
-                                            textField(name: "_K1_GEBORT", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 1 Geburtsort")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 1 eigenes Einkommen:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_K1_EINK", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Kind 1 eigenes Einkommen")
-                                        }
-                                    }
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 2 Name:')
-                                        }
-                                        td {
-                                            textField(name: "_K2_NAME", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 2 Name")
-                                        }
-                                    }
-
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 2 Geburtsdatum:')
-                                        }
-                                        td {
-                                            textField(name: "_K2_GEB", text: '', columns:10, clientPropertyJlawyerdescription: "Kind 2 Geburtsdatum")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 2 Geburtsort:')
-                                        }
-                                        td {
-                                            textField(name: "_K2_GEBORT", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 2 Geburtsort")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 2 eigenes Einkommen:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_K2_EINK", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Kind 2 eigenes Einkommen")
-                                        }
-
-                                    }
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 3 Name:')
-                                        }
-                                        td {
-                                            textField(name: "_K3_NAME", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 3 Name")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 3 Geburtsort:')
-                                        }
-                                        td {
-                                            textField(name: "_K3_GEBORT", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 3 Geburtsort")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 3 Geburtsdatum:')
-                                        }
-                                        td {
-                                            textField(name: "_K3_GEB", text: '', columns:10, clientPropertyJlawyerdescription: "Kind 3 Geburtsdatum")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 3 eigenes Einkommen:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_K3_EINK", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Kind 3 eigenes Einkommen")
-                                        }
-
-                                    }
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 4 Name:')
-                                        }
-                                        td {
-                                            textField(name: "_K4_NAME", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 4 Name")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 4 Geburtsort:')
-                                        }
-                                        td {
-                                            textField(name: "_K4_GEBORT", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 4 Geburtsort")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 4 Geburtsdatum:')
-                                        }
-                                        td {
-                                            textField(name: "_K4_GEB", text: '', columns:10, clientPropertyJlawyerdescription: "Kind 4 Geburtsdatum")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 4 eigenes Einkommen:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_K4_EINK", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Kind 4 eigenes Einkommen")
-                                        }
-
-                                    }
-                                        
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kindergeldbezug:')
-                                        }
-                                        td {
-                                            comboBox(items: [
-                                            'Mandant',
-                                            'Ehegatte'
-                                                ], name: "_TR_KINDGELD", clientPropertyJlawyerdescription: "Kindergeldbezug", editable: true, actionPerformed: {
-                                                    
-                                                }
-                                            )
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'bei minderjährigen Kindern Wohnort bei welchem Elternteil:')
-                                        }
-                                        td {
-                                            comboBox(items: [
-                                            'Mandant',
-                                            'Ehegatte',
-                                            'weder noch'
-                                                ], name: "_TR_KINDER_WO", clientPropertyJlawyerdescription: "bei minderjährigen Kindern Wohnort bei welchem Elternteil", editable: true, actionPerformed: {
-                                                    
-                                                }
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    
-                    
-                        tr {
-                            td (colfill:true, align: 'left') {
-                                panel(border: titledBorder(title: 'Scheidung')) {
-                                    tableLayout (cellpadding: 5) {
-                                        tr {
-                                            td (colfill:true) {
-                                                label(text: '     ')
-                                            }
-                                            td {
-                                                checkBox(text: 'Härtefallentscheidung', name: "_SCH_HFALL", selected: false, clientPropertyJlawyerdescription: "Härtefallentscheidung")
-                                            }
-                                        }
-                                        tr {
-                                            td (colfill:true) {
-                                                label(text: 'Tag Zustellung Scheidung:')
-                                            }
-                                            td {
-                                                textField(name: "_SCH_ZUSTELLTAG", text: '', columns:10, clientPropertyJlawyerdescription: "Tag Zustellung Scheidung")
-                                            }
-                                        }
-                                        
-                                        tr {
-                                            td (colfill:true) {
-                                                label(text: '     ')
-                                            }
-                                            td {
-                                                checkBox(text: 'VKH', name: "_SCH_VKH", selected: false, clientPropertyJlawyerdescription: "VKH")
-                                            }
-                                        }
-                                        
-                                    }
-                                }
-                            }
-                        }
                     
                
-                    }
-                }
+                }  
             }
-
-            return SCRIPTPANEL;
-
         }
-    
+
+        return SCRIPTPANEL;
+
     }
- 
+    
+
+}

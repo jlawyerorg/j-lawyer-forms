@@ -663,28 +663,17 @@ For more information on this, and how to apply and follow the GNU AGPL, see
  */
 
 import groovy.swing.SwingBuilder
-import java.awt.BorderLayout as BL
-import groovy.beans.Bindable
-import java.text.DecimalFormat
-import java.text.NumberFormat
 import javax.swing.SwingConstants
-import java.util.ArrayList
-import java.util.List
-import java.util.Locale
-import javax.swing.JTable
 import javax.swing.JPanel
-import javax.swing.JTextField
-import javax.swing.JRadioButton
-import java.awt.Component
-import java.awt.Container
+import java.util.ArrayList
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 
-public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
+public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
 
     JPanel SCRIPTPANEL=null;
     FormPluginCallback callback=null;
 
-    public famr01_ui() {
+    public arbeitsrecht02_ui() {
         super();
     }
 
@@ -710,518 +699,453 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
     public void setCallback(FormPluginCallback callback) {
         this.callback=callback;
     }
+    
+    
+    def erstellen() {
+
+        lblSteuern.text = 0.19 * Float.parseFloat(txtBetrag.text)
+    }
 
     public JPanel getUi() {
 
-
         SwingBuilder swing=new SwingBuilder()
-        NumberFormat betragFormat = new DecimalFormat("0.00")
-
-                    
         swing.edt {
             SCRIPTPANEL=panel(size: [300, 300]) {
-                //borderLayout()
-                tableLayout (id: 'pluginParent', cellpadding: 5) {
-            
+                tableLayout (cellpadding: 5) {
                     tr {
                         td (colfill:true, align: 'left') {
-                            panel(border: titledBorder(title: 'Persönliche Angaben')) {
-                                tableLayout (cellpadding: 5) {
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Geburtsname:')
-                                        }
-                                        td {
-                                            textField(name: "_PA_GEBNAME", text: '', columns:30, clientPropertyJlawyerdescription: "Geburtsname")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'jetzige ausländische Staatsangehörigkeit:')
-                                        }
-                                        td {
-                                            textField(name: "_PA_STAANG", text: '', columns:30, clientPropertyJlawyerdescription: "jetzige ausländische Staatsangehörigkeit:")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'sichere Postadresse:')
-                                        }
-                                        td {
-                                            textField(name: "_PA_ADRESSE", text: '', columns:50, clientPropertyJlawyerdescription: "sichere Postadresse")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'sichere E-Mail-Adresse:')
-                                        }
-                                        td {
-                                            textField(name: "_PA_EMAIL", text: '', columns:30, clientPropertyJlawyerdescription: "sichere E-Mail-Adresse")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'sichere Telefonnummer:')
-                                        }
-                                        td {
-                                            textField(name: "_PA_TEL", text: '', columns:30, clientPropertyJlawyerdescription: "sichere Telefonnummer")
-                                        }
-                                    }
-                                    
-                                }
-                            }
-                        }
-                    }
-
-                    
-                    tr {
-                        td (colfill:true, align: 'left') {
-                            panel(border: titledBorder(title: 'Hochzeit')) {
+                            panel(border: titledBorder(title: 'Basisdaten zum Arbeitsvertrag:')) {
                                 tableLayout (cellpadding: 5) {
                                     tr {
-                                        td (colfill:true) {
-                                            label(text: 'Tag der Eheschließung:')
+                                        td {
+                                            label(text: 'Arbeitsvertrag vorhanden?')        
                                         }
                                         td {
-                                            textField(name: "_EHE_TAG", text: '', columns:10, clientPropertyJlawyerdescription: "Tag der Eheschließung")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Eheregisternummer:')
-                                        }
-                                        td {
-                                            textField(name: "_EHE_REGNR", text: '', columns:30, clientPropertyJlawyerdescription: "Eheregisternummer")
-                                        }
-                                    }
-
-
-
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Standesamt:')
-                                        }
-                                        td {
-                                            textField(name: "_EHE_STA", text: '', columns:50, clientPropertyJlawyerdescription: "Standesamt")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Ehevertrag:')
-                                        }
-                                        td {
+                                                                                        
                                             comboBox(items: [
-                                            'Zugewinn',
-                                            'Gütergemeinschaft',
-                                            'Gütertrennung'
-                                                ], name: "_EHE_VERTRAG", clientPropertyJlawyerdescription: "Ehevertrag", editable: true, actionPerformed: {
-                                                    
-                                                }
+                                                            'bestehender Arbeitsvertrag',
+                                                            'kein Arbeitsvertrag vorhanden'
+                                                            
+
+                                                ], name: "_AVVORHANDEN", clientPropertyJlawyerdescription: "Arbeitsvertrag vorhanden?", editable: false
                                             )
                                         }
-                                    }
-
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Internationales Recht:')
-                                        }
-                                        td {
-                                            textField(name: "_EHE_INTRECHT", text: '', columns:30, clientPropertyJlawyerdescription: "Internationales Recht")
-                                        }
-                                    }
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Staatsangehörigkeit z.Zt. der Eheschließung:')
-                                        }
-                                        td {
-                                            textField(name: "_EHE_STAANG", text: '', columns:30, clientPropertyJlawyerdescription: "Staatsangehörigkeit z.Zt. der Eheschließung")
-                                        }
-                                    }
-
-                                }
-                            }
-                        }
-                    }
-                    
-                    
-                    
-                    tr {
-                        td (colfill:true, align: 'left') {
-                            panel(border: titledBorder(title: 'Trennung')) {
-                                tableLayout (cellpadding: 5) {
-
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Nettoeinkommen Mandant:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_TR_EINK_MDT", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Nettoeinkommen Mandant")
-                                        }
-                                    }
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Beruf Mandant:')
-                                        }
-                                        td {
-                                            textField(name: "_TR_BERUF_MDT", text: '', columns:30, clientPropertyJlawyerdescription: "Beruf Mandant")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Nettoeinkommen Ehegatte:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_TR_EINK_GATTE", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Nettoeinkommen Ehegatte")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Beruf Ehegatte:')
-                                        }
-                                        td {
-                                            textField(name: "_TR_BERUF_GATTE", text: '', columns:30, clientPropertyJlawyerdescription: "Beruf Ehegatte")
-                                        }
-                                    }
-
-
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Gütliche Trennung', name: "_TR_GUETLICH", selected: false, clientPropertyJlawyerdescription: "Gütliche Trennung")
-                                        }
-                                    }
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Versorgungsausgleich geklärt (Verzicht)', name: "_TR_VAUSGLEICH", selected: false, clientPropertyJlawyerdescription: "Versorgungsausgleich geklärt (Verzicht)")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Hausrat geklärt', name: "_TR_HAUSRAT", selected: false, clientPropertyJlawyerdescription: "Hausrat geklärt")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Zugewinn geklärt', name: "_TR_ZUGEWINN", selected: false, clientPropertyJlawyerdescription: "Zugewinn geklärt")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Trennungsunterhalt geklärt', name: "_TR_UNTERH_TR", selected: false, clientPropertyJlawyerdescription: "Trennungsunterhalt geklärt")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Kindesunterhalt geklärt', name: "_TR_UNTERH_KIND", selected: false, clientPropertyJlawyerdescription: "Kindesunterhalt geklärt")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Sorgerecht geklärt', name: "_TR_SORGERE", selected: false, clientPropertyJlawyerdescription: "Sorgerecht geklärt")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Umgangsrecht geklärt', name: "_TR_UMGARE", selected: false, clientPropertyJlawyerdescription: "Umgangsrecht geklärt")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'es liegt ein notarieller Vertrag vor', name: "_TR_NOTARVERTRAG", selected: false, clientPropertyJlawyerdescription: "es liegt ein notarieller Vertrag vor")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Tag der Trennung:')
-                                        }
-                                        td {
-                                            textField(name: "_TR_TAG", text: '', columns:10, clientPropertyJlawyerdescription: "Tag der Trennung")
-                                        }}
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'letzte gemeinsame Wohnung:')
-                                        }
-                                        td {
-                                            textField(name: "_TR_LETZTWOHN", text: '', columns:50, clientPropertyJlawyerdescription: "letzte gemeinsame Wohnung")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Kinder vorhanden', name: "_TR_KINDVORH", selected: false, clientPropertyJlawyerdescription: "Kinder vorhanden")
-                                        }
-                                    }
-
-
-
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 1 Name:')
-                                        }
-                                        td {
-                                            textField(name: "_K1_NAME", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 1 Name")
-                                        }
-                                    }
-
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 1 Geburtsdatum:')
-                                        }
-                                        td {
-                                            textField(name: "_K1_GEB", text: '', columns:10, clientPropertyJlawyerdescription: "Kind 1 Geburtsdatum")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 1 Geburtsort:')
-                                        }
-                                        td {
-                                            textField(name: "_K1_GEBORT", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 1 Geburtsort")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 1 eigenes Einkommen:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_K1_EINK", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Kind 1 eigenes Einkommen")
-                                        }
-                                    }
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 2 Name:')
-                                        }
-                                        td {
-                                            textField(name: "_K2_NAME", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 2 Name")
-                                        }
-                                    }
-
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 2 Geburtsdatum:')
-                                        }
-                                        td {
-                                            textField(name: "_K2_GEB", text: '', columns:10, clientPropertyJlawyerdescription: "Kind 2 Geburtsdatum")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 2 Geburtsort:')
-                                        }
-                                        td {
-                                            textField(name: "_K2_GEBORT", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 2 Geburtsort")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 2 eigenes Einkommen:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_K2_EINK", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Kind 2 eigenes Einkommen")
-                                        }
-
-                                    }
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 3 Name:')
-                                        }
-                                        td {
-                                            textField(name: "_K3_NAME", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 3 Name")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 3 Geburtsort:')
-                                        }
-                                        td {
-                                            textField(name: "_K3_GEBORT", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 3 Geburtsort")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 3 Geburtsdatum:')
-                                        }
-                                        td {
-                                            textField(name: "_K3_GEB", text: '', columns:10, clientPropertyJlawyerdescription: "Kind 3 Geburtsdatum")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 3 eigenes Einkommen:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_K3_EINK", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Kind 3 eigenes Einkommen")
-                                        }
-
-                                    }
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 4 Name:')
-                                        }
-                                        td {
-                                            textField(name: "_K4_NAME", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 4 Name")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 4 Geburtsort:')
-                                        }
-                                        td {
-                                            textField(name: "_K4_GEBORT", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 4 Geburtsort")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 4 Geburtsdatum:')
-                                        }
-                                        td {
-                                            textField(name: "_K4_GEB", text: '', columns:10, clientPropertyJlawyerdescription: "Kind 4 Geburtsdatum")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 4 eigenes Einkommen:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_K4_EINK", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Kind 4 eigenes Einkommen")
-                                        }
-
-                                    }
                                         
+                                    }
+                                         
                                     tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kindergeldbezug:')
+                                        td {
+                                            label(text: 'Befristung:')        
                                         }
                                         td {
                                             comboBox(items: [
-                                            'Mandant',
-                                            'Ehegatte'
-                                                ], name: "_TR_KINDGELD", clientPropertyJlawyerdescription: "Kindergeldbezug", editable: true, actionPerformed: {
-                                                    
-                                                }
+                                                            'befristet',
+                                                            'unbefristet'
+                                                            
+
+                                                ], name: "_AVBEFRISTUNG", clientPropertyJlawyerdescription: "Befristung", editable: false
+                                            )
+                                            
+                                            
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                    
+                                            label(text: 'Bis wann ist der Arbeitsvertrag befristet?')
+                                    
+                                    
+                                        }
+                                        td {
+                                            txtBefristungAv=textField(id: 'sBefristungAv', name: "_BEFRISTUNGAV", clientPropertyJlawyerdescription: "Bis wann ist der Arbeitsvertrag befristet?", text: '', columns:10)
+                                        
+                                        }    
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                    
+                                            label(text: 'Probezeit:')
+                                    
+                                    
+                                        }
+                                        td {
+                                            txtProbezeitAv=textField(id: 'sProbezeitAv', name: "_PROBEZEITAV", clientPropertyJlawyerdescription: "Probezeit", text: '', columns:10)
+                                        
+                                        }    
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                    
+                                            label(text: 'Kündigungsfrist:')
+                                    
+                                    
+                                        }
+                                        td {
+                                            txtKündigungsFrist=textField(id: 'sKündigungsFrist', name: "_KFRIST", clientPropertyJlawyerdescription: "Kündigungsfrist", text: '', columns:10)
+                                        
+                                        }    
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                    
+                                            label(text: 'Wann wurde der Arbeitsvertrag geschlossen?')
+                                    
+                                    
+                                        }
+                                        td {
+                                            txtDatumAv=textField(id: 'sDatumAv', name: "_DATUMAV", clientPropertyJlawyerdescription: "Wann wurde der Arbeitsvertrag geschlossen?", text: '', columns:10)
+                                        
+                                        } 
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                    
+                                            label(text: 'Bruttomonatseinkommen:')
+                                    
+                                    
+                                        }
+                                        td {
+                                            txtBruttoEink=textField(id: 'sBruttoEink', clientPropertyJlawyerdescription: "Bruttomonatseinkommen", name: "_BRUTTOEINK", text: '', columns:10)
+                                        
+                                        } 
+                                    }
+                                    tr {
+                                        td  {
+                                        label(text: 'Abfindungsmodifikatoren:')
+                                    }   
+                                        td  {
+                                            comboBox(items: [
+                                                            'Betrag eingeben',
+                                                            '+20%',
+                                                            '+10%',
+                                                            '-10%',
+                                                            '-20%',
+                                                            
+
+                                                ], name: "_ABFINDUNG", clientPropertyJlawyerdescription: "Abfindungsmodifikatoren", editable: true
+                                            )
+                                        }    
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Abfindungsbetrag:')
+                                        }
+                                    
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Ist der Mandant Arbeitnehmer oder Arbeitgeber?')        
+                                        }
+                                        td {
+                                            comboBox(items: [
+                                                            'Arbeitnehmer',
+                                                            'Arbeitgeber'
+                                                            
+
+                                                ], name: "_ANODERAG", clientPropertyJlawyerdescription: "Ist der Mandant Arbeitnehmer oder Arbeitgeber?", editable: false
                                             )
                                         }
                                     }
                                     tr {
+                                        td {
+                                            label(text: 'Sind Karenzklauseln vorhanden?')        
+                                        }
+                                        td {
+                                            
+                                            checkBox(text: '', name: "_KARENZVORHANDEN", clientPropertyJlawyerdescription: "Sind Karenzklauseln vorhanden?", selected: true)
+                                        }
+                                        
+                                    }
+                                    tr {
                                         td (colfill:true) {
-                                            label(text: 'bei minderjährigen Kindern Wohnort bei welchem Elternteil:')
+                                    
+                                            label(text: 'Dauer der Karenzzeit / des Berufsverbotes:')
+                                    
+                                    
+                                        }
+                                        td {
+                                            txtDauerKarenz=textField(id: 'sDauerKarenz', clientPropertyJlawyerdescription: "Dauer der Karenzzeit / des Berufsverbotes", name: "_DAUERKARENZ", text: '', columns:10)
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Sind Tarifklauseln vorhanden?')        
+                                        }
+                                        td {
+                                            
+                                            checkBox(text: '', name: "_TARIFVORHANDEN", clientPropertyJlawyerdescription: "Sind Tarifklauseln vorhanden?", selected: true)
+                                        }
+                                    }
+                                       
+                                    tr {
+                                        td (colfill:true) {
+                                    
+                                            label(text: 'Tarifzugehörigkeit:')
+                                    
+                                    
+                                        }
+                                        td {
+                                            txtTarif=textField(id: 'sTarif', clientPropertyJlawyerdescription: "Tarifzugehörigkeit", name: "_TARIF", text: '', columns:10)
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Ist der Mandant gesetzlicher Vertreter einer juristischen Person?')        
+                                        }
+                                        td {
+                                            
+                                            checkBox(text: '', name: "_GV", clientPropertyJlawyerdescription: "Ist der Mandant gesetzlicher Vertreter einer juristischen Person?", selected: true)
+                                        }
+                                    }
+                                    
+                                    }
+                                }    
+                            }        
+                        }                
+                    tr {
+                        td (colfill:true, align: 'left') {
+                            panel(border: titledBorder(title: 'Basisdaten zur Kündigung:')) {
+                                tableLayout (cellpadding: 5) {    
+                                    tr {
+                                        td (colfill:true) {
+                                    
+                                            label(text: 'Zugang der Kündigung:')
+                                    
+                                    
+                                        }
+                                        td {
+                                            txtZugangK=textField(id: 'sZugangK', name: "_ZUGANGK", clientPropertyJlawyerdescription: "Zugang der Kündigung", text: '', columns:10)
+                                        
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                    
+                                            label(text: 'Kündigungsgrund:')
+                                    
+                                    
+                                        }
+                                        td {
+                                            txtGrundK=textField(id: 'sGrundK', name: "_GRUNDK", clientPropertyJlawyerdescription: "Kündigungsgrund", text: '', columns:10)
+                                        
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Frist für Kündigungsschutzklage verstrichen?')        
+                                        }
+                                        td {
+                                            
+                                            checkBox(text: '', name: "_FRISTKGSCHK", clientPropertyJlawyerdescription: "Frist für Kündigungsschutzklage verstrichen?", selected: true)
+                                        }
+                                        
+                                            }
+                                    tr {
+                                        td {
+                                            label(text: 'Arbeitgeber in Insolvenz:')        
+                                        }
+                                        td {
+                                            
+                                            checkBox(text: '', name: "_AGINSO", clientPropertyJlawyerdescription: "Arbeitgeber in Insolvenz", selected: true)
+                                        }
+                                        
+                                            }
+                                    tr {
+                                        td {
+                                            label(text: 'Gegenansprüche?')        
+                                        }
+                                        td {
+                                            checkBox(text: '', name: "_GEGENANSPRUCH", clientPropertyJlawyerdescription: "Gegenansprüche?", selected: true)
+                                        }
+                                        
+                                            }
+                                    tr {
+                                        td {
+                                            label(text: 'Weiterbeschäftigungsanspruch?')        
+                                        }
+                                        td {
+                                            checkBox(text: '', name: "_WBANSPRUCH", clientPropertyJlawyerdescription: "Weiterbeschäftigungsanspruch?", selected: true)
+                                        }
+                                        
+                                            }
+                                    tr {
+                                        td {
+                                            label(text: 'Wiedereinsetzungsantrag gewünscht?')        
+                                        }
+                                        td {
+                                            checkBox(text: '', name: "_WEAGEW", clientPropertyJlawyerdescription: "Wiedereinsetzungsantrag gewünscht?", selected: true)
+                                        }
+                                        
+                                            }
+                                    tr {
+                                        td {
+                                            label(text: 'Sonstiger besonderer Kündigungsschutz:')        
+                                        }
+                                        td {
+                                            checkBox(text: '', name: "_BESKSCHUTZ", clientPropertyJlawyerdescription: "Sonstiger besonderer Kündigungsschutz", selected: false)
+                                        }
+                                        
+                                            }
+                                    tr {
+                                        td {
+                                            label(text: 'Art der Kündigung:')        
                                         }
                                         td {
                                             comboBox(items: [
-                                            'Mandant',
-                                            'Ehegatte',
-                                            'weder noch'
-                                                ], name: "_TR_KINDER_WO", clientPropertyJlawyerdescription: "bei minderjährigen Kindern Wohnort bei welchem Elternteil", editable: true, actionPerformed: {
-                                                    
-                                                }
+                                                            'ordentlich',
+                                                            'außerordentlich'
+                                                            
+
+                                                ], name: "_ARTK", clientPropertyJlawyerdescription: "Art der Kündigung", editable: false
                                             )
                                         }
+                                                                           
+                                            }    
+                                    tr {
+                                        td {
+                                            label(text: 'Zeugnisanspruch?')        
+                                        }
+                                        td {
+                                            
+                                            checkBox(text: '', name: "_ZA", clientPropertyJlawyerdescription: "Zeugnisanspruch?", selected: false)
+                                        }
+                                                                          
+                                            }    
+                                    tr {
+                                        td {
+                                            label(text: 'Akteneinsicht gewünscht?')        
+                                        }
+                                        td {
+                                            
+                                             checkBox(text: '', name: "_AE", clientPropertyJlawyerdescription: "Akteneinsicht gewünscht?", selected: false)
+                                        }
+                                                                        
+                                            }    
+                                    tr {
+                                        td {
+                                            label(text: 'Außergerichtliche Vertretung gewünscht?')        
+                                        }
+                                        td {
+                                            
+                                            checkBox(text: '', name: "_AV", clientPropertyJlawyerdescription: "Außergerichtliche Vertretung gewünscht?", selected: false)
+                                        }
+                                                                       
+                                            }    
+                                    tr {
+                                        td {
+                                            label(text: 'Soll ein Antrag auf Prozesskostenhilfe / PKH gestellt werden?')        
+                                        }
+                                        td {
+                                            
+                                            checkBox(text: '', name: "_PKH", clientPropertyJlawyerdescription: "Soll ein Antrag auf Prozesskostenhilfe / PKH gestellt werden?", selected: false)
+                                        }
+                                                                       
+                                            }    
+                                    tr {
+                                        td {
+                                            label(text: 'Betriebsrat vorhanden?')        
+                                        }
+                                        td {
+                                            
+                                            comboBox(items: [
+                                                            'kein Betriebsrat',
+                                                            'Betriebsrat vorhanden'
+                                                            
+
+                                                ], name: "_BTRAT", clientPropertyJlawyerdescription: "Betriebsrat vorhanden?", editable: false
+                                            )
+                                        }
+                                        
+                                    }
+                                }   
+                        
+                            }     
+                        }
+                    
+                    
+                                    
+                    }    
+                    tr {
+                        td (colfill:true, align: 'left') {
+                            panel(border: titledBorder(title: 'Weiteres zur Person:')) {
+                                tableLayout (cellpadding: 5) {
+                                    tr {
+                                        td {
+                                            label(text: 'Liegt eine Schwerbehinderung vor?')        
+                                        }
+                                        td {
+                                            checkBox(text: '', name: "_SBHG", clientPropertyJlawyerdescription: "Liegt eine Schwerbehinderung vor?", selected: false)
+                                        }
+                                        
+                                            }
+                                    tr {
+                                        td {
+                                            label(text: 'Befindet sich der Mandant im Mutterschutz?')        
+                                        }
+                                        td {
+                                            checkBox(text: '', name: "_MS", clientPropertyJlawyerdescription: "Befindet sich der Mandant im Mutterschutz?", selected: false)
+                                        }
+                                        
+                                            }
+                                    tr {
+                                        td {
+                                            label(text: 'Ist der Mandant Mitglied des Betriebsrates?')        
+                                        }
+                                        td {
+                                            checkBox(text: '', name: "_BRAT", clientPropertyJlawyerdescription: "Ist der Mandant Mitglied des Betriebsrates?", selected: false)
+                                        }
+                                        
+                                            }
+                                    tr {
+                                        td {
+                                            label(text: 'Ist der Mandant der Datenschutzbeauftragte des Unternehmens?')        
+                                        }
+                                        td {
+                                            checkBox(text: '', name: "_DSB", clientPropertyJlawyerdescription: "Ist der Mandant der Datenschutzbeauftragte des Unternehmens?", selected: false)
+                                        }
+                                        
+                                            }
+                                    
                                     }
                                 }
                             }
                         }
+                    
+                    tr {
+                        td (colfill:true, align: 'left') {
+                            panel(border: titledBorder(title: 'Besonderheiten:')) {
+                                tableLayout (cellpadding: 5) {
+                                    tr {
+                                        td (colfill:true, valign: 'left') {
+                                            label(text: '')
+                                        }
+                                        td {
+                                            scrollPane{
+                                                textArea(id:'sBesonderheiten', name: "_BESONDERHEITEN", clientPropertyJlawyerdescription: "Besonderheiten", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                            }
+                                        }
+                                    } 
+                                }
+                            }     
+                        }
+                    
+                    
+                                    
+                        
                     }
-                    
-                    
-                        tr {
-                            td (colfill:true, align: 'left') {
-                                panel(border: titledBorder(title: 'Scheidung')) {
-                                    tableLayout (cellpadding: 5) {
-                                        tr {
-                                            td (colfill:true) {
-                                                label(text: '     ')
-                                            }
-                                            td {
-                                                checkBox(text: 'Härtefallentscheidung', name: "_SCH_HFALL", selected: false, clientPropertyJlawyerdescription: "Härtefallentscheidung")
-                                            }
-                                        }
-                                        tr {
-                                            td (colfill:true) {
-                                                label(text: 'Tag Zustellung Scheidung:')
-                                            }
-                                            td {
-                                                textField(name: "_SCH_ZUSTELLTAG", text: '', columns:10, clientPropertyJlawyerdescription: "Tag Zustellung Scheidung")
-                                            }
-                                        }
-                                        
-                                        tr {
-                                            td (colfill:true) {
-                                                label(text: '     ')
-                                            }
-                                            td {
-                                                checkBox(text: 'VKH', name: "_SCH_VKH", selected: false, clientPropertyJlawyerdescription: "VKH")
-                                            }
-                                        }
-                                        
-                                    }
-                                }
-                            }
-                        }
-                    
                
-                    }
-                }
+                }  
             }
-
-            return SCRIPTPANEL;
-
         }
-    
+
+        return SCRIPTPANEL;
+
     }
- 
+    
+
+}
+                                    
+                                    
+                                         
+                                    
+

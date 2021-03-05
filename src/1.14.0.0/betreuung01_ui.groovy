@@ -1,3 +1,4 @@
+
 /*
 GNU AFFERO GENERAL PUBLIC LICENSE
 Version 3, 19 November 2007
@@ -665,29 +666,66 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 import groovy.swing.SwingBuilder
 import java.awt.BorderLayout as BL
 import groovy.beans.Bindable
-import java.text.DecimalFormat
-import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import javax.swing.SwingConstants
 import java.util.ArrayList
 import java.util.List
 import java.util.Locale
 import javax.swing.JTable
+import javax.swing.JButton
 import javax.swing.JPanel
 import javax.swing.JTextField
 import javax.swing.JRadioButton
+import javax.swing.JCheckBox
+import javax.swing.JLabel
+import javax.swing.JOptionPane
 import java.awt.Component
 import java.awt.Container
+import java.text.DecimalFormat
+import java.text.NumberFormat
+import org.jlawyer.plugins.calculation.StyledCalculationTable
+import org.jlawyer.plugins.calculation.CalculationTable
+import org.jlawyer.plugins.calculation.Cell
+import com.jdimension.jlawyer.client.settings.ServerSettings
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
+import static java.util.Calendar.*
 
-public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
+public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
 
     JPanel SCRIPTPANEL=null;
+    JTextField lblbeschluss;
+    JTextField lblbestellung;
+    JTextField lblstart;
+    JTextField lblende;
+    JLabel lblnr;
+    JLabel lblsum;
+    JTable customTable;
+    JLabel lblLastRun;
+    JLabel lblLastRunQuarter;
+    JRadioButton radioVerguetungA;
+    JRadioButton radioVerguetungB;
+    JRadioButton radioVerguetungC;
+    JRadioButton radiostationaer;
+    JRadioButton radiosonstige;
+    JCheckBox chkVermoegend;
+    JCheckBox chkZuschlag;
+    JCheckBox chkPauschale1;
+    JCheckBox chkPauschale2;
+    
+    JButton cmdCopy;
+    JButton cmdDocument;
+    
     FormPluginCallback callback=null;
+    
 
-    public famr01_ui() {
+    public betreuung01_ui() {
         super();
     }
 
+    public void setCallback(FormPluginCallback callback) {
+        this.callback=callback;
+    }
+    
     public ArrayList<String> getPlaceHolders(String prefix) {
         ArrayList<String> placeHolders=FormsLib.getPlaceHolders(prefix, this.SCRIPTPANEL);
         return placeHolders;
@@ -705,523 +743,749 @@ public class famr01_ui implements com.jdimension.jlawyer.client.plugins.form.For
     
     public void setPlaceHolderValues(String prefix, Hashtable placeHolderValues) {
         FormsLib.setPlaceHolderValues(prefix, placeHolderValues, this.SCRIPTPANEL);
+        
     }
 
-    public void setCallback(FormPluginCallback callback) {
-        this.callback=callback;
-    }
 
     public JPanel getUi() {
 
 
         SwingBuilder swing=new SwingBuilder()
-        NumberFormat betragFormat = new DecimalFormat("0.00")
-
+        SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
                     
         swing.edt {
             SCRIPTPANEL=panel(size: [300, 300]) {
                 //borderLayout()
                 tableLayout (id: 'pluginParent', cellpadding: 5) {
+                    tr {
+                        td (colfill:true) {
+                            panel {
+                                tableLayout (cellpadding: 5) {
+                                    tr {
+                                        td  {
+                                            label(text: 'Zuletzt berechnet am:')      
+                                        }
+                                        td  {
+                                            lblLastRun = label(text: '-', name: "_ZULETZTBERECHNET_AM", clientPropertyJlawyerdescription: "Zuletzt berechnet am");
+                                            
+                                        }
+                                    }
+                                    tr {
+                                        td  {
+                                            label(text: 'Zuletzt berechnet für Zeitraum:')      
+                                        }
+                                        td  {
+                                            lblLastRunQuarter = label(text: '-', name: "_ZULETZTBERECHNET_QRT", clientPropertyJlawyerdescription: "Zuletzt berechnet für Zeitraum");
+                                            
+                                        }
+                                    }
+                                }
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                    tr {
+                        td (colfill:true) {
+                            panel(border: titledBorder(title: 'Betreuervergütung')) {
+                                tableLayout (cellpadding: 5) {
+                                    tr {
+                                        td  {
+                                            label(text: 'Erstbeschluss vom:')      
+                                        }
+                                        td  {
+                                            lblbeschluss = formattedTextField(id: 'sDatumBeschluss', name: "_BESCHLUSS", clientPropertyJlawyerdescription: "Erstbeschluss vom", format: datumsFormat, columns: 10, text: '')
+                                        }
+                                    }
+                                    tr {
+                                        td  {
+                                            label(text: 'Datum eigene Bestellung:')      
+                                        }
+                                        td {
+                                            panel {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td  {
+                                                            lblbestellung = formattedTextField(id: 'sDatumBestellung', name: "_BESTELLUNG", clientPropertyJlawyerdescription: "Datum eigene Bestellung", format: datumsFormat, columns: 10, text: '')
+                                                        }
+                                                        td {
+                                                            chkBestellung = checkBox(text: 'entspricht dem Erstbeschluss', selected: false, actionPerformed: {
+                                                                    lblbestellung.text = lblbeschluss.text
+                                                                })
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    /*tr {
+                                    td  {
+                                    label(text: 'Ende der Betreuung:')      
+                                    }
+                                        
+                                    td  {
+                                    formattedTextField(id: 'sDatumBestellungEnde', name: "_BESTELLUNG_ENDE", format: datumsFormat, columns: 10)
+                                    }
+                                    }*/
+                                    
+                                    tr {
+                                        td  {
+                                            label(text: 'Vergütungstabelle:')      
+                                        }
+                                        td  {
+                                            panel {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td {
+                                                            btnGrpVerguetung = buttonGroup(id:'grpVerguetung')
+                                                            radioVerguetungA = radioButton (text: 'A / Gruppe 1', name: "_VERGUETUNG_A", clientPropertyJlawyerdescription: "A / Gruppe 1", buttonGroup: btnGrpVerguetung)
+                                                        }
+                                                        td {
+                                                            radioVerguetungB = radioButton (text: 'B / Gruppe 2', name: "_VERGUETUNG_B", clientPropertyJlawyerdescription: "B / Gruppe 2", buttonGroup: btnGrpVerguetung)
+                                                        }
+                                                        td {
+                                                            radioVerguetungC = radioButton (text: 'C / Gruppe 3', name: "_VERGUETUNG_C", clientPropertyJlawyerdescription: "C / Gruppe 3", buttonGroup: btnGrpVerguetung, selected: true)
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Wohnform')
+                                        }
+                                        td {
+                                            panel {
+                                                btnGrpWohnform = buttonGroup(id:'grpWohnform')
+                                                radiostationaer = radioButton (text: 'stationär o.ä.', name: "_WOHN_STATIONAER", clientPropertyJlawyerdescription: "Wohnform stationär", buttonGroup: btnGrpWohnform, selected: true)
+                                                radiosonstige = radioButton (text: 'andere Wohnform', name: "_WOHN_SONSTIGE", clientPropertyJlawyerdescription: "Wohnform andere", buttonGroup: btnGrpWohnform)
+                                            }
+                                        }
+                                    }
+                                    tr {
+                                        td  {
+                                            label(text: 'verwaltetes Vermögen:')      
+                                        }
+                                        td  {
+                                            chkVermoegend = checkBox(text: 'Betreuter ist vermögend', name: "_VERMOEGEND", clientPropertyJlawyerdescription: "verwaltetes Vermögen", selected: false)
+                                        }
+                                    }
+                                    tr {
+                                        td  {
+                                            label(text: 'Zuschläge/Pauschalen:')      
+                                        }
+                                        td  {
+                                            panel {
+                                                tableLayout {
+                                                    tr {
+                                                        td {
+                                                            chkZuschlag = checkBox(text: '§ 5a Abs. 1 VBVG (Geldvermögen min. 150K EUR / weiterer nicht selbst bewohnter Wohnraum / Gewerbebetrieb)', clientPropertyJlawyerdescription: "Zuschlag: § 5a Abs. 1", name: "_ZUSCHLAG_PAR5ABS1", selected: false)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            chkPauschale1 = checkBox(text: '§ 5a Abs. 2 VBVG (Übernahme einer ehrenamtlichen Betreuung)', clientPropertyJlawyerdescription: "Zuschlag: § 5a Abs. 2", name: "_ZUSCHLAG_PAR5ABS2", selected: false)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            chkPauschale2 = checkBox(text: '§ 5a Abs. 3 VBVG (Übergabe an einen Ehrenamtler)', clientPropertyJlawyerdescription: "Zuschlag: § 5a Abs. 3", name: "_ZUSCHLAG_PAR5ABS3", selected: false)
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Abrechnungszeitraum von ')
+                                        }
+                                        td {
+                                            panel {
+                                                lblstart = formattedTextField(id: 'lblstart', name: "_ABRECHNG_VON", clientPropertyJlawyerdescription: "Abrechnungszeitraum von", format: datumsFormat, columns:6, text: '')
+                                                label(text: 'bis')
+                                                lblende = formattedTextField(id: 'lblende', name: "_ABRECHNG_BIS", clientPropertyJlawyerdescription: "Abrechnungszeitraum bis", format: datumsFormat, columns:6, text: '')
+                                                label(text: 'das nächste Quartal abrechnen')
+                                                button(text: 'Hinzufügen', actionPerformed: {
+                                                        setAbrechnungszeitraum()
+                                                        calculate()
+                                                    })
+                                            }
+                                        }
+                                        td (align: 'right') {
+                                            lblnr = label('')
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    tr {
+                        td (colfill:true) {
+                            panel(border: titledBorder(title: 'Vergütung')) {
+                                tableLayout (cellpadding: 5) {
+                                    tr {
+                                        td {
+                                            panel{
+                                                scrollPane(preferredSize:[550, 100]){
+                                                    customTable = table(){
+                                                        tableModel(){
+                                                            closureColumn(header:'von :', read:{it.von})
+                                                            closureColumn(header:'bis :', read:{it.bis})
+                                                            closureColumn(header:'Nr :', read:{it.nr})
+                                                            closureColumn(header:'Betrag :', read:{it.betrag})
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    tr {
+                                        td (align: 'right') {
+                                            panel {
+                                                label(text: 'Summe')
+                                                lblsum = label('0,00')
+                                            }
+                                        }   
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    tr  {
+                        td (align: 'right') {
+                            panel {
+                                button(text: 'Berechnen', actionPerformed: {
+                                        calculate()
+                                    })
+                                    
+                                cmdCopy = button(text: 'Kopieren', enabled: false, toolTipText: 'In Zwischenablage kopieren', actionPerformed: {
+                                        if(callback != null) {
+                                            callback.processResultToClipboard(copyToClipboard());
+                                            addFollowUp();
+                                        }
+                                        setLastRun();
+  
+                                    })
+                        
+                                cmdDocument = button(text: 'Dokument erstellen', enabled: false, toolTipText: 'Ergebnis in Dokument uebernehmen', actionPerformed: {
+                                        if(callback != null) {
+                                            callback.processResultToDocument(copyToDocument(), SCRIPTPANEL)     
+                                            addFollowUp();
+                                        }
+                                        setLastRun();
+                                    })
+                            }
+                        }                
+                    }
+                }  
+            }
+        }
+        setLastRun();
+        return SCRIPTPANEL;
+    }
+    
+    def setLastRun() {
+        if(callback==null)
+            return;
             
-                    tr {
-                        td (colfill:true, align: 'left') {
-                            panel(border: titledBorder(title: 'Persönliche Angaben')) {
-                                tableLayout (cellpadding: 5) {
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Geburtsname:')
-                                        }
-                                        td {
-                                            textField(name: "_PA_GEBNAME", text: '', columns:30, clientPropertyJlawyerdescription: "Geburtsname")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'jetzige ausländische Staatsangehörigkeit:')
-                                        }
-                                        td {
-                                            textField(name: "_PA_STAANG", text: '', columns:30, clientPropertyJlawyerdescription: "jetzige ausländische Staatsangehörigkeit:")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'sichere Postadresse:')
-                                        }
-                                        td {
-                                            textField(name: "_PA_ADRESSE", text: '', columns:50, clientPropertyJlawyerdescription: "sichere Postadresse")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'sichere E-Mail-Adresse:')
-                                        }
-                                        td {
-                                            textField(name: "_PA_EMAIL", text: '', columns:30, clientPropertyJlawyerdescription: "sichere E-Mail-Adresse")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'sichere Telefonnummer:')
-                                        }
-                                        td {
-                                            textField(name: "_PA_TEL", text: '', columns:30, clientPropertyJlawyerdescription: "sichere Telefonnummer")
-                                        }
-                                    }
-                                    
-                                }
-                            }
-                        }
+        lblLastRun.setText(new java.text.SimpleDateFormat("dd.MM.yyyy").format(new Date()));
+        lblLastRunQuarter.setText(lblstart.text + " - " + lblende.text);
+    }
+    
+    def addFollowUp() {
+        if(callback==null)
+            return;
+            
+        String caseId=callback.getCaseId();
+        int response=GuiLib.askYesNo("Wiedervorlage anlegen?", "Soll eine Wiedervorlage für die nächste Abrechnung erstellt werden?");
+        if(response==javax.swing.JOptionPane.YES_OPTION) {
+            //StorageLib.addReminder(caseId, "neue Abrechnung für " + lblstart.text + " - " + lblende.text, null, new Date().parse("dd.MM.yyy", lblende.text));
+            StorageLib.addReminder(caseId, "neue Abrechnung erstellen", null, new Date().parse("dd.MM.yyy", lblende.text));
+        }
+    }
+
+    def setAbrechnungszeitraum() {
+        def bestellungdate = new Date().parse("dd.MM.yyy", lblbestellung.text)
+        if (lblende.text=="") {
+            lblstart.text = (bestellungdate+1).format('dd.MM.yyyy')
+        } else {
+            def dateende = new Date().parse("dd.MM.yyy", lblende.text)
+            lblstart.text = (dateende+1).format('dd.MM.yyyy')
+        }
+        def datestart = new Date().parse("dd.MM.yyy", lblstart.text)
+        lblende.text =  (addmonth(datestart, 3)-1).format('dd.MM.yyyy')
+    }
+
+    def calculate() {
+        NumberFormat df = NumberFormat.getInstance(Locale.GERMANY).getNumberInstance();
+        df.setMaximumFractionDigits(2);
+        df.setMinimumFractionDigits(2);
+
+        def beschlussdate = new Date().parse("dd.MM.yyy", lblbeschluss.text)
+        def bestellungdate = new Date().parse("dd.MM.yyy", lblbestellung.text)
+        def datestart = new Date().parse("dd.MM.yyy", lblstart.text)
+        def dateende = new Date().parse("dd.MM.yyy", lblende.text)
+
+        customTable.model.getRows().clear() //Tabelle beim Aufruf löschen
+        customTable.model.fireTableDataChanged()
+
+        def calcdate = datestart
+        def vondate = datestart
+        def bisdate = new Date()
+        float betrag = 0f
+        float pauschale = 0f
+        if ((chkPauschale1.isSelected())&&((bestellungdate+1)==datestart)) {
+            lblnr.text = '§ 5a Abs. 2 VBVG'
+            addPauschale(lblnr, 200)
+        }
+        while (calcdate <= dateende) {
+            if (stop(calcdate)) {
+                bisdate = calcdate
+                pauschale = calculatehonorar(vondate, bisdate)
+                if ((vondate.date==bestellungdate.date+1)&&(bisdate.date==bestellungdate.date)) {
+                    betrag = pauschale
+                } else {
+                    betrag =  (bisdate - vondate)*pauschale/30
+                }
+                add(vondate, bisdate, lblnr, betrag)
+                if ((chkZuschlag.isSelected())&&(chkVermoegend.isSelected())) {
+                    lblnr.text = '§ 5a Abs. 1 VBVG'
+                    add(vondate, bisdate, lblnr, 30)
+                }
+                vondate=calcdate+1
+            }
+            calcdate=calcdate+1
+        }
+        if (chkPauschale2.isSelected()) {
+            lblnr.text = '§ 5a Abs. 3 VBVG'
+            betrag = pauschale * 1.5
+            addPauschale(lblnr, betrag)
+        }
+        lblnr.text = ''
+        def customRows=customTable.getRowCount()
+        float sum = 0f
+        for(int i=0;i<customRows;i++) {
+            sum=sum+df.parse(customTable.getValueAt(i, 3))
+        }
+        lblsum.text = df.format(sum)
+        
+        cmdCopy.setEnabled(true);
+        cmdDocument.setEnabled(true);
+    }
+
+    def stop(date) {
+        def beschlussdate = new Date().parse("dd.MM.yyy", lblbeschluss.text)
+        def bestellungdate = new Date().parse("dd.MM.yyy", lblbestellung.text)
+        def dateende = new Date().parse("dd.MM.yyy", lblende.text)
+        if (date==dateende) {return true}
+        if (date.date==bestellungdate.date) {return true}
+        if (date==addmonth(beschlussdate, 3)) {return true}
+        if (date==addmonth(beschlussdate, 6)) {return true}
+        if (date==addmonth(beschlussdate, 12)) {return true}
+        if (date==addmonth(beschlussdate, 24)) {return true}
+    }
+
+    def calculatehonorar(vondate, bisdate) {
+        def beschlussdate = new Date().parse("dd.MM.yyy", lblbeschluss.text)
+        def bestellungdate = new Date().parse("dd.MM.yyy", lblbestellung.text)
+        float pauschale =0f
+    
+        if (radioVerguetungA.isSelected()) {
+            if (bisdate <= addmonth(beschlussdate, 3)) {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=200
+                        lblnr.text = 'A1.1.2'
+                    } else {
+                        pauschale=194
+                        lblnr.text = 'A1.1.1'
                     }
-
-                    
-                    tr {
-                        td (colfill:true, align: 'left') {
-                            panel(border: titledBorder(title: 'Hochzeit')) {
-                                tableLayout (cellpadding: 5) {
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Tag der Eheschließung:')
-                                        }
-                                        td {
-                                            textField(name: "_EHE_TAG", text: '', columns:10, clientPropertyJlawyerdescription: "Tag der Eheschließung")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Eheregisternummer:')
-                                        }
-                                        td {
-                                            textField(name: "_EHE_REGNR", text: '', columns:30, clientPropertyJlawyerdescription: "Eheregisternummer")
-                                        }
-                                    }
-
-
-
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Standesamt:')
-                                        }
-                                        td {
-                                            textField(name: "_EHE_STA", text: '', columns:50, clientPropertyJlawyerdescription: "Standesamt")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Ehevertrag:')
-                                        }
-                                        td {
-                                            comboBox(items: [
-                                            'Zugewinn',
-                                            'Gütergemeinschaft',
-                                            'Gütertrennung'
-                                                ], name: "_EHE_VERTRAG", clientPropertyJlawyerdescription: "Ehevertrag", editable: true, actionPerformed: {
-                                                    
-                                                }
-                                            )
-                                        }
-                                    }
-
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Internationales Recht:')
-                                        }
-                                        td {
-                                            textField(name: "_EHE_INTRECHT", text: '', columns:30, clientPropertyJlawyerdescription: "Internationales Recht")
-                                        }
-                                    }
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Staatsangehörigkeit z.Zt. der Eheschließung:')
-                                        }
-                                        td {
-                                            textField(name: "_EHE_STAANG", text: '', columns:30, clientPropertyJlawyerdescription: "Staatsangehörigkeit z.Zt. der Eheschließung")
-                                        }
-                                    }
-
-                                }
-                            }
-                        }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=298
+                        lblnr.text = 'A1.2.2'
+                    } else {
+                        pauschale=208
+                        lblnr.text = 'A1.2.1'
                     }
-                    
-                    
-                    
-                    tr {
-                        td (colfill:true, align: 'left') {
-                            panel(border: titledBorder(title: 'Trennung')) {
-                                tableLayout (cellpadding: 5) {
-
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Nettoeinkommen Mandant:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_TR_EINK_MDT", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Nettoeinkommen Mandant")
-                                        }
-                                    }
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Beruf Mandant:')
-                                        }
-                                        td {
-                                            textField(name: "_TR_BERUF_MDT", text: '', columns:30, clientPropertyJlawyerdescription: "Beruf Mandant")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Nettoeinkommen Ehegatte:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_TR_EINK_GATTE", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Nettoeinkommen Ehegatte")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Beruf Ehegatte:')
-                                        }
-                                        td {
-                                            textField(name: "_TR_BERUF_GATTE", text: '', columns:30, clientPropertyJlawyerdescription: "Beruf Ehegatte")
-                                        }
-                                    }
-
-
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Gütliche Trennung', name: "_TR_GUETLICH", selected: false, clientPropertyJlawyerdescription: "Gütliche Trennung")
-                                        }
-                                    }
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Versorgungsausgleich geklärt (Verzicht)', name: "_TR_VAUSGLEICH", selected: false, clientPropertyJlawyerdescription: "Versorgungsausgleich geklärt (Verzicht)")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Hausrat geklärt', name: "_TR_HAUSRAT", selected: false, clientPropertyJlawyerdescription: "Hausrat geklärt")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Zugewinn geklärt', name: "_TR_ZUGEWINN", selected: false, clientPropertyJlawyerdescription: "Zugewinn geklärt")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Trennungsunterhalt geklärt', name: "_TR_UNTERH_TR", selected: false, clientPropertyJlawyerdescription: "Trennungsunterhalt geklärt")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Kindesunterhalt geklärt', name: "_TR_UNTERH_KIND", selected: false, clientPropertyJlawyerdescription: "Kindesunterhalt geklärt")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Sorgerecht geklärt', name: "_TR_SORGERE", selected: false, clientPropertyJlawyerdescription: "Sorgerecht geklärt")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Umgangsrecht geklärt', name: "_TR_UMGARE", selected: false, clientPropertyJlawyerdescription: "Umgangsrecht geklärt")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'es liegt ein notarieller Vertrag vor', name: "_TR_NOTARVERTRAG", selected: false, clientPropertyJlawyerdescription: "es liegt ein notarieller Vertrag vor")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Tag der Trennung:')
-                                        }
-                                        td {
-                                            textField(name: "_TR_TAG", text: '', columns:10, clientPropertyJlawyerdescription: "Tag der Trennung")
-                                        }}
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'letzte gemeinsame Wohnung:')
-                                        }
-                                        td {
-                                            textField(name: "_TR_LETZTWOHN", text: '', columns:50, clientPropertyJlawyerdescription: "letzte gemeinsame Wohnung")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: '     ')
-                                        }
-                                        td {
-                                            checkBox(text: 'Kinder vorhanden', name: "_TR_KINDVORH", selected: false, clientPropertyJlawyerdescription: "Kinder vorhanden")
-                                        }
-                                    }
-
-
-
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 1 Name:')
-                                        }
-                                        td {
-                                            textField(name: "_K1_NAME", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 1 Name")
-                                        }
-                                    }
-
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 1 Geburtsdatum:')
-                                        }
-                                        td {
-                                            textField(name: "_K1_GEB", text: '', columns:10, clientPropertyJlawyerdescription: "Kind 1 Geburtsdatum")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 1 Geburtsort:')
-                                        }
-                                        td {
-                                            textField(name: "_K1_GEBORT", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 1 Geburtsort")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 1 eigenes Einkommen:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_K1_EINK", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Kind 1 eigenes Einkommen")
-                                        }
-                                    }
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 2 Name:')
-                                        }
-                                        td {
-                                            textField(name: "_K2_NAME", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 2 Name")
-                                        }
-                                    }
-
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 2 Geburtsdatum:')
-                                        }
-                                        td {
-                                            textField(name: "_K2_GEB", text: '', columns:10, clientPropertyJlawyerdescription: "Kind 2 Geburtsdatum")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 2 Geburtsort:')
-                                        }
-                                        td {
-                                            textField(name: "_K2_GEBORT", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 2 Geburtsort")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 2 eigenes Einkommen:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_K2_EINK", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Kind 2 eigenes Einkommen")
-                                        }
-
-                                    }
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 3 Name:')
-                                        }
-                                        td {
-                                            textField(name: "_K3_NAME", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 3 Name")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 3 Geburtsort:')
-                                        }
-                                        td {
-                                            textField(name: "_K3_GEBORT", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 3 Geburtsort")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 3 Geburtsdatum:')
-                                        }
-                                        td {
-                                            textField(name: "_K3_GEB", text: '', columns:10, clientPropertyJlawyerdescription: "Kind 3 Geburtsdatum")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 3 eigenes Einkommen:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_K3_EINK", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Kind 3 eigenes Einkommen")
-                                        }
-
-                                    }
-                                    
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 4 Name:')
-                                        }
-                                        td {
-                                            textField(name: "_K4_NAME", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 4 Name")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 4 Geburtsort:')
-                                        }
-                                        td {
-                                            textField(name: "_K4_GEBORT", text: '', columns:30, clientPropertyJlawyerdescription: "Kind 4 Geburtsort")
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 4 Geburtsdatum:')
-                                        }
-                                        td {
-                                            textField(name: "_K4_GEB", text: '', columns:10, clientPropertyJlawyerdescription: "Kind 4 Geburtsdatum")
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kind 4 eigenes Einkommen:')
-                                        }
-                                        td {
-                                            formattedTextField(name: "_K4_EINK", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Kind 4 eigenes Einkommen")
-                                        }
-
-                                    }
-                                        
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Kindergeldbezug:')
-                                        }
-                                        td {
-                                            comboBox(items: [
-                                            'Mandant',
-                                            'Ehegatte'
-                                                ], name: "_TR_KINDGELD", clientPropertyJlawyerdescription: "Kindergeldbezug", editable: true, actionPerformed: {
-                                                    
-                                                }
-                                            )
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'bei minderjährigen Kindern Wohnort bei welchem Elternteil:')
-                                        }
-                                        td {
-                                            comboBox(items: [
-                                            'Mandant',
-                                            'Ehegatte',
-                                            'weder noch'
-                                                ], name: "_TR_KINDER_WO", clientPropertyJlawyerdescription: "bei minderjährigen Kindern Wohnort bei welchem Elternteil", editable: true, actionPerformed: {
-                                                    
-                                                }
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                }
+            } else if ((bisdate > addmonth(beschlussdate, 3)) && (bisdate <= addmonth(beschlussdate, 6))) { 
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=158
+                        lblnr.text = 'A2.1.2'
+                    } else {
+                        pauschale=129
+                        lblnr.text = 'A2.1.1'
                     }
-                    
-                    
-                        tr {
-                            td (colfill:true, align: 'left') {
-                                panel(border: titledBorder(title: 'Scheidung')) {
-                                    tableLayout (cellpadding: 5) {
-                                        tr {
-                                            td (colfill:true) {
-                                                label(text: '     ')
-                                            }
-                                            td {
-                                                checkBox(text: 'Härtefallentscheidung', name: "_SCH_HFALL", selected: false, clientPropertyJlawyerdescription: "Härtefallentscheidung")
-                                            }
-                                        }
-                                        tr {
-                                            td (colfill:true) {
-                                                label(text: 'Tag Zustellung Scheidung:')
-                                            }
-                                            td {
-                                                textField(name: "_SCH_ZUSTELLTAG", text: '', columns:10, clientPropertyJlawyerdescription: "Tag Zustellung Scheidung")
-                                            }
-                                        }
-                                        
-                                        tr {
-                                            td (colfill:true) {
-                                                label(text: '     ')
-                                            }
-                                            td {
-                                                checkBox(text: 'VKH', name: "_SCH_VKH", selected: false, clientPropertyJlawyerdescription: "VKH")
-                                            }
-                                        }
-                                        
-                                    }
-                                }
-                            }
-                        }
-                    
-               
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=208
+                        lblnr.text = 'A2.2.2'
+                    } else {
+                        pauschale=170
+                        lblnr.text = 'A2.2.1'
+                    }
+                }
+            } else if ((bisdate > addmonth(beschlussdate, 6)) && (bisdate <= addmonth(beschlussdate, 12))) {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=140
+                        lblnr.text = 'A3.1.2'
+                    } else {
+                        pauschale=124
+                        lblnr.text = 'A3.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=192
+                        lblnr.text = 'A3.2.2'
+                    } else {
+                        pauschale=151
+                        lblnr.text = 'A3.2.1'
+                    }
+                }
+            } else if ((bisdate > addmonth(beschlussdate, 12)) && (bisdate <= addmonth(beschlussdate, 24))) {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=91
+                        lblnr.text = 'A4.1.2'
+                    } else {
+                        pauschale=87
+                        lblnr.text = 'A4.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=158
+                        lblnr.text = 'A4.2.2'
+                    } else {
+                        pauschale=122
+                        lblnr.text = 'A4.2.1'
+                    }
+                }
+            } else {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=78
+                        lblnr.text = 'A5.1.2'
+                    } else {
+                        pauschale=62
+                        lblnr.text = 'A5.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=130
+                        lblnr.text = 'A5.2.2'
+                    } else {
+                        pauschale=105
+                        lblnr.text = 'A5.2.1'
                     }
                 }
             }
-
-            return SCRIPTPANEL;
-
+        } else if (radioVerguetungB.isSelected()) {
+            if (bisdate <= addmonth(beschlussdate, 3)) {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=249
+                        lblnr.text = 'B1.1.2'
+                    } else {
+                        pauschale=241
+                        lblnr.text = 'B1.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=370
+                        lblnr.text = 'B1.2.2'
+                    } else {
+                        pauschale=258
+                        lblnr.text = 'B1.2.1'
+                    }
+                }
+            } else if ((bisdate > addmonth(beschlussdate, 3)) && (bisdate <= addmonth(beschlussdate, 6))) { 
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=194
+                        lblnr.text = 'B2.1.2'
+                    } else {
+                        pauschale=158
+                        lblnr.text = 'B2.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=258
+                        lblnr.text = 'B2.2.2'
+                    } else {
+                        pauschale=211
+                        lblnr.text = 'B2.2.1'
+                    }
+                }
+            } else if ((bisdate > addmonth(beschlussdate, 6)) && (bisdate <= addmonth(beschlussdate, 12))) {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=174
+                        lblnr.text = 'B3.1.2'
+                    } else {
+                        pauschale=154
+                        lblnr.text = 'B3.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=238
+                        lblnr.text = 'B3.2.2'
+                    } else {
+                        pauschale=188
+                        lblnr.text = 'B3.2.1'
+                    }
+                }
+            } else if ((bisdate > addmonth(beschlussdate, 12)) && (bisdate <= addmonth(beschlussdate, 24))) {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=113
+                        lblnr.text = 'B4.1.2'
+                    } else {
+                        pauschale=107
+                        lblnr.text = 'B4.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=196
+                        lblnr.text = 'B4.2.2'
+                    } else {
+                        pauschale=151
+                        lblnr.text = 'B4.2.1'
+                    }
+                }
+            } else {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=96
+                        lblnr.text = 'B5.1.2'
+                    } else {
+                        pauschale=78
+                        lblnr.text = 'B5.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=161
+                        lblnr.text = 'B5.2.2'
+                    } else {
+                        pauschale=130
+                        lblnr.text = 'B5.2.1'
+                    }
+                }
+            }
+        } else if (radioVerguetungC.isSelected()) {
+            if (bisdate <= addmonth(beschlussdate, 3)) {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=327
+                        lblnr.text = 'C1.1.2'
+                    } else {
+                        pauschale=317
+                        lblnr.text = 'C1.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=486
+                        lblnr.text = 'C1.2.2'
+                    } else {
+                        pauschale=339
+                        lblnr.text = 'C1.2.1'
+                    }
+                }
+            } else if ((bisdate > addmonth(beschlussdate, 3)) && (bisdate <= addmonth(beschlussdate, 6))) { 
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=257
+                        lblnr.text = 'C2.1.2'
+                    } else {
+                        pauschale=208
+                        lblnr.text = 'C2.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=339
+                        lblnr.text = 'C2.2.2'
+                    } else {
+                        pauschale=277
+                        lblnr.text = 'C2.2.1'
+                    }
+                }
+            } else if ((bisdate > addmonth(beschlussdate, 6)) && (bisdate <= addmonth(beschlussdate, 12))) {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=229
+                        lblnr.text = 'C3.1.2'
+                    } else {
+                        pauschale=202
+                        lblnr.text = 'C3.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=312
+                        lblnr.text = 'C3.2.2'
+                    } else {
+                        pauschale=246
+                        lblnr.text = 'C3.2.1'
+                    }
+                }
+            } else if ((bisdate > addmonth(beschlussdate, 12)) && (bisdate <= addmonth(beschlussdate, 24))) {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=149
+                        lblnr.text = 'C4.1.2'
+                    } else {
+                        pauschale=141
+                        lblnr.text = 'C4.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=257
+                        lblnr.text = 'C4.2.2'
+                    } else {
+                        pauschale=198
+                        lblnr.text = 'C4.2.1'
+                    }
+                }
+            } else {
+                if (radiostationaer.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=127
+                        lblnr.text = 'C5.1.2'
+                    } else {
+                        pauschale=102
+                        lblnr.text = 'C5.1.1'
+                    }
+                } else if (radiosonstige.isSelected()) {
+                    if (chkVermoegend.isSelected()){
+                        pauschale=211
+                        lblnr.text = 'C5.2.2'
+                    } else {
+                        pauschale=171
+                        lblnr.text = 'C5.2.1'
+                    }
+                }
+            }
         }
-    
+        return pauschale
     }
- 
+
+    def void add(vondate, bisdate, nr, betrag) {
+        NumberFormat df = NumberFormat.getInstance(Locale.GERMANY).getNumberInstance();
+        df.setMaximumFractionDigits(2);
+        df.setMinimumFractionDigits(2);
+
+        def newEntry = ['von': vondate.format('dd.MM.yyyy'), 'bis': bisdate.format('dd.MM.yyyy'), 'nr': nr.text, 'betrag': df.format(betrag)]
+        customTable.model.rowsModel.value.add(newEntry)
+        customTable.model.fireTableDataChanged()
+    }
+
+    def void addPauschale(nr, betrag) {
+        NumberFormat df = NumberFormat.getInstance(Locale.GERMANY).getNumberInstance();
+        df.setMaximumFractionDigits(2);
+        df.setMinimumFractionDigits(2);
+
+        def newEntry = ['von': '', 'bis': '', 'nr': nr.text, 'betrag': df.format(betrag)]
+        customTable.model.rowsModel.value.add(newEntry)
+        customTable.model.fireTableDataChanged()
+    }
+
+    def addmonth(date, month) {
+        def newdate = new Date().parse("dd.MM.yyyy", '01.01.2000')
+        newdate[YEAR] = date.year+1900
+        newdate[MONTH] = date.month + month
+        newdate[DATE] = date.date
+        return newdate 
+    }
+
+    def String copyToClipboard() {
+        StyledCalculationTable st=copyToDocument();
+        return st.toHtml();
+    }
+
+    def StyledCalculationTable copyToDocument() {
+        StyledCalculationTable ct=new StyledCalculationTable();
+        
+        ct.addHeaders("von", "bis", "Nr.", "Betrag");
+        
+        if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.table.emptyRows", true)) {
+            ct.addRow("", "", "", "");
+        }
+
+        def customRows=customTable.getRowCount()
+        for(int i=0;i<customRows;i++) {
+            def rowCustomEntryVon=customTable.getValueAt(i, 0);
+            def rowCustomEntryBis=customTable.getValueAt(i, 1);
+            def rowCustomEntryNr=customTable.getValueAt(i, 2);
+            def rowCustomEntryBetrag=customTable.getValueAt(i, 3);
+            ct.addRow(rowCustomEntryVon, rowCustomEntryBis, rowCustomEntryNr, rowCustomEntryBetrag + " €");
+        }
+        
+        if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.table.emptyRows", true)) {
+            ct.addRow("", "", "", "");
+        }
+
+        int footerRow=ct.addRow(" "," ", "Zahlbetrag", lblsum.text + " €");
+        
+        //HeaderRow
+        ct.setRowForeGround(0, new TablePropertiesUtils().getHeaderForeColor());
+        ct.setRowBackGround(0, new TablePropertiesUtils().getHeaderBackColor());
+        if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.header.Bold", true)) {
+            ct.setRowBold(0, true);
+        } else {
+            ct.setRowBold(0, false);
+        }
+
+        //FooterRow
+        if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.footerRow.Bold", true)) {
+            ct.setRowBold(footerRow, true);
+        } else {
+            ct.setRowBold(footerRow, false);
+        }
+        if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.footerRow.Underline", true)) {
+            ct.getCellAt(footerRow, 1).setUnderline(true);
+            ct.getCellAt(footerRow, 2).setUnderline(true);
+        } else {
+            ct.getCellAt(footerRow, 1).setUnderline(false);
+            ct.getCellAt(footerRow, 2).setUnderline(false);
+        }
+        if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.vorSumme.Underline", true)) {
+            ct.getCellAt(ct.getRowCount()-2, 2).setUnderline(true);
+        } else {
+            ct.getCellAt(ct.getRowCount()-2, 2).setUnderline(false);
+        }
+        if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.footerRow.Italic", true)) {
+            ct.getCellAt(footerRow, 1).setItalic(true);
+            ct.getCellAt(footerRow, 2).setItalic(true);
+        } else {
+            ct.getCellAt(footerRow, 1).setItalic(false);
+            ct.getCellAt(footerRow, 2).setItalic(false);
+        }
+        ct.setRowForeGround(footerRow, new TablePropertiesUtils().getFooterRowForeColor());
+        ct.setRowBackGround(footerRow, new TablePropertiesUtils().getFooterRowBackColor());
+        
+        //TableLayout
+        ct.setColumnAlignment(3, Cell.ALIGNMENT_RIGHT);
+        ct.getCellAt(0,0).setAlignment(Cell.ALIGNMENT_LEFT);
+        ct.getCellAt(0,1).setAlignment(Cell.ALIGNMENT_LEFT);
+        ct.getCellAt(0,2).setAlignment(Cell.ALIGNMENT_LEFT);
+        ct.setRowFontSize(0, 12);
+        //ct.setColumnWidth(0, 25);
+        //ct.setColumnWidth(1, 120);
+        //ct.setColumnWidth(2, 35);
+        ct.setFontFamily("Arial");
+        if (ServerSettings.getInstance().getSettingAsBoolean("plugins.global.tableproperties.table.lines", true)) {
+            ct.setLineBorder(true);
+        } else {
+            ct.setLineBorder(false);
+        }
+        ct.setBorderColor(new TablePropertiesUtils().getTableLineColor());
+         
+        return ct;
+    }
+
+}

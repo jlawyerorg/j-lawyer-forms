@@ -2417,7 +2417,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
             
             float anwMwst=0.19f;
             if(radioFahrzeugGesch.isSelected()) {
-               anwMst=0f;
+               anwMwst=0f;
             }
             if(radioFahrzeugPrivat.isSelected()) {
                 anwMwst=0.19f;

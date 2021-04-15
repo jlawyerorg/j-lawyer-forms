@@ -2415,13 +2415,21 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
             vv2300=Math.max(rl.getMappedValue(fStreitwert) * faktor, 0);
             //System.out.println("vv2300: " + vv2300);
             
+            float anwMwst=0.19f;
+            if(radioFahrzeugGesch.isSelected()) {
+               anwMst=0f;
+            }
+            if(radioFahrzeugPrivat.isSelected()) {
+                anwMwst=0.19f;
+            }
+            
             txtAnwaltskostenNetto.text=betragFormat.format(vv2300+vv7002);
             //System.out.println("netto: " + betragFormat.format(vv2300+vv7002));
             
-            txtAnwaltskostenMwst.text=betragFormat.format((vv2300+vv7002)*0.19f);
+            txtAnwaltskostenMwst.text=betragFormat.format((vv2300+vv7002)*anwMwst);
             //System.out.println("mwst: " + betragFormat.format((vv2300+vv7002)*0.19f));
             //txtAnwaltskostenReg
-            txtAnwaltskostenDiff.text=betragFormat.format(vv2300 +vv7002 + ((vv2300+vv7002)*0.19f) - betragFormat.parse(txtAnwaltskostenReg.text));
+            txtAnwaltskostenDiff.text=betragFormat.format(vv2300 +vv7002 + ((vv2300+vv7002)*anwMwst) - betragFormat.parse(txtAnwaltskostenReg.text));
             
         } catch (Throwable t) {
             t.printStackTrace();

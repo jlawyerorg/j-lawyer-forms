@@ -724,7 +724,7 @@ public class StorageLib {
             due.setAssignee(userId);
             due.setSummary(reason);
             due.setBeginDate(dueDate);
-            due.setReviewType(type);
+            due.setEventType(type);
             due=cal.addReview(caseId, due);
             
             EventBroker eb = EventBroker.getInstance();

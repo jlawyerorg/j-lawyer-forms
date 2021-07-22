@@ -2423,6 +2423,10 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                 anwMwst=0.19f;
             }
             
+            if((vv2300 * 0.2f) < 20f) {
+                vv7002 = vv2300 * 0.2f;
+            }
+            
             txtAnwaltskostenNetto.text=betragFormat.format(vv2300+vv7002);
             //System.out.println("netto: " + betragFormat.format(vv2300+vv7002));
             

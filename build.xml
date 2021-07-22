@@ -87,8 +87,8 @@
           <fileset dir="src/1.14.0.0"/>
         </scp>
         
-        <scp todir="${env.UPLOADUSER}:${env.UPLOADPWD}@www.j-lawyer.org:${env.UPLOADFORMSBASE}/1.15.0.0/" trust="true">
-          <fileset dir="src/1.15.0.0"/>
+        <scp todir="${env.UPLOADUSER}:${env.UPLOADPWD}@www.j-lawyer.org:${env.UPLOADFORMSBASE}/2.0.0.0/" trust="true">
+          <fileset dir="src/2.0.0.0"/>
         </scp>
         
 

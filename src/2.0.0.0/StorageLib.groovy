@@ -686,6 +686,7 @@ import java.awt.Container
 import com.jdimension.jlawyer.client.settings.ClientSettings;
 import com.jdimension.jlawyer.client.utils.ThreadUtils;
 import com.jdimension.jlawyer.persistence.ArchiveFileBean;
+import com.jdimension.jlawyer.persistence.CalendarSetup;
 import com.jdimension.jlawyer.persistence.ArchiveFileReviewsBean;
 import com.jdimension.jlawyer.services.ArchiveFileServiceRemote;
 import com.jdimension.jlawyer.services.CalendarServiceRemote;
@@ -708,7 +709,7 @@ public class StorageLib {
     }
     
     // erstellt neue Frist
-    public void addRespite(String caseId, String reason, String userId, Date dueDate) {
+    public static void addRespite(String caseId, String reason, String userId, Date dueDate) {
         addDueDate(caseId, reason, userId, dueDate, ArchiveFileReviewsBean.EVENTTYPE_RESPITE);
     }
     
@@ -721,10 +722,21 @@ public class StorageLib {
             if(userId==null) {
                 userId=UserSettings.getInstance().getCurrentUser().getPrincipalId()
             } 
+            
+            List<CalendarSetup> cals=cal.getCalendarSetupsForUser(userId);
+            CalendarSetup selectedSetup=null;
+            for(CalendarSetup calSetup: cals) {
+                if(calSetup.getEventType()==type) {
+                    selectedSetup=calSetup;
+                    break;
+                }
+            }
+            
             due.setAssignee(userId);
             due.setSummary(reason);
             due.setBeginDate(dueDate);
             due.setEventType(type);
+            due.setCalendarSetup(selectedSetup);
             due=cal.addReview(caseId, due);
             
             EventBroker eb = EventBroker.getInstance();

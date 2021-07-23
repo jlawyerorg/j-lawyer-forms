@@ -674,6 +674,7 @@ import java.util.List
 import java.util.Hashtable
 import java.util.Locale
 import java.util.Date
+import java.util.Calendar
 import java.lang.String
 import javax.swing.JTable
 import javax.swing.JPanel
@@ -908,9 +909,61 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     
                                         }
                                         td {
-                                            txtUnfallDatum=textField(id: 'sUnfallDatum', name: "_UNFALLDATUM", clientPropertyJlawyerdescription: "Unfalldatum", text: '', columns:10)
+                                            txtUnfallDatum=textField(id: 'sUnfallDatum', name: "_UNFALLDATUM", clientPropertyJlawyerdescription: "Unfalldatum", text: '', columns:10, keyReleased: { 
+                                                
+                                                if(txtUnfallDatum.getText().length()!=10) {
+                                                    txtHalteFrist.text='';
+                                                    return;
+                                                }
+                                                
+                                                try {
+                                                    Date testDate = new Date().parse("dd.MM.yyyy", txtUnfallDatum.text)
+                                                    Calendar cal = Calendar.getInstance(); 
+                                                    cal.setTime(testDate);
+                                                    cal.add(Calendar.MONTH, 6);
+                                                    testDate = cal.getTime();
+                                                    txtHalteFrist.text=datumsFormat.format(testDate);
+                                                    return;
+                                                } catch (Throwable t) {
+                                                    txtHalteFrist.text='';
+                                                }
+                                            
+                                            })
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                    
+                                            label(text: 'Ende der Haltefrist:')
+                                    
+                                    
+                                        }
+                                        td {
+                                            txtHalteFrist=textField(id: 'sHalteFrist', name: "_HALTEFRIST", clientPropertyJlawyerdescription: "Ablauf der 6-monatigen Haltefrist", text: '', columns: 10, enabled: false)
+                                            
                                         }
                                 
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                    
+                                            label(text: '')
+                                    
+                                    
+                                        }
+                                        td {
+                                            button(text: 'Frist in die Akte übernehmen', actionPerformed: {
+                                                        String caseId=callback.getCaseId();
+                                                        int response=GuiLib.askYesNo("Frist eintragen?", "Soll eine Frist für den Ablauf der 6-monatigen Haltefrist erstellt werden?");
+                                                        if(response==javax.swing.JOptionPane.YES_OPTION) {
+                                                            try {
+                                                                StorageLib.addRespite(caseId, "Ablauf 6 Monate Haltefrist", null, new Date().parse("dd.MM.yyyy", txtHalteFrist.text));
+                                                            } catch (Throwable t) {
+                                                                t.printStackTrace();
+                                                            }
+                                                        }
+                                                    })
+                                        }
                                     }
                                     tr {
                                         td {

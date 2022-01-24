@@ -23,27 +23,27 @@
     
     <!-- Gravity Forms requires 2.1.0.0 or later -->
     <form id="gravity01" type="plugin" depends="formslib" name="Gravity Forms" description="Uebernimmt Eingaben aus Wordpress Gravity Forms" placeholder="FORM" version="0.1.3" for="2.1.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.1.0.0" files="gravity01_meta.groovy,gravity01_ui.groovy,GravityField.groovy">
-        <setting key="forms.gravity01.site1.endpoint" caption="Bezeichnung Website 1:" default="Irgendeine Website" order="1"/>
+        <setting key="forms.gravity01.site1.sitename" caption="Bezeichnung Website 1:" default="Irgendeine Website" order="1"/>
         <setting key="forms.gravity01.site1.endpoint" caption="API-Endpunkt:" default="https://www.irgendeinunternehmen.de/wp-json/gf/v2/forms/" order="2"/>
         <setting key="forms.gravity01.site1.apiuser" caption="Nutzer / API-Key:" default="ck_123123123123123" order="3"/>
         <setting key="forms.gravity01.site1.apipwd" caption="Passwort:" default="cs_123123123123123" order="4"/>
         
-        <setting key="forms.gravity01.site2.endpoint" caption="Bezeichnung Website 2:" default="" order="5"/>
+        <setting key="forms.gravity01.site2.sitename" caption="Bezeichnung Website 2:" default="" order="5"/>
         <setting key="forms.gravity01.site2.endpoint" caption="API-Endpunkt:" default="" order="6"/>
         <setting key="forms.gravity01.site2.apiuser" caption="Nutzer / API-Key:" default="" order="7"/>
         <setting key="forms.gravity01.site2.apipwd" caption="Passwort:" default="" order="8"/>
         
-        <setting key="forms.gravity01.site3.endpoint" caption="Bezeichnung Website 3:" default="" order="9"/>
+        <setting key="forms.gravity01.site3.sitename" caption="Bezeichnung Website 3:" default="" order="9"/>
         <setting key="forms.gravity01.site3.endpoint" caption="API-Endpunkt:" default="" order="10"/>
         <setting key="forms.gravity01.site3.apiuser" caption="Nutzer / API-Key:" default="" order="11"/>
         <setting key="forms.gravity01.site3.apipwd" caption="Passwort:" default="" order="12"/>
         
-        <setting key="forms.gravity01.site4.endpoint" caption="Bezeichnung Website 4:" default="" order="13"/>
+        <setting key="forms.gravity01.site4.sitename" caption="Bezeichnung Website 4:" default="" order="13"/>
         <setting key="forms.gravity01.site4.endpoint" caption="API-Endpunkt:" default="" order="14"/>
         <setting key="forms.gravity01.site4.apiuser" caption="Nutzer / API-Key:" default="" order="15"/>
         <setting key="forms.gravity01.site4.apipwd" caption="Passwort:" default="" order="16"/>
         
-        <setting key="forms.gravity01.site5.endpoint" caption="Bezeichnung Website 5:" default="" order="17"/>
+        <setting key="forms.gravity01.site5.sitename" caption="Bezeichnung Website 5:" default="" order="17"/>
         <setting key="forms.gravity01.site5.endpoint" caption="API-Endpunkt:" default="" order="18"/>
         <setting key="forms.gravity01.site5.apiuser" caption="Nutzer / API-Key:" default="" order="19"/>
         <setting key="forms.gravity01.site5.apipwd" caption="Passwort:" default="" order="20"/>

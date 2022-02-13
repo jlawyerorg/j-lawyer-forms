@@ -664,6 +664,7 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 import groovy.swing.SwingBuilder
 import java.awt.BorderLayout
+import java.awt.FlowLayout
 import java.awt.BorderLayout as BL
 import groovy.beans.Bindable
 import java.text.DecimalFormat
@@ -682,6 +683,7 @@ import javax.swing.JComboBox
 import javax.swing.JCheckBox
 import javax.swing.JRadioButton
 import javax.swing.JScrollPane
+import javax.swing.JSeparator
 import java.awt.Component
 import java.awt.Container
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
@@ -730,23 +732,18 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
     // afterwards, values are populate in the usual way
     public void rebuildUi(String formStructure) {
         try {
-        def slurper = new groovy.json.JsonSlurper()
-        def structResult=slurper.parseText(formStructure);
+            def slurper = new groovy.json.JsonSlurper()
+            def structResult=slurper.parseText(formStructure);
         
-        HashMap fieldData=new HashMap();
-        ArrayList sortedFieldIds=new ArrayList();
-        structResult.fields.each {
-            if(it.inputs==null && it.choices==null) {
-                if(it.displayOnly) {
-                    sortedFieldIds.add("" + it.id);
-                    GravityField fGroup=new GravityField();
-                    fGroup.id="" + it.id;
-                    fGroup.label=it.label;
-                    fGroup.groupLabel=it.label;
-                    fGroup.adminLabel=it.adminLabel;
-                    fGroup.type=it.type;
-                    fieldData.put("" + it.id, fGroup);
-                } else {
+            HashMap fieldData=new HashMap();
+            ArrayList sortedFieldIds=new ArrayList();
+            structResult.fields.each {
+                //            if("html".equals(it.type)) {
+                //                continue;
+                //            }
+                if("html".equals(it.type)) {
+            
+                } else if("time".equals(it.type)) {
                     println ("id " + it.id + " has label " + it.label);
                     sortedFieldIds.add("" + it.id);
                     GravityField f=new GravityField();
@@ -755,115 +752,150 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                     f.adminLabel=it.adminLabel;
                     f.type=it.type;
                     fieldData.put("" + it.id, f);
-                }
-            } else if(it.inputs!=null) {
-                println ("id " + it.id + " has label " + it.label);
-                sortedFieldIds.add("" + it.id);
-                GravityField fGroup=new GravityField();
-                fGroup.id="" + it.id;
-                fGroup.label=it.label;
-                fGroup.adminLabel=it.adminLabel;
-                fGroup.groupLabel=it.label;
-                fGroup.type=it.type;
-                fieldData.put("" + it.id, fGroup);
-            
-                for (input in it.inputs) {
-                    // e.g. group of checkboxes
-                    sortedFieldIds.add("" + input.id);
-                    println ("id " + input.id + " has label " + input.label);
-                    GravityField f=new GravityField();
-                    f.id="" + input.id;
-                    f.label=input.label;
-                    f.adminLabel=input.adminLabel;
-                    if(input.type==null) {
-                        f.type=it.type;
-                    } else {
-                        f.type=input.type;
-                    }
-                    fieldData.put("" + input.id, f);
-                }
-            } else if(it.choices!=null) {
-                // e.g. dropdown
-                println ("id " + it.id + " has label " + it.label);
-                sortedFieldIds.add("" + it.id);
-                GravityField fGroup=new GravityField();
-                fGroup.id="" + it.id;
-                fGroup.label=it.label;
-                fGroup.adminLabel=it.adminLabel;
-                fGroup.type=it.type;
-                fieldData.put("" + it.id, fGroup);
-            
-                for (choice in it.choices) {
-                    fGroup.addValue(choice.value);
-                }
-            }
-        }
-        
-        dynamicPanel.setLayout(new java.awt.GridLayout(0, 2, 20, 10));
-        for(String id: sortedFieldIds) {
-            println("rendering field " + id);
-            GravityField f=fieldData.get(id);
-            if(f!=null) {
-                if(f.groupLabel!=null) {
-                    // open new section with the relevant group caption
-                    println("  group label is " + f.groupLabel);
-                    dynamicPanel.add(new JLabel("<html><b>" + f.groupLabel + "</b> (" + f.type + ")</html>"));
-                } else {
-                    String inset="";
-                    if(f.id.contains(".")) {
-                        inset="     ";
-                    }
-                    dynamicPanel.add(new JLabel(inset + f.label + " (" + f.type + ")"));
-                }
-                
-                if(f.groupLabel!=null) { 
-                    dynamicPanel.add(new JLabel(""));
-                } else {
-                    if("checkbox".equalsIgnoreCase(f.type)) {
-                        JPanel checkboxPanel=new JPanel();
-                        checkboxPanel.setLayout(new BorderLayout());
-                        JCheckBox cb=new JCheckBox();
-                        cb.setName(f.getPlaceHolderName() + "_CHECKBOX");
-                        cb.putClientProperty("Jlawyerdescription", f.label);
-                        cb.setSelected(false);
-                        checkboxPanel.add(cb, BorderLayout.LINE_START);
-                        JTextField tf=new JTextField("");
-                        tf.setName(f.getPlaceHolderName());
-                        tf.putClientProperty("Jlawyerdescription", f.label);
-                        checkboxPanel.add(tf, BorderLayout.CENTER);
-                        dynamicPanel.add(checkboxPanel);
-                    } else if("select".equalsIgnoreCase(f.type)) {
-                        JComboBox cb=new JComboBox();
-                        for(String valueEntry: f.getValueList()) {
-                            cb.addItem(valueEntry);
+                } else if(it.inputs==null && it.choices==null) {
+                    if(it.displayOnly) {
+                        sortedFieldIds.add("" + it.id);
+                        GravityField fGroup=new GravityField();
+                        fGroup.id="" + it.id;
+                        fGroup.label=it.label;
+                        fGroup.groupLabel=it.label;
+                        fGroup.adminLabel=it.adminLabel;
+                        fGroup.type=it.type;
+                        if("section".equals(it.type)) {
+                            fGroup.label="";
                         }
-                        cb.setName(f.getPlaceHolderName());
-                        cb.putClientProperty("Jlawyerdescription", f.label);
-                        dynamicPanel.add(cb);
-                    } else if("textarea".equalsIgnoreCase(f.type)) {
-                        JTextArea ta=new JTextArea();
-                        ta.setText("");
-                        ta.setRows(1);
-                        ta.setLineWrap(true);
-                        ta.setWrapStyleWord(true);
-                        ta.setName(f.getPlaceHolderName());
-                        ta.putClientProperty("Jlawyerdescription", f.label);
-                        JScrollPane scrollpane = new JScrollPane(ta);    
-                        dynamicPanel.add(scrollpane);
+                        fieldData.put("" + it.id, fGroup);
                     } else {
-                        JTextField tf=new JTextField("");
-                        tf.setName(f.getPlaceHolderName());
-                        tf.putClientProperty("Jlawyerdescription", f.label);
-                        dynamicPanel.add(tf);
+                        println ("id " + it.id + " has label " + it.label);
+                        sortedFieldIds.add("" + it.id);
+                        GravityField f=new GravityField();
+                        f.id="" + it.id;
+                        f.label=it.label;
+                        f.adminLabel=it.adminLabel;
+                        f.type=it.type;
+                        fieldData.put("" + it.id, f);
+                    }
+                } else if(it.inputs!=null) {
+                    println ("id " + it.id + " has label " + it.label);
+                    sortedFieldIds.add("" + it.id);
+                    GravityField fGroup=new GravityField();
+                    fGroup.id="" + it.id;
+                    fGroup.label=it.label;
+                    fGroup.adminLabel=it.adminLabel;
+                    fGroup.groupLabel=it.label;
+                    fGroup.type=it.type;
+                    fieldData.put("" + it.id, fGroup);
+            
+                    for (input in it.inputs) {
+                        // e.g. group of checkboxes
+                        sortedFieldIds.add("" + input.id);
+                        println ("id " + input.id + " has label " + input.label);
+                        GravityField f=new GravityField();
+                        f.id="" + input.id;
+                        f.label=input.label;
+                        f.adminLabel=input.adminLabel;
+                        if(input.type==null) {
+                            f.type=it.type;
+                        } else {
+                            f.type=input.type;
+                        }
+                        fieldData.put("" + input.id, f);
+                    }
+                } else if(it.choices!=null) {
+                    // e.g. dropdown
+                    println ("id " + it.id + " has label " + it.label);
+                    sortedFieldIds.add("" + it.id);
+                    GravityField fGroup=new GravityField();
+                    fGroup.id="" + it.id;
+                    fGroup.label=it.label;
+                    fGroup.adminLabel=it.adminLabel;
+                    fGroup.type=it.type;
+                    fieldData.put("" + it.id, fGroup);
+            
+                    for (choice in it.choices) {
+                        fGroup.addValue(choice.value);
                     }
                 }
-                
-            } else {
-                println(id + " has no definition, cannot render");
             }
+        
+            dynamicPanel.setLayout(new java.awt.GridLayout(0, 2, 20, 10));
+            for(String id: sortedFieldIds) {
+                println("rendering field " + id);
+                GravityField f=fieldData.get(id);
+                if(f!=null) {
+                    if(f.groupLabel!=null) {
+                        // open new section with the relevant group caption
+                        println("  group label is " + f.groupLabel);
+                        dynamicPanel.add(new JLabel("<html><b>" + f.groupLabel + "</b> (" + f.type + ")</html>"));
+                    } else {
+                        String inset="";
+                        if(f.id.contains(".")) {
+                            inset="     ";
+                        }
+                        if("html".equals(f.type)) {
+                            // ignored
+                        } else if("section".equals(f.type)) {
+                            // displayed without caption
+                            dynamicPanel.add(new JLabel());
+                        } else {
+                            dynamicPanel.add(new JLabel(inset + f.label + " (" + f.type + ")"));
+                        }
+                    }
+                
+                    if(f.groupLabel!=null) { 
+                        dynamicPanel.add(new JLabel(""));
+                    } else {
+                        if("checkbox".equalsIgnoreCase(f.type)) {
+                            JPanel checkboxPanel=new JPanel();
+                            checkboxPanel.setLayout(new BorderLayout());
+                            JCheckBox cb=new JCheckBox();
+                            cb.setName(f.getPlaceHolderName() + "_CHECKBOX");
+                            cb.putClientProperty("Jlawyerdescription", f.label);
+                            cb.setSelected(false);
+                            checkboxPanel.add(cb, BorderLayout.LINE_START);
+                            JTextField tf=new JTextField("");
+                            tf.setName(f.getPlaceHolderName());
+                            tf.setEnabled(false);
+                            tf.putClientProperty("Jlawyerdescription", f.label);
+                            checkboxPanel.add(tf, BorderLayout.CENTER);
+                            dynamicPanel.add(checkboxPanel);
+                        } else if("select".equalsIgnoreCase(f.type)) {
+                            JComboBox cb=new JComboBox();
+                            for(String valueEntry: f.getValueList()) {
+                                cb.addItem(valueEntry);
+                            }
+                            cb.setName(f.getPlaceHolderName());
+                            cb.putClientProperty("Jlawyerdescription", f.label);
+                            dynamicPanel.add(cb);
+                        } else if("textarea".equalsIgnoreCase(f.type)) {
+                            JTextArea ta=new JTextArea();
+                            ta.setText("");
+                            ta.setRows(1);
+                            ta.setLineWrap(true);
+                            ta.setWrapStyleWord(true);
+                            ta.setName(f.getPlaceHolderName());
+                            ta.putClientProperty("Jlawyerdescription", f.label);
+                            JScrollPane scrollpane = new JScrollPane(ta);    
+                            dynamicPanel.add(scrollpane);
+                        } else if("section".equalsIgnoreCase(f.type)) {
+                            JSeparator sep=new JSeparator();
+                            dynamicPanel.add(sep);
+                        } else if("html".equalsIgnoreCase(f.type)) {
+                            // ignore, those are display only contents
+                        } else {
+                            JTextField tf=new JTextField("");
+                            tf.setName(f.getPlaceHolderName());
+                            tf.putClientProperty("Jlawyerdescription", f.label);
+                            dynamicPanel.add(tf);
+                        }
+                    }
+                
+                } else {
+                    println(id + " has no definition, cannot render");
+                }
             
             
-        }
+            }
         
 
         } catch (Throwable t) {
@@ -893,153 +925,105 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
             SCRIPTPANEL=panel(size: [300, 300]) {
                 //borderLayout()
                 vbox {
-        tabbedPane(id: 'tabs') {
-            panel(name: 'Formular') {
-                vbox {
-                    dynamicPanel=panel(border: titledBorder(title: 'Formulardaten')) {
+                    tabbedPane(id: 'tabs') {
+                        panel(name: 'Formular') {
+                            vbox {
+                                dynamicPanel=panel(border: titledBorder(title: 'Formulardaten')) {
                                 
+                                }
                             }
-                }
-            }       
-            panel(name: 'Wordpress-Import') {
-                tableLayout (id: 'pluginParent', cellpadding: 5) {
-                    tr {
-                        td (colfill:true, align: 'left') {
-                            label("Website:")
-                        }
-                        td (colfill:true, align: 'left') {
-                            cmbSites = comboBox(editable: false, actionPerformed: {
-                                                    loadFormTypes();
-                                                }
-                                            )
-                        }
-                    }
-                    tr {
-                        td (colfill:true, align: 'left') {
-                            label("Formulartyp:")
-                        }
-                        td (colfill:true, align: 'left') {
-                            cmbFormTypes = comboBox(editable: false, actionPerformed: {
-                                                    loadFormEntries();
-                                                }
-                                            )
-                        }
-                    }
+                        }       
+                        panel(name: 'Wordpress-Import') {
+                            tableLayout (id: 'pluginParent', cellpadding: 5) {
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label("Website:")
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        cmbSites = comboBox(editable: false, actionPerformed: {
+                                                loadFormTypes();
+                                            }
+                                        )
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label("Formulartyp:")
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        cmbFormTypes = comboBox(editable: false, actionPerformed: {
+                                                loadFormEntries();
+                                            }
+                                        )
+                                    }
+                                }
 
-                    tr {
-                        td (colfill:true, align: 'left') {
-                            label("Formulareintrag:")
-                        }
-                        td (colfill:true, align: 'left') {
-                            cmbFormEntries = comboBox(editable: false, actionPerformed: {
-                                                    loadFormEntryPreview();
-                                                }
-                                            )
-                        }
-                    }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label("Formulareintrag:")
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        cmbFormEntries = comboBox(editable: false, actionPerformed: {
+                                                loadFormEntryPreview();
+                                            }
+                                        )
+                                    }
+                                }
                     
-                    tr {
-                        td (colfill:true, align: 'left') {
+                                tr {
+                                    td (colfill:true, align: 'left') {
                             
-                        }
-                        td (colspan:2, align: 'center') {
-                            button(text: 'Importieren', actionPerformed: {
-                                                        executeImport();
-                                                    })
-                        }
-                    }
-                    tr {
-                        td (colfill:true, align: 'left') {
-                            label('Vorschau:')
-                        }
-                    }
-                    tr {
-                        td (colspan:2, align: 'left') {
-                            lblEntryPreview=label('');
-                        }
-                    }
+                                    }
+                                    td (colspan:2, align: 'center') {
+                                        button(text: 'Importieren', actionPerformed: {
+                                                executeImport();
+                                            })
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label('Vorschau:')
+                                    }
+                                }
+                                tr {
+                                    td (colspan:2, align: 'left') {
+                                        lblEntryPreview=label('');
+                                    }
+                                }
                     
                     
                         
                     
                
+                            }
+                        }
+                        panel(name: 'interne Metadaten') {
+            
+                            tableLayout (id: 'pluginParent', cellpadding: 5) {
+            
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label("Formularstruktur:")
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        scrollPane {
+                                            taFormStructure = textArea(id:'taFormStructure', name: "_FORMSTRUCTURE", clientPropertyJlawyerdescription: "Formularstrukturdaten", lineWrap:true,wrapStyleWord:true, columns:35, rows:50,editable:false)
+                                        }  
+                                    }
+                                }
+                    
+                            }
+                
+                        }       
+                    }   
                 }
             }
-            panel(name: 'interne Metadaten') {
-            
-                tableLayout (id: 'pluginParent', cellpadding: 5) {
-            
-                    tr {
-                        td (colfill:true, align: 'left') {
-                            label("Formularstruktur:")
-                        }
-                    }
-                    tr {
-                        td (colfill:true, align: 'left') {
-                            scrollPane {
-                                taFormStructure = textArea(id:'taFormStructure', name: "_FORMSTRUCTURE", clientPropertyJlawyerdescription: "Formularstrukturdaten", lineWrap:true,wrapStyleWord:true, columns:35, rows:50,editable:false)
-                            }  
-                        }
-                    }
-                    
-                }
-                
-            }       
-        }   
-    }
-}
             
         }
         
         this.loadSites();
-
-        
-        /*
-        dynaPanel.setLayout(new java.awt.GridLayout(10, 2, 20, 10));
-        for(int i=0;i<10;i++) {
-            dynaPanel.add(new JLabel("schnuff " + i));
-            dynaPanel.add(new JTextField("response"));
-        }
-        */
-
-        /*
-        try {
-
-        def req1=new URL("https://legalhack.de/wp-json/gf/v2/forms").openConnection();
-        String userAndPassword = "ck_594abcb56633eb24e8385f25ce84aa14a87862fd" + ":" + "cs_34b6eb46dcedb09df1674debc66f60c30a10b8e3";
-        byte[] userAndPasswordBytes = userAndPassword.getBytes(java.nio.charset.StandardCharsets.UTF_8);
-        String authHeader= java.util.Base64.getEncoder().encodeToString(userAndPasswordBytes);
-
-
-
-        req1.setRequestProperty("Authorization", "Basic " + authHeader);
-        req1.setRequestProperty( 'Accept', 'application/json');
-        def responseCode=req1.responseCode;
-        def responseString=req1.inputStream.text;
-        println responseCode + ": " + responseString;
-
-
-        def slurper = new groovy.json.JsonSlurper()
-        def result = slurper.parseText(responseString)
-        println("forms: " + result.size())
-
-        result.each {
-	println it.key
-	println it.value.get("entries")
-	println it.value.get("id")
-	println it.value.get("title")
-        }
-
-
-
-
-
-        } catch (Throwable t) {
-	System.out.println(t.getMessage());
-        }
-         */
-
-        
 
         return SCRIPTPANEL;
 
@@ -1065,25 +1049,25 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
         
         try {
 
-        def req1=new URL(site.getFormsEndpoint()).openConnection();
-        String authHeader= site.getAuthHeader();
+            def req1=new URL(site.getFormsEndpoint()).openConnection();
+            String authHeader= site.getAuthHeader();
 
-        req1.setRequestProperty("Authorization", "Basic " + authHeader);
-        req1.setRequestProperty( 'Accept', 'application/json');
-        def responseCode=req1.responseCode;
-        String responseString=req1.inputStream.text;
-        println "all forms:"
-        println responseCode + ": " + responseString;
+            req1.setRequestProperty("Authorization", "Basic " + authHeader);
+            req1.setRequestProperty( 'Accept', 'application/json');
+            def responseCode=req1.responseCode;
+            String responseString=req1.inputStream.text;
+            println "all forms:"
+            println responseCode + ": " + responseString;
 
-        def slurper = new groovy.json.JsonSlurper()
-        def result = slurper.parseText(responseString)
+            def slurper = new groovy.json.JsonSlurper()
+            def result = slurper.parseText(responseString)
         
-        result.each {
-            // println it.key
+            result.each {
+                // println it.key
             
-            cmbFormTypes.addItem(it.value.get("id") + " - " + it.value.get("title") + " (" + it.value.get("entries") + " Einträge)");
+                cmbFormTypes.addItem(it.value.get("id") + " - " + it.value.get("title") + " (" + it.value.get("entries") + " Einträge)");
 	
-        }
+            }
 
 
 
@@ -1105,36 +1089,36 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
         lblEntryPreview.setText("");
     
         if(cmbFormTypes.getSelectedIndex()<0)
-            return;
+        return;
     
         try {
         
-        cmbFormEntries.removeAllItems();
+            cmbFormEntries.removeAllItems();
 
-        String selectedType=cmbFormTypes.getSelectedItem();
-        String formTypeId=selectedType.split(" ")[0];
+            String selectedType=cmbFormTypes.getSelectedItem();
+            String formTypeId=selectedType.split(" ")[0];
         
-        def req1=new URL(site.getEntriesEndpoint(formTypeId)).openConnection();
-        String authHeader= site.getAuthHeader();
+            def req1=new URL(site.getEntriesEndpoint(formTypeId)).openConnection();
+            String authHeader= site.getAuthHeader();
         
-        req1.setRequestProperty("Authorization", "Basic " + authHeader);
-        req1.setRequestProperty( 'Accept', 'application/json');
-        def responseCode=req1.responseCode;
-        String responseString=req1.inputStream.text;
+            req1.setRequestProperty("Authorization", "Basic " + authHeader);
+            req1.setRequestProperty( 'Accept', 'application/json');
+            def responseCode=req1.responseCode;
+            String responseString=req1.inputStream.text;
         
-        println "all entries for form " + formTypeId + ":"
-        println responseCode + ": " + responseString;
+            println "all entries for form " + formTypeId + ":"
+            println responseCode + ": " + responseString;
 
-        def slurper = new groovy.json.JsonSlurper()
-        def result = slurper.parseText(responseString)
+            def slurper = new groovy.json.JsonSlurper()
+            def result = slurper.parseText(responseString)
         
-        result.entries.each {
+            result.entries.each {
             
-            cmbFormEntries.addItem("" + it.id + " - " + it.date_created);
+                cmbFormEntries.addItem("" + it.id + " - " + it.date_created);
             
-            println(it);
+                println(it);
 	
-        }
+            }
 
 
 
@@ -1154,87 +1138,83 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
         }
         
         if(cmbFormTypes.getSelectedIndex()<0 || cmbFormEntries.getSelectedIndex()<0)
-            return;
+        return;
     
         try {
         
-        String selectedType=cmbFormTypes.getSelectedItem();
-        String formTypeId=selectedType.split(" ")[0];
+            String selectedType=cmbFormTypes.getSelectedItem();
+            String formTypeId=selectedType.split(" ")[0];
         
-        String selectedEntry=cmbFormEntries.getSelectedItem();
-        String entryId=selectedEntry.split(" ")[0];
+            String selectedEntry=cmbFormEntries.getSelectedItem();
+            String entryId=selectedEntry.split(" ")[0];
         
         
-        // load form structure so we can use proper labels for the preview
-        def req0=new URL(site.getFormStructureEndpoint(formTypeId)).openConnection();
-        String authHeader= site.getAuthHeader();
+            // load form structure so we can use proper labels for the preview
+            def req0=new URL(site.getFormStructureEndpoint(formTypeId)).openConnection();
+            String authHeader= site.getAuthHeader();
         
-        req0.setRequestProperty("Authorization", "Basic " + authHeader);
-        req0.setRequestProperty( 'Accept', 'application/json');
-        def responseCode=req0.responseCode;
-        String responseString=req0.inputStream.text;
-        println "form structure for form " + formTypeId + ":"
-        println responseCode + ": " + responseString;
+            req0.setRequestProperty("Authorization", "Basic " + authHeader);
+            req0.setRequestProperty( 'Accept', 'application/json');
+            def responseCode=req0.responseCode;
+            String responseString=req0.inputStream.text;
+            println "form structure for form " + formTypeId + ":"
+            println responseCode + ": " + responseString;
         
-        def slurper = new groovy.json.JsonSlurper()
-        def structResult=slurper.parseText(responseString);
+            def slurper = new groovy.json.JsonSlurper()
+            def structResult=slurper.parseText(responseString);
         
-        HashMap fieldLabels=new HashMap();
+            HashMap fieldLabels=new HashMap();
         
-        structResult.fields.each {
-            if(it.inputs==null) {
-                println "  id: " + it.id;
-                println "  label: " + it.label;
-                String sId=it.id;
-                String sLabel=it.label;
-                fieldLabels.put(sId, sLabel);
-            } else {
-                for (input in it.inputs) {
-                    println "  id: " + input.id;
-                    println "  label: " + input.label;
-                    String sId=input.id;
-                    String sLabel=input.label;
+            structResult.fields.each {
+                if(it.inputs==null) {
+                    String sId=it.id;
+                    String sLabel=it.label;
                     fieldLabels.put(sId, sLabel);
+                } else {
+                    for (input in it.inputs) {
+                        String sId=input.id;
+                        String sLabel=input.label;
+                        fieldLabels.put(sId, sLabel);
+                    }
                 }
+                println "";
             }
-            println "";
-        }
         
         
-        // load entries and provide a preview
+            // load entries and provide a preview
         
-        def req1=new URL(site.getEntryEndpoint(entryId)).openConnection();
+            def req1=new URL(site.getEntryEndpoint(entryId)).openConnection();
         
-        req1.setRequestProperty("Authorization", "Basic " + authHeader);
-        req1.setRequestProperty( 'Accept', 'application/json');
-        responseCode=req1.responseCode;
-        responseString=req1.inputStream.text;
-        println "entry " + entryId + ":"
-        println responseCode + ": " + responseString;
+            req1.setRequestProperty("Authorization", "Basic " + authHeader);
+            req1.setRequestProperty( 'Accept', 'application/json');
+            responseCode=req1.responseCode;
+            responseString=req1.inputStream.text;
+            println "entry " + entryId + ":"
+            println responseCode + ": " + responseString;
 
         
-        def result = slurper.parseText(responseString)
+            def result = slurper.parseText(responseString)
         
-        StringBuilder previewBuffer=new StringBuilder();
-        previewBuffer.append("<html><table>");
-        result.each {
+            StringBuilder previewBuffer=new StringBuilder();
+            previewBuffer.append("<html><table>");
+            result.each {
             
-            if(it.getValue()!=null && !("".equals(it.getValue()))) {
+                if(it.getValue()!=null && !("".equals(it.getValue()))) {
             
-            previewBuffer.append("<tr><td>");
-            if(fieldLabels.containsKey(it.getKey())) {
-                previewBuffer.append("" + fieldLabels.get(it.getKey()));
-            } else {
-                previewBuffer.append(it.getKey());
-            }
-            previewBuffer.append("</td><td>");
-            previewBuffer.append(it.getValue());
-            previewBuffer.append("</td></tr>");
-            }
+                    previewBuffer.append("<tr><td>");
+                    if(fieldLabels.containsKey(it.getKey())) {
+                        previewBuffer.append("" + fieldLabels.get(it.getKey()));
+                    } else {
+                        previewBuffer.append(it.getKey());
+                    }
+                    previewBuffer.append("</td><td>");
+                    previewBuffer.append(it.getValue());
+                    previewBuffer.append("</td></tr>");
+                }
 	
-        }
-        previewBuffer.append("</table></html>");
-        lblEntryPreview.setText(previewBuffer.toString());
+            }
+            previewBuffer.append("</table></html>");
+            lblEntryPreview.setText(previewBuffer.toString());
 
 
 
@@ -1247,7 +1227,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
     private void executeImport() {
     
         if(cmbFormTypes.getSelectedIndex()<0 || cmbFormEntries.getSelectedIndex()<0)
-            return;
+        return;
     
         GravitySite site=(GravitySite)cmbSites.getSelectedItem();
         if(site==null) {
@@ -1256,46 +1236,54 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
         
         try {
         
-        dynamicPanel.removeAll();
+            dynamicPanel.removeAll();
         
-        String selectedType=cmbFormTypes.getSelectedItem();
-        String formTypeId=selectedType.split(" ")[0];
+            String selectedType=cmbFormTypes.getSelectedItem();
+            String formTypeId=selectedType.split(" ")[0];
         
-        String selectedEntry=cmbFormEntries.getSelectedItem();
-        String entryId=selectedEntry.split(" ")[0];
+            String selectedEntry=cmbFormEntries.getSelectedItem();
+            String entryId=selectedEntry.split(" ")[0];
         
         
-        // load form structure so we can use proper labels for the preview
+            // load form structure so we can use proper labels for the preview
         
-        def req0=new URL(site.getFormStructureEndpoint(formTypeId)).openConnection();
-        String authHeader= site.getAuthHeader();
+            def req0=new URL(site.getFormStructureEndpoint(formTypeId)).openConnection();
+            String authHeader= site.getAuthHeader();
 
-        req0.setRequestProperty("Authorization", "Basic " + authHeader);
-        req0.setRequestProperty( 'Accept', 'application/json');
-        def responseCode=req0.responseCode;
-        String responseString=req0.inputStream.text;
-        println "form structure for form " + formTypeId + ":"
-        println responseCode + ": " + responseString;
+            req0.setRequestProperty("Authorization", "Basic " + authHeader);
+            req0.setRequestProperty( 'Accept', 'application/json');
+            def responseCode=req0.responseCode;
+            String responseString=req0.inputStream.text;
+            println "form structure for form " + formTypeId + ":"
+            println responseCode + ": " + responseString;
         
-        taFormStructure.setText(responseString);
+            taFormStructure.setText(responseString);
         
-        def slurper = new groovy.json.JsonSlurper()
-        def structResult=slurper.parseText(responseString);
+            def slurper = new groovy.json.JsonSlurper()
+            def structResult=slurper.parseText(responseString);
         
-        HashMap fieldData=new HashMap();
-        ArrayList sortedFieldIds=new ArrayList();
-        structResult.fields.each {
-            if(it.inputs==null && it.choices==null) {
-                if(it.displayOnly) {
-                    sortedFieldIds.add("" + it.id);
-                    GravityField fGroup=new GravityField();
-                    fGroup.id="" + it.id;
-                    fGroup.label=it.label;
-                    fGroup.groupLabel=it.label;
-                    fGroup.adminLabel=it.adminLabel;
-                    fGroup.type=it.type;
-                    fieldData.put("" + it.id, fGroup);
-                } else {
+            HashMap fieldData=new HashMap();
+            ArrayList sortedFieldIds=new ArrayList();
+            structResult.fields.each {
+                //            if("html".equals(it.type)) {
+                //                continue;
+                //            }
+                if("html".equals(it.type)) {
+            
+//                } else if("fileupload".equals(it.type)) {
+//                    if(it.multipleFiles==false) {
+//                        sortedFieldIds.add("" + it.id);
+//                        GravityField f=new GravityField();
+//                        f.id="" + it.id;
+//                        f.label=it.label;
+//                        f.adminLabel=it.adminLabel;
+//                        f.type=it.type;
+//                        fieldData.put("" + it.id, f);
+//                    } else {
+//                        
+//                    }
+                } else if("time".equals(it.type)) {
+                    // time has separate inputs for hour and minute, but we want to display as one
                     println ("id " + it.id + " has label " + it.label);
                     sortedFieldIds.add("" + it.id);
                     GravityField f=new GravityField();
@@ -1304,153 +1292,222 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                     f.adminLabel=it.adminLabel;
                     f.type=it.type;
                     fieldData.put("" + it.id, f);
-                }
-            } else if(it.inputs!=null) {
-                println ("id " + it.id + " has label " + it.label);
-                sortedFieldIds.add("" + it.id);
-                GravityField fGroup=new GravityField();
-                fGroup.id="" + it.id;
-                fGroup.label=it.label;
-                fGroup.adminLabel=it.adminLabel;
-                fGroup.groupLabel=it.label;
-                fGroup.type=it.type;
-                fieldData.put("" + it.id, fGroup);
-            
-                for (input in it.inputs) {
-                    // e.g. group of checkboxes
-                    sortedFieldIds.add("" + input.id);
-                    println ("id " + input.id + " has label " + input.label);
-                    GravityField f=new GravityField();
-                    f.id="" + input.id;
-                    f.label=input.label;
-                    f.adminLabel=input.adminLabel;
-                    if(input.type==null) {
-                        f.type=it.type;
+                } else if(it.inputs==null && it.choices==null) {
+                    if(it.displayOnly) {
+                        sortedFieldIds.add("" + it.id);
+                        GravityField fGroup=new GravityField();
+                        fGroup.id="" + it.id;
+                        fGroup.label=it.label;
+                        fGroup.groupLabel=it.label;
+                        fGroup.adminLabel=it.adminLabel;
+                        fGroup.type=it.type;
+                        if("section".equals(it.type)) {
+                            fGroup.label="";
+                        }
+                        fieldData.put("" + it.id, fGroup);
                     } else {
-                        f.type=input.type;
+                        println ("id " + it.id + " has label " + it.label);
+                        sortedFieldIds.add("" + it.id);
+                        GravityField f=new GravityField();
+                        f.id="" + it.id;
+                        f.label=it.label;
+                        f.adminLabel=it.adminLabel;
+                        f.type=it.type;
+                        fieldData.put("" + it.id, f);
                     }
-                    fieldData.put("" + input.id, f);
-                }
-            } else if(it.choices!=null) {
-                // e.g. dropdown
-                println ("id " + it.id + " has label " + it.label);
-                sortedFieldIds.add("" + it.id);
-                GravityField fGroup=new GravityField();
-                fGroup.id="" + it.id;
-                fGroup.label=it.label;
-                fGroup.adminLabel=it.adminLabel;
-                fGroup.type=it.type;
-                fieldData.put("" + it.id, fGroup);
+                } else if(it.inputs!=null) {
+                    println ("id " + it.id + " has label " + it.label);
+                    sortedFieldIds.add("" + it.id);
+                    GravityField fGroup=new GravityField();
+                    fGroup.id="" + it.id;
+                    fGroup.label=it.label;
+                    fGroup.adminLabel=it.adminLabel;
+                    fGroup.groupLabel=it.label;
+                    fGroup.type=it.type;
+                    fieldData.put("" + it.id, fGroup);
             
-                for (choice in it.choices) {
-                    fGroup.addValue(choice.value);
+                    for (input in it.inputs) {
+                        // e.g. group of checkboxes
+                        sortedFieldIds.add("" + input.id);
+                        println ("id " + input.id + " has label " + input.label);
+                        GravityField f=new GravityField();
+                        f.id="" + input.id;
+                        f.label=input.label;
+                        f.adminLabel=input.adminLabel;
+                        if(input.type==null) {
+                            f.type=it.type;
+                        } else {
+                            f.type=input.type;
+                        }
+                        fieldData.put("" + input.id, f);
+                    }
+                } else if(it.choices!=null) {
+                    // e.g. dropdown
+                    println ("id " + it.id + " has label " + it.label);
+                    sortedFieldIds.add("" + it.id);
+                    GravityField fGroup=new GravityField();
+                    fGroup.id="" + it.id;
+                    fGroup.label=it.label;
+                    fGroup.adminLabel=it.adminLabel;
+                    fGroup.type=it.type;
+                    fieldData.put("" + it.id, fGroup);
+            
+                    for (choice in it.choices) {
+                        fGroup.addValue(choice.value);
+                    }
                 }
             }
-        }
         
-        // load entries and provide a preview
+            // load entries and provide a preview
         
-        def req1=new URL(site.getEntryEndpoint(entryId)).openConnection();
+            def req1=new URL(site.getEntryEndpoint(entryId)).openConnection();
         
-        req1.setRequestProperty("Authorization", "Basic " + authHeader);
-        req1.setRequestProperty( 'Accept', 'application/json');
-        responseCode=req1.responseCode;
-        responseString=req1.inputStream.text;
-        println "entry " + entryId + ":"
-        println responseCode + ": " + responseString;
+            req1.setRequestProperty("Authorization", "Basic " + authHeader);
+            req1.setRequestProperty( 'Accept', 'application/json');
+            responseCode=req1.responseCode;
+            responseString=req1.inputStream.text;
+            println "entry " + entryId + ":"
+            println responseCode + ": " + responseString;
 
         
-        def result = slurper.parseText(responseString)
+            def result = slurper.parseText(responseString)
         
-        result.each {
-            GravityField f=fieldData.get("" + it.getKey());
-            if(f!=null) {
-                f.value=it.getValue();
-            } else {
-                println("" + it.getKey() + " has no definition, cannot set value");
-            }
-        }
-        
-        dynamicPanel.setLayout(new java.awt.GridLayout(0, 2, 20, 10));
-        for(String id: sortedFieldIds) {
-            println("rendering field " + id);
-            GravityField f=fieldData.get(id);
-            if(f!=null) {
-                if(f.groupLabel!=null) {
-                    // open new section with the relevant group caption
-                    println("  group label is " + f.groupLabel);
-                    dynamicPanel.add(new JLabel("<html><b>" + f.groupLabel + "</b> (" + f.type + ")</html>"));
-                } else {
-                    String inset="";
-                    if(f.id.contains(".")) {
-                        inset="     ";
-                    }
-                    dynamicPanel.add(new JLabel(inset + f.label + " (" + f.type + ")"));
-                }
-                
-                if(f.groupLabel!=null) { 
-                    dynamicPanel.add(new JLabel(""));
-                } else {
-                    if("checkbox".equalsIgnoreCase(f.type)) {
-                        println("rendering checkbox");
-                        JPanel checkboxPanel=new JPanel();
-                        checkboxPanel.setLayout(new BorderLayout());
-                        JCheckBox cb=new JCheckBox();
-                        cb.setName(f.getPlaceHolderName() + "_CHECKBOX");
-                        cb.putClientProperty("Jlawyerdescription", f.label);
-                        if(f.getValue()!=null && f.getValue().length()>0)
-                            cb.setSelected(true);
-                        else
-                            cb.setSelected(false);
-                        checkboxPanel.add(cb, BorderLayout.LINE_START);
-                        JTextField tf=new JTextField(f.getValue());
-                        tf.setName(f.getPlaceHolderName());
-                        tf.putClientProperty("Jlawyerdescription", f.label);
-                        checkboxPanel.add(tf, BorderLayout.CENTER);
-                        dynamicPanel.add(checkboxPanel);
-                    } else if("select".equalsIgnoreCase(f.type)) {
-                        println("rendering select");
-                        println("cb1");
-                        JComboBox cb=new JComboBox();
-                        println("cb2");
-                        for(String valueEntry: f.getValueList()) {
-                            println("cb3");
-                            cb.addItem(valueEntry);
+            result.each {
+                GravityField f=fieldData.get("" + it.getKey());
+                if(f!=null) {
+                    if("fileupload".equals(f.type)) {
+                        if(it.getValue() instanceof String) {
+                            f.addValue(it.getValue());
+                        } else {
+                            ArrayList valueList=(ArrayList)it.getValue();
+                            for(Object v: valueList) {
+                                f.addValue(v.toString());
+                            }
                         }
-                        println("cb4");
-                        cb.setSelectedItem(f.getValue());
-                        println("cb5");
-                        cb.setName(f.getPlaceHolderName());
-                        println("cb6");
-                        cb.putClientProperty("Jlawyerdescription", f.label);
-                        println("cb7");
-                        dynamicPanel.add(cb);
-                    } else if("textarea".equalsIgnoreCase(f.type)) {
-                        println("rendering textarea");
-                        JTextArea ta=new JTextArea();
-                        ta.setText(f.getValue());
-                        ta.setRows(1);
-                        ta.setLineWrap(true);
-                        ta.setWrapStyleWord(true);
-                        ta.setName(f.getPlaceHolderName());
-                        ta.putClientProperty("Jlawyerdescription", f.label);
-                        JScrollPane scrollpane = new JScrollPane(ta);    
-                        dynamicPanel.add(scrollpane);
+                    
                     } else {
-                        println("rendering anything else");
-                        JTextField tf=new JTextField(f.getValue());
-                        tf.setName(f.getPlaceHolderName());
-                        tf.putClientProperty("Jlawyerdescription", f.label);
-                        dynamicPanel.add(tf);
+                        f.value=it.getValue();
                     }
+                } else {
+                    println("" + it.getKey() + " has no definition, cannot set value");
                 }
-                
-            } else {
-                println(id + " has no definition, cannot render");
             }
+        
+            dynamicPanel.setLayout(new java.awt.GridLayout(0, 2, 20, 10));
+            for(String id: sortedFieldIds) {
+                println("rendering field " + id);
+                GravityField f=fieldData.get(id);
+                if(f!=null) {
+                    if(f.groupLabel!=null) {
+                        // open new section with the relevant group caption
+                        println("  group label is " + f.groupLabel);
+                        dynamicPanel.add(new JLabel("<html><b>" + f.groupLabel + "</b> (" + f.type + ")</html>"));
+                    } else {
+                        String inset="";
+                        if(f.id.contains(".")) {
+                            inset="     ";
+                        }
+                        if("html".equals(f.type)) {
+                            // ignored
+                        } else if("section".equals(f.type)) {
+                            // displayed without caption
+                            dynamicPanel.add(new JLabel());
+                        } else {
+                            dynamicPanel.add(new JLabel(inset + f.label + " (" + f.type + ")"));
+                        }
+                    }
+                
+                    if(f.groupLabel!=null) { 
+                        dynamicPanel.add(new JLabel(""));
+                    } else {
+                        if("checkbox".equalsIgnoreCase(f.type)) {
+                            println("rendering checkbox");
+                            JPanel checkboxPanel=new JPanel();
+                            checkboxPanel.setLayout(new BorderLayout());
+                            JCheckBox cb=new JCheckBox();
+                            cb.setName(f.getPlaceHolderName() + "_CHECKBOX");
+                            cb.putClientProperty("Jlawyerdescription", f.label);
+                            if(f.getValue()!=null && f.getValue().length()>0)
+                            cb.setSelected(true);
+                            else
+                            cb.setSelected(false);
+                            checkboxPanel.add(cb, BorderLayout.LINE_START);
+                            JTextField tf=new JTextField(f.getValue());
+                            tf.setName(f.getPlaceHolderName());
+                            tf.setEnabled(false);
+                            tf.putClientProperty("Jlawyerdescription", f.label);
+                            checkboxPanel.add(tf, BorderLayout.CENTER);
+                            dynamicPanel.add(checkboxPanel);
+                        } else if("select".equalsIgnoreCase(f.type)) {
+                            println("rendering select");
+                            println("cb1");
+                            JComboBox cb=new JComboBox();
+                            println("cb2");
+                            for(String valueEntry: f.getValueList()) {
+                                println("cb3");
+                                cb.addItem(valueEntry);
+                            }
+                            println("cb4");
+                            cb.setSelectedItem(f.getValue());
+                            println("cb5");
+                            cb.setName(f.getPlaceHolderName());
+                            println("cb6");
+                            cb.putClientProperty("Jlawyerdescription", f.label);
+                            println("cb7");
+                            dynamicPanel.add(cb);
+                        } else if("textarea".equalsIgnoreCase(f.type)) {
+                            println("rendering textarea");
+                            JTextArea ta=new JTextArea();
+                            ta.setText(f.getValue());
+                            ta.setRows(1);
+                            ta.setLineWrap(true);
+                            ta.setWrapStyleWord(true);
+                            ta.setName(f.getPlaceHolderName());
+                            ta.putClientProperty("Jlawyerdescription", f.label);
+                            JScrollPane scrollpane = new JScrollPane(ta);    
+                            dynamicPanel.add(scrollpane);
+                        } else if("section".equalsIgnoreCase(f.type)) {
+                            JSeparator sep=new JSeparator();
+                            dynamicPanel.add(sep);
+                        } else if("html".equalsIgnoreCase(f.type)) {
+                            // ignore, those are display only contents
+                        } else if("fileupload".equalsIgnoreCase(f.type)) {
+                            JPanel uploadsPanel=new JPanel();
+                            uploadsPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+                            for(String v: f.getValueList()) {
+                                JTextField tf=new JTextField(v.substring(v.lastIndexOf("/")+1));
+                                tf.setName(f.getPlaceHolderName());
+                                tf.putClientProperty("Jlawyerdescription", f.label);
+                                uploadsPanel.add(tf);
+                            }
+                            dynamicPanel.add(uploadsPanel);
+                        } else if("date".equalsIgnoreCase(f.type)) {
+                            String dateValue=f.getValue();
+                            try {
+                                java.util.Date dval=new java.text.SimpleDateFormat("yyyy-MM-dd").parse(dateValue);
+                                dateValue=new java.text.SimpleDateFormat("dd.MM.yyyy").format(dval);
+                            } catch (Throwable t) {
+                            
+                            }
+                            JTextField tf=new JTextField(dateValue);
+                            tf.setName(f.getPlaceHolderName());
+                            tf.putClientProperty("Jlawyerdescription", f.label);
+                            dynamicPanel.add(tf);
+                        } else {
+                            println("rendering anything else");
+                            JTextField tf=new JTextField(f.getValue());
+                            tf.setName(f.getPlaceHolderName());
+                            tf.putClientProperty("Jlawyerdescription", f.label);
+                            dynamicPanel.add(tf);
+                        }
+                    }
+                
+                } else {
+                    println(id + " has no definition, cannot render");
+                }
             
             
-        }
+            }
         
 
         } catch (Throwable t) {

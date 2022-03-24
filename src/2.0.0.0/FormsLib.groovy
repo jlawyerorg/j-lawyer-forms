@@ -755,6 +755,7 @@ public class FormsLib {
                             }
                         } else if(component instanceof JTextArea) {
                             ((JTextArea)component).setText(value);
+                            ((JTextArea)component).setToolTipText(value);
                         } else if(component instanceof JSpinner) {
                             int intValue=1;
                             try {

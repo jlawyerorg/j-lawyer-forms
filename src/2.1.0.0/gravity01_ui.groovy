@@ -1,3 +1,4 @@
+
 /*
 GNU AFFERO GENERAL PUBLIC LICENSE
 Version 3, 19 November 2007
@@ -673,6 +674,7 @@ import javax.swing.SwingConstants
 import java.util.ArrayList
 import java.util.List
 import java.util.Locale
+import javax.swing.JButton
 import java.util.HashMap
 import javax.swing.JTable
 import javax.swing.JLabel
@@ -686,6 +688,7 @@ import javax.swing.JScrollPane
 import javax.swing.JSeparator
 import java.awt.Component
 import java.awt.Container
+import java.awt.Dimension
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 
 public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
@@ -826,7 +829,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                     if(f.groupLabel!=null) {
                         // open new section with the relevant group caption
                         println("  group label is " + f.groupLabel);
-                        dynamicPanel.add(new JLabel("<html><b>" + f.groupLabel + "</b> (" + f.type + ")</html>"));
+                        dynamicPanel.add(new JLabel("<html><b>" + f.groupLabel + "</b></html>"));
                     } else {
                         String inset="";
                         if(f.id.contains(".")) {
@@ -838,7 +841,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             // displayed without caption
                             dynamicPanel.add(new JLabel());
                         } else {
-                            dynamicPanel.add(new JLabel(inset + f.label + " (" + f.type + ")"));
+                            dynamicPanel.add(new JLabel(inset + f.label));
                         }
                     }
                 
@@ -882,6 +885,41 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             dynamicPanel.add(sep);
                         } else if("html".equalsIgnoreCase(f.type)) {
                             // ignore, those are display only contents
+                        } else if("fileupload".equalsIgnoreCase(f.type)) {
+//                            int valueIndex=0;
+//                            for(String v: f.getValueList()) {
+//                                // in case of multipe files, display the first one with a caption
+//                                // and the others with an empty caption so that it looks like a section
+//                                if(valueIndex>0)
+//                                    dynamicPanel.add(new JLabel());
+//                                JTextField tf=new JTextField(v.substring(v.lastIndexOf("/")+1));
+//                                tf.setName(f.getPlaceHolderName());
+//                                tf.putClientProperty("Jlawyerdescription", f.label);
+//                                dynamicPanel.add(tf);
+//                                valueIndex=valueIndex+1;
+//                            }
+                            
+                            JPanel uploadsPanel=new JPanel();
+                            uploadsPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+                            JTextArea ta=new JTextArea();
+                            ta.setRows(1);
+                            ta.setLineWrap(true);
+                            ta.setName(f.getPlaceHolderName());
+                            ta.putClientProperty("Jlawyerdescription", f.label);
+                            JScrollPane scrollpane = new JScrollPane(ta);    
+                            uploadsPanel.add(scrollpane);
+                            
+                            JButton downloadButton=new JButton();
+                            downloadButton.setText("Download");
+                            downloadButton.addActionListener(new java.awt.event.ActionListener() {
+                                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                        this.callback.downloadFilesToCase(ta.getText());
+                                    }
+                                });
+                            uploadsPanel.add(downloadButton);
+                            
+                            dynamicPanel.add(uploadsPanel);
+                            
                         } else {
                             JTextField tf=new JTextField("");
                             tf.setName(f.getPlaceHolderName());
@@ -1377,12 +1415,17 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                 if(f!=null) {
                     if("fileupload".equals(f.type)) {
                         if(it.getValue() instanceof String) {
+                            System.out.println("fileupload " + it.getKey() + " has single value");
                             f.addValue(it.getValue());
+                            //f.setValue(it.getValue());
                         } else {
+                            System.out.println("fileupload " + it.getKey() + " has multiple values");
                             ArrayList valueList=(ArrayList)it.getValue();
                             for(Object v: valueList) {
                                 f.addValue(v.toString());
                             }
+                            //f.addValue(it.getValue().toString());
+                            //f.setValue(it.getValue().toString());
                         }
                     
                     } else {
@@ -1401,7 +1444,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                     if(f.groupLabel!=null) {
                         // open new section with the relevant group caption
                         println("  group label is " + f.groupLabel);
-                        dynamicPanel.add(new JLabel("<html><b>" + f.groupLabel + "</b> (" + f.type + ")</html>"));
+                        dynamicPanel.add(new JLabel("<html><b>" + f.groupLabel + "</b></html>"));
                     } else {
                         String inset="";
                         if(f.id.contains(".")) {
@@ -1413,7 +1456,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             // displayed without caption
                             dynamicPanel.add(new JLabel());
                         } else {
-                            dynamicPanel.add(new JLabel(inset + f.label + " (" + f.type + ")"));
+                            dynamicPanel.add(new JLabel(inset + f.label));
                         }
                     }
                 
@@ -1459,6 +1502,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             println("rendering textarea");
                             JTextArea ta=new JTextArea();
                             ta.setText(f.getValue());
+                            ta.setToolTipText(f.getValue());
                             ta.setRows(1);
                             ta.setLineWrap(true);
                             ta.setWrapStyleWord(true);
@@ -1472,15 +1516,83 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                         } else if("html".equalsIgnoreCase(f.type)) {
                             // ignore, those are display only contents
                         } else if("fileupload".equalsIgnoreCase(f.type)) {
+                            
+//                            int valueIndex=0;
+//                            for(String v: f.getValueList()) {
+//                                // in case of multipe files, display the first one with a caption
+//                                // and the others with an empty caption so that it looks like a section
+//                                if(valueIndex>0)
+//                                    dynamicPanel.add(new JLabel());
+//                                JTextField tf=new JTextField(v.substring(v.lastIndexOf("/")+1));
+//                                tf.setName(f.getPlaceHolderName());
+//                                tf.putClientProperty("Jlawyerdescription", f.label);
+//                                dynamicPanel.add(tf);
+//                                valueIndex=valueIndex+1;
+//                            }
+
+//                            JTextField tf=new JTextField(f.getValue());
+//                            tf.putClientProperty("Jlawyerdescription", f.label);
+//                            tf.setName(f.getPlaceHolderName());
+//                            Dimension maxSize=tf.getMaximumSize();
+//                            maxSize.setSize(300, maxSize.getHeight());
+//                            tf.setMaximumSize(maxSize);
+//                            dynamicPanel.add(tf);
+                            
+                            
+//                            JLabel tf=new JLabel();
+//                            tf.setToolTipText(f.getValueList().toString());
+//                            tf.setText("" + f.getValueList().size() + " Datei(en)");
+//                            tf.putClientProperty("Jlawyerdescription", f.label);
+//                            tf.setName(f.getPlaceHolderName());
+//                            dynamicPanel.add(tf);
+                            
                             JPanel uploadsPanel=new JPanel();
                             uploadsPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-                            for(String v: f.getValueList()) {
-                                JTextField tf=new JTextField(v.substring(v.lastIndexOf("/")+1));
-                                tf.setName(f.getPlaceHolderName());
-                                tf.putClientProperty("Jlawyerdescription", f.label);
-                                uploadsPanel.add(tf);
-                            }
+                            JTextArea ta=new JTextArea();
+                            ta.setText(f.getValueList().toString());
+                            ta.setToolTipText(f.getValueList().toString());
+                            ta.setRows(1);
+                            ta.setLineWrap(true);
+                            //ta.setWrapStyleWord(true);
+                            ta.setName(f.getPlaceHolderName());
+                            ta.putClientProperty("Jlawyerdescription", f.label);
+                            JScrollPane scrollpane = new JScrollPane(ta);    
+                            uploadsPanel.add(scrollpane);
+                            
+                            JButton downloadButton=new JButton();
+                            downloadButton.setText("Download");
+                            downloadButton.addActionListener(new java.awt.event.ActionListener() {
+                                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                        this.callback.downloadFilesToCase(ta.getText());
+                                    }
+                                });
+                            uploadsPanel.add(downloadButton);
+                            
                             dynamicPanel.add(uploadsPanel);
+                            
+                            
+//                            JTextArea ta=new JTextArea();
+//                            ta.setText(f.getValueList().toString());
+//                            ta.setToolTipText(f.getValueList().toString());
+//                            ta.setRows(1);
+//                            ta.setLineWrap(true);
+//                            //ta.setWrapStyleWord(true);
+//                            ta.setName(f.getPlaceHolderName());
+//                            ta.putClientProperty("Jlawyerdescription", f.label);
+//                            JScrollPane scrollpane = new JScrollPane(ta);    
+//                            dynamicPanel.add(scrollpane);
+                            
+//                            int valueIndex=0;
+//                            for(String v: f.getValueList()) {
+//                                if(valueIndex>0)
+//                                    dynamicPanel.add(new JLabel());
+//                                JTextField tf=new JTextField(v.substring(v.lastIndexOf("/")+1));
+//                                tf.setName(f.getPlaceHolderName());
+//                                tf.putClientProperty("Jlawyerdescription", f.label);
+//                                dynamicPanel.add(tf);
+//                                valueIndex=valueIndex+1;
+//                            }
+                            
                         } else if("date".equalsIgnoreCase(f.type)) {
                             String dateValue=f.getValue();
                             try {

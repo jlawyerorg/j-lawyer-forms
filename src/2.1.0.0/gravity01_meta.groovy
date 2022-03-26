@@ -664,6 +664,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "Gravity Forms"
 description = "Uebernimmt Eingaben aus Wordpress Gravity Forms"
-version = "0.3.0";
+version = "0.3.1";
 author = "Jens Kutschke"
-updated = "24.03.2022"
+updated = "26.03.2022"

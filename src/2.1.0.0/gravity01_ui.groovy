@@ -1084,6 +1084,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
         }
         
         lblEntryPreview.setText("");
+        cmbFormTypes.removeAllItems();
         
         try {
 
@@ -1246,7 +1247,11 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                         previewBuffer.append(it.getKey());
                     }
                     previewBuffer.append("</td><td>");
-                    previewBuffer.append(it.getValue());
+                    String prevValue=it.getValue().toString();
+                    if(prevValue.length()>150) {
+                        prevValue=prevValue.substring(0,149) + " ... (" + it.getValue().toString().length() + " Zeichen)";
+                    }
+                    previewBuffer.append(prevValue);
                     previewBuffer.append("</td></tr>");
                 }
 	

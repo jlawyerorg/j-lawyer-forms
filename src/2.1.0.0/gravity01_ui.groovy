@@ -690,6 +690,7 @@ import java.awt.Component
 import java.awt.Container
 import java.awt.Dimension
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
+import com.jdimension.jlawyer.client.utils.DesktopUtils
 
 public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
 
@@ -975,6 +976,34 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             tableLayout (id: 'pluginParent', cellpadding: 5) {
                                 tr {
                                     td (colfill:true, align: 'left') {
+                                        label("Gravity Forms für die eigene Wordpress-Website:")
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        button(text: 'Herunterladen', actionPerformed: {
+                                                browseTo("https://rocketgenius.pxf.io/0JBoXO");
+                                            })
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label("Fertige Website mit Gravity Forms:")
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        button(text: 'Bestellen', actionPerformed: {
+                                                browseTo("https://www.j-dimension.com/angebote/j-lawyer-org/");
+                                            })
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label("   ")
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        label("   ")
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
                                         label("Website:")
                                     }
                                     td (colfill:true, align: 'left') {
@@ -1065,6 +1094,10 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
 
         return SCRIPTPANEL;
 
+    }
+    
+    private void browseTo(String toUrl) {
+        DesktopUtils.openBrowser(toUrl);
     }
     
     private void loadSites() {

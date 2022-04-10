@@ -765,7 +765,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                         fGroup.groupLabel=it.label;
                         fGroup.adminLabel=it.adminLabel;
                         fGroup.type=it.type;
-                        if("section".equals(it.type)) {
+                        if("section".equals(it.type) || "page".equals(it.type)) {
                             fGroup.label="";
                         }
                         fieldData.put("" + it.id, fGroup);
@@ -838,7 +838,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                         }
                         if("html".equals(f.type)) {
                             // ignored
-                        } else if("section".equals(f.type)) {
+                        } else if("section".equals(f.type) || "page".equals(f.type)) {
                             // displayed without caption
                             dynamicPanel.add(new JLabel());
                         } else {
@@ -881,7 +881,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             ta.putClientProperty("Jlawyerdescription", f.label);
                             JScrollPane scrollpane = new JScrollPane(ta);    
                             dynamicPanel.add(scrollpane);
-                        } else if("section".equalsIgnoreCase(f.type)) {
+                        } else if("section".equalsIgnoreCase(f.type) || "page".equalsIgnoreCase(f.type)) {
                             JSeparator sep=new JSeparator();
                             dynamicPanel.add(sep);
                         } else if("html".equalsIgnoreCase(f.type)) {
@@ -1377,7 +1377,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                         fGroup.groupLabel=it.label;
                         fGroup.adminLabel=it.adminLabel;
                         fGroup.type=it.type;
-                        if("section".equals(it.type)) {
+                        if("section".equalsIgnoreCase(it.type) || "page".equalsIgnoreCase(it.type)) {
                             fGroup.label="";
                         }
                         fieldData.put("" + it.id, fGroup);
@@ -1490,7 +1490,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                         }
                         if("html".equals(f.type)) {
                             // ignored
-                        } else if("section".equals(f.type)) {
+                        } else if("section".equals(f.type) || "page".equals(f.type)) {
                             // displayed without caption
                             dynamicPanel.add(new JLabel());
                         } else {
@@ -1548,7 +1548,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             ta.putClientProperty("Jlawyerdescription", f.label);
                             JScrollPane scrollpane = new JScrollPane(ta);    
                             dynamicPanel.add(scrollpane);
-                        } else if("section".equalsIgnoreCase(f.type)) {
+                        } else if("section".equalsIgnoreCase(f.type) || "page".equalsIgnoreCase(f.type)) {
                             JSeparator sep=new JSeparator();
                             dynamicPanel.add(sep);
                         } else if("html".equalsIgnoreCase(f.type)) {

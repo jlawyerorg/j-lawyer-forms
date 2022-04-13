@@ -49,4 +49,7 @@
         <setting key="forms.gravity01.site5.apipwd" caption="Passwort:" default="" order="20"/>
     </form>
     
+    <form id="qewvuklag01" type="plugin" depends="formslib" name="UKlaG Beanstandung" description="Falldatenblatt zur Erfassung einer Beanstandung nach UKlaG" placeholder="UKBEA" version="0.2.0" for="2.1.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.1.0.0" files="qewvuklag01_meta.groovy,qewvuklag01_ui.groovy"/>
+    <!-- form id="qewvuklag02" type="plugin" depends="formslib" name="UKlaG Scorecard" description="Falldatenblatt zur Erfassung Statistik-relevanter Daten nach UKlaG" placeholder="UKSCO" version="0.2.0" for="2.1.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.1.0.0" files="qewvuklag02_meta.groovy,qewvuklag02_ui.groovy"/ -->
+    
 </forms>

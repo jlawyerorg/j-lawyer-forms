@@ -664,6 +664,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "UKlag"
 description = "QEWV UKlag"
-version = "0.1.0";
+version = "0.2.0";
 author = "Jens Kutschke"
-updated = "12.04.2022"
+updated = "13.04.2022"

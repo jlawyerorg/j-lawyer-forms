@@ -883,6 +883,44 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
                             }
                         }
                     }
+                    
+                    tr {
+                        td (colfill:true, align: 'left') {
+                            panel(border: titledBorder(title: 'Status')) {
+                                tableLayout (cellpadding: 5) {
+                                    
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'Status:')
+                                        }
+                                        td (colspan: 2) {
+                                            comboBox(items: [
+                                            'offen',
+                                            'ausgeräumt',
+                                            'aufgegeben'
+                                                ], name: "_STATUS", clientPropertyJlawyerdescription: "Status", editable: true, actionPerformed: {
+                                                    //berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString())
+                                                }
+                                            )
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true, valign: 'TOP') {
+                                            label(text: 'Erläuterung:')
+                                        }
+                                        td {
+                                            scrollPane{
+                                                textArea(name: "_STATUSERL", clientPropertyJlawyerdescription: "Status (Erläuterung)", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                            } 
+                                        }
+                                    }
+                                    
+                                    
+                                    
+                                }
+                            }
+                        }
+                    }
 
                     
                     tr {

@@ -662,8 +662,8 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 <https://www.gnu.org/licenses/>.
 */
 
-name = "UKlag"
-description = "QEWV UKlag"
+name = "UKlaG Beanstandung"
+description = "Falldatenblatt zur Erfassung einer Beanstandung nach UKlaG"
 version = "0.3.0";
 author = "Jens Kutschke"
 updated = "13.04.2022"

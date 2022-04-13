@@ -675,14 +675,17 @@ import javax.swing.JTable
 import javax.swing.JPanel
 import javax.swing.JTextField
 import javax.swing.JLabel
+import javax.swing.JComboBox
 import javax.swing.JRadioButton
 import java.awt.Component
 import java.awt.Container
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 import com.jdimension.jlawyer.client.utils.FileUtils
 import com.jdimension.jlawyer.client.editors.EditorsRegistry
+import com.jdimension.jlawyer.client.settings.ServerSettings
 import java.io.File
 import java.io.IOException
+import java.io.FileOutputStream
 import javax.swing.JFileChooser
 import javax.swing.JOptionPane
 import java.awt.Image
@@ -695,7 +698,10 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
     
     JPanel SCRIPTPANEL=null;
     JTextField txtPictureBase64;
+    JTextField txtPictureFile;
     JLabel lblRenderedPicture;
+    JComboBox cmbTopic;
+    JComboBox cmbNorm;
     FormPluginCallback callback=null;
 
     public qewvuklag01_ui() {
@@ -773,32 +779,12 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             label(text: 'Typ:')
                                         }
                                         td {
-                                            panel() {
-                                                tableLayout (cellpadding: 5) {
-                                                    tr {
-                                                        td {
-                                                            grpType = buttonGroup(id:'grpType')
-                                                            radioButton (text: 'Text', name: "_TYPTEXT", clientPropertyJlawyerdescription: "Typ: Text", buttonGroup: grpType, selected: true, actionPerformed: {
-                                                                    //togglePrivatGeschaeft()
-                                                
-                                                                })
-                                                        }
-                                                        td {
-                                                            radioButton (text: 'Text/Bild', name: "_TYPTEXTBILD", clientPropertyJlawyerdescription: "Typ: Text/Bild", buttonGroup: grpType, selected: true, actionPerformed: {
-                                                                    //togglePrivatGeschaeft()
-                                                
-                                                                })
-                                                        }
-                                                        td {
-                                                            radioButton (text: 'Bild', name: "_TYPBILD", clientPropertyJlawyerdescription: "Typ: Bild", buttonGroup: grpType, selected: true, actionPerformed: {
-                                                                    //togglePrivatGeschaeft()
-                                                
-                                                                })
-                                                        }
-
-                                                    }
-                                                }
-                                            }
+                                            
+                                            comboBox(items: [
+                                            'Text',
+                                            'Text/Bild',
+                                            'Bild'
+                                                ], name: "_TYP", clientPropertyJlawyerdescription: "Typ (Text, Bild, Text/Bild)", editable: false)
                                             
                                         }
                                     }
@@ -817,13 +803,8 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             label(text: 'Thema:')
                                         }
                                         td (colspan: 2) {
-                                            comboBox(items: [
-                                            'Thema 1',
-                                            'Thema 2',
-                                            'Thema 3',
-                                            'Thema 4',
-                                            'Thema 5',
-                                            'Thema 6'
+                                            cmbTopic = comboBox(items: [
+                                            'Sonstiges Thema'
                                                 ], name: "_THEMA", clientPropertyJlawyerdescription: "Thema", editable: true, actionPerformed: {
                                                     //berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString())
                                                 }
@@ -835,13 +816,8 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             label(text: 'Norm:')
                                         }
                                         td (colspan: 2) {
-                                            comboBox(items: [
-                                            'Norm 1',
-                                            'Norm 2',
-                                            'Norm 3',
-                                            'Norm 4',
-                                            'Norm 5',
-                                            'Norm 6'
+                                            cmbNorm = comboBox(items: [
+                                            'AGG'
                                                 ], name: "_NORM", clientPropertyJlawyerdescription: "Norm", editable: true, actionPerformed: {
                                                     //berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString())
                                                 }
@@ -932,9 +908,27 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             label(text: ' ')
                                         }
                                         td {
-                                            button(text: 'Hochladen', actionPerformed: {
-                                                    uploadPicture();
-                                                })
+                                            
+                                            
+                                            
+                                            panel() {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td {
+                                                            button(text: 'Hochladen', actionPerformed: {
+                                                                    uploadPicture();
+                                                                })
+                                                        }
+                                                        td {
+                                                            button(text: 'Speichern als...', actionPerformed: {
+                                                                    savePicture();
+                                                                })
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                            
                                         }
                                     }
                                     tr {
@@ -950,9 +944,17 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             label(text: 'Metadaten:')
                                         }
                                         td {
-                                            txtPictureBase64 = textField(name: "_BILDBASE64", text: '', clientPropertyJlawyerdescription: "Datum", columns:10, enabled: false, actionPerformed: {
+                                            txtPictureBase64 = textField(name: "_BILDBASE64", text: '', clientPropertyJlawyerdescription: "Bild (Base64-kodiert)", columns:10, enabled: false, actionPerformed: {
                                                     renderPicture();
                                                 })
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'Dateiname:')
+                                        }
+                                        td {
+                                            txtPictureFile = textField(name: "_BILDDATEI", text: '', clientPropertyJlawyerdescription: "Bild (Dateiname)", columns:10, enabled: false)
                                         }
                                     }
                                 }
@@ -968,8 +970,75 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
             }
         }
 
+        this.loadConfiguration();
+        
         return SCRIPTPANEL;
 
+    }
+    
+    private void loadConfiguration() {
+        ServerSettings set=ServerSettings.getInstance();
+        
+        String norms=set.getSetting("forms.qewvuklag01.norms", "AGG;DSGVO;EU-BiozidV;EU-BiozidV 72;HCVO;HCVO 3;HCVO 4.3;HCVO 10.1;HCVO 10.2;HCVO 10.3;HCVO 12;HeilprG;HWG;HWG 3;HWG 3a;HWG 5;HWG 11;HWG 12;LMIV;LMIV7.1;LMIV7.2;LMIV9;LMIV14;LMIV15;PAngV;PAngV2;UWG;UWG3a;UWG4a;UWG5.1;UWG5,5a;UWG5a.3;UWG5a.4;UWG5a.6");
+        String[] normArray=norms.split(";");
+        cmbNorm.removeAllItems();
+        for(String n: normArray) {
+            cmbNorm.addItem(n);
+        }
+        if(normArray.length>0) {
+            cmbNorm.setSelectedItem(normArray[0]);
+        }
+        
+        String topics=set.getSetting("forms.qewvuklag01.topics", "Sonstiges Thema;Aggressive Praktik (soweit nicht iVm einem anderen Thema);Anti-Diskriminierung;Datenschutz;Gesundheit;Irreführung (soweit nicht iVm einem anderen Thema);Lebensmittel u. Ernährung;Preisangaben und -transparenz");
+        String[] topicArray=topics.split(";");
+        cmbTopic.removeAllItems();
+        for(String n: topicArray) {
+            cmbTopic.addItem(n);
+        }
+        if(topicArray.length>0) {
+            cmbTopic.setSelectedItem(topicArray[0]);
+        }
+        
+    }
+    
+    private void savePicture() {
+        if(txtPictureBase64.getText().length()<50 || txtPictureFile.getText().isEmpty()) {
+            return;
+        }
+        
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
+        chooser.setDialogTitle("Verzeichnis wählen");
+        chooser.setApproveButtonText("Auswählen");
+        String path=null;
+        if (chooser.showOpenDialog(EditorsRegistry.getInstance().getMainWindow()) == JFileChooser.APPROVE_OPTION) {
+            path=chooser.getSelectedFile().getAbsolutePath();
+            if(!path.endsWith(File.separator)) {
+                path=path+File.separator;
+            }
+        }
+        if(path==null) {
+            return;
+        }
+        
+        int nIndex=0;
+        String sIndex="";
+        File saveTo=new File(path + sIndex + txtPictureFile.getText());
+        while(saveTo.exists()) {
+            nIndex=nIndex+1
+            sIndex=""+nIndex;
+            saveTo=new File(path + sIndex + txtPictureFile.getText());
+        }
+        byte[] content=Base64.getDecoder().decode(txtPictureBase64.getText());
+        try {
+            FileOutputStream fos = new FileOutputStream(saveTo, false);
+            fos.write(content);
+            fos.close();
+        } catch (Throwable t) {
+            log.error("Unable to write file " + saveTo.getAbsolutePath(), t);
+            t.printStackTrace(System.out);
+        }
     }
     
     private void uploadPicture() {
@@ -988,6 +1057,7 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
                 String pictureMetadata=new String(java.util.Base64.getEncoder().encode(content));
                 txtPictureBase64.setText(pictureMetadata);
                 txtPictureBase64.setToolTipText(pictureMetadata);
+                txtPictureFile.setText(f.getName());
 
             } catch (Exception ex) {
                 log.error("Could not upload picture", ex);

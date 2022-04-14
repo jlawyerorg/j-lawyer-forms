@@ -49,9 +49,8 @@
         <setting key="forms.gravity01.site5.apipwd" caption="Passwort:" default="" order="20"/>
     </form>
     
-    <form id="qewvuklag01" type="plugin" depends="formslib" name="UKlaG Beanstandung" description="Falldatenblatt zur Erfassung einer Beanstandung nach UKlaG" placeholder="UKBEA" version="0.3.0" for="2.1.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.1.0.0" files="qewvuklag01_meta.groovy,qewvuklag01_ui.groovy">
-        <setting key="forms.qewvuklag01.norms" caption="Normen (semikolon-getrennt):" default="AGG;DSGVO;EU-BiozidV;EU-BiozidV 72;HCVO;HCVO 3;HCVO 4.3;HCVO 10.1;HCVO 10.2;HCVO 10.3;HCVO 12;HeilprG;HWG;HWG 3;HWG 3a;HWG 5;HWG 11;HWG 12;LMIV;LMIV7.1;LMIV7.2;LMIV9;LMIV14;LMIV15;PAngV;PAngV2;UWG;UWG3a;UWG4a;UWG5.1;UWG5,5a;UWG5a.3;UWG5a.4;UWG5a.6" order="1"/>
-        <setting key="forms.qewvuklag01.topics" caption="Themen (semikolon-getrennt):" default="Sonstiges Thema;Aggressive Praktik (soweit nicht iVm einem anderen Thema);Anti-Diskriminierung;Datenschutz;Gesundheit;Irreführung (soweit nicht iVm einem anderen Thema);Lebensmittel u. Ernährung;Preisangaben und -transparenz" order="2"/>
+    <form id="qewvuklag01" type="plugin" depends="formslib" name="UKlaG Beanstandung" description="Falldatenblatt zur Erfassung einer Beanstandung nach UKlaG" placeholder="UKBEA" version="0.4.0" for="2.1.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.1.0.0" files="qewvuklag01_meta.groovy,qewvuklag01_ui.groovy">
+        <setting key="forms.qewvuklag01.topics" caption="Themen (semikolon-getrennt):" default="Sonstiges Thema;Aggressive Praktik (soweit nicht iVm einem anderen Thema);Anti-Diskriminierung;Datenschutz;Gesundheit;Irreführung (soweit nicht iVm einem anderen Thema);Lebensmittel u. Ernährung;Preisangaben und -transparenz" order="1"/>
     </form>
     <!-- form id="qewvuklag02" type="plugin" depends="formslib" name="UKlaG Scorecard" description="Falldatenblatt zur Erfassung Statistik-relevanter Daten nach UKlaG" placeholder="UKSCO" version="0.2.0" for="2.1.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.1.0.0" files="qewvuklag02_meta.groovy,qewvuklag02_ui.groovy"/ -->
     

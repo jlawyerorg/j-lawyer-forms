@@ -817,7 +817,42 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         }
                                         td (colspan: 2) {
                                             cmbNorm = comboBox(items: [
-                                            'AGG'
+                                            'Andere Norm',
+                                            'AGG (sonstige)',
+                                            'DSGVO (sonstige)',
+                                            'EU-BiozidV (sonstige)',
+                                            'EU-BiozidV 72',
+                                            'HCVO (sonstige)',
+                                            'HCVO 3',
+                                            'HCVO 4 Abs. 3 (Alkoholika)',
+                                            'HCVO 10 Abs. 1 (nicht-zugelassener Claim)',
+                                            'HCVO 10 Abs. 2 (Pflichtangaben fehlen)',
+                                            'HCVO 10 Abs. 3 (Allgemeiner Gesundheitsvorteil ohne ausreichende Beifügungen)',
+                                            'HCVO 12',
+                                            'HeilprG (sonstige)',
+                                            'HWG (sonstige)',
+                                            'HWG 3 (Irreführen/Täuschen)',
+                                            'HWG 3a (Werbung für nicht-zugelassenes Medikament)',
+                                            'HWG 5 (Homöopathika mit Anwendungsgebiet)',
+                                            'HWG 5 (Werbung mit Autoritäten)',
+                                            'HWG 11',
+                                            'HWG 12',
+                                            'LMIV (sonstige)',
+                                            'LMIV 7 Abs. 1 (Irreführung)',
+                                            'LMIV 7 Abs. 2 (Unverständlich)',
+                                            'LMIV 9 (Pflichtangaben)',
+                                            'LMIV 14 (Onlinehandel)',
+                                            'LMIV 15 (Sprache)',
+                                            'PAngV (sonstige)',
+                                            'PAngV 2',
+                                            'UWG (sonstige)',
+                                            'UWG § 3a (Marktverhaltensregel)',
+                                            'UWG § 4a (aggressive Praktik)',
+                                            'UWG 5 Abs. 1 (Irreführung)',
+                                            'UWG 5, 5a (insb. Evidenzlose Therapien und gesundheitsbezogene Werbung)',
+                                            'UWG 5a Abs. 3 (Verheimlichen wesentl. Informationen.)',
+                                            'UWG 5a Abs. 4 (Unionsrecht)',
+                                            'UWG 5a Abs. 6 (Verheimlichen des kommerziellen Zwecks)'
                                                 ], name: "_NORM", clientPropertyJlawyerdescription: "Norm", editable: true, actionPerformed: {
                                                     //berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString())
                                                 }
@@ -978,16 +1013,6 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
     
     private void loadConfiguration() {
         ServerSettings set=ServerSettings.getInstance();
-        
-        String norms=set.getSetting("forms.qewvuklag01.norms", "AGG;DSGVO;EU-BiozidV;EU-BiozidV 72;HCVO;HCVO 3;HCVO 4.3;HCVO 10.1;HCVO 10.2;HCVO 10.3;HCVO 12;HeilprG;HWG;HWG 3;HWG 3a;HWG 5;HWG 11;HWG 12;LMIV;LMIV7.1;LMIV7.2;LMIV9;LMIV14;LMIV15;PAngV;PAngV2;UWG;UWG3a;UWG4a;UWG5.1;UWG5,5a;UWG5a.3;UWG5a.4;UWG5a.6");
-        String[] normArray=norms.split(";");
-        cmbNorm.removeAllItems();
-        for(String n: normArray) {
-            cmbNorm.addItem(n);
-        }
-        if(normArray.length>0) {
-            cmbNorm.setSelectedItem(normArray[0]);
-        }
         
         String topics=set.getSetting("forms.qewvuklag01.topics", "Sonstiges Thema;Aggressive Praktik (soweit nicht iVm einem anderen Thema);Anti-Diskriminierung;Datenschutz;Gesundheit;Irreführung (soweit nicht iVm einem anderen Thema);Lebensmittel u. Ernährung;Preisangaben und -transparenz");
         String[] topicArray=topics.split(";");

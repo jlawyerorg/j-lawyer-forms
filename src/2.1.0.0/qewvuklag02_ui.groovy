@@ -1193,6 +1193,10 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                         )
                                     }
                                 }
+                                tr {
+                                    td {label(text: 'Mindestbetrag:')}
+                                    td {formattedTextField(name: "_5UVEMINBETRAG", text: "", clientPropertyJlawyerdescription: "Mindestbetrag", columns: 10, format: betragFormat)}
+                                }
 
 
 
@@ -1202,11 +1206,29 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                         panel(name: '(6) Kostenpauschale') {
                             tableLayout (cellpadding: 5) {
                                 tr {
+                                    td {label(text: 'Kostenpauschale:')}
+                                    td {comboBox(items: ['Kostenpauschale','keine','Einzelabrechnung'], name: "_6KOSTPAUSCH", clientPropertyJlawyerdescription: "Kostenpauschale", editable: true, actionPerformed: {
+ 
+                                            }
+                                        )
+                                    }
+                                }
+                                tr {
                                     td {label(text: 'Kostenpauschale Satz:')}
                                     td {comboBox(items: ['I','II','III','IV'], name: "_6KOSTPAUSCHSATZ", clientPropertyJlawyerdescription: "Kostenpauschale Satz", editable: true, actionPerformed: {
  
                                             }
                                         )
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, valign: 'TOP') {
+                                        label(text: 'Kostenpauschale Darlegungen:')
+                                    }
+                                    td {
+                                        scrollPane{
+                                            textArea(name: "_6KOSTPAUSCHDARL", clientPropertyJlawyerdescription: "Kostenpauschale Darlegungen", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                        } 
                                     }
                                 }
                                 tr {
@@ -1320,6 +1342,15 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     }
                                                 }
                                                 tr {
+                                                    td {label(text: 'UVE Inhalt:')}
+                                                    td {comboBox(items: ['nhB', 'nhBUntergrenze', 'nhBObergrenze', 'nhBUnterObergrenze', 'fix', 'komplexeRegelung'], name: "_8UVEINHALT", clientPropertyJlawyerdescription: "UVE Inhalt", editable: true, actionPerformed: {
+ 
+                                                            }
+                                                        )
+                                                    }
+                                                }
+
+                                                tr {
                                                     td {label(text: 'UVE Untergrenze:')}
                                                     td {formattedTextField(name: "_8UVEUG", text: "", clientPropertyJlawyerdescription: "UVE Untergrenze", columns: 10, format: betragFormat)}
                                                 }
@@ -1332,10 +1363,39 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     td {formattedTextField(name: "_8UVEFIX", text: "", clientPropertyJlawyerdescription: "UVE fix", columns: 10, format: betragFormat)}
                                                 }
                                                 tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label(text: 'von UVE erfasste Beanstandungen:')
+                                                    }
+                                                    td {
+                                                        spinner(clientPropertyJlawyerdescription: "von UVE erfasste Beanstandungen", name: "_8UVEBEANST", 
+                                                            model:spinnerNumberModel(minimum:1, 
+                                                                maximum: 200,
+                                                                value:1,
+                                                                stepSize:1))
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: 'UVE ausreichend?:')}
+                                                    td {comboBox(items: [], name: "_8UVEAUSREI", clientPropertyJlawyerdescription: "UVE ausreichend?", editable: true, actionPerformed: {
+ 
+                                                            }
+                                                        )
+                                                    }
+                                                }
+                                                tr {
                                                     td {label(text: 'UVE angenommen am…:')}
                                                     td {formattedTextField(name: "_8UVEANGENDAT", text: "", clientPropertyJlawyerdescription: "UVE angenommen am…", columns: 10, format: datumsFormat)}
                                                 }
-
+                                                tr {
+                                                    td (colfill:true, valign: 'TOP') {
+                                                        label(text: 'UVE unzureichend, weil ...')
+                                                    }
+                                                    td {
+                                                        scrollPane{
+                                                            textArea(name: "_8UVEUNZUWEIL", clientPropertyJlawyerdescription: "UVE unzureichend, weil ...", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                                        } 
+                                                    }
+                                                }
                                                 tr {
                                                     td {label(text: 'VS erhalten iHv:')}
                                                     td {formattedTextField(name: "_8VSERH", text: "", clientPropertyJlawyerdescription: "VS erhalten iHv", columns: 10, format: betragFormat)}
@@ -1365,8 +1425,58 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     td {label(text: 'Kosten offen:')}
                                                     td {formattedTextField(name: "_8KOSTOFFEN", text: "", clientPropertyJlawyerdescription: "Kosten offen", columns: 10, format: betragFormat)}
                                                 }
-
-
+                                                tr {
+                                                    td {label(text: 'Ende vorgerichtliches Verfahren:')}
+                                                    td {
+                                                        checkBox(text: 'Wiederholungsgefahr', clientPropertyJlawyerdescription: "Wiederholungsgefahr", name: "_8KOSTENDEVF_WHGEF", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: '')}
+                                                    td {
+                                                        checkBox(text: 'EinstwVerfügung', clientPropertyJlawyerdescription: "EinstwVerfügung", name: "_8KOSTENDEVF_EWVF", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: '')}
+                                                    td {
+                                                        checkBox(text: 'Hauptsacheklage', clientPropertyJlawyerdescription: "Hauptsacheklage", name: "_8KOSTENDEVF_HSKLAG", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: '')}
+                                                    td {
+                                                        checkBox(text: 'Kostenklage', clientPropertyJlawyerdescription: "Kostenklage", name: "_8KOSTENDEVF_KOSTKLAG", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: '')}
+                                                    td {
+                                                        checkBox(text: 'Aufgabe', clientPropertyJlawyerdescription: "Aufgabe", name: "_8KOSTENDEVF_AUFG", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: '')}
+                                                    td {
+                                                        checkBox(text: 'VS-Einigung', clientPropertyJlawyerdescription: "VS-Einigung", name: "_8KOSTENDEVF_VSEINIG", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: '')}
+                                                    td {
+                                                        checkBox(text: 'Kostenverzicht', clientPropertyJlawyerdescription: "Kostenverzicht", name: "_8KOSTENDEVF_KOSTVERZ", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true, valign: 'TOP') {
+                                                        label(text: 'Aufgabe Grund:')
+                                                    }
+                                                    td {
+                                                        scrollPane{
+                                                            textArea(name: "_8AUFGGRUND", clientPropertyJlawyerdescription: "Aufgabe Grund", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                                        } 
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -1382,6 +1492,24 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                         panel(border: titledBorder(title: 'Einstweilige Verfügung')) {
                                             tableLayout (cellpadding: 5) {
                                                 tr {
+                                                    td {label(text: 'EV Gericht I Gerichtszuständigkeit:')}
+                                                    td {comboBox(items: ['Allgemeiner Gerichtsstand', 'Zentralisierungsgerichtsstand', 'Freie Wahl des Gerichtsstands, weil Auslandsverfahren', 'Sachzusammenhang'], name: "_9EVGER1ZUST", clientPropertyJlawyerdescription: "EV Gericht I Gerichtszuständigkeit", editable: true, actionPerformed: {
+ 
+                                                            }
+                                                        )
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: 'EV Gericht I:')}
+                                                    td {textField(name: "_9EVGER1", text: "", clientPropertyJlawyerdescription: "EV Gericht I", columns:50)}
+                                                }
+                                                tr {
+                                                    td {label(text: 'EV Gericht I AZ:')}
+                                                    td {textField(name: "_9EVGER1AZ", text: "", clientPropertyJlawyerdescription: "EV Gericht I AZ", columns:20)}
+                                                }
+
+
+                                                tr {
                                                     td {label(text: 'EV Gericht I anhängig Datum:')}
                                                     td {formattedTextField(name: "_9EVGER1ANHDAT", text: "", clientPropertyJlawyerdescription: "EV Gericht I anhängig Datum", columns: 10, format: datumsFormat)}
                                                 }
@@ -1393,6 +1521,14 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 tr {
                                                     td {label(text: 'EV Gericht I Entscheidung Quote:')}
                                                     td {formattedTextField(name: "_9EVGER1EQ", text: "", clientPropertyJlawyerdescription: "EV Gericht I Entscheidung Quote", columns: 10, format: betragFormat)}
+                                                }
+                                                tr {
+                                                    td {label(text: 'EV Gericht II:')}
+                                                    td {textField(name: "_9EVGER2", text: "", clientPropertyJlawyerdescription: "EV Gericht II", columns:50)}
+                                                }
+                                                tr {
+                                                    td {label(text: 'EV Gericht II AZ:')}
+                                                    td {textField(name: "_9EVGER2AZ", text: "", clientPropertyJlawyerdescription: "EV Gericht II AZ", columns:20)}
                                                 }
                                                 tr {
                                                     td {label(text: 'EV Gericht II anhängig Datum:')}
@@ -1451,7 +1587,26 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     td {label(text: 'EV AbschlussErkl. Datum:')}
                                                     td {formattedTextField(name: "_9EVABSCHERKLDAT", text: "", clientPropertyJlawyerdescription: "EV AbschlussErkl. Datum", columns: 10, format: datumsFormat)}
                                                 }
-
+                                                tr {
+                                                    td {label(text: 'Bei AbschlussErkl. vertreten:')}
+                                                    td {comboBox(items: ['Nein','Verband','Rechtsanwalt'], name: "_9EVABSCHERKLV", clientPropertyJlawyerdescription: "Bei AbschlussErkl. vertreten", editable: true, actionPerformed: {
+ 
+                                                            }
+                                                        )
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label(text: 'Von Abschlusserklärung erfasste Beanstandungen (Anzahl):')
+                                                    }
+                                                    td {
+                                                        spinner(clientPropertyJlawyerdescription: "Von Abschlusserklärung erfasste Beanstandungen (Anzahl)", name: "_9EVABSCHERKLBEAANZ", 
+                                                            model:spinnerNumberModel(minimum:1, 
+                                                                maximum: 200,
+                                                                value:1,
+                                                                stepSize:1))
+                                                    }
+                                                }
 
 
                                             }
@@ -1462,6 +1617,23 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                     td {
                                         panel(border: titledBorder(title: 'Hauptsache')) {
                                             tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {label(text: 'HS Gericht I Gerichtszuständigkeit:')}
+                                                    td {comboBox(items: ['Allgemeiner Gerichtsstand', 'Zentralisierungsgerichtsstand', 'Freie Wahl des Gerichtsstands, weil Auslandsverfahren', 'Sachzusammenhang'], name: "_9HSGER1ZUST", clientPropertyJlawyerdescription: "HS Gericht I Gerichtszuständigkeit", editable: true, actionPerformed: {
+ 
+                                                            }
+                                                        )
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: 'HS Gericht I:')}
+                                                    td {textField(name: "_9HSGER1", text: "", clientPropertyJlawyerdescription: "HS Gericht I", columns:50)}
+                                                }
+                                                tr {
+                                                    td {label(text: 'HS Gericht I AZ:')}
+                                                    td {textField(name: "_9HSGER1AZ", text: "", clientPropertyJlawyerdescription: "HS Gericht I AZ", columns:20)}
+                                                }
+
                                                 tr {
                                                     td {label(text: 'HS Gericht I anhängig Datum:')}
                                                     td {formattedTextField(name: "_9HSGER1ANHDAT", text: "", clientPropertyJlawyerdescription: "HS Gericht I anhängig Datum", columns: 10, format: datumsFormat)}
@@ -1475,6 +1647,15 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     td {formattedTextField(name: "_9HSGER1EQ", text: "", clientPropertyJlawyerdescription: "HS Gericht I Entscheidung Quote", columns: 10, format: betragFormat)}
                                                 }
                                                 tr {
+                                                    td {label(text: 'HS Gericht II:')}
+                                                    td {textField(name: "_9HSGER2", text: "", clientPropertyJlawyerdescription: "HS Gericht II", columns:50)}
+                                                }
+                                                tr {
+                                                    td {label(text: 'HS Gericht II AZ:')}
+                                                    td {textField(name: "_9HSGER2AZ", text: "", clientPropertyJlawyerdescription: "HS Gericht II AZ", columns:20)}
+                                                }
+
+                                                tr {
                                                     td {label(text: 'HS Gericht II anhängig Datum:')}
                                                     td {formattedTextField(name: "_9HSGER2ANHDAT", text: "", clientPropertyJlawyerdescription: "HS Gericht II anhängig Datum", columns: 10, format: datumsFormat)}
                                                 }
@@ -1482,6 +1663,20 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     td {label(text: 'HS Gericht II Entscheidung Datum:')}
                                                     td {formattedTextField(name: "_9HSGER2ENTSCHDAT", text: "", clientPropertyJlawyerdescription: "HS Gericht II Entscheidung Datum", columns: 10, format: datumsFormat)}
                                                 }
+                                                
+                                                tr {
+                                                    td {label(text: 'HS Gericht II Entscheidung Quote:')}
+                                                    td {formattedTextField(name: "_9HSGER2EQ", text: "", clientPropertyJlawyerdescription: "HS Gericht II Entscheidung Quote", columns: 10, format: betragFormat)}
+                                                }
+                                                tr {
+                                                    td {label(text: 'HS Gericht III:')}
+                                                    td {textField(name: "_9HSGER3", text: "", clientPropertyJlawyerdescription: "HS Gericht III", columns:50)}
+                                                }
+                                                tr {
+                                                    td {label(text: 'HS Gericht III AZ:')}
+                                                    td {textField(name: "_9HSGER3AZ", text: "", clientPropertyJlawyerdescription: "HS Gericht III AZ", columns:20)}
+                                                }
+
                                                 tr {
                                                     td {label(text: 'HS Gericht III anhängig Datum:')}
                                                     td {formattedTextField(name: "_9HSGER3ANHDAT", text: "", clientPropertyJlawyerdescription: "HS Gericht III anhängig Datum", columns: 10, format: datumsFormat)}
@@ -1491,10 +1686,6 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     td {formattedTextField(name: "_9HSGER3ENTSCHDAT", text: "", clientPropertyJlawyerdescription: "HS Gericht III Entscheidung Datum", columns: 10, format: datumsFormat)}
                                                 }
 
-                                                tr {
-                                                    td {label(text: 'HS Gericht II Entscheidung Quote:')}
-                                                    td {formattedTextField(name: "_9HSGER2EQ", text: "", clientPropertyJlawyerdescription: "HS Gericht II Entscheidung Quote", columns: 10, format: betragFormat)}
-                                                }
                                                 tr {
                                                     td {label(text: 'HS Gericht III Entscheidung Quote:')}
                                                     td {formattedTextField(name: "_9HSGER3EQ", text: "", clientPropertyJlawyerdescription: "HS Gericht III Entscheidung Quote", columns: 10, format: betragFormat)}
@@ -1515,7 +1706,18 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                         )
                                                     }
                                                 }
-
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label(text: 'Von Titel erfasste Beanstandungen (Anzahl):')
+                                                    }
+                                                    td {
+                                                        spinner(clientPropertyJlawyerdescription: "Von Titel erfasste Beanstandungen (Anzahl)", name: "_9TITELBEAANZ", 
+                                                            model:spinnerNumberModel(minimum:1, 
+                                                                maximum: 200,
+                                                                value:1,
+                                                                stepSize:1))
+                                                    }
+                                                }
 
 
                                             }
@@ -1526,6 +1728,22 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                     td {
                                         panel(border: titledBorder(title: 'Isolierte Kostenklage')) {
                                             tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {label(text: 'Kosten Gericht I Gerichtszuständigkeit:')}
+                                                    td {comboBox(items: ['Allgemeiner Gerichtsstand', 'Zentralisierungsgerichtsstand','Freie Wahl des Gerichtsstands, weil Auslandsverfahren'], name: "_9KOSTGER1ZUST", clientPropertyJlawyerdescription: "Kosten Gericht I Gerichtszuständigkeit", editable: true, actionPerformed: {
+ 
+                                                            }
+                                                        )
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: 'Kosten Gericht I:')}
+                                                    td {textField(name: "_9KOSTGER1", text: "", clientPropertyJlawyerdescription: "Kosten Gericht I", columns:50)}
+                                                }
+                                                tr {
+                                                    td {label(text: 'Kosten Gericht I AZ:')}
+                                                    td {textField(name: "_9KOSTGER1AZ", text: "", clientPropertyJlawyerdescription: "Kosten Gericht I AZ", columns:20)}
+                                                }
                                                 tr {
                                                     td {label(text: 'Kosten Gericht I anhängig Datum:')}
                                                     td {formattedTextField(name: "_9KOSTGER1ANHDAT", text: "", clientPropertyJlawyerdescription: "Kosten Gericht I anhängig Datum", columns: 10, format: datumsFormat)}
@@ -1539,6 +1757,15 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     td {label(text: 'Kosten Gericht I Entscheidung Quote:')}
                                                     td {formattedTextField(name: "_9KOSTGER1EQ", text: "", clientPropertyJlawyerdescription: "Kosten Gericht I Entscheidung Quote", columns: 10, format: betragFormat)}
                                                 }
+                                                tr {
+                                                    td {label(text: 'Kosten Gericht II:')}
+                                                    td {textField(name: "_9KOSTGER2", text: "", clientPropertyJlawyerdescription: "Kosten Gericht II", columns:50)}
+                                                }
+                                                tr {
+                                                    td {label(text: 'Kosten Gericht II AZ:')}
+                                                    td {textField(name: "_9KOSTGER2AZ", text: "", clientPropertyJlawyerdescription: "Kosten Gericht II AZ", columns:20)}
+                                                }
+
                                                 tr {
                                                     td {label(text: 'Kosten Gericht II anhängig Datum:')}
                                                     td {formattedTextField(name: "_9KOSTGER2ANHDAT", text: "", clientPropertyJlawyerdescription: "Kosten Gericht II anhängig Datum", columns: 10, format: datumsFormat)}
@@ -1572,6 +1799,19 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                         }
                         panel(name: '(10) Metadaten') {
                             tableLayout (cellpadding: 5) {
+                                tr {
+                                    td {label(text: 'Verfahrensdauer (Tage):')}
+                                    td {textField(name: "_METAVERFDAUER", text: "", clientPropertyJlawyerdescription: "Verfahrensdauer (Tage)", columns:10)}
+                                }
+                                tr {
+                                    td {label(text: 'Vergegenständliche Beanstandungen:')}
+                                    td {textField(name: "_METABEAVERG", text: "", clientPropertyJlawyerdescription: "Vergegenständliche Beanstandungen", columns:10)}
+                                }
+                                tr {
+                                    td {label(text: 'Unterbundene Beanstandungen:')}
+                                    td {textField(name: "_METABEAUNTERB", text: "", clientPropertyJlawyerdescription: "Unterbundene Beanstandungen", columns:10)}
+                                }
+
                                 tr {
                                     td {label(text: 'Kosten entstanden:')}
                                     td {formattedTextField(name: "_METAKOSTENTST", text: "", clientPropertyJlawyerdescription: "Kosten entstanden", columns: 10, format: betragFormat)}

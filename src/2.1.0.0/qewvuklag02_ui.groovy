@@ -1194,6 +1194,15 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                     }
                                 }
                                 tr {
+                                    td {label(text: 'UVE Inhalt gefordert:')}
+                                    td {comboBox(items: ['nhB', 'nhBUntergrenze', 'nhBObergrenze', 'nhBUnterObergrenze', 'fix', 'komplexeRegelung'], name: "_5UVEINHGEF", clientPropertyJlawyerdescription: "UVE Inhalt gefordert", editable: true, actionPerformed: {
+ 
+                                            }
+                                        )
+                                    }
+                                }
+
+                                tr {
                                     td {label(text: 'Mindestbetrag:')}
                                     td {formattedTextField(name: "_5UVEMINBETRAG", text: "", clientPropertyJlawyerdescription: "Mindestbetrag", columns: 10, format: betragFormat)}
                                 }

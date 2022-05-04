@@ -664,6 +664,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "UKlaG Scorecard"
 description = "Falldatenblatt zur Erfassung statistisch relevanter Daten nach UKlaG"
-version = "0.1.0";
+version = "0.4.0";
 author = "Jens Kutschke"
-updated = "24.04.2022"
+updated = "05.05.2022"

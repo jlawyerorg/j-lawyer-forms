@@ -726,6 +726,15 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
     JFormattedTextField ftxt_9EVKOSTENERST=null;
     JFormattedTextField ftxt_8KOSTERSTERH=null;
     
+    JFormattedTextField ftxt_6KOSTPAUSCHHOEHE=null;
+    JFormattedTextField ftxt_6KOSTPAUSCHUST=null;
+    JFormattedTextField ftxt_6KOSTPAUSCHUSTSATZ=null;
+    JFormattedTextField ftxt_6KOSTPAUSCHAUSL=null;
+    
+    JFormattedTextField ftxt_4ZUMESSGBETR=null;
+    JFormattedTextField ftxt_8VSERH=null;
+    JFormattedTextField ftxt_8VSOFFEN=null;
+    
     JTextField txt_METAVERFDAUER=null;
     JTextField txt_METABEAVERG=null;
     JTextField txt_METABEAUNTERB=null;
@@ -768,6 +777,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
         
         JTabbedPane tabPaneMain=null;
         
+        JPanel pnl_1VV=null;
         JComboBox cmb_1ERST_FOLGE=null;
         
         JComboBox cmb_2FINANZIERUNG=null;
@@ -780,6 +790,12 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
         JPanel pnl_4ZV=null;
         JCheckBox chk_4ZUMEGRDL_UVE=null;
         JCheckBox chk_4ZUMEGRDL_TITEL=null;
+        
+        JComboBox cmb_6KOSTPAUSCHSATZ=null;
+        JTextArea txt_6KOSTPAUSCHDARL=null;
+        
+        JComboBox cmb_7RFV=null;
+        JComboBox cmb_7RF=null;
         
         JComboBox cmb_8UVEMODIF=null;
         JComboBox cmb_8UVEINHALT=null;
@@ -803,11 +819,15 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                         panel(name: '(1) Verfahren') {
                             tableLayout (cellpadding: 5) {
                                 tr {
-                                    td (colfill:true, align: 'left') {
-                                        label("Verfahrensgrundlage:")
-                                    }
-                                    td (colfill:true, align: 'left') {
-                                        comboBox(items: [
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label("Verfahrensgrundlage:")
+                                                    }
+                                                    td (colfill:true, align: 'left') {
+                                                        comboBox(items: [
                                             'UKlaG', 
                                             'UKlagDS', 
                                             'UWG' , 
@@ -816,70 +836,133 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                             'Titel', 
                                             'unentschieden'
                                             
-                                            ], name: "_1VERFGRDL", clientPropertyJlawyerdescription: "Verfahrensgrundlage", editable: false, actionPerformed: {
-                                                //berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString())
-                                            }
-                                        )
-                                    }
-                                }
-                                tr {
-                                    td (colfill:true, align: 'left') {
-                                        label("Erst- oder Folgeverstoß:")
-                                    }
-                                    td (colfill:true, align: 'left') {
-                                        cmb_1ERST_FOLGE = comboBox(items: [
+                                                            ], name: "_1VERFGRDL", clientPropertyJlawyerdescription: "Verfahrensgrundlage", editable: false, actionPerformed: {
+                                                                //berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString())
+                                                            }
+                                                        )
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label("Erst- oder Folgeverstoß:")
+                                                    }
+                                                    td (colfill:true, align: 'left') {
+                                                        cmb_1ERST_FOLGE = comboBox(items: [
                                             'Erstverstoß' , 
                                             'Folgeverstoß' ,
                                             'Gemischt' 
-                                            ], name: "_1ERST_FOLGE", clientPropertyJlawyerdescription: "Erst- oder Folgeverstoß", editable: false, actionPerformed: {
-                                                if(cmb_1ERST_FOLGE.getSelectedItem()!=null) {
-                                                    if(cmb_1ERST_FOLGE.getSelectedItem().equalsIgnoreCase("Erstverstoß")) {
-                                                        tabPaneMain.setEnabledAt(3, false);
-                                                        tabPaneMain.setEnabledAt(4, false);
-                                                    } else {
-                                                        tabPaneMain.setEnabledAt(3, true);
-                                                        tabPaneMain.setEnabledAt(4, true);
+                                                            ], name: "_1ERST_FOLGE", clientPropertyJlawyerdescription: "Erst- oder Folgeverstoß", selectedItem: "Erstverstoß", editable: false, actionPerformed: {
+                                                                if(cmb_1ERST_FOLGE.getSelectedItem()!=null) {
+                                                                    if(cmb_1ERST_FOLGE.getSelectedItem().equalsIgnoreCase("Erstverstoß")) {
+                                                                        tabPaneMain.setEnabledAt(3, false);
+                                                                        tabPaneMain.setEnabledAt(4, false);
+                                                                        setPanelEnabled(pnl_1VV, false)
+                                                                    } else {
+                                                                        tabPaneMain.setEnabledAt(3, true);
+                                                                        tabPaneMain.setEnabledAt(4, true);
+                                                                        setPanelEnabled(pnl_1VV, true)
+                                                                    }
+                                                                } else {
+                                                                    tabPaneMain.setEnabledAt(3, true);
+                                                                    tabPaneMain.setEnabledAt(4, true);
+                                                                }
+                                                            }
+                                                        )
                                                     }
-                                                } else {
-                                                    tabPaneMain.setEnabledAt(3, true);
-                                                    tabPaneMain.setEnabledAt(4, true);
                                                 }
-                                            }
-                                        )
-                                    }
-                                }
-                                tr {
-                                    td (colfill:true, align: 'left') {
-                                        label("Rechtsschutzinteresse:")
-                                    }
-                                    td (colfill:true, align: 'left') {
-                                        comboBox(items: [
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label("Rechtsschutzinteresse:")
+                                                    }
+                                                    td (colfill:true, align: 'left') {
+                                                        comboBox(items: [
                                             'Wiederholungsgefahr' , 
                                             'Erstbegehungsgefahr' ,
                                             'Begehungsgefahr' 
-                                            ], name: "_1RSINT", clientPropertyJlawyerdescription: "Rechtsschutzinteresse", editable: false, actionPerformed: {
-                                                //berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString())
-                                            }
-                                        )
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        label(text: ' ')
-                                    }
-                                    td {
-                                        checkBox(text: 'EU-Verfahren', clientPropertyJlawyerdescription: "EU-Verfahren?", name: "_1EUVERF", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        label(text: 'Verfahrensabschluss am:')
+                                                            ], name: "_1RSINT", clientPropertyJlawyerdescription: "Rechtsschutzinteresse", selectedItem: "Wiederholungsgefahr", editable: false, actionPerformed: {
+                                                                //berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString())
+                                                            }
+                                                        )
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        checkBox(text: 'EU-Verfahren', clientPropertyJlawyerdescription: "EU-Verfahren?", name: "_1EUVERF", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Verfahrensabschluss am:')
                                     
-                                    }
-                                    td {
-                                        ftxt_1VERFABSCHL = formattedTextField(clientPropertyJlawyerdescription: "Verfahrensabschluss am...", name: "_1VERFABSCHL", format: datumsFormat, columns: 10, text: '', keyReleased: {  })
-                                    }
+                                                    }
+                                                    td {
+                                                        ftxt_1VERFABSCHL = formattedTextField(clientPropertyJlawyerdescription: "Verfahrensabschluss am...", name: "_1VERFABSCHL", format: datumsFormat, columns: 10, text: '', keyReleased: {  })
+                                                    }
                                         
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                tr {
+                                    td {
+                                        pnl_1VV = panel(border: titledBorder(title: 'Vorverstoß')) {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {label(text: 'Alt-UVE Datum:')}
+                                                    td {formattedTextField(name: "_1ALTUVEDATUM", text: "", clientPropertyJlawyerdescription: "Alt-UVE Datum", columns: 10, format: datumsFormat)}
+                                                }
+                                                tr {
+                                                    td {label(text: 'seinerzeit rechtsfreundlich vertreten:')}
+                                                    td {comboBox(items: ['Nein','Verband','Rechtsanwalt'], name: "_1VERTRETEN", clientPropertyJlawyerdescription: "seinerzeit rechtsfreundlich vertreten", editable: true, actionPerformed: {
+ 
+                                                            }
+                                                        )
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: 'Alt-UVE Datum Annahme:')}
+                                                    td {formattedTextField(name: "_1ALTUVEDATUMAUFN", text: "", clientPropertyJlawyerdescription: "Alt-UVE Datum Annahme", columns: 10, format: datumsFormat)}
+                                                }
+
+                                                tr {
+                                                    td {label(text: 'Alt-UVE Inhalt:')}
+                                                    td {comboBox(items: ['nhB', 'nhBUntergrenze', 'nhBObergrenze', 'nhBUnterObergrenze', 'fix', 'komplexeRegelung'], name: "_1ALTUVEINH", clientPropertyJlawyerdescription: "Alt-UVE Inhalt", editable: true, actionPerformed: {
+ 
+                                                            }
+                                                        )
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true, valign: 'TOP') {
+                                                        label(text: 'Alt-UVE Inhalt Umschreibung:')
+                                                    }
+                                                    td {
+                                                        scrollPane{
+                                                            textArea(name: "_1ALTUVEINHUMSCHR", clientPropertyJlawyerdescription: "Alt-UVE Inhalt Umschreibung", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                                        } 
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: 'Alt-UVE Untergrenze:')}
+                                                    td {formattedTextField(name: "_1ALTUVEUG", text: "", clientPropertyJlawyerdescription: "Alt-UVE Untergrenze", columns: 10, format: betragFormat)}
+                                                }
+                                                tr {
+                                                    td {label(text: 'Alt-UVE Obergrenze:')}
+                                                    td {formattedTextField(name: "_1ALTUVEOG", text: "", clientPropertyJlawyerdescription: "Alt-UVE Obergrenze", columns: 10, format: betragFormat)}
+                                                }
+                                                tr {
+                                                    td {label(text: 'Alt-UVE fix:')}
+                                                    td {formattedTextField(name: "_1ALTUVEFIX", text: "", clientPropertyJlawyerdescription: "Alt-UVE fix", columns: 10, format: betragFormat)}
+                                                }
+
+                                            }
+                                        }
+                                    }
                                 }
                                 
                             }
@@ -961,7 +1044,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                 }
                                 tr {
                                     td {label(text: 'Unternehmensgröße:')}
-                                    td {comboBox(items: ['Kleinstunternehmen', 'Kleinunternehmen', 'Mittelgroßes Unternehmen', 'Großes Unternehmen', 'Konzern', 'Börsennotiertes Unternehmen'], name: "_2UNTGROESSE", clientPropertyJlawyerdescription: "Unternehmensgröße", editable: true, actionPerformed: {
+                                    td {comboBox(items: ['Kleinstunternehmen', 'Kleinunternehmen', 'Mittelgroßes Unternehmen', 'Großes Unternehmen', 'Konzern', 'Börsennotiertes Unternehmen'], name: "_2UNTGROESSE", clientPropertyJlawyerdescription: "Unternehmensgröße", selectedItem: "Mittelgroßes Unternehmen", editable: true, actionPerformed: {
  
                                             }
                                         )
@@ -999,7 +1082,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                 }
                                 tr {
                                     td {label(text: 'Interesse der Verbrauchenden:')}
-                                    td {comboBox(items: ['eher gering', 'durchschnittlich', 'erheblich', 'überragend'], name: "_2INTERESSVERBR", clientPropertyJlawyerdescription: "Interesse der Verbrauchenden", editable: true, actionPerformed: {
+                                    td {comboBox(items: ['eher gering', 'durchschnittlich', 'erheblich', 'überragend'], name: "_2INTERESSVERBR", clientPropertyJlawyerdescription: "Interesse der Verbrauchenden", selectedItem: "durchschnittlich", editable: true, actionPerformed: {
  
                                             }
                                         )
@@ -1134,7 +1217,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {label(text: 'Verschulden:')}
-                                                    td {comboBox(items: ['gering','mittel','grob','bewußter Verstoß','bewußter Vielfachverstoß'], name: "_4VERSCHULDEN", clientPropertyJlawyerdescription: "Verschulden", editable: true, actionPerformed: {
+                                                    td {comboBox(items: ['gering','mittel','grob','bewußter Verstoß','bewußter Vielfachverstoß'], name: "_4VERSCHULDEN", clientPropertyJlawyerdescription: "Verschulden", selectedItem: "mittel", editable: true, actionPerformed: {
  
                                                             }
                                                         )
@@ -1183,55 +1266,10 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                         pnl_4VS = panel(border: titledBorder(title: 'VS')) {
                                             tableLayout (cellpadding: 5) {
                                                 tr {
-                                                    td {label(text: 'Alt-UVE Datum:')}
-                                                    td {formattedTextField(name: "_4ALTUVEDATUM", text: "", clientPropertyJlawyerdescription: "Alt-UVE Datum", columns: 10, format: datumsFormat)}
-                                                }
-                                                tr {
-                                                    td {label(text: 'seinerzeit rechtsfreundlich vertreten:')}
-                                                    td {comboBox(items: ['Nein','Verband','Rechtsanwalt'], name: "_4VERTRETEN", clientPropertyJlawyerdescription: "seinerzeit rechtsfreundlich vertreten", editable: true, actionPerformed: {
- 
-                                                            }
-                                                        )
-                                                    }
-                                                }
-                                                tr {
-                                                    td {label(text: 'Alt-UVE Datum Annahme:')}
-                                                    td {formattedTextField(name: "_4ALTUVEDATUMAUFN", text: "", clientPropertyJlawyerdescription: "Alt-UVE Datum Annahme", columns: 10, format: datumsFormat)}
-                                                }
-
-                                                tr {
-                                                    td {label(text: 'Alt-UVE Inhalt:')}
-                                                    td {comboBox(items: ['nhB', 'nhBUntergrenze', 'nhBObergrenze', 'nhBUnterObergrenze', 'fix', 'komplexeRegelung'], name: "_4ALTUVEINH", clientPropertyJlawyerdescription: "Alt-UVE Inhalt", editable: true, actionPerformed: {
- 
-                                                            }
-                                                        )
-                                                    }
-                                                }
-                                                tr {
-                                                    td (colfill:true, valign: 'TOP') {
-                                                        label(text: 'Alt-UVE Inhalt Umschreibung:')
-                                                    }
-                                                    td {
-                                                        scrollPane{
-                                                            textArea(name: "_4ALTUVEINHUMSCHR", clientPropertyJlawyerdescription: "Alt-UVE Inhalt Umschreibung", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
-                                                        } 
-                                                    }
-                                                }
-                                                tr {
-                                                    td {label(text: 'Alt-UVE Untergrenze:')}
-                                                    td {formattedTextField(name: "_4ALTUVEUG", text: "", clientPropertyJlawyerdescription: "Alt-UVE Untergrenze", columns: 10, format: betragFormat)}
-                                                }
-                                                tr {
-                                                    td {label(text: 'Alt-UVE Obergrenze:')}
-                                                    td {formattedTextField(name: "_4ALTUVEOG", text: "", clientPropertyJlawyerdescription: "Alt-UVE Obergrenze", columns: 10, format: betragFormat)}
-                                                }
-                                                tr {
-                                                    td {label(text: 'Alt-UVE fix:')}
-                                                    td {formattedTextField(name: "_4ALTUVEFIX", text: "", clientPropertyJlawyerdescription: "Alt-UVE fix", columns: 10, format: betragFormat)}
-                                                }
-                                                tr {
                                                     td {label(text: 'Zumessungsbetrag:')}
-                                                    td {formattedTextField(name: "_4ZUMESSGBETR", text: "", clientPropertyJlawyerdescription: "Zumessungsbetrag", columns: 10, format: betragFormat)}
+                                                    td {ftxt_4ZUMESSGBETR = formattedTextField(name: "_4ZUMESSGBETR", text: "0,00", clientPropertyJlawyerdescription: "Zumessungsbetrag", columns: 10, format: betragFormat, keyReleased: { 
+                                                                calculateMetadata();
+                                                            })}
                                                 }
 
 
@@ -1268,7 +1306,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {label(text: 'ZV Antrag:')}
-                                                    td {comboBox(items: ['Mindestsumme','Ordnungsgeld','Haft','Offen'], name: "_4ZVANTRAG", clientPropertyJlawyerdescription: "ZV Antrag", editable: true, actionPerformed: {
+                                                    td {comboBox(items: ['Mindestsumme','Ordnungsgeld','Haft','Offen'], name: "_4ZVANTRAG", clientPropertyJlawyerdescription: "ZV Antrag", selectedItem: "Offen", editable: true, actionPerformed: {
  
                                                             }
                                                         )
@@ -1326,8 +1364,38 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                 }
                                 tr {
                                     td {label(text: 'Kostenpauschale Satz:')}
-                                    td {comboBox(items: ['I','II','III','IV'], name: "_6KOSTPAUSCHSATZ", clientPropertyJlawyerdescription: "Kostenpauschale Satz", editable: true, actionPerformed: {
- 
+                                    td {cmb_6KOSTPAUSCHSATZ = comboBox(items: ['I','II','III','IV'], name: "_6KOSTPAUSCHSATZ", clientPropertyJlawyerdescription: "Kostenpauschale Satz", editable: true, actionPerformed: {
+                                                if(cmb_6KOSTPAUSCHSATZ.getSelectedItem()!=null) {
+                                                    if(cmb_6KOSTPAUSCHSATZ.getSelectedItem().equalsIgnoreCase("I")) {
+                                                        ftxt_6KOSTPAUSCHHOEHE.setText(betragFormat.format(147.74f + 36.63f));
+                                                        ftxt_6KOSTPAUSCHUST.setText("35,03");
+                                                        ftxt_6KOSTPAUSCHUSTSATZ.setText("19,00");
+                                                        ftxt_6KOSTPAUSCHAUSL.setText("0,00");
+                                                        txt_6KOSTPAUSCHDARL.setText("II. Sonstige II.1. (Personenkosten) Recherche und Dokumentation zur Betroffenheit der Verbrauchenden vom konkreten Verstoß, einschließlich Wettbewerbsintensität, Gefährlichkeit, Rechtsgutsbetroffenheit; auch unter Berücksichtigung der Vertriebs- und Anpreisungswege. Bestimmung der angesprochenen Verkehrskreise und der Verkehrsauffassung bzw. -erwartung (§ 3 UWG) [0,08h/4,94] Verfahrensdokumentation im Dokumentenmanagementsystem, Ablage und Archivierung des Vorgangs [0,15h/4,38] Verwaltung von Asservaten und Testkäufen [0,25h/7,29] II.2. (Sachkosten) HR-Auszug, ggf: Gewerberegisterauszug, Auskünfte von TKUs nach § 13 UKlaG, Porto, Telefon, Einschreiben-Versand [18,50] Externe Rechtsberatung (pauschal pro Fall) [15,00] II.3. (Gemeinkosten) [14,80 %/-32,03].");
+                                                    } else if (cmb_6KOSTPAUSCHSATZ.getSelectedItem().equalsIgnoreCase("II")) {
+                                                        ftxt_6KOSTPAUSCHHOEHE.setText(betragFormat.format(147.74f + 122.26f));
+                                                        ftxt_6KOSTPAUSCHUST.setText("51,30");
+                                                        ftxt_6KOSTPAUSCHUSTSATZ.setText("19,00");
+                                                        ftxt_6KOSTPAUSCHAUSL.setText("0,00");
+                                                        txt_6KOSTPAUSCHDARL.setText("II. Gesundheitswerbung II.1. (Personenkosten) Rechtliche Prüfung: [0,47h/27,64] Dokumentation von Beanstandungen, einschließlich Anfertigungen von Nachweisen zur Verstoßgenese (\"Weg zum Verstoß\") und Internetrecherche zur Auffindbarkeit des Verstoßes, ggF Screencast/Video erstellen. Texte sichern, ggf. Transkripte erstellen [0,62h/17,99] Medizinische und wissenschaftliche Prüfung, Fachliteraturrecherche, ggF. inkl. Prüfung der Studienlage; ggF Erstellung eines Fachgutachtens zur Studienlage [0,75h/44,42] Recherche und Dokumentation zur Betroffenheit der Verbrauchenden vom konkreten Verstoß, einschließlich Wettbewerbsintensität, Gefährlichkeit, Rechtsgutsbetroffenheit; auch unter Berücksichtigung der Vertriebs- und Anpreisungswege. Bestimmung der angesprochenen Verkehrskreise und der Verkehrsauffassung bzw. -erwartung (§ 3 UWG) [0,25h/14,81] II.2. (Sachkosten) Wissenschaftliche Veröffentlichungen/paper (pubmed, elsevier, springer Wissenschaftsverlag, etc.) [28,00] HR-Auszug, ggf: Gewerberegisterauszug, Auskünfte von TKUs nach § 13 UKlaG, öffentliche Stellen, Porto, Telefon, Einschreiben-Versand [18,50] Externe Rechtsberatung (pauschal pro Fall) [17,80] II.3. (Gemeinkosten) [14,8 %/-46,90].");
+                                                    } else if (cmb_6KOSTPAUSCHSATZ.getSelectedItem().equalsIgnoreCase("III")) {
+                                                        ftxt_6KOSTPAUSCHHOEHE.setText(betragFormat.format(147.74f + 157.17f));
+                                                        ftxt_6KOSTPAUSCHUST.setText("57,94");
+                                                        ftxt_6KOSTPAUSCHUSTSATZ.setText("19,00");
+                                                        ftxt_6KOSTPAUSCHAUSL.setText("0,00");
+                                                        txt_6KOSTPAUSCHDARL.setText("II. Testbesuch: II.1. (Personenkosten) Dokumentation von Beanstandungen vor Ort, einschließlich Anfertigungen von Nachweisen zur Auffindbarkeit des Verstoßes; Anfertigung von Umfelddokumentationen; Anfertigen einer Lichtbilddokumentation; ggF. Dokumentation des Geschäftsabschlusses. Abfassen des Testbesuchprotokolls [0,78h/22,85] Recherche und Dokumentation zur Betroffenheit der Verbrauchenden vom konkreten Verstoß, einschließlich Wettbewerbsintensität, Gefährlichkeit, Rechtsgutsbetroffenheit; auch unter Berücksichtigung der Vertriebs- und Anpreisungswege. Bestimmung der angesprochenen Verkehrskreise und der Verkehrsauffassung bzw. -erwartung (§ 3 UWG) [0,25h/14,81] II.2. (Sachkosten) Externe Rechtsberatung (pauschal pro Fall) [15,00] HR-Auszug, ggf: Gewerberegisterauszug, Auskünfte von TKUs nach § 13 UKlaG, Porto, Telefon, Einschreiben-Versand [18,50] Car-Sharing-Kosten/Sonstige Fahrtkosten (nur Testkäufe, nur soweit Rechtsverstoß festgestellt wurde) [58,00] II.3 (Gemeinkosten) [14,80 %/-46,90] Hinzu kommen können Auslagen in höhe des (Netto-)Wertes der testgekauften Waren in tatsächlicher Höhe.");
+                                                    } else if (cmb_6KOSTPAUSCHSATZ.getSelectedItem().equalsIgnoreCase("IV")) {
+                                                        ftxt_6KOSTPAUSCHHOEHE.setText("0,00");
+                                                        ftxt_6KOSTPAUSCHUST.setText("0,00");
+                                                        ftxt_6KOSTPAUSCHUSTSATZ.setText("19,00");
+                                                        ftxt_6KOSTPAUSCHAUSL.setText("0,00");
+                                                        txt_6KOSTPAUSCHDARL.setText("");
+                                                    } else {
+                                                        txt_6KOSTPAUSCHDARL.setText("");
+                                                    }
+                                                } else {
+                                                    
+                                                }
                                             }
                                         )
                                     }
@@ -1338,25 +1406,25 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                     }
                                     td {
                                         scrollPane{
-                                            textArea(name: "_6KOSTPAUSCHDARL", clientPropertyJlawyerdescription: "Kostenpauschale Darlegungen", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                            txt_6KOSTPAUSCHDARL = textArea(name: "_6KOSTPAUSCHDARL", clientPropertyJlawyerdescription: "Kostenpauschale Darlegungen", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
                                         } 
                                     }
                                 }
                                 tr {
                                     td {label(text: 'Kostenpauschale Höhe:')}
-                                    td {formattedTextField(name: "_6KOSTPAUSCHHOEHE", text: "", clientPropertyJlawyerdescription: "Kostenpauschale Höhe", columns: 10, format: betragFormat)}
+                                    td {ftxt_6KOSTPAUSCHHOEHE = formattedTextField(name: "_6KOSTPAUSCHHOEHE", text: "", clientPropertyJlawyerdescription: "Kostenpauschale Höhe", columns: 10, format: betragFormat)}
                                 }
                                 tr {
                                     td {label(text: 'Kostenpauschale USt:')}
-                                    td {formattedTextField(name: "_6KOSTPAUSCHUST", text: "", clientPropertyJlawyerdescription: "Kostenpauschale USt", columns: 10, format: betragFormat)}
+                                    td {ftxt_6KOSTPAUSCHUST = formattedTextField(name: "_6KOSTPAUSCHUST", text: "", clientPropertyJlawyerdescription: "Kostenpauschale USt", columns: 10, format: betragFormat)}
                                 }
                                 tr {
                                     td {label(text: 'Kostenpauschale USt_Satz:')}
-                                    td {formattedTextField(name: "_6KOSTPAUSCHUSTSATZ", text: "", clientPropertyJlawyerdescription: "Kostenpauschale USt_Satz", columns: 10, format: betragFormat)}
+                                    td {ftxt_6KOSTPAUSCHUSTSATZ = formattedTextField(name: "_6KOSTPAUSCHUSTSATZ", text: "", clientPropertyJlawyerdescription: "Kostenpauschale USt_Satz", columns: 10, format: betragFormat)}
                                 }
                                 tr {
                                     td {label(text: 'Kostenpauschale Auslagen (netto):')}
-                                    td {formattedTextField(name: "_6KOSTPAUSCHAUSL", text: "", clientPropertyJlawyerdescription: "Kostenpauschale Auslagen (netto)", columns: 10, format: betragFormat)}
+                                    td {ftxt_6KOSTPAUSCHAUSL = formattedTextField(name: "_6KOSTPAUSCHAUSL", text: "", clientPropertyJlawyerdescription: "Kostenpauschale Auslagen (netto)", columns: 10, format: betragFormat)}
                                 }
                                 tr {
                                     td {label(text: 'Kostenpauschale Gesamt:')}
@@ -1370,8 +1438,17 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                             tableLayout (cellpadding: 5) {
                                 tr {
                                     td {label(text: 'rechtsfreundlich vertreten :')}
-                                    td {comboBox(items: ['ja','nein'], name: "_7RECHTSFREUNDV", clientPropertyJlawyerdescription: "rechtsfreundlich vertreten ", editable: true, actionPerformed: {
- 
+                                    td {cmb_7RFV = comboBox(items: ['ja','nein'], name: "_7RECHTSFREUNDV", clientPropertyJlawyerdescription: "rechtsfreundlich vertreten ", selectedItem: "nein", editable: true, actionPerformed: {
+                                                if(cmb_7RFV.getSelectedItem()!=null) {
+                                                    if(cmb_7RFV.getSelectedItem().equalsIgnoreCase("ja")) {
+                                                        cmb_7RF.setEnabled(true);
+                                                    } else {
+                                                        cmb_7RF.setEnabled(false);
+                                                        cmb_7RF.setSelectedItem("niemand");
+                                                    }
+                                                } else {
+                                                    cmb_7RF.setEnabled(true);
+                                                }
                                             }
                                         )
                                     }
@@ -1379,7 +1456,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
 
                                 tr {
                                     td {label(text: 'Rechtsfreund:')}
-                                    td {comboBox(items: ['Verband','Kanzlei','Sonstige Person'], name: "_7RECHTSFREUND", clientPropertyJlawyerdescription: "Rechtsfreund", editable: true, actionPerformed: {
+                                    td {cmb_7RF = comboBox(items: ['Verband','Kanzlei','Sonstige Person', 'niemand'], name: "_7RECHTSFREUND", clientPropertyJlawyerdescription: "Rechtsfreund", selectedItem: "niemand", editable: true, actionPerformed: {
  
                                             }
                                         )
@@ -1417,8 +1494,12 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                     td {textField(name: "_7EINLASSGAM", text: "", clientPropertyJlawyerdescription: "Einlassung am", columns:30)}
                                 }
                                 tr {
-                                    td {label(text: 'Einlassung wesentlicher Inhalt:')}
-                                    td {textField(name: "_7EINLASSGINH", text: "", clientPropertyJlawyerdescription: "Einlassung wesentlicher Inhalt", columns:50)}
+                                    td (colfill:true, valign: 'TOP') {label(text: 'Einlassung wesentlicher Inhalt:')}
+                                    td {
+                                        scrollPane {
+                                            textArea(name: "_7EINLASSGINH", clientPropertyJlawyerdescription: "Einlassung wesentlicher Inhalt", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                        }
+                                    }
                                 }
 
 
@@ -1429,7 +1510,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                             tableLayout (cellpadding: 5) {
                                 tr {
                                     td {
-                                        panel(border: titledBorder(title: 'UVE')) {
+                                        panel(border: titledBorder(title: 'erhaltene UVE')) {
                                             tableLayout (cellpadding: 5) {
                                                 tr {
                                                     td {label(text: 'UVE abgegeben?:')}
@@ -1486,7 +1567,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     }
                                                     td {
                                                         spn_8UVEBEANST = spinner(clientPropertyJlawyerdescription: "von UVE erfasste Beanstandungen", name: "_8UVEBEANST", 
-                                                            model:spinnerNumberModel(minimum:1, 
+                                                            model:spinnerNumberModel(minimum:0, 
                                                                 maximum: 200,
                                                                 value:0,
                                                                 stepSize:1), stateChanged: {
@@ -1517,13 +1598,23 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                         } 
                                                     }
                                                 }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        panel(border: titledBorder(title: 'erhaltene VS')) {
+                                            tableLayout (cellpadding: 5) {
                                                 tr {
                                                     td {label(text: 'VS erhalten iHv:')}
-                                                    td {formattedTextField(name: "_8VSERH", text: "", clientPropertyJlawyerdescription: "VS erhalten iHv", columns: 10, format: betragFormat)}
+                                                    td {ftxt_8VSERH = formattedTextField(name: "_8VSERH", text: "0,00", clientPropertyJlawyerdescription: "VS erhalten iHv", columns: 10, format: betragFormat, keyReleased: { 
+                                                                calculateMetadata();
+                                                            })}
                                                 }
                                                 tr {
                                                     td {label(text: 'VS offen iHv:')}
-                                                    td {formattedTextField(name: "_8VSOFFEN", text: "", clientPropertyJlawyerdescription: "VS offen iHv", columns: 10, format: betragFormat)}
+                                                    td {ftxt_8VSOFFEN = formattedTextField(name: "_8VSOFFEN", text: "0,00", clientPropertyJlawyerdescription: "VS offen iHv", columns: 10, format: betragFormat)}
                                                 }
 
 
@@ -1725,7 +1816,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     }
                                                     td {
                                                         spn_9EVABSCHERKLBEAANZ = spinner(clientPropertyJlawyerdescription: "Von Abschlusserklärung erfasste Beanstandungen (Anzahl)", name: "_9EVABSCHERKLBEAANZ", 
-                                                            model:spinnerNumberModel(minimum:1, 
+                                                            model:spinnerNumberModel(minimum:0, 
                                                                 maximum: 200,
                                                                 value:0,
                                                                 stepSize:1), stateChanged: {
@@ -1838,7 +1929,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     }
                                                     td {
                                                         spn_9TITELBEAANZ = spinner(clientPropertyJlawyerdescription: "Von Titel erfasste Beanstandungen (Anzahl)", name: "_9TITELBEAANZ", 
-                                                            model:spinnerNumberModel(minimum:1, 
+                                                            model:spinnerNumberModel(minimum:0, 
                                                                 maximum: 200,
                                                                 value:0,
                                                                 stepSize:1), stateChanged: {
@@ -1938,12 +2029,12 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                     td {txt_METAVERFDAUER = textField(name: "_METAVERFDAUER", text: "", clientPropertyJlawyerdescription: "Verfahrensdauer (Tage)", columns:10)}
                                 }
                                 tr {
-                                    td {label(text: 'Vergegenständliche Beanstandungen:')}
-                                    td {txt_METABEAVERG = textField(name: "_METABEAVERG", text: "", clientPropertyJlawyerdescription: "Vergegenständliche Beanstandungen", columns:10)}
+                                    td {label(text: 'Vergegenständlichte Beanstandungen:')}
+                                    td {txt_METABEAVERG = textField(name: "_METABEAVERG", text: "", clientPropertyJlawyerdescription: "Vergegenständlichte Beanstandungen", columns:10, enabled: false)}
                                 }
                                 tr {
                                     td {label(text: 'Unterbundene Beanstandungen:')}
-                                    td {txt_METABEAUNTERB = textField(name: "_METABEAUNTERB", text: "", clientPropertyJlawyerdescription: "Unterbundene Beanstandungen", columns:10)}
+                                    td {txt_METABEAUNTERB = textField(name: "_METABEAUNTERB", text: "", clientPropertyJlawyerdescription: "Unterbundene Beanstandungen", columns:10, enabled: false)}
                                 }
 
                                 tr {
@@ -2015,7 +2106,16 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
     }
     
     private void calculateMetadata() {
+        ftxt_8VSOFFEN.setText(betragFormat.format(0f));
+        try {
+            ftxt_8VSOFFEN.setText("" +betragFormat.format(getBetragValue(ftxt_4ZUMESSGBETR.getText())-getBetragValue(ftxt_8VSERH.getText())));
+        } catch (Throwable t) {
+            t.printStackTrace();
+            ftxt_8VSOFFEN.setText(betragFormat.format(0f));
+        }
+        
         txt_METABEAUNTERB.setText(""+(spn_8UVEBEANST.getValue() + spn_9EVABSCHERKLBEAANZ.getValue() + spn_9TITELBEAANZ.getValue()));
+        txt_METABEAVERG.setText(""+(spn_9EVABSCHERKLBEAANZ.getValue() + spn_9TITELBEAANZ.getValue()));
         
         ftxt_METAKOSTENTST.setText("0");
         try {
@@ -2056,7 +2156,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
     
     private float getBetragValue(String v) {
         if(v.isEmpty() || v.trim().isEmpty())
-            return 0f;
+        return 0f;
             
         v=v.trim();
             

@@ -52,6 +52,6 @@
     <form id="qewvuklag01" type="plugin" depends="formslib" name="UKlaG Beanstandung" description="Falldatenblatt zur Erfassung einer Beanstandung nach UKlaG" placeholder="UKBEA" version="0.4.0" for="2.1.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.1.0.0" files="qewvuklag01_meta.groovy,qewvuklag01_ui.groovy">
         <setting key="forms.qewvuklag01.topics" caption="Themen (semikolon-getrennt):" default="Sonstiges Thema;Aggressive Praktik (soweit nicht iVm einem anderen Thema);Anti-Diskriminierung;Datenschutz;Gesundheit;Irreführung (soweit nicht iVm einem anderen Thema);Lebensmittel u. Ernährung;Preisangaben und -transparenz" order="1"/>
     </form>
-    <form id="qewvuklag02" type="plugin" depends="formslib" name="UKlaG Scorecard" description="Falldatenblatt zur Erfassung Statistik-relevanter Daten nach UKlaG" placeholder="UKSC" version="0.4.0" for="2.1.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.1.0.0" files="qewvuklag02_meta.groovy,qewvuklag02_ui.groovy"/>
+    <form id="qewvuklag02" type="plugin" depends="formslib" name="UKlaG Scorecard" description="Falldatenblatt zur Erfassung Statistik-relevanter Daten nach UKlaG" placeholder="UKSC" version="0.5.0" for="2.1.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.1.0.0" files="qewvuklag02_meta.groovy,qewvuklag02_ui.groovy"/>
     
 </forms>

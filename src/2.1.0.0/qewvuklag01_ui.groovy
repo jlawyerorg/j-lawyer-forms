@@ -784,7 +784,7 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             'Text',
                                             'Text/Bild',
                                             'Bild'
-                                                ], name: "_TYP", clientPropertyJlawyerdescription: "Typ (Text, Bild, Text/Bild)", editable: false)
+                                                ], name: "_TYP", clientPropertyJlawyerdescription: "Typ (Text, Bild, Text/Bild)", selectedItem: "Text/Bild", editable: false)
                                             
                                         }
                                     }

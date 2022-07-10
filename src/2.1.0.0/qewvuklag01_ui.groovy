@@ -909,7 +909,7 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             'offen',
                                             'ausgeräumt',
                                             'aufgegeben'
-                                                ], name: "_STATUS", clientPropertyJlawyerdescription: "Status", editable: true, actionPerformed: {
+                                                ], name: "_STATUSTYP", clientPropertyJlawyerdescription: "Status", editable: true, actionPerformed: {
                                                     //berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString())
                                                 }
                                             )

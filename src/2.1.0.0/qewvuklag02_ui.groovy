@@ -905,7 +905,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                             tableLayout (cellpadding: 5) {
                                                 tr {
                                                     td {label(text: 'Alt-UVE Datum:')}
-                                                    td {formattedTextField(name: "_1ALTUVEDATUM", text: "", clientPropertyJlawyerdescription: "Alt-UVE Datum", columns: 10, format: datumsFormat)}
+                                                    td {formattedTextField(name: "_1ALTUVEDATUM1", text: "", clientPropertyJlawyerdescription: "Alt-UVE Datum", columns: 10, format: datumsFormat)}
                                                 }
                                                 tr {
                                                     td {label(text: 'seinerzeit rechtsfreundlich vertreten:')}
@@ -1289,7 +1289,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                             tableLayout (cellpadding: 5) {
                                                 tr {
                                                     td {label(text: 'Titel Gericht:')}
-                                                    td {textField(name: "_4TITELGER", text: "", clientPropertyJlawyerdescription: "Titel Gericht", columns:30)}
+                                                    td {textField(name: "_4TITELGERICHT", text: "", clientPropertyJlawyerdescription: "Titel Gericht", columns:30)}
                                                 }
                                                 tr {
                                                     td {label(text: 'Titel Gericht AZ:')}
@@ -1311,7 +1311,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {label(text: 'ZV Antrag:')}
-                                                    td {comboBox(items: ['Mindestsumme','Ordnungsgeld','Haft','Offen'], name: "_4ZVANTRAG", clientPropertyJlawyerdescription: "ZV Antrag", selectedItem: "Offen", editable: true, actionPerformed: {
+                                                    td {comboBox(items: ['Mindestsumme','Ordnungsgeld','Haft','Offen'], name: "_4ZVANTRAGSTATUS", clientPropertyJlawyerdescription: "ZV Antrag", selectedItem: "Offen", editable: true, actionPerformed: {
  
                                                             }
                                                         )
@@ -1361,7 +1361,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                             tableLayout (cellpadding: 5) {
                                 tr {
                                     td {label(text: 'Kostenpauschale:')}
-                                    td {comboBox(items: ['Kostenpauschale','keine','Einzelabrechnung'], name: "_6KOSTPAUSCH", clientPropertyJlawyerdescription: "Kostenpauschale", editable: true, actionPerformed: {
+                                    td {comboBox(items: ['Kostenpauschale','keine','Einzelabrechnung'], name: "_6KOSTPAUSCHTYP", clientPropertyJlawyerdescription: "Kostenpauschale", editable: true, actionPerformed: {
  
                                             }
                                         )
@@ -1471,7 +1471,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
 
                                 tr {
                                     td {label(text: 'Rechtsfreund:')}
-                                    td {cmb_7RF = comboBox(items: ['Verband','Kanzlei','Sonstige Person'], name: "_7RECHTSFREUND", clientPropertyJlawyerdescription: "Rechtsfreund", selectedItem: "Sonstige Person", editable: true, actionPerformed: {
+                                    td {cmb_7RF = comboBox(items: ['Verband','Kanzlei','Sonstige Person'], name: "_7RECHTSFREUNDTYP", clientPropertyJlawyerdescription: "Rechtsfreund", selectedItem: "Sonstige Person", editable: true, actionPerformed: {
  
                                             }
                                         )
@@ -1497,7 +1497,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
 
                                 tr {
                                     td {label(text: 'Einlassung zur Sache?:')}
-                                    td {comboBox(items: ['ja','nein'], name: "_7EINLASSG", clientPropertyJlawyerdescription: "Einlassung zur Sache?", editable: true, actionPerformed: {
+                                    td {comboBox(items: ['ja','nein'], name: "_7EINLASSGJANEIN", clientPropertyJlawyerdescription: "Einlassung zur Sache?", editable: true, actionPerformed: {
  
                                             }
                                         )
@@ -1737,7 +1737,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {label(text: 'EV Gericht I:')}
-                                                    td {textField(name: "_9EVGER1", text: "", clientPropertyJlawyerdescription: "EV Gericht I", columns:50)}
+                                                    td {textField(name: "_9EVGERICHT1", text: "", clientPropertyJlawyerdescription: "EV Gericht I", columns:50)}
                                                 }
                                                 tr {
                                                     td {label(text: 'EV Gericht I AZ:')}
@@ -1760,7 +1760,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {label(text: 'EV Gericht II:')}
-                                                    td {textField(name: "_9EVGER2", text: "", clientPropertyJlawyerdescription: "EV Gericht II", columns:50)}
+                                                    td {textField(name: "_9EVGERICHT2", text: "", clientPropertyJlawyerdescription: "EV Gericht II", columns:50)}
                                                 }
                                                 tr {
                                                     td {label(text: 'EV Gericht II AZ:')}
@@ -1782,7 +1782,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
 
                                                 tr {
                                                     td {label(text: 'Verbot ergangen:')}
-                                                    td {comboBox(items: ['ja','nein'], name: "_9VERBOTERG", clientPropertyJlawyerdescription: "Verbot ergangen", selectedItem: "nein", editable: true, actionPerformed: {
+                                                    td {comboBox(items: ['ja','nein'], name: "_9VERBOTERGJANEIN", clientPropertyJlawyerdescription: "Verbot ergangen", selectedItem: "nein", editable: true, actionPerformed: {
  
                                                             }
                                                         )
@@ -1803,7 +1803,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
 
                                                 tr {
                                                     td {label(text: 'EV Kosten:')}
-                                                    td {ftxt_9EVKOSTEN = formattedTextField(name: "_9EVKOSTEN", text: "0", clientPropertyJlawyerdescription: "EV Kosten", columns: 10, format: betragFormat)}
+                                                    td {ftxt_9EVKOSTEN = formattedTextField(name: "_9EVKOSTENSUMME", text: "0", clientPropertyJlawyerdescription: "EV Kosten", columns: 10, format: betragFormat)}
                                                 }
                                                 tr {
                                                     td {label(text: 'EV Kosten erstattet:')}
@@ -1813,7 +1813,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
 
                                                 tr {
                                                     td {label(text: 'EV Abschlusserklärung:')}
-                                                    td {comboBox(items: ['ja','nein'], name: "_9EVABSCHERKL", clientPropertyJlawyerdescription: "EV Abschlusserklärung", editable: true, actionPerformed: {
+                                                    td {comboBox(items: ['ja','nein'], name: "_9EVABSCHERKLJANEIN", clientPropertyJlawyerdescription: "EV Abschlusserklärung", editable: true, actionPerformed: {
  
                                                             }
                                                         )
@@ -1865,7 +1865,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {label(text: 'HS Gericht I:')}
-                                                    td {textField(name: "_9HSGER1", text: "", clientPropertyJlawyerdescription: "HS Gericht I", columns:50)}
+                                                    td {textField(name: "_9HSGERICHT1", text: "", clientPropertyJlawyerdescription: "HS Gericht I", columns:50)}
                                                 }
                                                 tr {
                                                     td {label(text: 'HS Gericht I AZ:')}
@@ -1886,7 +1886,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {label(text: 'HS Gericht II:')}
-                                                    td {textField(name: "_9HSGER2", text: "", clientPropertyJlawyerdescription: "HS Gericht II", columns:50)}
+                                                    td {textField(name: "_9HSGERICHT2", text: "", clientPropertyJlawyerdescription: "HS Gericht II", columns:50)}
                                                 }
                                                 tr {
                                                     td {label(text: 'HS Gericht II AZ:')}
@@ -1908,7 +1908,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {label(text: 'HS Gericht III:')}
-                                                    td {textField(name: "_9HSGER3", text: "", clientPropertyJlawyerdescription: "HS Gericht III", columns:50)}
+                                                    td {textField(name: "_9HSGERICHT3", text: "", clientPropertyJlawyerdescription: "HS Gericht III", columns:50)}
                                                 }
                                                 tr {
                                                     td {label(text: 'HS Gericht III AZ:')}
@@ -1930,7 +1930,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {label(text: 'HS Kosten:')}
-                                                    td {ftxt_9HSKOSTEN = formattedTextField(name: "_9HSKOSTEN", text: "0", clientPropertyJlawyerdescription: "HS Kosten", columns: 10, format: betragFormat)}
+                                                    td {ftxt_9HSKOSTEN = formattedTextField(name: "_9HSKOSTENSUMME", text: "0", clientPropertyJlawyerdescription: "HS Kosten", columns: 10, format: betragFormat)}
                                                 }
                                                 tr {
                                                     td {label(text: 'HS Kosten erstattet:')}
@@ -1978,7 +1978,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {label(text: 'Kosten Gericht I:')}
-                                                    td {textField(name: "_9KOSTGER1", text: "", clientPropertyJlawyerdescription: "Kosten Gericht I", columns:50)}
+                                                    td {textField(name: "_9KOSTGERICHT1", text: "", clientPropertyJlawyerdescription: "Kosten Gericht I", columns:50)}
                                                 }
                                                 tr {
                                                     td {label(text: 'Kosten Gericht I AZ:')}
@@ -1999,7 +1999,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {label(text: 'Kosten Gericht II:')}
-                                                    td {textField(name: "_9KOSTGER2", text: "", clientPropertyJlawyerdescription: "Kosten Gericht II", columns:50)}
+                                                    td {textField(name: "_9KOSTGERICHT2", text: "", clientPropertyJlawyerdescription: "Kosten Gericht II", columns:50)}
                                                 }
                                                 tr {
                                                     td {label(text: 'Kosten Gericht II AZ:')}
@@ -2155,7 +2155,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
         
         ftxt_8VSOFFEN.setText(betragFormat.format(0f));
         try {
-            ftxt_8VSOFFEN.setText("" +betragFormat.format(getBetragValue(ftxt_6KOSTPAUSCHGESAMT.getText())-getBetragValue(ftxt_8VSERH.getText())));
+            ftxt_8VSOFFEN.setText("" +betragFormat.format(getBetragValue(ftxt_4ZUMESSGBETR.getText())-getBetragValue(ftxt_8VSERH.getText())));
         } catch (Throwable t) {
             t.printStackTrace();
             ftxt_8VSOFFEN.setText(betragFormat.format(0f));

@@ -813,7 +813,7 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
                                     }
                                     tr {
                                         td (colfill:true) {
-                                            label(text: 'Norm:')
+                                            label(text: 'Katalog-Norm:')
                                         }
                                         td (colspan: 2) {
                                             cmbNorm = comboBox(items: [

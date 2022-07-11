@@ -750,6 +750,14 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
                                 tableLayout (cellpadding: 5) {
                                     tr {
                                         td (colfill:true) {
+                                            label(text: 'Kurzbenennung:')
+                                        }
+                                        td {
+                                            textField(name: "_BENENNG", text: '', clientPropertyJlawyerdescription: "Kurzbenennung", columns:50)
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
                                             label(text: 'Datum:')
                                         }
                                         td {
@@ -768,14 +776,6 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
                                     }
                                     tr {
                                         td (colfill:true) {
-                                            label(text: 'Kurzbenennung:')
-                                        }
-                                        td {
-                                            textField(name: "_BENENNG", text: '', clientPropertyJlawyerdescription: "Kurzbenennung", columns:50)
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
                                             label(text: 'Typ:')
                                         }
                                         td {
@@ -790,7 +790,7 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
                                     }
                                     tr {
                                         td (colfill:true, valign: 'TOP') {
-                                            label(text: 'Text:')
+                                            label(text: 'Beanstandungsgegenstand (Text):')
                                         }
                                         td {
                                             scrollPane{
@@ -959,6 +959,11 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                                     savePicture();
                                                                 })
                                                         }
+                                                        td {
+                                                            button(text: 'Verwerfen', actionPerformed: {
+                                                                    deletePicture();
+                                                                })
+                                                        }
 
                                                     }
                                                 }
@@ -1064,6 +1069,14 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
             log.error("Unable to write file " + saveTo.getAbsolutePath(), t);
             t.printStackTrace(System.out);
         }
+    }
+    
+    private void deletePicture() {
+        txtPictureBase64.setText("");
+        txtPictureFile.setText("");
+        // lblRenderedPicture.setSize(width,height);
+        lblRenderedPicture.setIcon(null);
+        
     }
     
     private void uploadPicture() {

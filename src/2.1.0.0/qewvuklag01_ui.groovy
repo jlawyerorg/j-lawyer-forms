@@ -813,6 +813,69 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
                                     }
                                     tr {
                                         td (colfill:true) {
+                                            label(text: 'Gesetz:')
+                                        }
+                                        td {
+                                            textField(name: "_HGESETZE", text: '', clientPropertyJlawyerdescription: "Gesetz", columns:50)
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'Norm(en):')
+                                        }
+                                        td {
+                                            textField(name: "_HNORMEN", text: '', clientPropertyJlawyerdescription: "Norm(en)", columns:50)
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'Alternativ-Gesetz:')
+                                        }
+                                        td {
+                                            textField(name: "_ALTGESETZ", text: '', clientPropertyJlawyerdescription: "Alternativ-Gesetz", columns:50)
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'Alternativ-Norm(en):')
+                                        }
+                                        td {
+                                            textField(name: "_ALTNORM", text: '', clientPropertyJlawyerdescription: "Alternativ-Norm(en)", columns:50)
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'Fehler-Typologie:')
+                                        }
+                                        td (colspan: 2) {
+                                            cmbNorm = comboBox(items: [
+                                            'Pflichtangabe (\"a nur mit b\")',
+                                            'Verbotene Aussage (\"a auf keinen Fall mit b\")',
+                                            'Sonstige Typologie'
+                                                ], name: "_FTYPOLOGIE", clientPropertyJlawyerdescription: "Fehler-Typologie", selectedItem: "Sonstige Typologie", editable: true, actionPerformed: {
+                                                    //berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString())
+                                                }
+                                            )
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'Unterlassungs-Obersatz:')
+                                        }
+                                        td {
+                                            textField(name: "_UOBERSATZ", text: '', clientPropertyJlawyerdescription: "Unterlassungs-Obersatz", columns:50)
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'Unterlassungs-Nachsatz:')
+                                        }
+                                        td {
+                                            textField(name: "_UNACHSATZ", text: '', clientPropertyJlawyerdescription: "Unterlassungs-Nachsatz", columns:50)
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
                                             label(text: 'Katalog-Norm:')
                                         }
                                         td (colspan: 2) {
@@ -853,7 +916,7 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             'UWG 5a Abs. 3 (Verheimlichen wesentl. Informationen.)',
                                             'UWG 5a Abs. 4 (Unionsrecht)',
                                             'UWG 5a Abs. 6 (Verheimlichen des kommerziellen Zwecks)'
-                                                ], name: "_NORM", clientPropertyJlawyerdescription: "Norm", editable: true, actionPerformed: {
+                                                ], name: "_NORM", clientPropertyJlawyerdescription: "Katalog-Norm", editable: true, actionPerformed: {
                                                     //berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString())
                                                 }
                                             )
@@ -879,14 +942,7 @@ public class qewvuklag01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             } 
                                         }
                                     }
-                                    tr {
-                                        td (colfill:true) {
-                                            label(text: 'Alternativnorm:')
-                                        }
-                                        td {
-                                            textField(name: "_ALTNORM", text: '', clientPropertyJlawyerdescription: "Alternativnorm", columns:50)
-                                        }
-                                    }
+                                    
                                     
                                     
                                     

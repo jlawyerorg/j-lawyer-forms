@@ -778,6 +778,8 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     JTextField txtAnwaltskostenDiff;
     JTextField txtAnwaltskostenReg;
     
+    JTextField txtTotalKosten;
+    
     FormPluginCallback callback=null;
     
     NumberFormat betragFormat = NumberFormat.getInstance(Locale.GERMANY).getNumberInstance();
@@ -1041,7 +1043,14 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             } 
                                         }
                                     }
-                                    
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'polizeiliches Aktenzeichen:')
+                                        }
+                                        td {
+                                            textField(id: 'sPolizeiAufgen', name: "_POLAZ", clientPropertyJlawyerdescription: "polizeiliches Aktenzeichen", text: '', columns:50)
+                                        }
+                                    }
                                 }   
                         
                             }     
@@ -1342,6 +1351,17 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         }
                                     }
                                     tr {
+                                        td {
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            checkBox(text: 'finanziert / geleast', clientPropertyJlawyerdescription: "Fahrzeug Mandant ist finanziert/geleast", name: "_FINANZIERT", selected: false)
+                                        }
+                                        td {
+                                    
+                                        }
+                                    }
+                                    tr {
                                         td (colfill:true, align: 'left') {
                                             label(text: 'Anzahl Vorbesitzer:')
                                         }
@@ -1366,6 +1386,37 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         td {
                                     
                                         }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            checkBox(text: 'Ersatzfahrzeug vorhanden', clientPropertyJlawyerdescription: "Ersatzfahrzeug vorhanden?", name: "_ERSATZVORH", selected: false)
+                                        }
+                                        td {
+                                    
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Nutzungsausfall beanspruchen:')
+                                    
+                                        }
+                                        td {
+                                            comboBox(items: [
+                                            'ja',
+                                            'nein',
+                                            'evtl. später'
+                                                ], name: "_NUTZAUSFALLANSPR", clientPropertyJlawyerdescription: "Nutzungsausfall beanspruchen?", editable: true, actionPerformed: {
+                                                    
+                                                }
+                                            )
+                                        }
+                                        td {
+                                            
+                                        }
+                                        
                                     }
                                     tr {
                                         td {
@@ -1421,7 +1472,20 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         }
                                         
                                     }
-                            
+                                    tr {
+                                        td {
+                                            label(text: '   Verrechnungssatz:')
+                                    
+                                        }
+                                        td {
+                                            formattedTextField(id: 'sNutzungsAusfallVerrSatz', clientPropertyJlawyerdescription: "Nutzungsausfallgruppe Verrechnungssatz", name: "_NUTZAUSFALLVERR", format: betragFormat, text: '0,00', columns: 10, keyReleased: { })
+                                        }
+                                        td {
+                                            
+                                        }
+                                        
+                                    }
+                                    
                                 }   
                         
                             }     
@@ -1520,6 +1584,17 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         }
                                     }
                                     tr {
+                                        td {
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            checkBox(text: 'finanziert / geleast', clientPropertyJlawyerdescription: "Fahrzeug Gegner ist finanziert/geleast", name: "_G_FINANZIERT", selected: false)
+                                        }
+                                        td {
+                                    
+                                        }
+                                    }
+                                    tr {
                                         td (colfill:true, align: 'left') {
                                             label(text: 'Anzahl Vorbesitzer:')
                                         }
@@ -1540,6 +1615,17 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         }
                                         td {
                                             chkGFahrerIstHalter = checkBox(text: 'Fahrer ist Fahrzeughalter', clientPropertyJlawyerdescription: "Fahrer ist Fahrzeughalter (Gegner)", name: "_G_FAHRERHALTER", selected: true)
+                                        }
+                                        td {
+                                    
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            label(text: 'Schadennummer:')
+                                        }
+                                        td {
+                                            textField(id: 'sSchadennr', clientPropertyJlawyerdescription: "Schadennr./Vers.-Nr. Gegner", name: "_G_SCHADNR", text: '', columns:20)
                                         }
                                         td {
                                     
@@ -1598,6 +1684,21 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                         td (colfill:true, align: 'left') {
                             panel(border: titledBorder(title: 'Schadeninformationen:')) {
                                 tableLayout (cellpadding: 5) {
+                                    tr {
+                                        td {
+                                            label(text: 'Gutachtennummer:')
+                                        }
+                                        td (colspan: 3) {
+                                            textField(id: 'sGutachtennummer', clientPropertyJlawyerdescription: "Gutachtennummer", name: "_GUTACHTENNR", text: '', columns:20)
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td (colspan: 4) {
+                                            label(text: '   ')
+                                        }
+                                
+                                    }
                                     tr {
                                         td (colspan: 4) {
                                             btnGrpSchadenArt = buttonGroup(id:'grpSchadenArt')
@@ -1844,7 +1945,41 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         }
                                 
                                     }
-                            
+                                    tr {
+                                        td {
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            checkBox(text: 'Weiternutzung über 6 Monate vorgesehen', name: "_WEITERNUTZUNG6MON", clientPropertyJlawyerdescription: "Weiternutzung über 6 Monate vorgesehen", selected: true, actionPerformed: {
+                                                
+                                                })
+                                        }
+                                
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Teil- oder Selbstreparatur vorgesehen:')
+                                        }
+                                        td (colspan: 3) {
+                                            textField(id: 'sTeilSelbstRepa', clientPropertyJlawyerdescription: "Teil- oder Selbstreparatur vorgesehen?", name: "_TEILSELBSTREPA", text: '', columns:20)
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            label(text: 'Reparaturdauer (Tage):')
+                                        }
+                                        td {
+                                            spinner(id: 'nRepaDauer', clientPropertyJlawyerdescription: "Reparaturdauer in Tagen", name: "_REPATAGE", 
+                                                model:spinnerNumberModel(minimum:0, 
+                                                    maximum: 999,
+                                                    value:0,
+                                                    stepSize:1))
+                                        }
+                                        td {
+                                    
+                                        }
+                                    }
                                 }   
                         
                             }     
@@ -2221,6 +2356,30 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                             }     
                         }
                     }
+                    
+                    tr {
+                        td (colfill:true, align: 'left') {
+                            panel(border: titledBorder(title: 'Total:')) {
+                                tableLayout (cellpadding: 5) {
+                                    tr {
+                                        td {
+                                            label(text: 'Summe Schadenpositionen + Summe Anwaltskosten')
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            txtTotalKosten=formattedTextField(id: 'nTotalKosten', name: "_KOSTENTOTAL", clientPropertyJlawyerdescription: "Summe Schadenpositionen + Summe Anwaltskosten", format: betragFormat, text: '0,00', columns: 10, enabled: false, disabledTextColor: java.awt.Color.BLACK)
+                                        }
+                                    }
+                
+                                    
+                            
+                            
+                                }   
+                        
+                            }     
+                        }
+                    }
             
             
                     tr  {
@@ -2306,6 +2465,11 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     
     private void berechnen(JTextField value, JTextField mwst, JTextField reg, JTextField diff) {
         
+        float sub1=0f;
+        float sub2=0f;
+        float sub3=0f;
+        float total=0f;
+        
         try {
             float f1=betragFormat.parse(txtReparaturKosten.getText()).floatValue();
             float f2=betragFormat.parse(txtReparaturKostenGutachten.getText()).floatValue();
@@ -2379,6 +2543,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
             currentSum+=betragFormat.parse(txtAnmeldeKosten.text)
             currentSum+=betragFormat.parse(txtSonstigeKosten.text)
             
+            sub1=currentSum;
             txtSummeSchaden.text="" + betragFormat.format(currentSum);
             
             fStreitwert=currentSum;
@@ -2480,9 +2645,11 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                 vv7002 = vv2300 * 0.2f;
             }
             
+            sub2=vv2300+vv7002;
             txtAnwaltskostenNetto.text=betragFormat.format(vv2300+vv7002);
             //System.out.println("netto: " + betragFormat.format(vv2300+vv7002));
             
+            sub3=(vv2300+vv7002)*anwMwst;
             txtAnwaltskostenMwst.text=betragFormat.format((vv2300+vv7002)*anwMwst);
             //System.out.println("mwst: " + betragFormat.format((vv2300+vv7002)*0.19f));
             //txtAnwaltskostenReg
@@ -2493,6 +2660,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
             txtSummeDifferenz.text="? ungueltiger Betrag";
         }
         
+        txtTotalKosten.text=betragFormat.format(sub1+sub2+sub3);
         
     }
     

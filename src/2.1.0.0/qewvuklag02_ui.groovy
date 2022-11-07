@@ -689,6 +689,9 @@ import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 import com.jdimension.jlawyer.client.utils.FileUtils
 import com.jdimension.jlawyer.client.editors.EditorsRegistry
 import com.jdimension.jlawyer.client.settings.ServerSettings
+import com.jdimension.jlawyer.client.launcher.Launcher
+import com.jdimension.jlawyer.client.launcher.LauncherFactory
+import com.jdimension.jlawyer.client.launcher.ReadOnlyDocumentStore
 import java.io.File
 import java.io.IOException
 import java.io.FileOutputStream
@@ -750,6 +753,25 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
     JFormattedTextField ftxt_METAKOSTENTST=null;
     JFormattedTextField ftxt_METAKOSTERST=null;
     JFormattedTextField ftxt_METAKOSTOFFEN=null;
+    
+    JTextField txtPictureBase64;
+    JTextField txtPictureFile;
+    JLabel lblRenderedPicture;
+    
+    JTextField txtGerEv1PdfBase64;
+    JTextField txtGerEv1PdfFile;
+    JTextField txtGerEv2PdfBase64;
+    JTextField txtGerEv2PdfFile;
+    JTextField txtGerHs1PdfBase64;
+    JTextField txtGerHs1PdfFile;
+    JTextField txtGerHs2PdfBase64;
+    JTextField txtGerHs2PdfFile;
+    JTextField txtGerHs3PdfBase64;
+    JTextField txtGerHs3PdfFile;
+    JTextField txtGerKost1PdfBase64;
+    JTextField txtGerKost1PdfFile;
+    JTextField txtGerKost2PdfBase64;
+    JTextField txtGerKost2PdfFile;
 
     public qewvuklag02_ui() {
         super();
@@ -774,6 +796,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
         FormsLib.setPlaceHolderValues(prefix, placeHolderValues, this.SCRIPTPANEL);
         toggleErstFolge();
         lbl_8BEACOUNT.text="Info: Anzahl der Beanstandungen in Tab (2) = " +spn_2BEACOUNT.value;
+        renderPicture();
     }
 
     public void setCallback(FormPluginCallback callback) {
@@ -819,8 +842,8 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
         swing.edt {
             SCRIPTPANEL=panel(size: [300, 300]) {
                 vbox {
-                    tabPaneMain = tabbedPane(id: 'tabs') {
-                        panel(name: '(1) Verfahren') {
+                    tabPaneMain = tabbedPane(id: 'tabs', tabPlacement: JTabbedPane.LEFT) {
+                        panel(name: '(1) Grunddaten') {
                             tableLayout (cellpadding: 5) {
                                 tr {
                                     td {
@@ -877,12 +900,44 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     }
                                                 }
                                                 tr {
-                                                    td {
-                                                        label(text: ' ')
-                                                    }
+                                                    td {label(text: ' ')}
                                                     td {
                                                         checkBox(text: 'EU-Verfahren', clientPropertyJlawyerdescription: "EU-Verfahren?", name: "_1EUVERF", selected: false)
                                                     }
+                                                }
+                                                tr {
+                                                    td {label(text: ' ')}
+                                                    td {label(text: ' ')}
+                                                }
+                                                tr {
+                                                    td {label(text: ' ')}
+                                                    td {
+                                                        checkBox(text: 'Testbesuch', clientPropertyJlawyerdescription: "Testbesuch?", name: "_1TESTBESUCH", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: ' ')}
+                                                    td {label(text: ' ')}
+                                                }
+                                                tr {
+                                                    td {label(text: ' ')}
+                                                    td {
+                                                        checkBox(text: 'an Anwalt abgegeben', clientPropertyJlawyerdescription: "an Anwalt abgegeben?", name: "_1ANANWALTGEGEBEN", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: ' ')}
+                                                    td {
+                                                        checkBox(text: 'bei Gericht', clientPropertyJlawyerdescription: "bei Gericht?", name: "_1BEIGERICHT", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: 'Case ID Bundesamt:')}
+                                                    td {textField(name: "_1CASEIDBUNDAMT", text: "", clientPropertyJlawyerdescription: "Case ID Bundesamt", columns:30)}
+                                                }
+                                                tr {
+                                                    td {label(text: ' ')}
+                                                    td {label(text: ' ')}
                                                 }
                                                 tr {
                                                     td {
@@ -898,59 +953,162 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                         }
                                     }
                                 }
-                                
                                 tr {
                                     td {
-                                        pnl_1VV = panel(border: titledBorder(title: 'Vorverstoß')) {
+                                        panel(border: titledBorder(title: 'Veröffentlichungen')) {
                                             tableLayout (cellpadding: 5) {
                                                 tr {
-                                                    td {label(text: 'Alt-UVE Datum:')}
-                                                    td {formattedTextField(name: "_1ALTUVEDATUM1", text: "", clientPropertyJlawyerdescription: "Alt-UVE Datum", columns: 10, format: datumsFormat)}
+                                                    td {label(text: ' ')}
+                                                    td {
+                                                        checkBox(text: 'Konsultation auf Website veröffentlichen?', clientPropertyJlawyerdescription: "Konsultation auf Website veröffentlichen?", name: "_1KONSULTVEROEFF", selected: false)
+                                                    }
                                                 }
                                                 tr {
-                                                    td {label(text: 'seinerzeit rechtsfreundlich vertreten:')}
-                                                    td {comboBox(items: ['Nein','Verband','Rechtsanwalt'], name: "_1VERTRETEN", clientPropertyJlawyerdescription: "seinerzeit rechtsfreundlich vertreten", editable: true, actionPerformed: {
+                                                    td {label(text: ' ')}
+                                                    td {
+                                                        checkBox(text: 'EinstwVerf/HauptsacheVerf (nach Einreichung) auf Website veröffentlichen?', clientPropertyJlawyerdescription: "EinstwVerf/HauptsacheVerf (nach Einreichung) auf Website veröffentlichen?", name: "_1EINSTWVERFVEROEFF", selected: true)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: ' ')}
+                                                    td {
+                                                        checkBox(text: 'Galerie erstellen aus offenen Einzelbeanstandungen?', clientPropertyJlawyerdescription: "Galerie erstellen aus offenen Einzelbeanstandungen?", name: "_1GALERIE_EB", selected: true)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: ' ')}
+                                                    td {
+                                                        checkBox(text: 'Kartenfunktionalität einfügen?', clientPropertyJlawyerdescription: "Kartenfunktionalität einfügen?", name: "_1KARTENEINF", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: 'Kartenadresse:')}
+                                                    td {textField(name: "_1KARTENADR", text: "", clientPropertyJlawyerdescription: "Kartenadresse", columns:50)}
+                                                }
+                                                tr {
+                                                    td {label(text: ' ')}
+                                                    td {label(text: ' ')}
+                                                }
+                                                tr {
+                                                    td {label(text: 'Daten natürlicher Personen anonymisieren?')}
+                                                    td {comboBox(items: ['sofort','6 Monate nach Rechtskraft','12 Monate nach Rechtskraft', 'nie'], name: "_1DATENANONYM_NATPERS", clientPropertyJlawyerdescription: "Daten natürlicher Personen anonymisieren?", selectedItem: "6 Monate nach Rechtskraft", editable: false, actionPerformed: {
  
                                                             }
                                                         )
                                                     }
                                                 }
                                                 tr {
-                                                    td {label(text: 'Alt-UVE Datum Annahme:')}
-                                                    td {formattedTextField(name: "_1ALTUVEDATUMAUFN", text: "", clientPropertyJlawyerdescription: "Alt-UVE Datum Annahme", columns: 10, format: datumsFormat)}
+                                                    td {label(text: ' ')}
+                                                    td {label(text: ' ')}
+                                                }
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label(text: 'Dauer der Veröffentlichung (in Monaten, 0 für unbegrenzt):')
+                                                    }
+                                                    td {
+                                                        spinner(clientPropertyJlawyerdescription: "Dauer der Veröffentlichung", name: "_1DAUERVEROEFFENTL", 
+                                                            model:spinnerNumberModel(minimum:0, 
+                                                                maximum: 120,
+                                                                value:0,
+                                                                stepSize:1))
+                                                    }
                                                 }
 
-                                                tr {
-                                                    td {label(text: 'Alt-UVE Inhalt:')}
-                                                    td {comboBox(items: ['nhB', 'nhBUntergrenze', 'nhBObergrenze', 'nhBUnterObergrenze', 'fix', 'komplexeRegelung'], name: "_1ALTUVEINH", clientPropertyJlawyerdescription: "Alt-UVE Inhalt", editable: true, actionPerformed: {
- 
-                                                            }
-                                                        )
-                                                    }
-                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 5) {
                                                 tr {
                                                     td (colfill:true, valign: 'TOP') {
-                                                        label(text: 'Alt-UVE Inhalt Umschreibung:')
+                                                        label(text: 'Zusammenfassung zum Verstoß:')
                                                     }
                                                     td {
                                                         scrollPane{
-                                                            textArea(name: "_1ALTUVEINHUMSCHR", clientPropertyJlawyerdescription: "Alt-UVE Inhalt Umschreibung", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                                            textArea(name: "_1ZUSFSSG_VERSTOSS", clientPropertyJlawyerdescription: "Zusammenfassung zum Verstoß", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
                                                         } 
                                                     }
                                                 }
                                                 tr {
-                                                    td {label(text: 'Alt-UVE Untergrenze:')}
-                                                    td {formattedTextField(name: "_1ALTUVEUG", text: "", clientPropertyJlawyerdescription: "Alt-UVE Untergrenze", columns: 10, format: betragFormat)}
+                                                    td (colfill:true, valign: 'TOP') {
+                                                        label(text: 'Zusammenfassung zum Abschluss des Verfahrens:')
+                                                    }
+                                                    td {
+                                                        scrollPane{
+                                                            textArea(name: "_1ZUSFSSG_VERFABSCHL", clientPropertyJlawyerdescription: "Zusammenfassung zum Abschluss des Verfahrens", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                                        } 
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        panel(border: titledBorder(title: 'Feature-Bild')) {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td (colfill:true) {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        
+                                                        
+                                                        
+                                                        panel() {
+                                                            tableLayout (cellpadding: 5) {
+                                                                tr {
+                                                                    td {
+                                                                        button(text: 'Hochladen', actionPerformed: {
+                                                                                uploadPicture();
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        button(text: 'Speichern als...', actionPerformed: {
+                                                                                savePicture();
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        button(text: 'Verwerfen', actionPerformed: {
+                                                                                deletePicture();
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                        
+                                                    }
                                                 }
                                                 tr {
-                                                    td {label(text: 'Alt-UVE Obergrenze:')}
-                                                    td {formattedTextField(name: "_1ALTUVEOG", text: "", clientPropertyJlawyerdescription: "Alt-UVE Obergrenze", columns: 10, format: betragFormat)}
+                                                    td (colfill:true) {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        lblRenderedPicture = label(text: '')
+                                                    }
                                                 }
                                                 tr {
-                                                    td {label(text: 'Alt-UVE fix:')}
-                                                    td {formattedTextField(name: "_1ALTUVEFIX", text: "", clientPropertyJlawyerdescription: "Alt-UVE fix", columns: 10, format: betragFormat)}
+                                                    td (colfill:true) {
+                                                        label(text: 'Metadaten:')
+                                                    }
+                                                    td {
+                                                        txtPictureBase64 = textField(name: "_1FEATUREIMG_BASE64", text: '', clientPropertyJlawyerdescription: "Feature-Bild (Base64-kodiert)", columns:10, enabled: false, actionPerformed: {
+                                                                renderPicture();
+                                                            })
+                                                    }
                                                 }
-
+                                                tr {
+                                                    td (colfill:true) {
+                                                        label(text: 'Dateiname:')
+                                                    }
+                                                    td {
+                                                        txtPictureFile = textField(name: "_1FEATUREIMG_DATEI", text: '', clientPropertyJlawyerdescription: "Feature-Bild (Dateiname)", columns:10, enabled: false)
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -1187,7 +1345,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                 
                             }
                         }
-                        panel(name: '(4) Folgeverstoß') {
+                        panel(name: '(4) Vor- und Folgeverstöße') {
                             tableLayout (cellpadding: 5) {
                                 
                                 tr {
@@ -1320,6 +1478,62 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 tr {
                                                     td {label(text: 'ZV Antrag Mindestsumme:')}
                                                     td {formattedTextField(name: "_4ZVANTRAGMINSUMME", text: "", clientPropertyJlawyerdescription: "ZV Antrag Mindestsumme", columns: 10, format: betragFormat)}
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        pnl_1VV = panel(border: titledBorder(title: 'Vorverstoß')) {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {label(text: 'Alt-UVE Datum:')}
+                                                    td {formattedTextField(name: "_1ALTUVEDATUM1", text: "", clientPropertyJlawyerdescription: "Alt-UVE Datum", columns: 10, format: datumsFormat)}
+                                                }
+                                                tr {
+                                                    td {label(text: 'seinerzeit rechtsfreundlich vertreten:')}
+                                                    td {comboBox(items: ['Nein','Verband','Rechtsanwalt'], name: "_1VERTRETEN", clientPropertyJlawyerdescription: "seinerzeit rechtsfreundlich vertreten", editable: true, actionPerformed: {
+ 
+                                                            }
+                                                        )
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: 'Alt-UVE Datum Annahme:')}
+                                                    td {formattedTextField(name: "_1ALTUVEDATUMAUFN", text: "", clientPropertyJlawyerdescription: "Alt-UVE Datum Annahme", columns: 10, format: datumsFormat)}
+                                                }
+
+                                                tr {
+                                                    td {label(text: 'Alt-UVE Inhalt:')}
+                                                    td {comboBox(items: ['nhB', 'nhBUntergrenze', 'nhBObergrenze', 'nhBUnterObergrenze', 'fix', 'komplexeRegelung'], name: "_1ALTUVEINH", clientPropertyJlawyerdescription: "Alt-UVE Inhalt", editable: true, actionPerformed: {
+ 
+                                                            }
+                                                        )
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true, valign: 'TOP') {
+                                                        label(text: 'Alt-UVE Inhalt Umschreibung:')
+                                                    }
+                                                    td {
+                                                        scrollPane{
+                                                            textArea(name: "_1ALTUVEINHUMSCHR", clientPropertyJlawyerdescription: "Alt-UVE Inhalt Umschreibung", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                                        } 
+                                                    }
+                                                }
+                                                tr {
+                                                    td {label(text: 'Alt-UVE Untergrenze:')}
+                                                    td {formattedTextField(name: "_1ALTUVEUG", text: "", clientPropertyJlawyerdescription: "Alt-UVE Untergrenze", columns: 10, format: betragFormat)}
+                                                }
+                                                tr {
+                                                    td {label(text: 'Alt-UVE Obergrenze:')}
+                                                    td {formattedTextField(name: "_1ALTUVEOG", text: "", clientPropertyJlawyerdescription: "Alt-UVE Obergrenze", columns: 10, format: betragFormat)}
+                                                }
+                                                tr {
+                                                    td {label(text: 'Alt-UVE fix:')}
+                                                    td {formattedTextField(name: "_1ALTUVEFIX", text: "", clientPropertyJlawyerdescription: "Alt-UVE fix", columns: 10, format: betragFormat)}
                                                 }
 
                                             }
@@ -1759,6 +1973,69 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     td {formattedTextField(name: "_9EVGER1EQ", text: "", clientPropertyJlawyerdescription: "EV Gericht I Entscheidung Quote", columns: 10, format: betragFormat)}
                                                 }
                                                 tr {
+                                                    td (colspan: 2, colfill:true, align: 'left') {
+                                                        panel(border: titledBorder(title: 'EV Gericht I Entscheid (PDF, anonymisieren!)')) {
+                                                            tableLayout (cellpadding: 5) {
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        
+                                                                        
+                                                                        
+                                                                        panel() {
+                                                                            tableLayout (cellpadding: 5) {
+                                                                                tr {
+                                                                                    td {
+                                                                                        button(text: 'Hochladen', actionPerformed: {
+                                                                                                uploadPdf(txtGerEv1PdfBase64, txtGerEv1PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Anzeigen', actionPerformed: {
+                                                                                                displayPdf(txtGerEv1PdfBase64, txtGerEv1PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Speichern als...', actionPerformed: {
+                                                                                                savePdf(txtGerEv1PdfBase64, txtGerEv1PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Verwerfen', actionPerformed: {
+                                                                                                deletePdf(txtGerEv1PdfBase64, txtGerEv1PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: 'Metadaten:')
+                                                                    }
+                                                                    td {
+                                                                        txtGerEv1PdfBase64 = textField(name: "_9GEREV1PDF_BASE64", text: '', clientPropertyJlawyerdescription: "EV Gericht I Entscheid (PDF, Base64-kodiert)", columns:50, enabled: false, actionPerformed: {
+                                                                                
+                                                                            })
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: 'Dateiname:')
+                                                                    }
+                                                                    td {
+                                                                        txtGerEv1PdfFile = textField(name: "_9GEREV1PDF_DATEI", text: '', clientPropertyJlawyerdescription: "EV Gericht I Entscheid (PDF, Dateiname)", columns:50, enabled: false)
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
                                                     td {label(text: 'EV Gericht II:')}
                                                     td {textField(name: "_9EVGERICHT2", text: "", clientPropertyJlawyerdescription: "EV Gericht II", columns:50)}
                                                 }
@@ -1778,6 +2055,69 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 tr {
                                                     td {label(text: 'EV Gericht II Entscheidung Quote:')}
                                                     td {formattedTextField(name: "_9EVGER2EQ", text: "", clientPropertyJlawyerdescription: "EV Gericht II Entscheidung Quote", columns: 10, format: betragFormat)}
+                                                }
+                                                tr {
+                                                    td (colspan: 2, colfill:true, align: 'left') {
+                                                        panel(border: titledBorder(title: 'EV Gericht II Entscheid (PDF, anonymisieren!)')) {
+                                                            tableLayout (cellpadding: 5) {
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        
+                                                                        
+                                                                        
+                                                                        panel() {
+                                                                            tableLayout (cellpadding: 5) {
+                                                                                tr {
+                                                                                    td {
+                                                                                        button(text: 'Hochladen', actionPerformed: {
+                                                                                                uploadPdf(txtGerEv2PdfBase64, txtGerEv2PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Anzeigen', actionPerformed: {
+                                                                                                displayPdf(txtGerEv2PdfBase64, txtGerEv2PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Speichern als...', actionPerformed: {
+                                                                                                savePdf(txtGerEv2PdfBase64, txtGerEv2PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Verwerfen', actionPerformed: {
+                                                                                                deletePdf(txtGerEv2PdfBase64, txtGerEv2PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: 'Metadaten:')
+                                                                    }
+                                                                    td {
+                                                                        txtGerEv2PdfBase64 = textField(name: "_9GEREV2PDF_BASE64", text: '', clientPropertyJlawyerdescription: "EV Gericht II Entscheid (PDF, Base64-kodiert)", columns:50, enabled: false, actionPerformed: {
+                                                                                
+                                                                            })
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: 'Dateiname:')
+                                                                    }
+                                                                    td {
+                                                                        txtGerEv2PdfFile = textField(name: "_9GEREV2PDF_DATEI", text: '', clientPropertyJlawyerdescription: "EV Gericht II Entscheid (PDF, Dateiname)", columns:50, enabled: false)
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
 
                                                 tr {
@@ -1885,6 +2225,69 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     td {formattedTextField(name: "_9HSGER1EQ", text: "", clientPropertyJlawyerdescription: "HS Gericht I Entscheidung Quote", columns: 10, format: betragFormat)}
                                                 }
                                                 tr {
+                                                    td (colspan: 2, colfill:true, align: 'left') {
+                                                        panel(border: titledBorder(title: 'HS Gericht I Entscheid (PDF, anonymisieren!)')) {
+                                                            tableLayout (cellpadding: 5) {
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        
+                                                                        
+                                                                        
+                                                                        panel() {
+                                                                            tableLayout (cellpadding: 5) {
+                                                                                tr {
+                                                                                    td {
+                                                                                        button(text: 'Hochladen', actionPerformed: {
+                                                                                                uploadPdf(txtGerHs1PdfBase64, txtGerHs1PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Anzeigen', actionPerformed: {
+                                                                                                displayPdf(txtGerHs1PdfBase64, txtGerHs1PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Speichern als...', actionPerformed: {
+                                                                                                savePdf(txtGerHs1PdfBase64, txtGerHs1PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Verwerfen', actionPerformed: {
+                                                                                                deletePdf(txtGerHs1PdfBase64, txtGerHs1PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: 'Metadaten:')
+                                                                    }
+                                                                    td {
+                                                                        txtGerHs1PdfBase64 = textField(name: "_9GERHS1PDF_BASE64", text: '', clientPropertyJlawyerdescription: "HS Gericht I Entscheid (PDF, Base64-kodiert)", columns:50, enabled: false, actionPerformed: {
+                                                                                
+                                                                            })
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: 'Dateiname:')
+                                                                    }
+                                                                    td {
+                                                                        txtGerHs1PdfFile = textField(name: "_9GERHS1PDF_DATEI", text: '', clientPropertyJlawyerdescription: "HS Gericht I Entscheid (PDF, Dateiname)", columns:50, enabled: false)
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
                                                     td {label(text: 'HS Gericht II:')}
                                                     td {textField(name: "_9HSGERICHT2", text: "", clientPropertyJlawyerdescription: "HS Gericht II", columns:50)}
                                                 }
@@ -1907,6 +2310,69 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     td {formattedTextField(name: "_9HSGER2EQ", text: "", clientPropertyJlawyerdescription: "HS Gericht II Entscheidung Quote", columns: 10, format: betragFormat)}
                                                 }
                                                 tr {
+                                                    td (colspan: 2, colfill:true, align: 'left') {
+                                                        panel(border: titledBorder(title: 'HS Gericht II Entscheid (PDF, anonymisieren!)')) {
+                                                            tableLayout (cellpadding: 5) {
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        
+                                                                        
+                                                                        
+                                                                        panel() {
+                                                                            tableLayout (cellpadding: 5) {
+                                                                                tr {
+                                                                                    td {
+                                                                                        button(text: 'Hochladen', actionPerformed: {
+                                                                                                uploadPdf(txtGerHs2PdfBase64, txtGerHs2PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Anzeigen', actionPerformed: {
+                                                                                                displayPdf(txtGerHs2PdfBase64, txtGerHs2PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Speichern als...', actionPerformed: {
+                                                                                                savePdf(txtGerHs2PdfBase64, txtGerHs2PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Verwerfen', actionPerformed: {
+                                                                                                deletePdf(txtGerHs2PdfBase64, txtGerHs2PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: 'Metadaten:')
+                                                                    }
+                                                                    td {
+                                                                        txtGerHs2PdfBase64 = textField(name: "_9GERHS2PDF_BASE64", text: '', clientPropertyJlawyerdescription: "HS Gericht II Entscheid (PDF, Base64-kodiert)", columns:50, enabled: false, actionPerformed: {
+                                                                                
+                                                                            })
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: 'Dateiname:')
+                                                                    }
+                                                                    td {
+                                                                        txtGerHs2PdfFile = textField(name: "_9GERHS2PDF_DATEI", text: '', clientPropertyJlawyerdescription: "HS Gericht II Entscheid (PDF, Dateiname)", columns:50, enabled: false)
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
                                                     td {label(text: 'HS Gericht III:')}
                                                     td {textField(name: "_9HSGERICHT3", text: "", clientPropertyJlawyerdescription: "HS Gericht III", columns:50)}
                                                 }
@@ -1927,6 +2393,69 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 tr {
                                                     td {label(text: 'HS Gericht III Entscheidung Quote:')}
                                                     td {formattedTextField(name: "_9HSGER3EQ", text: "", clientPropertyJlawyerdescription: "HS Gericht III Entscheidung Quote", columns: 10, format: betragFormat)}
+                                                }
+                                                tr {
+                                                    td (colspan: 2, colfill:true, align: 'left') {
+                                                        panel(border: titledBorder(title: 'HS Gericht III Entscheid (PDF, anonymisieren!)')) {
+                                                            tableLayout (cellpadding: 5) {
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        
+                                                                        
+                                                                        
+                                                                        panel() {
+                                                                            tableLayout (cellpadding: 5) {
+                                                                                tr {
+                                                                                    td {
+                                                                                        button(text: 'Hochladen', actionPerformed: {
+                                                                                                uploadPdf(txtGerHs3PdfBase64, txtGerHs3PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Anzeigen', actionPerformed: {
+                                                                                                displayPdf(txtGerHs3PdfBase64, txtGerHs3PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Speichern als...', actionPerformed: {
+                                                                                                savePdf(txtGerHs3PdfBase64, txtGerHs3PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Verwerfen', actionPerformed: {
+                                                                                                deletePdf(txtGerHs3PdfBase64, txtGerHs3PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: 'Metadaten:')
+                                                                    }
+                                                                    td {
+                                                                        txtGerHs3PdfBase64 = textField(name: "_9GERHS3PDF_BASE64", text: '', clientPropertyJlawyerdescription: "HS Gericht III Entscheid (PDF, Base64-kodiert)", columns:50, enabled: false, actionPerformed: {
+                                                                                
+                                                                            })
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: 'Dateiname:')
+                                                                    }
+                                                                    td {
+                                                                        txtGerHs3PdfFile = textField(name: "_9GERHS3PDF_DATEI", text: '', clientPropertyJlawyerdescription: "HS Gericht III Entscheid (PDF, Dateiname)", columns:50, enabled: false)
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                                 tr {
                                                     td {label(text: 'HS Kosten:')}
@@ -1998,6 +2527,69 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     td {formattedTextField(name: "_9KOSTGER1EQ", text: "", clientPropertyJlawyerdescription: "Kosten Gericht I Entscheidung Quote", columns: 10, format: betragFormat)}
                                                 }
                                                 tr {
+                                                    td (colspan: 2, colfill:true, align: 'left') {
+                                                        panel(border: titledBorder(title: 'Kosten Gericht I Entscheid (PDF, anonymisieren!)')) {
+                                                            tableLayout (cellpadding: 5) {
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        
+                                                                        
+                                                                        
+                                                                        panel() {
+                                                                            tableLayout (cellpadding: 5) {
+                                                                                tr {
+                                                                                    td {
+                                                                                        button(text: 'Hochladen', actionPerformed: {
+                                                                                                uploadPdf(txtGerKost1PdfBase64, txtGerKost1PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Anzeigen', actionPerformed: {
+                                                                                                displayPdf(txtGerKost1PdfBase64, txtGerKost1PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Speichern als...', actionPerformed: {
+                                                                                                savePdf(txtGerKost1PdfBase64, txtGerKost1PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Verwerfen', actionPerformed: {
+                                                                                                deletePdf(txtGerKost1PdfBase64, txtGerKost1PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: 'Metadaten:')
+                                                                    }
+                                                                    td {
+                                                                        txtGerKost1PdfBase64 = textField(name: "_9GERKOST1PDF_BASE64", text: '', clientPropertyJlawyerdescription: "Kosten Gericht I Entscheid (PDF, Base64-kodiert)", columns:50, enabled: false, actionPerformed: {
+                                                                                
+                                                                            })
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: 'Dateiname:')
+                                                                    }
+                                                                    td {
+                                                                        txtGerKost1PdfFile = textField(name: "_9GERKOST1PDF_DATEI", text: '', clientPropertyJlawyerdescription: "Kosten Gericht I Entscheid (PDF, Dateiname)", columns:50, enabled: false)
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
                                                     td {label(text: 'Kosten Gericht II:')}
                                                     td {textField(name: "_9KOSTGERICHT2", text: "", clientPropertyJlawyerdescription: "Kosten Gericht II", columns:50)}
                                                 }
@@ -2017,6 +2609,69 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 tr {
                                                     td {label(text: 'Kosten Gericht II Entscheidung Quote:')}
                                                     td {formattedTextField(name: "_9KOSTGER2EQ", text: "", clientPropertyJlawyerdescription: "Kosten Gericht II Entscheidung Quote", columns: 10, format: betragFormat)}
+                                                }
+                                                tr {
+                                                    td (colspan: 2, colfill:true, align: 'left') {
+                                                        panel(border: titledBorder(title: 'Kosten Gericht II Entscheid (PDF, anonymisieren!)')) {
+                                                            tableLayout (cellpadding: 5) {
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        
+                                                                        
+                                                                        
+                                                                        panel() {
+                                                                            tableLayout (cellpadding: 5) {
+                                                                                tr {
+                                                                                    td {
+                                                                                        button(text: 'Hochladen', actionPerformed: {
+                                                                                                uploadPdf(txtGerKost2PdfBase64, txtGerKost2PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Anzeigen', actionPerformed: {
+                                                                                                displayPdf(txtGerKost2PdfBase64, txtGerKost2PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Speichern als...', actionPerformed: {
+                                                                                                savePdf(txtGerKost2PdfBase64, txtGerKost2PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: 'Verwerfen', actionPerformed: {
+                                                                                                deletePdf(txtGerKost2PdfBase64, txtGerKost2PdfFile);
+                                                                                            })
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: 'Metadaten:')
+                                                                    }
+                                                                    td {
+                                                                        txtGerKost2PdfBase64 = textField(name: "_9GERKOST2PDF_BASE64", text: '', clientPropertyJlawyerdescription: "Kosten Gericht II Entscheid (PDF, Base64-kodiert)", columns:50, enabled: false, actionPerformed: {
+                                                                                
+                                                                            })
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td (colfill:true) {
+                                                                        label(text: 'Dateiname:')
+                                                                    }
+                                                                    td {
+                                                                        txtGerKost2PdfFile = textField(name: "_9GERKOST2PDF_DATEI", text: '', clientPropertyJlawyerdescription: "Kosten Gericht II Entscheid (PDF, Dateiname)", columns:50, enabled: false)
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                                 tr {
                                                     td {label(text: 'Kosten Kosten:')}
@@ -2228,6 +2883,190 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
         }
         
         return 0f;
+    }
+    
+    private void savePicture() {
+        if(txtPictureBase64.getText().length()<50 || txtPictureFile.getText().isEmpty()) {
+            return;
+        }
+        
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
+        chooser.setDialogTitle("Verzeichnis wählen");
+        chooser.setApproveButtonText("Auswählen");
+        String path=null;
+        if (chooser.showOpenDialog(EditorsRegistry.getInstance().getMainWindow()) == JFileChooser.APPROVE_OPTION) {
+            path=chooser.getSelectedFile().getAbsolutePath();
+            if(!path.endsWith(File.separator)) {
+                path=path+File.separator;
+            }
+        }
+        if(path==null) {
+            return;
+        }
+        
+        int nIndex=0;
+        String sIndex="";
+        File saveTo=new File(path + sIndex + txtPictureFile.getText());
+        while(saveTo.exists()) {
+            nIndex=nIndex+1
+            sIndex=""+nIndex;
+            saveTo=new File(path + sIndex + txtPictureFile.getText());
+        }
+        byte[] content=Base64.getDecoder().decode(txtPictureBase64.getText());
+        try {
+            FileOutputStream fos = new FileOutputStream(saveTo, false);
+            fos.write(content);
+            fos.close();
+        } catch (Throwable t) {
+            log.error("Unable to write file " + saveTo.getAbsolutePath(), t);
+            t.printStackTrace(System.out);
+        }
+    }
+    
+    private void savePdf(JTextField txtBase64, JTextField txtFile) {
+        if(txtBase64.getText().length()<50 || txtFile.getText().isEmpty()) {
+            return;
+        }
+        
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
+        chooser.setDialogTitle("Verzeichnis wählen");
+        chooser.setApproveButtonText("Auswählen");
+        String path=null;
+        if (chooser.showOpenDialog(EditorsRegistry.getInstance().getMainWindow()) == JFileChooser.APPROVE_OPTION) {
+            path=chooser.getSelectedFile().getAbsolutePath();
+            if(!path.endsWith(File.separator)) {
+                path=path+File.separator;
+            }
+        }
+        if(path==null) {
+            return;
+        }
+        
+        int nIndex=0;
+        String sIndex="";
+        File saveTo=new File(path + sIndex + txtFile.getText());
+        while(saveTo.exists()) {
+            nIndex=nIndex+1
+            sIndex=""+nIndex;
+            saveTo=new File(path + sIndex + txtFile.getText());
+        }
+        byte[] content=Base64.getDecoder().decode(txtBase64.getText());
+        try {
+            FileOutputStream fos = new FileOutputStream(saveTo, false);
+            fos.write(content);
+            fos.close();
+        } catch (Throwable t) {
+            log.error("Unable to write file " + saveTo.getAbsolutePath(), t);
+            t.printStackTrace(System.out);
+        }
+    }
+    
+    private void displayPdf(JTextField txtBase64, JTextField txtFile) {
+        if(txtBase64.getText().length()<50 || txtFile.getText().isEmpty()) {
+            return;
+        }
+        
+        byte[] content=Base64.getDecoder().decode(txtBase64.getText());
+        ReadOnlyDocumentStore store = new ReadOnlyDocumentStore("qewv-" + txtFile.getText(), txtFile.getText());
+                Launcher launcher = LauncherFactory.getLauncher(txtFile.getText(), content, store);
+                launcher.launch(false);
+    }
+    
+    private void deletePicture() {
+        txtPictureBase64.setText("");
+        txtPictureFile.setText("");
+        lblRenderedPicture.setIcon(null);
+        
+    }
+    
+    private void deletePdf(JTextField txtBase64, JTextField txtFile) {
+        txtBase64.setText("");
+        txtBase64.setToolTipText("");
+        txtFile.setText("");
+        
+    }
+    
+    private void uploadPicture() {
+        
+        JFileChooser chooser = new JFileChooser();
+        //        ExtensionFilter filter = new ExtensionFilter(this.txtExtension.getText());
+        //        chooser.setFileFilter(filter);
+        int returnVal = chooser.showOpenDialog(EditorsRegistry.getInstance().getMainWindow());
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+            try {
+                String url = chooser.getSelectedFile().getCanonicalPath();
+                File f = new File(url);
+                byte[] content = FileUtils.readFile(f);
+                System.out.println("uploaded picture with " + content.length + " bytes");
+                String pictureMetadata=new String(java.util.Base64.getEncoder().encode(content));
+                txtPictureBase64.setText(pictureMetadata);
+                txtPictureBase64.setToolTipText(pictureMetadata);
+                txtPictureFile.setText(f.getName());
+
+            } catch (Exception ex) {
+                log.error("Could not upload picture", ex);
+                JOptionPane.showMessageDialog(EditorsRegistry.getInstance().getMainWindow(), "Bild kann nicht geladen werden: " + ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        renderPicture();
+        
+    }
+    
+    private void uploadPdf(JTextField txtBase64, JTextField txtFile) {
+        
+        JFileChooser chooser = new JFileChooser();
+        int returnVal = chooser.showOpenDialog(EditorsRegistry.getInstance().getMainWindow());
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+            try {
+                String url = chooser.getSelectedFile().getCanonicalPath();
+                File f = new File(url);
+                byte[] content = FileUtils.readFile(f);
+                System.out.println("uploaded pdf with " + content.length + " bytes");
+                String pdfMetadata=new String(java.util.Base64.getEncoder().encode(content));
+                txtBase64.setText(pdfMetadata);
+                txtBase64.setToolTipText(pdfMetadata.length() + " Bytes");
+                txtFile.setText(f.getName());
+
+            } catch (Exception ex) {
+                log.error("Could not upload pdf", ex);
+                JOptionPane.showMessageDialog(EditorsRegistry.getInstance().getMainWindow(), "PDF kann nicht geladen werden: " + ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        
+    }
+    
+    private void renderPicture() {
+        
+        try {
+            byte[] content=Base64.getDecoder().decode(txtPictureBase64.getText());
+            System.out.println("decoded picture with " + content.length + " bytes");
+            ImageIcon imageIcon = new ImageIcon(content); // load the image to a imageIcon
+            Image image = imageIcon.getImage(); // transform it
+            System.out.println("loaded image");
+        
+        
+            int height=600;
+            float scaleFactor=(float)height/(float)imageIcon.getIconHeight();
+            int width=(int)((float)imageIcon.getIconWidth()*scaleFactor);
+            System.out.println("h x w: " + height + " x " + width);
+            Image newimg=image.getScaledInstance(width,height,Image.SCALE_FAST);
+            System.out.println("scaled image");
+                
+            imageIcon = new ImageIcon(newimg);
+        
+            lblRenderedPicture.setSize(width,height);
+            lblRenderedPicture.setIcon(imageIcon);
+            System.out.println("rendered image");
+        } catch (Throwable t) {
+            t.printStackTrace(System.out);
+            log.error("Could not render picture", t);
+        }
     }
 
 }

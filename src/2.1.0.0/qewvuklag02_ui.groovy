@@ -692,6 +692,7 @@ import com.jdimension.jlawyer.client.settings.ServerSettings
 import com.jdimension.jlawyer.client.launcher.Launcher
 import com.jdimension.jlawyer.client.launcher.LauncherFactory
 import com.jdimension.jlawyer.client.launcher.ReadOnlyDocumentStore
+import com.jdimension.jlawyer.persistence.ArchiveFileAddressesBean
 import java.io.File
 import java.io.IOException
 import java.io.FileOutputStream
@@ -772,6 +773,21 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
     JTextField txtGerKost1PdfFile;
     JTextField txtGerKost2PdfBase64;
     JTextField txtGerKost2PdfFile;
+    
+    JTextField txt9EvGericht1Name;
+    JTextField txt9EvGericht1Reference;
+    JTextField txt9EvGericht2Name;
+    JTextField txt9EvGericht2Reference;
+    JTextField txt9HsGericht1Name;
+    JTextField txt9HsGericht1Reference;
+    JTextField txt9HsGericht2Name;
+    JTextField txt9HsGericht2Reference;
+    JTextField txt9HsGericht3Name;
+    JTextField txt9HsGericht3Reference;
+    JTextField txt9KostGericht1Name;
+    JTextField txt9KostGericht1Reference;
+    JTextField txt9KostGericht2Name;
+    JTextField txt9KostGericht2Reference;
 
     public qewvuklag02_ui() {
         super();
@@ -1951,11 +1967,25 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {label(text: 'EV Gericht I:')}
-                                                    td {textField(name: "_9EVGERICHT1", text: "", clientPropertyJlawyerdescription: "EV Gericht I", columns:50)}
+                                                    
+                                                    td {
+                                                        panel {
+                                                            tableLayout {
+                                                                tr {
+                                                                    td {txt9EvGericht1Name=textField(name: "_9EVGERICHT1", text: "", clientPropertyJlawyerdescription: "EV Gericht I", columns:40)}
+                                                                    td {
+                                                                        button(text: 'Übernehmen', actionPerformed: {
+                                                                            fetchCourtData(txt9EvGericht1Name, txt9EvGericht1Reference);
+                                                                        })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                                 tr {
                                                     td {label(text: 'EV Gericht I AZ:')}
-                                                    td {textField(name: "_9EVGER1AZ", text: "", clientPropertyJlawyerdescription: "EV Gericht I AZ", columns:20)}
+                                                    td {txt9EvGericht1Reference=textField(name: "_9EVGER1AZ", text: "", clientPropertyJlawyerdescription: "EV Gericht I AZ", columns:20)}
                                                 }
 
 
@@ -2037,11 +2067,24 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {label(text: 'EV Gericht II:')}
-                                                    td {textField(name: "_9EVGERICHT2", text: "", clientPropertyJlawyerdescription: "EV Gericht II", columns:50)}
+                                                    td {
+                                                        panel {
+                                                            tableLayout {
+                                                                tr {
+                                                                    td {txt9EvGericht2Name=textField(name: "_9EVGERICHT2", text: "", clientPropertyJlawyerdescription: "EV Gericht II", columns:40)}
+                                                                    td {
+                                                                        button(text: 'Übernehmen', actionPerformed: {
+                                                                            fetchCourtData(txt9EvGericht2Name, txt9EvGericht2Reference);
+                                                                        })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                                 tr {
                                                     td {label(text: 'EV Gericht II AZ:')}
-                                                    td {textField(name: "_9EVGER2AZ", text: "", clientPropertyJlawyerdescription: "EV Gericht II AZ", columns:20)}
+                                                    td {txt9EvGericht2Reference=textField(name: "_9EVGER2AZ", text: "", clientPropertyJlawyerdescription: "EV Gericht II AZ", columns:20)}
                                                 }
                                                 tr {
                                                     td {label(text: 'EV Gericht II anhängig Datum:')}
@@ -2205,11 +2248,24 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {label(text: 'HS Gericht I:')}
-                                                    td {textField(name: "_9HSGERICHT1", text: "", clientPropertyJlawyerdescription: "HS Gericht I", columns:50)}
+                                                    td {
+                                                        panel {
+                                                            tableLayout {
+                                                                tr {
+                                                                    td {txt9HsGericht1Name=textField(name: "_9HSGERICHT1", text: "", clientPropertyJlawyerdescription: "HS Gericht I", columns:40)}
+                                                                    td {
+                                                                        button(text: 'Übernehmen', actionPerformed: {
+                                                                            fetchCourtData(txt9HsGericht1Name, txt9HsGericht1Reference);
+                                                                        })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                                 tr {
                                                     td {label(text: 'HS Gericht I AZ:')}
-                                                    td {textField(name: "_9HSGER1AZ", text: "", clientPropertyJlawyerdescription: "HS Gericht I AZ", columns:20)}
+                                                    td {txt9HsGericht1Reference=textField(name: "_9HSGER1AZ", text: "", clientPropertyJlawyerdescription: "HS Gericht I AZ", columns:20)}
                                                 }
 
                                                 tr {
@@ -2289,11 +2345,24 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {label(text: 'HS Gericht II:')}
-                                                    td {textField(name: "_9HSGERICHT2", text: "", clientPropertyJlawyerdescription: "HS Gericht II", columns:50)}
+                                                    td {
+                                                        panel {
+                                                            tableLayout {
+                                                                tr {
+                                                                    td {txt9HsGericht2Name=textField(name: "_9HSGERICHT2", text: "", clientPropertyJlawyerdescription: "HS Gericht II", columns:40)}
+                                                                    td {
+                                                                        button(text: 'Übernehmen', actionPerformed: {
+                                                                            fetchCourtData(txt9HsGericht2Name, txt9HsGericht2Reference);
+                                                                        })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                                 tr {
                                                     td {label(text: 'HS Gericht II AZ:')}
-                                                    td {textField(name: "_9HSGER2AZ", text: "", clientPropertyJlawyerdescription: "HS Gericht II AZ", columns:20)}
+                                                    td {txt9HsGericht2Reference=textField(name: "_9HSGER2AZ", text: "", clientPropertyJlawyerdescription: "HS Gericht II AZ", columns:20)}
                                                 }
 
                                                 tr {
@@ -2374,11 +2443,24 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {label(text: 'HS Gericht III:')}
-                                                    td {textField(name: "_9HSGERICHT3", text: "", clientPropertyJlawyerdescription: "HS Gericht III", columns:50)}
+                                                    td {
+                                                        panel {
+                                                            tableLayout {
+                                                                tr {
+                                                                    td {txt9HsGericht3Name=textField(name: "_9HSGERICHT3", text: "", clientPropertyJlawyerdescription: "HS Gericht III", columns:40)}
+                                                                    td {
+                                                                        button(text: 'Übernehmen', actionPerformed: {
+                                                                            fetchCourtData(txt9HsGericht3Name, txt9HsGericht3Reference);
+                                                                        })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                                 tr {
                                                     td {label(text: 'HS Gericht III AZ:')}
-                                                    td {textField(name: "_9HSGER3AZ", text: "", clientPropertyJlawyerdescription: "HS Gericht III AZ", columns:20)}
+                                                    td {txt9HsGericht3Reference=textField(name: "_9HSGER3AZ", text: "", clientPropertyJlawyerdescription: "HS Gericht III AZ", columns:20)}
                                                 }
 
                                                 tr {
@@ -2507,11 +2589,24 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {label(text: 'Kosten Gericht I:')}
-                                                    td {textField(name: "_9KOSTGERICHT1", text: "", clientPropertyJlawyerdescription: "Kosten Gericht I", columns:50)}
+                                                    td {
+                                                        panel {
+                                                            tableLayout {
+                                                                tr {
+                                                                    td {txt9KostGericht1Name=textField(name: "_9KOSTGERICHT1", text: "", clientPropertyJlawyerdescription: "Kosten Gericht I", columns:40)}
+                                                                    td {
+                                                                        button(text: 'Übernehmen', actionPerformed: {
+                                                                            fetchCourtData(txt9KostGericht1Name, txt9KostGericht1Reference);
+                                                                        })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                                 tr {
                                                     td {label(text: 'Kosten Gericht I AZ:')}
-                                                    td {textField(name: "_9KOSTGER1AZ", text: "", clientPropertyJlawyerdescription: "Kosten Gericht I AZ", columns:20)}
+                                                    td {txt9KostGericht1Reference=textField(name: "_9KOSTGER1AZ", text: "", clientPropertyJlawyerdescription: "Kosten Gericht I AZ", columns:20)}
                                                 }
                                                 tr {
                                                     td {label(text: 'Kosten Gericht I anhängig Datum:')}
@@ -2591,11 +2686,24 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {label(text: 'Kosten Gericht II:')}
-                                                    td {textField(name: "_9KOSTGERICHT2", text: "", clientPropertyJlawyerdescription: "Kosten Gericht II", columns:50)}
+                                                    td {
+                                                        panel {
+                                                            tableLayout {
+                                                                tr {
+                                                                    td {txt9KostGericht2Name=textField(name: "_9KOSTGERICHT2", text: "", clientPropertyJlawyerdescription: "Kosten Gericht II", columns:40)}
+                                                                    td {
+                                                                        button(text: 'Übernehmen', actionPerformed: {
+                                                                            fetchCourtData(txt9KostGericht2Name, txt9KostGericht2Reference);
+                                                                        })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                                 tr {
                                                     td {label(text: 'Kosten Gericht II AZ:')}
-                                                    td {textField(name: "_9KOSTGER2AZ", text: "", clientPropertyJlawyerdescription: "Kosten Gericht II AZ", columns:20)}
+                                                    td {txt9KostGericht2Reference=textField(name: "_9KOSTGER2AZ", text: "", clientPropertyJlawyerdescription: "Kosten Gericht II AZ", columns:20)}
                                                 }
 
                                                 tr {
@@ -2962,6 +3070,40 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
         } catch (Throwable t) {
             log.error("Unable to write file " + saveTo.getAbsolutePath(), t);
             t.printStackTrace(System.out);
+        }
+    }
+    
+    private void fetchCourtData(JTextField tfName, JTextField tfReference) {
+        if(callback!=null) {
+            List<ArchiveFileAddressesBean> involved=StorageLib.getInvolved(callback.getCaseId());
+            List<String> involvedList=new ArrayList<String>();
+            for(ArchiveFileAddressesBean i: involved) {
+                if(i.getReference()!=null && !i.getReference().isEmpty()) {
+                    involvedList.add(i.getAddressKey().toDisplayName() + " (" + i.getReference() + ")");
+                } else {
+                    involvedList.add(i.getAddressKey().toDisplayName());
+                }
+            }
+            if(involvedList.size()==0) {
+                involvedList.add("[keine Beteiligte erfasst]");
+            }
+            String selected=GuiLib.ask("Beteiligtes Gericht", "Beteiligtes Gericht auswählen", involvedList);
+            if(selected!=null && !selected.isEmpty()) {
+                try {
+                    tfName.setText(selected.substring(0,selected.lastIndexOf("(")-1));
+                } catch (Throwable t) {
+                    tfName.setText(selected);
+                }
+                try {
+                    if(selected.contains("(") && selected.contains(")")) {
+                        tfReference.setText(selected.substring(selected.lastIndexOf("(")+1, selected.length()-1));
+                    } else {
+                        tfReference.setText("");
+                    }
+                } catch (Throwable t) {
+                    tfReference.setText("");
+                }
+            }
         }
     }
     

@@ -707,5 +707,11 @@ public class GuiLib {
         int response = JOptionPane.showConfirmDialog(EditorsRegistry.getInstance().getMainWindow(), question, title, JOptionPane.YES_NO_OPTION);
         return response;
     }
+    
+    public static String ask(String title, String question, List<String> optionsList) {
+        String[] options=optionsList.toArray(new String[0]);
+        String response = JOptionPane.showInputDialog(EditorsRegistry.getInstance().getMainWindow(), question, title, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        return response;
+    }
 
 }

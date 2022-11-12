@@ -688,6 +688,7 @@ import com.jdimension.jlawyer.client.utils.ThreadUtils;
 import com.jdimension.jlawyer.persistence.ArchiveFileBean;
 import com.jdimension.jlawyer.persistence.CalendarSetup;
 import com.jdimension.jlawyer.persistence.ArchiveFileReviewsBean;
+import com.jdimension.jlawyer.persistence.ArchiveFileAddressesBean;
 import com.jdimension.jlawyer.services.ArchiveFileServiceRemote;
 import com.jdimension.jlawyer.services.CalendarServiceRemote;
 import com.jdimension.jlawyer.services.JLawyerServiceLocator;
@@ -745,6 +746,19 @@ public class StorageLib {
 
         } catch (Exception ex) {
             ThreadUtils.showErrorDialog(EditorsRegistry.getInstance().getMainWindow(), "Fehler beim Speichern der Wiedervorlage: " + ex.getMessage(), "Fehler");
+        }
+    }
+    
+    public static List<ArchiveFileAddressesBean> getInvolved(String caseId) {
+        ClientSettings settings = ClientSettings.getInstance();
+        try {
+            JLawyerServiceLocator locator = JLawyerServiceLocator.getInstance(settings.getLookupProperties());
+            ArchiveFileServiceRemote svc = locator.lookupArchiveFileServiceRemote();
+            return svc.getInvolvementDetailsForCase(caseId);
+
+        } catch (Exception ex) {
+            ThreadUtils.showErrorDialog(EditorsRegistry.getInstance().getMainWindow(), "Fehler beim Laden der Beteiligten: " + ex.getMessage(), "Fehler");
+            return new ArrayList<>();
         }
     }
 

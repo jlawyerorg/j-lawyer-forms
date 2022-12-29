@@ -2672,7 +2672,8 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                 if(stRegel) {
                    vat=betragFormat.parse(value.text).floatValue() / 119f * 19f;
                 } else if(stDiff) {
-                    vat=betragFormat.parse(value.text).floatValue() * 0.025f;
+                    // vat=betragFormat.parse(value.text).floatValue() * 0.025f;
+                    vat=betragFormat.parse(value.text).floatValue() / 102.5f * 2.5f;
                 } else if(stNeutral) {
                     vat=0f;
                 }

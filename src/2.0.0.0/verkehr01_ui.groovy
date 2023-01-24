@@ -685,6 +685,7 @@ import javax.swing.JRadioButton
 import javax.swing.JLabel
 import java.awt.Component
 import java.awt.Container
+import java.math.BigDecimal
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 
 public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
@@ -779,6 +780,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     JTextField txtAnwaltskostenReg;
     
     JTextField txtTotalKosten;
+    JTextField txtTotalDifferenz;
     
     FormPluginCallback callback=null;
     
@@ -2365,10 +2367,16 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         td {
                                             label(text: 'Summe Schadenpositionen + Summe Anwaltskosten')
                                         }
+                                        td {
+                                            label(text: 'Summe der Differenzen (Schadensumme + Anwaltskosten)')
+                                        }
                                     }
                                     tr {
                                         td {
                                             txtTotalKosten=formattedTextField(id: 'nTotalKosten', name: "_KOSTENTOTAL", clientPropertyJlawyerdescription: "Summe Schadenpositionen + Summe Anwaltskosten", format: betragFormat, text: '0,00', columns: 10, enabled: false, disabledTextColor: java.awt.Color.BLACK)
+                                        }
+                                        td {
+                                            txtTotalDifferenz=formattedTextField(id: 'nTotalDifferenz', name: "_DIFFTOTAL", clientPropertyJlawyerdescription: "Summe Differenzen (Schadenpositionen + Summe Anwaltskosten)", format: betragFormat, text: '0,00', columns: 10, enabled: false, disabledTextColor: java.awt.Color.BLACK)
                                         }
                                     }
                 
@@ -2469,6 +2477,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         float sub2=0f;
         float sub3=0f;
         float total=0f;
+        float totalDiff=0f;
         
         try {
             float f1=betragFormat.parse(txtReparaturKosten.getText()).floatValue();
@@ -2485,7 +2494,10 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         float vat=0f;
         try {
             if(mwst!=null) {
-                vat=betragFormat.parse(value.text).floatValue() * 0.19f;
+                BigDecimal n1=new BigDecimal(Float.toString(betragFormat.parse(value.text).floatValue()));
+                BigDecimal n2vat=n1.multiply(new BigDecimal("0.19"));
+                // vat=betragFormat.parse(value.text).floatValue() * 0.19f;
+                vat = n2vat.floatValue();
             }
         } catch (Throwable t) {
             // do nothing
@@ -2617,6 +2629,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
             
             
             txtSummeDifferenz.text="" + betragFormat.format(currentSum);
+            totalDiff=totalDiff+currentSum;
         } catch (Throwable t) {
             t.printStackTrace();
             txtSummeDifferenz.text="? ungueltiger Betrag";
@@ -2654,6 +2667,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
             //System.out.println("mwst: " + betragFormat.format((vv2300+vv7002)*0.19f));
             //txtAnwaltskostenReg
             txtAnwaltskostenDiff.text=betragFormat.format(vv2300 +vv7002 + ((vv2300+vv7002)*anwMwst) - betragFormat.parse(txtAnwaltskostenReg.text));
+            totalDiff=totalDiff+(vv2300 +vv7002 + ((vv2300+vv7002)*anwMwst) - betragFormat.parse(txtAnwaltskostenReg.text));
             
         } catch (Throwable t) {
             t.printStackTrace();
@@ -2661,6 +2675,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         }
         
         txtTotalKosten.text=betragFormat.format(sub1+sub2+sub3);
+        txtTotalDifferenz.text=betragFormat.format(totalDiff);
         
     }
     

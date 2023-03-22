@@ -736,12 +736,15 @@ public class FormsLib {
             return;
         }
         
+        String prefixedComponentName=prefix + component.getName();
         if(component.getName()!=null) {
             if(component.getName().startsWith("_")) {
+                //println ("" + System.currentTimeMillis() + "  browsing component to set place holder values: " + prefixedComponentName);
                 for(Object key: placeHolderValues.keySet()) {
                     String keyString=key.toString();
+                    //println ("" + System.currentTimeMillis() + "  checking placeholder key: " + keyString);
                     String value=placeHolderValues.get(key).toString();
-                    if((prefix + component.getName()).equals(keyString)) {
+                    if(prefixedComponentName.equals(keyString)) {
                         if(component instanceof JTextField) {
                             ((JTextField)component).setText(value);
                         } else if(component instanceof JLabel) {
@@ -754,8 +757,11 @@ public class FormsLib {
                                 ((JCheckBox)component).setSelected(true);
                             }
                         } else if(component instanceof JTextArea) {
+                            //println ("" + System.currentTimeMillis() + "  setting place holder to text area");
                             ((JTextArea)component).setText(value);
+                            //println ("" + System.currentTimeMillis() + "  setting place holder to text area - text done");
                             ((JTextArea)component).setToolTipText(value);
+                            //println ("" + System.currentTimeMillis() + "  setting place holder to text area - tooltip done");
                         } else if(component instanceof JSpinner) {
                             int intValue=1;
                             try {
@@ -770,6 +776,9 @@ public class FormsLib {
                                 ((JRadioButton)component).setSelected(true);
                             }
                         }
+                        //println ("" + System.currentTimeMillis() + "  found component for key - going to next component");
+                        placeHolderValues.remove(key);
+                        break;
                     }
                 }
             }

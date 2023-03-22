@@ -697,7 +697,8 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
     JPanel SCRIPTPANEL=null;
     FormPluginCallback callback=null;
     
-    JTextArea taFormStructure=null;
+    //JTextArea taFormStructure=null;
+    JTextField taFormStructure=null;
     
     JComboBox cmbSites=null;
     JComboBox cmbFormTypes=null;
@@ -728,7 +729,11 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
         // for forms that have just been added to a case with no import yet
         if(formStructure!=null && !("".equals(formStructure))) {
             rebuildUi(formStructure);
+            long start=System.currentTimeMillis();
+            println ("" + start + " setting placeholder values");
             FormsLib.setPlaceHolderValues(prefix, placeHolderValues, this.SCRIPTPANEL);
+            long end=System.currentTimeMillis();
+            println ("" + end + " finished setting placeholder values, duration=" + (end-start));
         }
     }
     
@@ -748,7 +753,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                 if("html".equals(it.type)) {
             
                 } else if("time".equals(it.type)) {
-                    println ("id " + it.id + " has label " + it.label);
+                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
                     sortedFieldIds.add("" + it.id);
                     GravityField f=new GravityField();
                     f.id="" + it.id;
@@ -770,7 +775,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                         }
                         fieldData.put("" + it.id, fGroup);
                     } else {
-                        println ("id " + it.id + " has label " + it.label);
+                        println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
                         sortedFieldIds.add("" + it.id);
                         GravityField f=new GravityField();
                         f.id="" + it.id;
@@ -780,7 +785,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                         fieldData.put("" + it.id, f);
                     }
                 } else if(it.inputs!=null) {
-                    println ("id " + it.id + " has label " + it.label);
+                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
                     sortedFieldIds.add("" + it.id);
                     GravityField fGroup=new GravityField();
                     fGroup.id="" + it.id;
@@ -793,7 +798,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                     for (input in it.inputs) {
                         // e.g. group of checkboxes
                         sortedFieldIds.add("" + input.id);
-                        println ("id " + input.id + " has label " + input.label);
+                        println ("" + System.currentTimeMillis() + " id " + input.id + " has label " + input.label);
                         GravityField f=new GravityField();
                         f.id="" + input.id;
                         f.label=input.label;
@@ -807,7 +812,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                     }
                 } else if(it.choices!=null) {
                     // e.g. dropdown
-                    println ("id " + it.id + " has label " + it.label);
+                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
                     sortedFieldIds.add("" + it.id);
                     GravityField fGroup=new GravityField();
                     fGroup.id="" + it.id;
@@ -824,12 +829,12 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
         
             dynamicPanel.setLayout(new java.awt.GridLayout(0, 2, 20, 10));
             for(String id: sortedFieldIds) {
-                println("rendering field " + id);
+                println("" + System.currentTimeMillis() + " rendering field " + id);
                 GravityField f=fieldData.get(id);
                 if(f!=null) {
                     if(f.groupLabel!=null) {
                         // open new section with the relevant group caption
-                        println("  group label is " + f.groupLabel);
+                        println("" + System.currentTimeMillis() + "   group label is " + f.groupLabel);
                         dynamicPanel.add(new JLabel("<html><b>" + f.groupLabel + "</b></html>"));
                     } else {
                         String inset="";
@@ -930,12 +935,12 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                     }
                 
                 } else {
-                    println(id + " has no definition, cannot render");
+                    println("" + System.currentTimeMillis() + " " + id + " has no definition, cannot render");
                 }
             
             
             }
-        
+            println("" + System.currentTimeMillis() + " finished rendering fields");
 
         } catch (Throwable t) {
             System.out.println(t.getMessage());
@@ -1076,7 +1081,8 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                 tr {
                                     td (colfill:true, align: 'left') {
                                         scrollPane {
-                                            taFormStructure = textArea(id:'taFormStructure', name: "_FORMSTRUCTURE", clientPropertyJlawyerdescription: "Formularstrukturdaten", lineWrap:true,wrapStyleWord:true, columns:35, rows:50,editable:false)
+                                            // taFormStructure = textArea(id:'taFormStructure', name: "_FORMSTRUCTURE", clientPropertyJlawyerdescription: "Formularstrukturdaten", lineWrap:true,wrapStyleWord:true, columns:35, rows:50,editable:false)
+                                            taFormStructure = textField(id:'taFormStructure', name: "_FORMSTRUCTURE", clientPropertyJlawyerdescription: "Formularstrukturdaten", columns:30, editable:false)
                                         }  
                                     }
                                 }
@@ -1360,7 +1366,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
 //                    }
                 } else if("time".equals(it.type)) {
                     // time has separate inputs for hour and minute, but we want to display as one
-                    println ("id " + it.id + " has label " + it.label);
+                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
                     sortedFieldIds.add("" + it.id);
                     GravityField f=new GravityField();
                     f.id="" + it.id;
@@ -1382,7 +1388,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                         }
                         fieldData.put("" + it.id, fGroup);
                     } else {
-                        println ("id " + it.id + " has label " + it.label);
+                        println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
                         sortedFieldIds.add("" + it.id);
                         GravityField f=new GravityField();
                         f.id="" + it.id;
@@ -1392,7 +1398,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                         fieldData.put("" + it.id, f);
                     }
                 } else if(it.inputs!=null) {
-                    println ("id " + it.id + " has label " + it.label);
+                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
                     sortedFieldIds.add("" + it.id);
                     GravityField fGroup=new GravityField();
                     fGroup.id="" + it.id;
@@ -1405,7 +1411,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                     for (input in it.inputs) {
                         // e.g. group of checkboxes
                         sortedFieldIds.add("" + input.id);
-                        println ("id " + input.id + " has label " + input.label);
+                        println ("" + System.currentTimeMillis() + " id " + input.id + " has label " + input.label);
                         GravityField f=new GravityField();
                         f.id="" + input.id;
                         f.label=input.label;
@@ -1419,7 +1425,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                     }
                 } else if(it.choices!=null) {
                     // e.g. dropdown
-                    println ("id " + it.id + " has label " + it.label);
+                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
                     sortedFieldIds.add("" + it.id);
                     GravityField fGroup=new GravityField();
                     fGroup.id="" + it.id;
@@ -1442,7 +1448,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
             req1.setRequestProperty( 'Accept', 'application/json');
             responseCode=req1.responseCode;
             responseString=req1.inputStream.text;
-            println "entry " + entryId + ":"
+            println "" + System.currentTimeMillis() + " entry " + entryId + ":"
             println responseCode + ": " + responseString;
 
         
@@ -1453,11 +1459,11 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                 if(f!=null) {
                     if("fileupload".equals(f.type)) {
                         if(it.getValue() instanceof String) {
-                            System.out.println("fileupload " + it.getKey() + " has single value");
+                            System.out.println("" + System.currentTimeMillis() + " fileupload " + it.getKey() + " has single value");
                             f.addValue(it.getValue());
                             //f.setValue(it.getValue());
                         } else {
-                            System.out.println("fileupload " + it.getKey() + " has multiple values");
+                            System.out.println("" + System.currentTimeMillis() + " fileupload " + it.getKey() + " has multiple values");
                             ArrayList valueList=(ArrayList)it.getValue();
                             for(Object v: valueList) {
                                 f.addValue(v.toString());
@@ -1470,18 +1476,18 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                         f.value=it.getValue();
                     }
                 } else {
-                    println("" + it.getKey() + " has no definition, cannot set value");
+                    println("" + System.currentTimeMillis() + " " + it.getKey() + " has no definition, cannot set value");
                 }
             }
         
             dynamicPanel.setLayout(new java.awt.GridLayout(0, 2, 20, 10));
             for(String id: sortedFieldIds) {
-                println("rendering field " + id);
+                println("" + System.currentTimeMillis() + " rendering field " + id);
                 GravityField f=fieldData.get(id);
                 if(f!=null) {
                     if(f.groupLabel!=null) {
                         // open new section with the relevant group caption
-                        println("  group label is " + f.groupLabel);
+                        println("" + System.currentTimeMillis() + "   group label is " + f.groupLabel);
                         dynamicPanel.add(new JLabel("<html><b>" + f.groupLabel + "</b></html>"));
                     } else {
                         String inset="";
@@ -1502,7 +1508,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                         dynamicPanel.add(new JLabel(""));
                     } else {
                         if("checkbox".equalsIgnoreCase(f.type)) {
-                            println("rendering checkbox");
+                            println("" + System.currentTimeMillis() + " rendering checkbox");
                             JPanel checkboxPanel=new JPanel();
                             checkboxPanel.setLayout(new BorderLayout());
                             JCheckBox cb=new JCheckBox();
@@ -1520,7 +1526,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             checkboxPanel.add(tf, BorderLayout.CENTER);
                             dynamicPanel.add(checkboxPanel);
                         } else if("select".equalsIgnoreCase(f.type)) {
-                            println("rendering select");
+                            println("" + System.currentTimeMillis() + " rendering select");
                             println("cb1");
                             JComboBox cb=new JComboBox();
                             println("cb2");
@@ -1537,7 +1543,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             println("cb7");
                             dynamicPanel.add(cb);
                         } else if("textarea".equalsIgnoreCase(f.type)) {
-                            println("rendering textarea");
+                            println("" + System.currentTimeMillis() + " rendering textarea");
                             JTextArea ta=new JTextArea();
                             ta.setText(f.getValue());
                             ta.setToolTipText(f.getValue());
@@ -1644,7 +1650,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             tf.putClientProperty("Jlawyerdescription", f.label);
                             dynamicPanel.add(tf);
                         } else {
-                            println("rendering anything else");
+                            println("" + System.currentTimeMillis() + " rendering anything else");
                             JTextField tf=new JTextField(f.getValue());
                             tf.setName(f.getPlaceHolderName());
                             tf.putClientProperty("Jlawyerdescription", f.label);
@@ -1653,12 +1659,12 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                     }
                 
                 } else {
-                    println(id + " has no definition, cannot render");
+                    println("" + System.currentTimeMillis() + " " + id + " has no definition, cannot render");
                 }
             
             
             }
-        
+            println("" + System.currentTimeMillis() + " finished rendering fields");
 
         } catch (Throwable t) {
             System.out.println(t.getMessage());

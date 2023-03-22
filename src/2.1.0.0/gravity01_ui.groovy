@@ -709,6 +709,8 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
     private String selectedForm=null;
     
     JPanel dynamicPanel=null;
+    
+    int TEXTFIELD_MAXCOLUMNS=50;
 
     public grav01_ui() {
         super();
@@ -862,7 +864,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             cb.putClientProperty("Jlawyerdescription", f.label);
                             cb.setSelected(false);
                             checkboxPanel.add(cb, BorderLayout.LINE_START);
-                            JTextField tf=new JTextField("");
+                            JTextField tf=new JTextField("", TEXTFIELD_MAXCOLUMNS);
                             tf.setName(f.getPlaceHolderName());
                             tf.setEnabled(false);
                             tf.putClientProperty("Jlawyerdescription", f.label);
@@ -927,7 +929,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             dynamicPanel.add(uploadsPanel);
                             
                         } else {
-                            JTextField tf=new JTextField("");
+                            JTextField tf=new JTextField("", TEXTFIELD_MAXCOLUMNS);
                             tf.setName(f.getPlaceHolderName());
                             tf.putClientProperty("Jlawyerdescription", f.label);
                             dynamicPanel.add(tf);
@@ -1519,7 +1521,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             else
                             cb.setSelected(false);
                             checkboxPanel.add(cb, BorderLayout.LINE_START);
-                            JTextField tf=new JTextField(f.getValue());
+                            JTextField tf=new JTextField(f.getValue(), TEXTFIELD_MAXCOLUMNS);
                             tf.setName(f.getPlaceHolderName());
                             tf.setEnabled(false);
                             tf.putClientProperty("Jlawyerdescription", f.label);
@@ -1645,13 +1647,13 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             } catch (Throwable t) {
                             
                             }
-                            JTextField tf=new JTextField(dateValue);
+                            JTextField tf=new JTextField(dateValue, TEXTFIELD_MAXCOLUMNS);
                             tf.setName(f.getPlaceHolderName());
                             tf.putClientProperty("Jlawyerdescription", f.label);
                             dynamicPanel.add(tf);
                         } else {
                             println("" + System.currentTimeMillis() + " rendering anything else");
-                            JTextField tf=new JTextField(f.getValue());
+                            JTextField tf=new JTextField(f.getValue(), TEXTFIELD_MAXCOLUMNS);
                             tf.setName(f.getPlaceHolderName());
                             tf.putClientProperty("Jlawyerdescription", f.label);
                             dynamicPanel.add(tf);

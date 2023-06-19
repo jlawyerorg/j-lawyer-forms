@@ -3114,7 +3114,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
         
         byte[] content=Base64.getDecoder().decode(txtBase64.getText());
         ReadOnlyDocumentStore store = new ReadOnlyDocumentStore("qewv-" + txtFile.getText(), txtFile.getText());
-                Launcher launcher = LauncherFactory.getLauncher(txtFile.getText(), content, store);
+                Launcher launcher = LauncherFactory.getLauncher(txtFile.getText(), content, store, EditorsRegistry.getInstance().getMainWindow());
                 launcher.launch(false);
     }
     

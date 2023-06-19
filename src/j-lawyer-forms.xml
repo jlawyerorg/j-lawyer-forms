@@ -45,7 +45,9 @@
     <form id="qewvuklag02" type="plugin" depends="formslib" name="UKlaG Scorecard" description="Falldatenblatt zur Erfassung Statistik-relevanter Daten nach UKlaG" placeholder="UKSC" version="2.0.0" for="2.1.0.0,2.2.0.0,2.3.0.0,2.3.0.1,2.3.1.1" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.1.0.0" files="qewvuklag02_meta.groovy,qewvuklag02_ui.groovy"/>
     
     <form id="qewvuklag02" type="plugin" depends="formslib" name="UKlaG Scorecard" description="Falldatenblatt zur Erfassung Statistik-relevanter Daten nach UKlaG" placeholder="UKSC" version="2.1.0" for="2.4.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.4.0.0" files="qewvuklag02_meta.groovy,qewvuklag02_ui.groovy">
-        <setting key="forms.qewvuklag02.deeplapitoken" caption="Passwort:" default="" order="10"/>
+        <setting key="forms.qewvuklag02.deeplapitoken" caption="DeepL API-Token:" default="" order="10"/>
     </form>
+    
+    <form id="qewvuklag03" type="plugin" depends="formslib" name="UKlaG Dokumente" description="Falldatenblatt zur Erfassung von Dokumenten" placeholder="UKDOK" version="0.9.0" for="2.4.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.4.0.0" files="qewvuklag03_meta.groovy,qewvuklag03_ui.groovy"/>
     
 </forms>

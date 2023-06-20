@@ -809,6 +809,11 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
     JFormattedTextField txt_9EVGER1ENTSCHDAT=null;
     JFormattedTextField txt_9HSGER1ANHDAT=null;
     JFormattedTextField txt_9HSGER1ENTSCHDAT=null;
+    
+    JFormattedTextField txt_11PUB_PERIODEENDE=null;
+    JFormattedTextField txt_11PUB_ANONBEGINN=null;
+    
+    JSpinner spn_1DAUERVEROEFFENTL=null;
 
     public qewvuklag02_ui() {
         super();
@@ -980,7 +985,10 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                     
                                                     }
                                                     td {
-                                                        ftxt_1VERFABSCHL = formattedTextField(clientPropertyJlawyerdescription: "Verfahrensabschluss am...", name: "_1VERFABSCHL", format: datumsFormat, columns: 10, text: '', keyReleased: {  })
+                                                        ftxt_1VERFABSCHL = formattedTextField(clientPropertyJlawyerdescription: "Verfahrensabschluss am...", name: "_1VERFABSCHL", format: datumsFormat, columns: 10, text: '', keyReleased: {  
+                                                                calculateReportingDates();
+                                                                
+                                                            })
                                                     }
                                         
                                                 }
@@ -2791,7 +2799,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                 
                                 tr {
                                     td {label(text: 'Publikationsperiode endet am:')}
-                                    td {formattedTextField(name: "_11PUB_PERIODEENDE", text: "", clientPropertyJlawyerdescription: "Ende der Publikationsperiode", columns: 10, format: datumsFormat)}
+                                    td {txt_11PUB_PERIODEENDE = formattedTextField(name: "_11PUB_PERIODEENDE", text: "", clientPropertyJlawyerdescription: "Ende der Publikationsperiode", columns: 10, format: datumsFormat)}
                                 }
                                 
                                 tr {
@@ -2805,7 +2813,7 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                 
                                 tr {
                                     td {label(text: 'Anonymisierung beginnt am:')}
-                                    td {formattedTextField(name: "_11PUB_ANONBEGINN", text: "", clientPropertyJlawyerdescription: "Beginn der Anonymisierung", columns: 10, format: datumsFormat)}
+                                    td {txt_11PUB_ANONBEGINN = formattedTextField(name: "_11PUB_ANONBEGINN", text: "", clientPropertyJlawyerdescription: "Beginn der Anonymisierung", columns: 10, format: datumsFormat)}
                                 }
                                 
                                 tr {
@@ -2813,11 +2821,13 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                         label(text: 'Dauer der Veröffentlichung (in Monaten, 0 für unbegrenzt):')
                                     }
                                     td {
-                                        spinner(clientPropertyJlawyerdescription: "Dauer der Veröffentlichung", name: "_1DAUERVEROEFFENTL", 
+                                        spn_1DAUERVEROEFFENTL = spinner(clientPropertyJlawyerdescription: "Dauer der Veröffentlichung", name: "_1DAUERVEROEFFENTL", 
                                             model:spinnerNumberModel(minimum:0, 
                                                 maximum: 120,
                                                 value:3,
-                                                stepSize:1))
+                                                stepSize:1, stateChanged: {
+                                                    calculateReportingDates()
+                                                }))
                                     }
                                 }
                                 
@@ -3037,6 +3047,26 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
         } else {
             tabPaneMain.setEnabledAt(3, true);
             tabPaneMain.setEnabledAt(4, true);
+        }
+    }
+    
+    private void calculateReportingDates() {
+        try {
+            Date dValue=datumsFormat.parse(ftxt_1VERFABSCHL.getText());
+            Calendar c = Calendar.getInstance();
+            c.setTime(dValue);
+            int spinnerMonths=((Number)spn_1DAUERVEROEFFENTL.getValue()).intValue();
+            if(spinnerMonths>0) {
+                c.add(Calendar.MONTH, spinnerMonths);
+            } else {
+                c.add(Calendar.MONTH, 240);
+            }
+            Date targetDate=c.getTime();
+            txt_11PUB_PERIODEENDE.setValue(targetDate);
+            txt_11PUB_ANONBEGINN.setValue(targetDate);
+        } catch (Throwable t) {
+            t.printStackTrace();
+            log.error("invalid date (Verfahrensabschluss): " + ftxt_1VERFABSCHL.getText()); 
         }
     }
     

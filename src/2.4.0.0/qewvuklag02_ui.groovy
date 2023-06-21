@@ -876,7 +876,10 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
         JCheckBox chk_8KOSTENDEVF_AUFG=null;
         JTextArea txt_8AUFGGRUND=null;
         
-        JTextArea txt_11FALL_ZUSMMNFSSG_YML=null;
+        JTextArea txt_11FALL_ZUSMMNFSSG_MD_DE=null;
+        JTextArea txt_11FALL_ZUSMMNFSSG_MD_EN=null;
+        JTextArea txt_11FALL_ZUSMMNFSSG_MD_FR=null;
+        JTextArea txt_11FALL_ZUSMMNFSSG_MD_PL=null;
         
                     
         swing.edt {
@@ -2947,20 +2950,57 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                 }
                                 
                                 tr {
-                                    td {label(text: 'Fallzusammenfassung')}
-                                    td {cmb_11FALL_ZUSMMNFSSG=comboBox(items: ['de','en','fr', 'pl'], name: "_11FALL_ZUSMMNFSSG", clientPropertyJlawyerdescription: "Sprache der Fallzusammenfassung", selectedItem: "de", editable: false, actionPerformed: {
-                                                
-                                            }
-                                        )
-                                    }
-                                }
-                                
-                                tr {
-                                    td (colfill:true, valign: 'TOP') {label(text: 'Fallzusammenfassung (YAML):')}
+                                    td (colfill:true, valign: 'TOP') {label(text: 'Fallzusammenfassung (Markdown):')}
                                     td {
-                                        scrollPane {
-                                            txt_11FALL_ZUSMMNFSSG_YML=textArea(name: "_11FALL_ZUSMMNFSSG_YML", clientPropertyJlawyerdescription: "Fallzusammenfassung als YAML", lineWrap:true,wrapStyleWord:true, columns:50, rows:20,editable:true)
+
+                                        tabbedPane(id: 'tabs') {
+                                            panel(name: 'DE') {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td {
+                                                            scrollPane {
+                                                                txt_11FALL_ZUSMMNFSSG_MD_DE=textArea(name: "_11FALL_ZUSMMNFSSG_MD_DE", clientPropertyJlawyerdescription: "Fallzusammenfassung (de) als Markdown", lineWrap:true,wrapStyleWord:true, columns:50, rows:20,editable:true)
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            panel(name: 'EN') {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td {
+                                                            scrollPane {
+                                                                txt_11FALL_ZUSMMNFSSG_MD_EN=textArea(name: "_11FALL_ZUSMMNFSSG_MD_EN", clientPropertyJlawyerdescription: "Fallzusammenfassung (en) als Markdown", lineWrap:true,wrapStyleWord:true, columns:50, rows:20,editable:true)
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            panel(name: 'FR') {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td {
+                                                            scrollPane {
+                                                                txt_11FALL_ZUSMMNFSSG_MD_FR=textArea(name: "_11FALL_ZUSMMNFSSG_MD_FR", clientPropertyJlawyerdescription: "Fallzusammenfassung (fr) als Markdown", lineWrap:true,wrapStyleWord:true, columns:50, rows:20,editable:true)
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            panel(name: 'PL') {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td {
+                                                            scrollPane {
+                                                                txt_11FALL_ZUSMMNFSSG_MD_PL=textArea(name: "_11FALL_ZUSMMNFSSG_MD_PL", clientPropertyJlawyerdescription: "Fallzusammenfassung (pl) als Markdown", lineWrap:true,wrapStyleWord:true, columns:50, rows:20,editable:true)
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            
                                         }
+                                        
                                     }
                                 }
                                 tr {
@@ -2970,10 +3010,12 @@ public class qewvuklag02_ui implements com.jdimension.jlawyer.client.plugins.for
                                             tableLayout {
                                                 tr {
                                                     td {button(text: 'Neu generieren (DE)', actionPerformed: {
-                                                                txt_11FALL_ZUSMMNFSSG_YML.setText(generateMarkdown());
+                                                                txt_11FALL_ZUSMMNFSSG_MD_DE.setText(generateMarkdown());
                                                             })}
                                                     td {button(text: 'Übersetzen', actionPerformed: {
-                                                                txt_11FALL_ZUSMMNFSSG_YML.setText(translateMarkdown(txt_11FALL_ZUSMMNFSSG_YML.getText(),cmb_11FALL_ZUSMMNFSSG.getSelectedItem().toString()));
+                                                                txt_11FALL_ZUSMMNFSSG_MD_EN.setText(translateMarkdown(txt_11FALL_ZUSMMNFSSG_MD_DE.getText(),"en"));
+                                                                txt_11FALL_ZUSMMNFSSG_MD_FR.setText(translateMarkdown(txt_11FALL_ZUSMMNFSSG_MD_DE.getText(),"fr"));
+                                                                txt_11FALL_ZUSMMNFSSG_MD_PL.setText(translateMarkdown(txt_11FALL_ZUSMMNFSSG_MD_DE.getText(),"pl"));
                                                             })}
                                                 }
                                             }

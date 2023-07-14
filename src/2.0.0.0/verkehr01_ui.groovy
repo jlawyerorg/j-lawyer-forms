@@ -725,6 +725,8 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     JTextField txtNutzungsAusfall;
     JTextField txtKostenGutachten;
     JTextField txtKostenGutachtenMwst;
+    JTextField txtKostenAkteneinsicht;
+    JTextField txtKostenAkteneinsichtMwst;
     JTextField txtAbschleppKosten;
     JTextField txtAbschleppKostenMwst;
     JTextField txtStandgeld;
@@ -734,36 +736,47 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     JTextField txtAbmeldeKosten;
     JTextField txtAnmeldeKosten;
     JTextField txtSonstigeKosten;
+    JTextField txtSonstigeKosten2;
+    JTextField txtSonstigeKosten3;
     
     JTextField txtUnfallPauschaleReg;
     JTextField txtNutzungsAusfallReg;
     JTextField txtKostenGutachtenReg;
+    JTextField txtKostenAkteneinsichtReg;
     JTextField txtAbschleppKostenReg;
     JTextField txtStandgeldReg;
     JTextField txtMietwagenKostenReg;
     JTextField txtAbmeldeKostenReg;
     JTextField txtAnmeldeKostenReg;
     JTextField txtSonstigeKostenReg;
+    JTextField txtSonstigeKosten2Reg;
+    JTextField txtSonstigeKosten3Reg;
     
     JTextField txtUnfallPauschaleDiff;
     JTextField txtNutzungsAusfallDiff;
     JTextField txtKostenGutachtenDiff;
+    JTextField txtKostenAkteneinsichtDiff;
     JTextField txtAbschleppKostenDiff;
     JTextField txtStandgeldDiff;
     JTextField txtMietwagenKostenDiff;
     JTextField txtAbmeldeKostenDiff;
     JTextField txtAnmeldeKostenDiff;
     JTextField txtSonstigeKostenDiff;
+    JTextField txtSonstigeKosten2Diff;
+    JTextField txtSonstigeKosten3Diff;
     
     JCheckBox chkUnfallPauschaleDiff;
     JCheckBox chkNutzungsAusfallDiff;
     JCheckBox chkKostenGutachtenDiff;
+    JCheckBox chkKostenAkteneinsichtDiff;
     JCheckBox chkAbschleppKostenDiff;
     JCheckBox chkStandgeldDiff;
     JCheckBox chkMietwagenKostenDiff;
     JCheckBox chkAbmeldeKostenDiff;
     JCheckBox chkAnmeldeKostenDiff;
     JCheckBox chkSonstigeKostenDiff;
+    JCheckBox chkSonstigeKosten2Diff;
+    JCheckBox chkSonstigeKosten3Diff;
     
     JComboBox cmbNutzAusfallGruppe;
     JComboBox cmbFahrzeugart;
@@ -849,12 +862,15 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         berechnen(txtUnfallPauschale, null, txtUnfallPauschaleReg, txtUnfallPauschaleDiff);
         berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString());
         berechnen(txtKostenGutachten, txtKostenGutachtenMwst, txtKostenGutachtenReg, txtKostenGutachtenDiff);
+        berechnen(txtKostenAkteneinsicht, txtKostenAkteneinsichtMwst, txtKostenAkteneinsichtReg, txtKostenAkteneinsichtDiff);
         berechnen(txtAbschleppKosten, txtAbschleppKostenMwst, txtAbschleppKostenReg, txtAbschleppKostenDiff);
         berechnen(txtStandgeld, txtStandgeldMwst, txtStandgeldReg, txtStandgeldDiff);
         berechnen(txtMietwagenKosten, txtMietwagenKostenMwst, txtMietwagenKostenReg, txtMietwagenKostenDiff);
         berechnen(txtAbmeldeKosten, null, txtAbmeldeKostenReg, txtAbmeldeKostenDiff);
         berechnen(txtAnmeldeKosten, null, txtAnmeldeKostenReg, txtAnmeldeKostenDiff);
         berechnen(txtSonstigeKosten, null, txtSonstigeKostenReg, txtSonstigeKostenDiff);
+        berechnen(txtSonstigeKosten2, null, txtSonstigeKosten2Reg, txtSonstigeKosten2Diff);
+        berechnen(txtSonstigeKosten3, null, txtSonstigeKosten3Reg, txtSonstigeKosten3Diff);
 
         berechnen();
         
@@ -2087,6 +2103,30 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     }
                                     tr {
                                         td {
+                                            label(text: 'Akteneinsichtsgebühr:')
+                                        }
+                                        td {
+                                            txtKostenAkteneinsicht=formattedTextField(id: 'nKostenAkteneinsicht', name: "_KOSTENAKTENEINSICHT", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtKostenAkteneinsicht, txtKostenAkteneinsichtMwst, txtKostenAkteneinsichtReg, txtKostenAkteneinsichtDiff) })
+                                        }
+                                        td {
+                                            txtKostenAkteneinsichtMwst=formattedTextField(id: 'nKostenAkteneinsichtMwst', name: "_KOSTENAKTENEINSICHT_MWST", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, enabled: false, keyReleased: { berechnen(txtKostenAkteneinsicht, txtKostenAkteneinsichtMwst, txtKostenAkteneinsichtReg, txtKostenAkteneinsichtDiff) })
+                                        }
+                                        td {
+                                            txtKostenAkteneinsichtReg=formattedTextField(id: 'nKostenAkteneinsichtReg', name: "_KOSTENAKTENEINSICHT_REG", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtKostenAkteneinsicht, txtKostenAkteneinsichtMwst, txtKostenAkteneinsichtReg, txtKostenAkteneinsichtDiff) })
+                                    
+                                        }
+                                        td {
+                                            txtKostenAkteneinsichtDiff=formattedTextField(id: 'nKostenAkteneinsichtDiff', name: "_KOSTENAKTENEINSICHT_DIFF", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, enabled: false)
+                                        }
+                                        td {
+                                            chkKostenAkteneinsichtDiff = checkBox(text: '', name: "_KOSTENAKTENEINSICHT_DIFF_AN", clientPropertyJlawyerdescription: "", selected: true, actionPerformed: {
+                                                    berechnen()
+                                                
+                                                }) 
+                                        }
+                                    }
+                                    tr {
+                                        td {
                                             label(text: 'Abschleppkosten:')
                                         }
                                         td {
@@ -2212,7 +2252,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                 
                                     tr {
                                         td {
-                                            label(text: 'Sonstiges:')
+                                            label(text: 'Sonstiges (1):')
                                         }
                                         td {
                                             txtSonstigeKosten=formattedTextField(id: 'nSonstigeKosten', name: "_KOSTENSONST", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtSonstigeKosten, null, txtSonstigeKostenReg, txtSonstigeKostenDiff) })
@@ -2229,6 +2269,54 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         }
                                         td {
                                             chkSonstigeKostenDiff = checkBox(text: '', name: "_KOSTENSONST_DIFF_AN", clientPropertyJlawyerdescription: "", selected: true, actionPerformed: {
+                                                    berechnen()
+                                                
+                                                })
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Sonstiges (2):')
+                                        }
+                                        td {
+                                            txtSonstigeKosten2=formattedTextField(id: 'nSonstigeKosten2', name: "_KOSTENSONST2", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtSonstigeKosten2, null, txtSonstigeKosten2Reg, txtSonstigeKosten2Diff) })
+                                        }
+                                        td {
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            txtSonstigeKosten2Reg=formattedTextField(id: 'nSonstigeKosten2Reg', name: "_KOSTENSONST2_REG", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtSonstigeKosten2, null, txtSonstigeKosten2Reg, txtSonstigeKosten2Diff) })
+                                    
+                                        }
+                                        td {
+                                            txtSonstigeKosten2Diff=formattedTextField(id: 'nSonstigeKosten2Diff', name: "_KOSTENSONST2_DIFF", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, enabled: false)
+                                        }
+                                        td {
+                                            chkSonstigeKosten2Diff = checkBox(text: '', name: "_KOSTENSONST2_DIFF_AN", clientPropertyJlawyerdescription: "", selected: true, actionPerformed: {
+                                                    berechnen()
+                                                
+                                                })
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Sonstiges (3):')
+                                        }
+                                        td {
+                                            txtSonstigeKosten3=formattedTextField(id: 'nSonstigeKosten3', name: "_KOSTENSONST3", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtSonstigeKosten3, null, txtSonstigeKosten3Reg, txtSonstigeKosten3Diff) })
+                                        }
+                                        td {
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            txtSonstigeKosten3Reg=formattedTextField(id: 'nSonstigeKosten3Reg', name: "_KOSTENSONST3_REG", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtSonstigeKosten3, null, txtSonstigeKosten3Reg, txtSonstigeKosten3Diff) })
+                                    
+                                        }
+                                        td {
+                                            txtSonstigeKosten3Diff=formattedTextField(id: 'nSonstigeKosten3Diff', name: "_KOSTENSONST3_DIFF", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, enabled: false)
+                                        }
+                                        td {
+                                            chkSonstigeKosten3Diff = checkBox(text: '', name: "_KOSTENSONST3_DIFF_AN", clientPropertyJlawyerdescription: "", selected: true, actionPerformed: {
                                                     berechnen()
                                                 
                                                 })
@@ -2408,6 +2496,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     private void togglePrivatGeschaeft() {
         berechnen(txtReparaturKosten, txtReparaturKostenMwst, txtReparaturKostenReg, txtReparaturKostenDiff);
         berechnen(txtKostenGutachten, txtKostenGutachtenMwst, txtKostenGutachtenReg, txtKostenGutachtenDiff);
+        berechnen(txtKostenAkteneinsicht, txtKostenAkteneinsichtMwst, txtKostenAkteneinsichtReg, txtKostenAkteneinsichtDiff);
         berechnen(txtAbschleppKosten, txtAbschleppKostenMwst, txtAbschleppKostenReg, txtAbschleppKostenDiff);
         berechnen(txtStandgeld, txtStandgeldMwst, txtStandgeldReg, txtStandgeldDiff);
         berechnen(txtMietwagenKosten, txtMietwagenKostenMwst, txtMietwagenKostenReg, txtMietwagenKostenDiff);
@@ -2545,6 +2634,8 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
             currentSum+=betragFormat.parse(txtNutzungsAusfall.text)
             currentSum+=betragFormat.parse(txtKostenGutachten.text)
             currentSum+=betragFormat.parse(txtKostenGutachtenMwst.text)
+            currentSum+=betragFormat.parse(txtKostenAkteneinsicht.text)
+            currentSum+=betragFormat.parse(txtKostenAkteneinsichtMwst.text)
             currentSum+=betragFormat.parse(txtAbschleppKosten.text)
             currentSum+=betragFormat.parse(txtAbschleppKostenMwst.text)
             currentSum+=betragFormat.parse(txtStandgeld.text)
@@ -2554,6 +2645,8 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
             currentSum+=betragFormat.parse(txtAbmeldeKosten.text)
             currentSum+=betragFormat.parse(txtAnmeldeKosten.text)
             currentSum+=betragFormat.parse(txtSonstigeKosten.text)
+            currentSum+=betragFormat.parse(txtSonstigeKosten2.text)
+            currentSum+=betragFormat.parse(txtSonstigeKosten3.text)
             
             sub1=currentSum;
             txtSummeSchaden.text="" + betragFormat.format(currentSum);
@@ -2579,12 +2672,15 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
             currentSum+=betragFormat.parse(txtUnfallPauschaleReg.text)
             currentSum+=betragFormat.parse(txtNutzungsAusfallReg.text)
             currentSum+=betragFormat.parse(txtKostenGutachtenReg.text)
+            currentSum+=betragFormat.parse(txtKostenAkteneinsichtReg.text)
             currentSum+=betragFormat.parse(txtAbschleppKostenReg.text)
             currentSum+=betragFormat.parse(txtStandgeldReg.text)
             currentSum+=betragFormat.parse(txtMietwagenKostenReg.text)
             currentSum+=betragFormat.parse(txtAbmeldeKostenReg.text)
             currentSum+=betragFormat.parse(txtAnmeldeKostenReg.text)
             currentSum+=betragFormat.parse(txtSonstigeKostenReg.text)
+            currentSum+=betragFormat.parse(txtSonstigeKosten2Reg.text)
+            currentSum+=betragFormat.parse(txtSonstigeKosten3Reg.text)
             
             txtSummeReguliert.text="" + betragFormat.format(currentSum);
         } catch (Throwable t) {
@@ -2614,6 +2710,8 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
             currentSum+=betragFormat.parse(txtNutzungsAusfallDiff.text)
             if(chkKostenGutachtenDiff.selected)
             currentSum+=betragFormat.parse(txtKostenGutachtenDiff.text)
+            if(chkKostenAkteneinsichtDiff.selected)
+            currentSum+=betragFormat.parse(txtKostenAkteneinsichtDiff.text)
             if(chkAbschleppKostenDiff.selected)
             currentSum+=betragFormat.parse(txtAbschleppKostenDiff.text)
             if(chkStandgeldDiff.selected)
@@ -2626,6 +2724,10 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
             currentSum+=betragFormat.parse(txtAnmeldeKostenDiff.text)
             if(chkSonstigeKostenDiff.selected)
             currentSum+=betragFormat.parse(txtSonstigeKostenDiff.text)
+            if(chkSonstigeKosten2Diff.selected)
+            currentSum+=betragFormat.parse(txtSonstigeKosten2Diff.text)
+            if(chkSonstigeKosten3Diff.selected)
+            currentSum+=betragFormat.parse(txtSonstigeKosten3Diff.text)
             
             
             txtSummeDifferenz.text="" + betragFormat.format(currentSum);
@@ -2742,8 +2844,8 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         }
         float nutzungsAusfall=0f;
         try {
-            def fromDate = new Date().parse("dd.MM.yyyy", from.text);
-            def toDate = new Date().parse("dd.MM.yyyy", to.text);
+            def fromDate = new Date().parse("dd.MM.yyyy HH:mm", from.text + " 00:00");
+            def toDate = new Date().parse("dd.MM.yyyy HH:mm", to.text + " 24:00");
             
             def duration = toDate - fromDate;
             nutzungsAusfall=duration * perDay;

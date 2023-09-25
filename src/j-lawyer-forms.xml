@@ -48,5 +48,21 @@
     </form>
     
     <form id="qewvuklag03" type="plugin" depends="formslib" name="UKlaG Dokumente" description="Falldatenblatt zur Erfassung von Dokumenten" placeholder="UKDOK" version="0.9.0" for="2.3.0.1,2.3.1.1,2.4.0.1,2.4.0.2" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.4.0.0" files="qewvuklag03_meta.groovy,qewvuklag03_ui.groovy"/>
+
+    <!-- form id="klugo01" type="plugin" depends="formslib" name="KLUGO-Import" description="Importiert Anfragen aus KLUGO" placeholder="KLUGO" version="0.1.0" for="2.3.0.0,2.3.0.1,2.3.1.1,2.4.0.2" url="file:///home/jens/.j-lawyer-client/forms-internal" files="klugo01_meta.groovy,klugo01_ui.groovy,KlugoLib.groovy">
+        <setting key="forms.klugo01.site1.endpoint" caption="API-Endpunkt:" default="https://thirdparty.preview.klugo.de/api/v1/kanzleiname/" order="1"/>
+        <setting key="forms.klugo01.site1.apitoken" caption="API-Token:" default="1234567890" order="2"/>
+    </form -->
+    
+    <form 	id="strafrecht01"
+    		type="plugin"
+    		depends="formslib"
+    		name="Strafrecht"
+    		description="Erfassung von Strafrechtsverfahren"
+    		placeholder="STRFRCHT"
+    		version="2.0.1"
+    		for="2.1.0.0,2.2.0.0,2.3.0.1,2.4.0.2"
+    		url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.4.0.0"
+    		files="strafrecht01_meta.groovy,strafrecht01_ui.groovy"/>
     
 </forms>

@@ -666,6 +666,8 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 import groovy.swing.SwingBuilder
 import java.awt.BorderLayout
 import java.awt.FlowLayout
+import java.awt.event.ActionEvent
+import java.awt.event.ActionListener
 import java.awt.BorderLayout as BL
 import groovy.beans.Bindable
 import java.text.DecimalFormat
@@ -676,19 +678,28 @@ import java.util.List
 import java.util.Locale
 import javax.swing.JButton
 import java.util.HashMap
+import javax.swing.JFrame
 import javax.swing.JTable
 import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.JTextField
 import javax.swing.JTextArea
 import javax.swing.JComboBox
+import javax.swing.JDialog
 import javax.swing.JCheckBox
 import javax.swing.JRadioButton
 import javax.swing.JScrollPane
 import javax.swing.JSeparator
+import javax.swing.event.DocumentEvent
+import javax.swing.event.DocumentListener
 import java.awt.Component
 import java.awt.Container
 import java.awt.Dimension
+import java.io.BufferedInputStream
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 import com.jdimension.jlawyer.client.utils.DesktopUtils
 
@@ -894,18 +905,6 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                         } else if("html".equalsIgnoreCase(f.type)) {
                             // ignore, those are display only contents
                         } else if("fileupload".equalsIgnoreCase(f.type)) {
-//                            int valueIndex=0;
-//                            for(String v: f.getValueList()) {
-//                                // in case of multipe files, display the first one with a caption
-//                                // and the others with an empty caption so that it looks like a section
-//                                if(valueIndex>0)
-//                                    dynamicPanel.add(new JLabel());
-//                                JTextField tf=new JTextField(v.substring(v.lastIndexOf("/")+1));
-//                                tf.setName(f.getPlaceHolderName());
-//                                tf.putClientProperty("Jlawyerdescription", f.label);
-//                                dynamicPanel.add(tf);
-//                                valueIndex=valueIndex+1;
-//                            }
                             
                             JPanel uploadsPanel=new JPanel();
                             uploadsPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
@@ -927,7 +926,44 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             uploadsPanel.add(downloadButton);
                             
                             dynamicPanel.add(uploadsPanel);
+                           
+                        } else if("signature".equalsIgnoreCase(f.type)) {
                             
+                            JPanel uploadsPanel=new JPanel();
+                            uploadsPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+                            
+                            JTextField tf=new JTextField(f.getValue(), TEXTFIELD_MAXCOLUMNS);
+                            tf.setName(f.getPlaceHolderName());
+                            tf.setEnabled(false);
+                            tf.putClientProperty("Jlawyerdescription", f.label);
+                            tf.setColumns(30);
+                            uploadsPanel.add(tf);
+                            
+                            JButton downloadButton=new JButton();
+                            downloadButton.setText("Download");
+                            downloadButton.addActionListener(new java.awt.event.ActionListener() {
+                                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                        String caseId=callback.getCaseId();
+                                        StorageLib.addDocument(caseId, "Unterschrift.png", download(tf.getText(), false));
+                                        GuiLib.showInformation("Unterschrift speichern", "Unterschrift wurde zur Akte gespeichert.");
+                                    }
+                                });
+                            uploadsPanel.add(downloadButton);
+                            
+                            JButton viewButton=new JButton();
+                            viewButton.setText("Anzeigen");
+                            viewButton.addActionListener(new java.awt.event.ActionListener() {
+                                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                        byte[] image=download(tf.getText(), false);
+                                        javax.swing.ImageIcon imageIcon=new javax.swing.ImageIcon(image);
+                                        if(image!=null) {
+                                            showSignature(imageIcon);
+                                        }
+                                    }
+                                });
+                            uploadsPanel.add(viewButton);
+                            
+                            dynamicPanel.add(uploadsPanel);
                         } else {
                             JTextField tf=new JTextField("", TEXTFIELD_MAXCOLUMNS);
                             tf.setName(f.getPlaceHolderName());
@@ -1106,6 +1142,83 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
     
     private void browseTo(String toUrl) {
         DesktopUtils.openBrowser(toUrl);
+    }
+    
+    private byte[] download(String url, boolean isRedirected) {
+
+        try {
+            
+            URL u = new URL(url);
+            HttpURLConnection urlCon = (HttpURLConnection) u.openConnection();
+            urlCon.setConnectTimeout(5000);
+            urlCon.setReadTimeout(5000);
+            urlCon.setRequestMethod("GET");
+            urlCon.connect();
+            
+            int status = urlCon.getResponseCode();
+            boolean redirect = false;
+            
+            // normally, 3xx is redirect
+            if (status != HttpURLConnection.HTTP_OK) {
+                if (status == HttpURLConnection.HTTP_MOVED_TEMP
+                    || status == HttpURLConnection.HTTP_MOVED_PERM
+                    || status == HttpURLConnection.HTTP_SEE_OTHER) {
+                    redirect = true;
+                }
+            }
+            
+            if (redirect) {
+                if(isRedirected) {
+                    return null;
+                }
+                String newUrl = urlCon.getHeaderField("Location");
+                return this.download(newUrl, true);
+            } else {
+                InputStream is = urlCon.getInputStream();
+                BufferedInputStream bin = new BufferedInputStream(is);
+                
+                byte[] buffer = new byte[1024];
+                int len = 0;
+                ByteArrayOutputStream bOut = new ByteArrayOutputStream();
+                while ((len = bin.read(buffer)) > -1) {
+                    bOut.write(buffer, 0, len);
+                }
+                bin.close();
+                is.close();
+                return bOut.toByteArray();
+                
+            }
+            
+        } catch (Exception ex) {
+            println("could not download " + url + ": " + ex.getMessage());
+            return null;
+        }
+
+    }
+    
+    private static void showSignature(javax.swing.ImageIcon image) {
+        JDialog dialog = new JDialog();
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setTitle("Unterschrift");
+
+        JLabel label = new JLabel("");
+        label.setIcon(image);
+        
+        JPanel panel = new JPanel();
+        panel.add(label);
+        
+        dialog.getContentPane().add(panel);
+
+        // Set the size of the dialog
+        dialog.setSize(400, 300);
+
+        // Set the dialog to be modal
+        dialog.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+
+        // Center the dialog on the screen
+        dialog.setLocationRelativeTo(null);
+
+        dialog.setVisible(true);
     }
     
     private void loadSites() {
@@ -1349,23 +1462,8 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
             HashMap fieldData=new HashMap();
             ArrayList sortedFieldIds=new ArrayList();
             structResult.fields.each {
-                //            if("html".equals(it.type)) {
-                //                continue;
-                //            }
                 if("html".equals(it.type)) {
             
-//                } else if("fileupload".equals(it.type)) {
-//                    if(it.multipleFiles==false) {
-//                        sortedFieldIds.add("" + it.id);
-//                        GravityField f=new GravityField();
-//                        f.id="" + it.id;
-//                        f.label=it.label;
-//                        f.adminLabel=it.adminLabel;
-//                        f.type=it.type;
-//                        fieldData.put("" + it.id, f);
-//                    } else {
-//                        
-//                    }
                 } else if("time".equals(it.type)) {
                     // time has separate inputs for hour and minute, but we want to display as one
                     println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
@@ -1563,35 +1661,6 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             // ignore, those are display only contents
                         } else if("fileupload".equalsIgnoreCase(f.type)) {
                             
-//                            int valueIndex=0;
-//                            for(String v: f.getValueList()) {
-//                                // in case of multipe files, display the first one with a caption
-//                                // and the others with an empty caption so that it looks like a section
-//                                if(valueIndex>0)
-//                                    dynamicPanel.add(new JLabel());
-//                                JTextField tf=new JTextField(v.substring(v.lastIndexOf("/")+1));
-//                                tf.setName(f.getPlaceHolderName());
-//                                tf.putClientProperty("Jlawyerdescription", f.label);
-//                                dynamicPanel.add(tf);
-//                                valueIndex=valueIndex+1;
-//                            }
-
-//                            JTextField tf=new JTextField(f.getValue());
-//                            tf.putClientProperty("Jlawyerdescription", f.label);
-//                            tf.setName(f.getPlaceHolderName());
-//                            Dimension maxSize=tf.getMaximumSize();
-//                            maxSize.setSize(300, maxSize.getHeight());
-//                            tf.setMaximumSize(maxSize);
-//                            dynamicPanel.add(tf);
-                            
-                            
-//                            JLabel tf=new JLabel();
-//                            tf.setToolTipText(f.getValueList().toString());
-//                            tf.setText("" + f.getValueList().size() + " Datei(en)");
-//                            tf.putClientProperty("Jlawyerdescription", f.label);
-//                            tf.setName(f.getPlaceHolderName());
-//                            dynamicPanel.add(tf);
-                            
                             JPanel uploadsPanel=new JPanel();
                             uploadsPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
                             JTextArea ta=new JTextArea();
@@ -1616,28 +1685,43 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             
                             dynamicPanel.add(uploadsPanel);
                             
+                        } else if("signature".equalsIgnoreCase(f.type)) {
                             
-//                            JTextArea ta=new JTextArea();
-//                            ta.setText(f.getValueList().toString());
-//                            ta.setToolTipText(f.getValueList().toString());
-//                            ta.setRows(1);
-//                            ta.setLineWrap(true);
-//                            //ta.setWrapStyleWord(true);
-//                            ta.setName(f.getPlaceHolderName());
-//                            ta.putClientProperty("Jlawyerdescription", f.label);
-//                            JScrollPane scrollpane = new JScrollPane(ta);    
-//                            dynamicPanel.add(scrollpane);
+                            JPanel uploadsPanel=new JPanel();
+                            uploadsPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
                             
-//                            int valueIndex=0;
-//                            for(String v: f.getValueList()) {
-//                                if(valueIndex>0)
-//                                    dynamicPanel.add(new JLabel());
-//                                JTextField tf=new JTextField(v.substring(v.lastIndexOf("/")+1));
-//                                tf.setName(f.getPlaceHolderName());
-//                                tf.putClientProperty("Jlawyerdescription", f.label);
-//                                dynamicPanel.add(tf);
-//                                valueIndex=valueIndex+1;
-//                            }
+                            JTextField tf=new JTextField(site.getSignatureImageUrl(f.getValue()), TEXTFIELD_MAXCOLUMNS);
+                            tf.setName(f.getPlaceHolderName());
+                            tf.setEnabled(false);
+                            tf.putClientProperty("Jlawyerdescription", f.label);
+                            tf.setColumns(30);
+                            uploadsPanel.add(tf);
+                            
+                            JButton downloadButton=new JButton();
+                            downloadButton.setText("Download");
+                            downloadButton.addActionListener(new java.awt.event.ActionListener() {
+                                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                        String caseId=callback.getCaseId();
+                                        StorageLib.addDocument(caseId, "Unterschrift.png", download(tf.getText(), false));
+                                        GuiLib.showInformation("Unterschrift speichern", "Unterschrift wurde zur Akte gespeichert.");
+                                    }
+                                });
+                            uploadsPanel.add(downloadButton);
+                            
+                            JButton viewButton=new JButton();
+                            viewButton.setText("Anzeigen");
+                            viewButton.addActionListener(new java.awt.event.ActionListener() {
+                                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                        byte[] image=download(tf.getText(), false);
+                                        javax.swing.ImageIcon imageIcon=new javax.swing.ImageIcon(image);
+                                        if(image!=null) {
+                                            showSignature(imageIcon);
+                                        }
+                                    }
+                                });
+                            uploadsPanel.add(viewButton);
+                            
+                            dynamicPanel.add(uploadsPanel);
                             
                         } else if("date".equalsIgnoreCase(f.type)) {
                             String dateValue=f.getValue();

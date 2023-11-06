@@ -689,12 +689,14 @@ import com.jdimension.jlawyer.persistence.ArchiveFileBean;
 import com.jdimension.jlawyer.persistence.CalendarSetup;
 import com.jdimension.jlawyer.persistence.ArchiveFileReviewsBean;
 import com.jdimension.jlawyer.persistence.ArchiveFileAddressesBean;
+import com.jdimension.jlawyer.persistence.ArchiveFileDocumentsBean;
 import com.jdimension.jlawyer.services.ArchiveFileServiceRemote;
 import com.jdimension.jlawyer.services.CalendarServiceRemote;
 import com.jdimension.jlawyer.services.JLawyerServiceLocator;
 import com.jdimension.jlawyer.client.settings.UserSettings;
 import com.jdimension.jlawyer.client.events.EventBroker;
 import com.jdimension.jlawyer.client.events.ReviewAddedEvent;
+import com.jdimension.jlawyer.client.events.DocumentAddedEvent;
 import com.jdimension.jlawyer.client.editors.EditorsRegistry;
 
 public class StorageLib {
@@ -746,6 +748,21 @@ public class StorageLib {
 
         } catch (Exception ex) {
             ThreadUtils.showErrorDialog(EditorsRegistry.getInstance().getMainWindow(), "Fehler beim Speichern der Wiedervorlage: " + ex.getMessage(), "Fehler");
+        }
+    }
+    
+    public static addDocument(String caseId, String fileName, byte[] content) {
+        ClientSettings settings = ClientSettings.getInstance();
+        try {
+            JLawyerServiceLocator locator = JLawyerServiceLocator.getInstance(settings.getLookupProperties());
+            ArchiveFileServiceRemote afs = locator.lookupArchiveFileServiceRemote();
+            ArchiveFileDocumentsBean newDoc=afs.addDocument(caseId, new java.text.SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "_" + fileName, content, "");
+            EventBroker eb = EventBroker.getInstance();
+            eb.publishEvent(new DocumentAddedEvent(newDoc));
+            
+            
+        } catch (Exception ex) {
+            ThreadUtils.showErrorDialog(EditorsRegistry.getInstance().getMainWindow(), "Fehler beim Speichern des Dokuments: " + ex.getMessage(), "Fehler");
         }
     }
     

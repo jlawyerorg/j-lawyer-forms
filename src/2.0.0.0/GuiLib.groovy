@@ -704,5 +704,9 @@ public class GuiLib {
         String response = JOptionPane.showInputDialog(EditorsRegistry.getInstance().getMainWindow(), question, title, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         return response;
     }
-
+    
+    public static void showInformation(String title, String message) {
+        JOptionPane.showMessageDialog(EditorsRegistry.getInstance().getMainWindow(), message, title, JOptionPane.INFORMATION_MESSAGE);
+    }
+    
 }

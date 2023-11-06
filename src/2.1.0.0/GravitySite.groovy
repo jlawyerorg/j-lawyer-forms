@@ -699,6 +699,30 @@ public class GravitySite {
         return ep+"forms";
     }
     
+    public String getSignatureImageUrl(String filenameWithExtension) {
+        String temp=this.endpoint;
+        
+        // strip of api endpoint path
+        temp=temp.replace("wp-json/gf/v2/", "");
+        temp=temp.replace("wp-json/gf/v2", "");
+        
+        temp=temp+"index.php?page=gf_signature&signature=" + filenameWithExtension.replace(".png","");
+        return temp;
+        
+    }
+    
+    public static String getSignatureImageUrl(String endpointUrl, String filenameWithExtension) {
+        String temp=endpointUrl;
+        
+        // strip of api endpoint path
+        temp=temp.replace("wp-json/gf/v2/", "");
+        temp=temp.replace("wp-json/gf/v2", "");
+        
+        temp=temp+"index.php?page=gf_signature&signature=" + filenameWithExtension.replace(".png","");
+        return temp;
+        
+    }
+    
     public String getFormStructureEndpoint(String formTypeId) {
         String ep=this.endpoint;
         if(!ep.endsWith("/"))

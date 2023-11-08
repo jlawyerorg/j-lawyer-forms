@@ -99,6 +99,10 @@
           <fileset dir="src/2.4.0.0"/>
         </scp>
         
+        <scp todir="${env.UPLOADUSER}:${env.UPLOADPWD}@www.j-lawyer.org:${env.UPLOADFORMSBASE}/2.6.0.0/" trust="true">
+          <fileset dir="src/2.6.0.0"/>
+        </scp>
+        
 
     </target>
     

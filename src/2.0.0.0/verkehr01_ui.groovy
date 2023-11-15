@@ -1679,7 +1679,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                 tableLayout (cellpadding: 5) {
                                     tr {
                                         td {
-                                            chkTeilkasko = checkBox(text: 'Teilkasko', clientPropertyJlawyerdescription: "Teilkasko", name: "_TEILKASKO", selected: true)
+                                            chkTeilkasko = checkBox(text: 'Teilkasko', clientPropertyJlawyerdescription: "Teilkasko", name: "_TEILKASKO", selected: false)
                                         }
                                         td {
                                             label(text: '   ')

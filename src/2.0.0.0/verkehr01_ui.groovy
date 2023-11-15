@@ -1973,7 +1973,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: '   ')
                                         }
                                         td {
-                                            chkScheckheft = checkBox(text: 'Scheckheftgepflegt', name: "_SCHECKHEFTG", clientPropertyJlawyerdescription: "scheckheftgepflegt", selected: true, actionPerformed: {
+                                            chkScheckheft = checkBox(text: 'Scheckheftgepflegt', name: "_SCHECKHEFTG", clientPropertyJlawyerdescription: "scheckheftgepflegt", selected: false, actionPerformed: {
                                                     berechnen()
                                                 
                                                 })

@@ -2051,7 +2051,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Unfallpauschale:')
                                         }
                                         td {
-                                            txtUnfallPauschale=formattedTextField(id: 'nUnfallPauschale', name: "_UNFALLPAUSCH", clientPropertyJlawyerdescription: "", format: betragFormat, text: '25,00', columns: 10, keyReleased: { berechnen(txtUnfallPauschale, null, txtUnfallPauschaleReg, txtUnfallPauschaleDiff) })
+                                            txtUnfallPauschale=formattedTextField(id: 'nUnfallPauschale', name: "_UNFALLPAUSCH", clientPropertyJlawyerdescription: "", format: betragFormat, text: '30,00', columns: 10, keyReleased: { berechnen(txtUnfallPauschale, null, txtUnfallPauschaleReg, txtUnfallPauschaleDiff) })
                                         }
                                         td {
                                             label(text: '   ')

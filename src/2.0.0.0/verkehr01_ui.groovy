@@ -1063,7 +1063,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         }
                                         td {
                                             scrollPane{
-                                                chkPolizeiAufgenommen = checkBox(text: 'polizeilich aufgenommen', name: "_POLAUFGEN", clientPropertyJlawyerdescription: "polizeilich aufgenommen?", selected: true)
+                                                chkPolizeiAufgenommen = checkBox(text: 'polizeilich aufgenommen', name: "_POLAUFGEN", clientPropertyJlawyerdescription: "polizeilich aufgenommen?", selected: false)
                                             } 
                                         }
                                     }

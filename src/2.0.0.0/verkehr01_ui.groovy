@@ -1063,7 +1063,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         }
                                         td {
                                             scrollPane{
-                                                chkPolizeiAufgenommen = checkBox(text: 'polizeilich aufgenommen', name: "_POLAUFGEN", clientPropertyJlawyerdescription: "polizeilich aufgenommen?", selected: true)
+                                                chkPolizeiAufgenommen = checkBox(text: 'polizeilich aufgenommen', name: "_POLAUFGEN", clientPropertyJlawyerdescription: "polizeilich aufgenommen?", selected: false)
                                             } 
                                         }
                                     }
@@ -1679,7 +1679,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                 tableLayout (cellpadding: 5) {
                                     tr {
                                         td {
-                                            chkTeilkasko = checkBox(text: 'Teilkasko', clientPropertyJlawyerdescription: "Teilkasko", name: "_TEILKASKO", selected: true)
+                                            chkTeilkasko = checkBox(text: 'Teilkasko', clientPropertyJlawyerdescription: "Teilkasko", name: "_TEILKASKO", selected: false)
                                         }
                                         td {
                                             label(text: '   ')
@@ -1973,7 +1973,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: '   ')
                                         }
                                         td {
-                                            chkScheckheft = checkBox(text: 'Scheckheftgepflegt', name: "_SCHECKHEFTG", clientPropertyJlawyerdescription: "scheckheftgepflegt", selected: true, actionPerformed: {
+                                            chkScheckheft = checkBox(text: 'Scheckheftgepflegt', name: "_SCHECKHEFTG", clientPropertyJlawyerdescription: "scheckheftgepflegt", selected: false, actionPerformed: {
                                                     berechnen()
                                                 
                                                 })
@@ -1985,7 +1985,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: '   ')
                                         }
                                         td {
-                                            checkBox(text: 'Weiternutzung über 6 Monate vorgesehen', name: "_WEITERNUTZUNG6MON", clientPropertyJlawyerdescription: "Weiternutzung über 6 Monate vorgesehen", selected: true, actionPerformed: {
+                                            checkBox(text: 'Weiternutzung über 6 Monate vorgesehen', name: "_WEITERNUTZUNG6MON", clientPropertyJlawyerdescription: "Weiternutzung über 6 Monate vorgesehen", selected: false, actionPerformed: {
                                                 
                                                 })
                                         }

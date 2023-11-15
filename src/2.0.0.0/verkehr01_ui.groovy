@@ -1985,7 +1985,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: '   ')
                                         }
                                         td {
-                                            checkBox(text: 'Weiternutzung über 6 Monate vorgesehen', name: "_WEITERNUTZUNG6MON", clientPropertyJlawyerdescription: "Weiternutzung über 6 Monate vorgesehen", selected: true, actionPerformed: {
+                                            checkBox(text: 'Weiternutzung über 6 Monate vorgesehen', name: "_WEITERNUTZUNG6MON", clientPropertyJlawyerdescription: "Weiternutzung über 6 Monate vorgesehen", selected: false, actionPerformed: {
                                                 
                                                 })
                                         }

@@ -685,6 +685,9 @@ import java.awt.Component
 import java.awt.Container
 import com.jdimension.jlawyer.client.editors.EditorsRegistry;
 import javax.swing.JOptionPane;
+import com.jdimension.jlawyer.client.components.MultiCalDialog;
+import com.jdimension.jlawyer.client.editors.EditorsRegistry;
+
 
 public class GuiLib {
     
@@ -707,6 +710,11 @@ public class GuiLib {
     
     public static void showInformation(String title, String message) {
         JOptionPane.showMessageDialog(EditorsRegistry.getInstance().getMainWindow(), message, title, JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public static void dateSelector(JTextField target, boolean holidayWarning) {
+        MultiCalDialog dlg = new MultiCalDialog(target, EditorsRegistry.getInstance().getMainWindow(), true, false);
+        dlg.setVisible(true);
     }
     
 }

@@ -804,9 +804,14 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     
     JTextField txtExternalLink;
     
+    JTextField txtReparaturBeginn;
+    JTextField txtReparaturEnde;
+    JTextField txtReparaturDauer;
+    
     FormPluginCallback callback=null;
     
     NumberFormat betragFormat = NumberFormat.getInstance(Locale.GERMANY).getNumberInstance();
+    SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
         
     Hashtable<String,Float> ausfallTabellePkw=new Hashtable<String,Float>();
     Hashtable<String,Float> ausfallTabelleKrad=new Hashtable<String,Float>();
@@ -893,7 +898,6 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     public JPanel getUi() {
 
         int count = 0;
-        SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
         
         // betragFormat = NumberFormat.getInstance(Locale.GERMANY).getCurrency();
         //        NumberFormat betragFormat = NumberFormat.getInstance(Locale.GERMANY).getNumberInstance();
@@ -1772,6 +1776,51 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         }
                                         
                                     }
+                                    
+                                    tr {
+                                        td {
+                                            label(text: 'Beginn der Reparatur:')
+                                        }
+                                        td {
+                                           txtReparaturBeginn=formattedTextField(id: 'sReparaturBeginn', clientPropertyJlawyerdescription: "Reparaturbeginn (Datum)", name: "_REPABEGINN", format: datumsFormat, columns: 10, text: '', enabled: false)
+                                        }
+                                        td {
+                                            button(text: 'Auswählen', actionPerformed: {
+                                                    GuiLib.dateSelector(txtReparaturBeginn, true);
+                                                    berechnenReparaturDauer();
+                                            })
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Abschluss der Reparatur:')
+                                        }
+                                        td {
+                                           txtReparaturEnde=formattedTextField(id: 'sReparaturEnde', clientPropertyJlawyerdescription: "Reparaturabschluss (Datum)", name: "_REPAENDE", format: datumsFormat, columns: 10, text: '', enabled: false)
+                                        }
+                                        td {
+                                            button(text: 'Auswählen', actionPerformed: {
+                                                GuiLib.dateSelector(txtReparaturEnde, true);
+                                                berechnenReparaturDauer();
+                                            })
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Reparaturdauer (Tage):')
+                                        }
+                                        td {
+                                           txtReparaturDauer=textField(id: 'sReparaturDauer', clientPropertyJlawyerdescription: "Reparaturdauer in Tagen", name: "_REPADAUER", columns: 10, text: '', enabled: false)
+                                        }
+                                        td {
+                                            
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: '   ')
+                                        }
+                                    }
                 
                                     tr {
                                         td {
@@ -2012,7 +2061,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         td {
                                             label(text: '   ')
                                         }
-                                        td {
+                                        td (colspan: 3) {
                                             checkBox(text: 'Weiternutzung über 6 Monate vorgesehen', name: "_WEITERNUTZUNG6MON", clientPropertyJlawyerdescription: "Weiternutzung über 6 Monate vorgesehen", selected: false, actionPerformed: {
                                                 
                                                 })
@@ -2905,6 +2954,27 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         
         berechnen(null, null, null, null);
         
+    }
+    
+    private void berechnenReparaturDauer() {
+        txtReparaturDauer.setText("");
+        try {
+            String s1=txtReparaturBeginn.getText();
+            String s2=txtReparaturEnde.getText();
+            if(s1!=null && s2!=null) {
+                
+                java.util.Date d1=datumsFormat.parse(s1);
+                java.util.Date d2=datumsFormat.parse(s2);
+                
+                long differenceInMillis = d2.getTime() - d1.getTime();
+                
+                long daysDifference = differenceInMillis / (1000 * 60 * 60 * 24);
+                txtReparaturDauer.setText(""+daysDifference);
+            }
+        } catch (Throwable t) {
+            System.out.println("Reparaturdauer kann nicht berechnet werden");
+            t.printStackTrace();
+        }
     }
     
     private void berechnenNutzungsausfall(JTextField value, JTextField reg, JTextField diff, String ausfallGruppe, JTextField from, JTextField to, String fahrzeugTyp) {

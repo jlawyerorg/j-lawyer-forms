@@ -687,6 +687,8 @@ import java.awt.Component
 import java.awt.Container
 import java.math.BigDecimal
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
+import com.jdimension.jlawyer.client.utils.DesktopUtils
+import com.jdimension.jlawyer.client.settings.ServerSettings
 
 public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
 
@@ -799,6 +801,8 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     
     JTextField txtTotalKosten;
     JTextField txtTotalDifferenz;
+    
+    JTextField txtExternalLink;
     
     FormPluginCallback callback=null;
     
@@ -913,6 +917,30 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                 //borderLayout()
                 tableLayout (id: 'pluginParent', cellpadding: 5) {
             
+                    tr {
+                        td (colfill:true, align: 'left') {
+                            panel(border: titledBorder(title: 'Link zu externem System')) {
+                                tableLayout (cellpadding: 5) {
+                                    tr {
+                                        td (colfill:true) {
+                                            label(text: 'Link:')
+                                        }
+                                        td {
+                                            txtExternalLink=textField(id: 'sExternalLink', name: "_EXTLINK", clientPropertyJlawyerdescription: "externer Link", text: getDefaultLink(), columns:50)
+                                        }
+                                        td {
+                                            button(text: 'Öffnen', actionPerformed: {
+                                                DesktopUtils.openBrowser(txtExternalLink.getText());
+                                            })
+                                        }
+                                    }
+                
+                                }   
+                        
+                            }     
+                        }
+                    }
+                    
                     tr {
                         td (colfill:true, align: 'left') {
                             panel(border: titledBorder(title: 'Unfalldaten')) {
@@ -2921,5 +2949,10 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         
     }
 
-
+    private String getDefaultLink() {
+        ServerSettings set=ServerSettings.getInstance();
+        String link=set.getSetting("forms.verkehr01.site.extlink", "");
+        return link;
+    }
+    
 }

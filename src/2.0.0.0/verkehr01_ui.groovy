@@ -1810,7 +1810,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Reparaturdauer (Tage):')
                                         }
                                         td {
-                                           txtReparaturDauer=textField(id: 'sReparaturDauer', clientPropertyJlawyerdescription: "Reparaturdauer in Tagen", name: "_REPADAUER", columns: 10, text: '', enabled: false)
+                                           txtReparaturDauer=textField(id: 'sReparaturDauer', clientPropertyJlawyerdescription: "Reparaturdauer in Tagen", name: "_REPATAGE", columns: 10, text: '', enabled: false)
                                         }
                                         td {
                                             
@@ -2076,21 +2076,6 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             textField(id: 'sTeilSelbstRepa', clientPropertyJlawyerdescription: "Teil- oder Selbstreparatur vorgesehen?", name: "_TEILSELBSTREPA", text: '', columns:20)
                                         }
                                         
-                                    }
-                                    tr {
-                                        td (colfill:true, align: 'left') {
-                                            label(text: 'Reparaturdauer (Tage):')
-                                        }
-                                        td {
-                                            spinner(id: 'nRepaDauer', clientPropertyJlawyerdescription: "Reparaturdauer in Tagen", name: "_REPATAGE", 
-                                                model:spinnerNumberModel(minimum:0, 
-                                                    maximum: 999,
-                                                    value:0,
-                                                    stepSize:1))
-                                        }
-                                        td {
-                                    
-                                        }
                                     }
                                 }   
                         

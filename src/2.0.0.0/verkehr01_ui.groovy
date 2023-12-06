@@ -703,6 +703,11 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     JTextField txtReparaturKostenMwst;
     JTextField txtReparaturKostenReg;
     JTextField txtReparaturKostenDiff;
+    JTextField txtNfa;
+    JTextField txtNfaMwst;
+    JTextField txtNfaReg;
+    JTextField txtNfaDiff;
+    JCheckBox chkNfaDiff;
     JTextField txtReparaturKostenGutachten;
     JTextField txtReparaturKostenRegGutachten;
     JTextField txtReparaturKostenDiffGutachten;
@@ -870,6 +875,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         togglePrivatGeschaeft();
         
         berechnen(txtReparaturKosten, txtReparaturKostenMwst, txtReparaturKostenReg, txtReparaturKostenDiff);
+        berechnen(txtNfa, txtNfaMwst, txtNfaReg, txtNfaDiff)
         berechnen(txtReparaturKostenGutachten, null, txtReparaturKostenRegGutachten, txtReparaturKostenDiffGutachten);
         berechnen(txtWertminderung, null, txtWertminderungReg, txtWertminderungDiff);
         berechnenTotalschaden(txtWiederbeschaffungswert, txtWiederbeschaffungswertMwst, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff, radioTotalSchadenStRegel.isSelected(), radioTotalSchadenStDiff.isSelected(), radioTotalSchadenStNeutral.isSelected());
@@ -1916,6 +1922,30 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                 
                                     tr {
                                         td {
+                                            label(text: 'abzüglich Neu-für-alt:')
+                                        }
+                                        td {
+                                            txtNfa=formattedTextField(id: 'nNfa', name: "_NFA", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtNfa, txtNfaMwst, txtNfaReg, txtNfaDiff) })
+                                        }
+                                        td {
+                                            txtNfaMwst=formattedTextField(id: 'nNfaMwst', name: "_NFA_MWST", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, enabled: false, keyReleased: { berechnen(txtNfa, txtNfaMwst, txtNfaReg, txtNfaDiff) })
+                                        }
+                                        td {
+                                            txtNfaReg=formattedTextField(id: 'nNfaReg', name: "_NFA_REG", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, enabled: false)
+                                        }
+                                        td {
+                                            txtNfaDiff=formattedTextField(id: 'nNfaDiff', name: "_NFA_DIFF", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, enabled: false)
+                                    
+                                        }
+                                        td {
+                                            chkNfaDiff = checkBox(text: '', name: "_NFA_DIFF_AN", clientPropertyJlawyerdescription: "", selected: true, actionPerformed: {
+                                                    berechnen()
+                                                
+                                                })
+                                        }
+                                    }
+                                    tr {
+                                        td {
                                             label(text: 'Merkantile Wertminderung:')
                                         }
                                         td {
@@ -2119,7 +2149,10 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Differenz')
                                         }
                                         td {
-                                            //label(text: 'Differenz')
+                                            label(text: ' ')
+                                        }
+                                        td {
+                                            label(text: 'Rechnungsnr.')
                                         }
                                     }
                                     tr {
@@ -2145,6 +2178,9 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 
                                                 }) 
                                         }
+                                        td {
+                                            
+                                        }
                                     }
                                     tr {
                                         td {
@@ -2168,6 +2204,9 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                     berechnen()
                                                 
                                                 }) 
+                                        }
+                                        td {
+                                            
                                         }
                                     }
                                     tr {
@@ -2193,6 +2232,9 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 
                                                 }) 
                                         }
+                                        td {
+                                            textField(id: 'nKostenGutachtenRgnr', name: "_KOSTENGUTACHTEN_RGNR", clientPropertyJlawyerdescription: "", text: '', columns: 10)
+                                        }
                                     }
                                     tr {
                                         td {
@@ -2217,6 +2259,9 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 
                                                 }) 
                                         }
+                                        td {
+                                            
+                                        }
                                     }
                                     tr {
                                         td {
@@ -2240,6 +2285,9 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                     berechnen()
                                                 
                                                 })
+                                        }
+                                        td {
+                                            
                                         }
                                     }
                 
@@ -2266,6 +2314,9 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 
                                                 })
                                         }
+                                        td {
+                                            
+                                        }
                                     }
                                 
                                     tr {
@@ -2290,6 +2341,9 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                     berechnen()
                                                 
                                                 })
+                                        }
+                                        td {
+                                            
                                         }
                                     }
                                     
@@ -2316,6 +2370,9 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 
                                                 })
                                         }
+                                        td {
+                                            
+                                        }
                                     }
                 
                                     tr {
@@ -2340,6 +2397,9 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                     berechnen()
                                                 
                                                 })
+                                        }
+                                        td {
+                                            
                                         }
                                     }
                                 
@@ -2366,6 +2426,9 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 
                                                 })
                                         }
+                                        td {
+                                            
+                                        }
                                     }
                                     tr {
                                         td {
@@ -2389,6 +2452,9 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                     berechnen()
                                                 
                                                 })
+                                        }
+                                        td {
+                                            
                                         }
                                     }
                                     tr {
@@ -2414,6 +2480,9 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 
                                                 })
                                         }
+                                        td {
+                                            
+                                        }
                                     }
                                     tr {
                                         td {
@@ -2438,12 +2507,15 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 
                                                 })
                                         }
+                                        td {
+                                            
+                                        }
                                     }
                                     tr {
                                         td {
                                             label(text: 'Sonstiges (auflisten):')
                                         }
-                                        td (colspan: 5) {
+                                        td (colspan: 6) {
                                             textField(id: 'sSonstigesListe', name: "_KOSTENSONST_LISTE", clientPropertyJlawyerdescription: "Sonstige Kosten (aufgelistet)", text: '', columns: 60)
                                         }
                                     }
@@ -2451,7 +2523,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         td {
                                             label(text: 'davon reguliert (auflisten):')
                                         }
-                                        td (colspan: 5) {
+                                        td (colspan: 6) {
                                             textField(id: 'sSonstigesListeReg', name: "_KOSTENSONST_REG_LISTE", clientPropertyJlawyerdescription: "Sonstige Kosten (reguliert)", text: '', columns: 60)
                                         }
                                     }
@@ -2612,6 +2684,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     
     private void togglePrivatGeschaeft() {
         berechnen(txtReparaturKosten, txtReparaturKostenMwst, txtReparaturKostenReg, txtReparaturKostenDiff);
+        berechnen(txtNfa, txtNfaMwst, txtNfaReg, txtNfaDiff);
         berechnen(txtKostenGutachten, txtKostenGutachtenMwst, txtKostenGutachtenReg, txtKostenGutachtenDiff);
         berechnen(txtKostenAkteneinsicht, null, txtKostenAkteneinsichtReg, txtKostenAkteneinsichtDiff);
         berechnen(txtAbschleppKosten, txtAbschleppKostenMwst, txtAbschleppKostenReg, txtAbschleppKostenDiff);
@@ -2740,6 +2813,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                 currentSum+=betragFormat.parse(txtReparaturKostenMwst.text)
                 currentSum+=betragFormat.parse(txtReparaturKostenGutachten.text)
                 currentSum+=betragFormat.parse(txtWertminderung.text)
+                currentSum-=betragFormat.parse(txtNfa.text)
             } else {
                 currentSum+=betragFormat.parse(txtWiederbeschaffungswert.text)
                 // need to subtract mwst
@@ -2782,6 +2856,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                 currentSum+=betragFormat.parse(txtReparaturKostenReg.text)
                 currentSum+=betragFormat.parse(txtReparaturKostenRegGutachten.text)
                 currentSum+=betragFormat.parse(txtWertminderungReg.text)
+                currentSum-=betragFormat.parse(txtNfaReg.text)
             } else {
                 currentSum+=betragFormat.parse(txtWiederbeschaffungswertReg.text)
                 // this value is subtracted
@@ -2817,11 +2892,13 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                 currentSum+=betragFormat.parse(txtReparaturKostenDiffGutachten.text)
                 if(chkWertminderungDiff.selected)
                 currentSum+=betragFormat.parse(txtWertminderungDiff.text)
+                if(chkNfaDiff.selected)
+                    currentSum+=betragFormat.parse(txtNfaDiff.text)
             } else {
                 if(chkWiederbeschaffungswertDiff.selected)
-                currentSum+=betragFormat.parse(txtWiederbeschaffungswertDiff.text)
+                    currentSum+=betragFormat.parse(txtWiederbeschaffungswertDiff.text)
                 if(chkRestwertDiff.selected)
-                currentSum+=betragFormat.parse(txtRestwertDiff.text)
+                    currentSum+=betragFormat.parse(txtRestwertDiff.text)
             }
             if(chkUnfallPauschaleDiff.selected)
             currentSum+=betragFormat.parse(txtUnfallPauschaleDiff.text)

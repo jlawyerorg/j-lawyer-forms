@@ -807,6 +807,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     JTextField txtReparaturBeginn;
     JTextField txtReparaturEnde;
     JTextField txtReparaturDauer;
+    JTextField txtReparaturRechnung;
     
     FormPluginCallback callback=null;
     
@@ -1814,6 +1815,19 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         }
                                         td {
                                             
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Datum der Reparaturrechnung:')
+                                        }
+                                        td {
+                                           txtReparaturRechnung=formattedTextField(id: 'sReparaturRechnung', clientPropertyJlawyerdescription: "Reparaturrechnung vom (Datum)", name: "_REPARECHNUNG", format: datumsFormat, columns: 10, text: '', enabled: false)
+                                        }
+                                        td {
+                                            button(text: 'Auswählen', actionPerformed: {
+                                                    GuiLib.dateSelector(txtReparaturRechnung, true);
+                                            })
                                         }
                                     }
                                     tr {

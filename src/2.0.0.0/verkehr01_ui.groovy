@@ -2179,7 +2179,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 }) 
                                         }
                                         td {
-                                            
+                                            textField(id: 'nUnfallPauschaleRgnr', name: "_UNFALLPAUSCH_RGNR", clientPropertyJlawyerdescription: "Rechnungsnummer Unfallpauschale", text: '', columns: 10)
                                         }
                                     }
                                     tr {
@@ -2206,7 +2206,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 }) 
                                         }
                                         td {
-                                            
+                                            textField(id: 'nNutzungsAusfallRgnr', name: "_NUTZUNGSAUSF_RGNR", clientPropertyJlawyerdescription: "Rechnungsnummer Nutzungsausfall", text: '', columns: 10)
                                         }
                                     }
                                     tr {
@@ -2233,7 +2233,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 }) 
                                         }
                                         td {
-                                            textField(id: 'nKostenGutachtenRgnr', name: "_KOSTENGUTACHTEN_RGNR", clientPropertyJlawyerdescription: "", text: '', columns: 10)
+                                            textField(id: 'nKostenGutachtenRgnr', name: "_KOSTENGUTACHTEN_RGNR", clientPropertyJlawyerdescription: "Rechnungsnummer Gutachterkosten", text: '', columns: 10)
                                         }
                                     }
                                     tr {
@@ -2260,7 +2260,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 }) 
                                         }
                                         td {
-                                            
+                                            textField(id: 'nKostenAkteneinsichtRgnr', name: "_KOSTENAKTENEINSICHT_RGNR", clientPropertyJlawyerdescription: "Rechnungsnummer Akteneinsichtsgebühr", text: '', columns: 10)
                                         }
                                     }
                                     tr {
@@ -2287,7 +2287,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 })
                                         }
                                         td {
-                                            
+                                            textField(id: 'nAbschleppKostenRgnr', name: "_KOSTENABSCHLEPP_RGNR", clientPropertyJlawyerdescription: "Rechnungsnummer Abschleppkosten", text: '', columns: 10)
                                         }
                                     }
                 
@@ -2315,7 +2315,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 })
                                         }
                                         td {
-                                            
+                                            textField(id: 'nStandgeld', name: "_KOSTENSTANDGELD_RGNR", clientPropertyJlawyerdescription: "Rechnungsnummer Standgeld", text: '', columns: 10)
                                         }
                                     }
                                 
@@ -2343,7 +2343,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 })
                                         }
                                         td {
-                                            
+                                            textField(id: 'nMietwagenKosten', name: "_KOSTENMIETW_RGNR", clientPropertyJlawyerdescription: "Rechnungsnummer Mietwagenkosten", text: '', columns: 10)
                                         }
                                     }
                                     
@@ -2371,7 +2371,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 })
                                         }
                                         td {
-                                            
+                                            textField(id: 'nAbmeldeKosten', name: "_KOSTENABMELDE_RGNR", clientPropertyJlawyerdescription: "Rechnungsnummer Abmeldekosten", text: '', columns: 10)
                                         }
                                     }
                 
@@ -2399,7 +2399,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 })
                                         }
                                         td {
-                                            
+                                            textField(id: 'nAnmeldeKosten', name: "_KOSTENANMELDE_RGNR", clientPropertyJlawyerdescription: "Rechnungsnummer Anmeldekosten", text: '', columns: 10)
                                         }
                                     }
                                 
@@ -2427,7 +2427,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 })
                                         }
                                         td {
-                                            
+                                            textField(id: 'nSonstigeKosten', name: "_KOSTENSONST_RGNR", clientPropertyJlawyerdescription: "Rechnungsnummer Sonstiges (1)", text: '', columns: 10)
                                         }
                                     }
                                     tr {
@@ -2454,7 +2454,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 })
                                         }
                                         td {
-                                            
+                                            textField(id: 'nSonstigeKosten2', name: "_KOSTENSONST2_RGNR", clientPropertyJlawyerdescription: "Rechnungsnummer Sonstiges (2)", text: '', columns: 10)
                                         }
                                     }
                                     tr {
@@ -2481,7 +2481,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 })
                                         }
                                         td {
-                                            
+                                            textField(id: 'nSonstigeKosten3', name: "_KOSTENSONST3_RGNR", clientPropertyJlawyerdescription: "Rechnungsnummer Sonstiges (3)", text: '', columns: 10)
                                         }
                                     }
                                     tr {
@@ -2508,7 +2508,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 })
                                         }
                                         td {
-                                            
+                                            textField(id: 'nSonstigeKosten4', name: "_KOSTENSONST4_RGNR", clientPropertyJlawyerdescription: "Rechnungsnummer Sonstiges (4)", text: '', columns: 10)
                                         }
                                     }
                                     tr {

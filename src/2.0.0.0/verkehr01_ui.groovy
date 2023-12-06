@@ -2179,7 +2179,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 }) 
                                         }
                                         td {
-                                            textField(id: 'nUnfallPauschaleRgnr', name: "_UNFALLPAUSCH_RGNR", clientPropertyJlawyerdescription: "Rechnungsnummer Unfallpauschale", text: '', columns: 10)
+                                            label(text: '   ')
                                         }
                                     }
                                     tr {
@@ -2206,7 +2206,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 }) 
                                         }
                                         td {
-                                            textField(id: 'nNutzungsAusfallRgnr', name: "_NUTZUNGSAUSF_RGNR", clientPropertyJlawyerdescription: "Rechnungsnummer Nutzungsausfall", text: '', columns: 10)
+                                            label(text: '   ')
                                         }
                                     }
                                     tr {

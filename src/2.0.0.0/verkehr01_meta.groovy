@@ -664,7 +664,7 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "Verkehrsunfalldaten"
 description = "Verkehrsunfalldaten"
-version = "2.12.0";
+version = "2.13.0";
 author = "Jens Kutschke"
 updated = "07.12.2023"
 

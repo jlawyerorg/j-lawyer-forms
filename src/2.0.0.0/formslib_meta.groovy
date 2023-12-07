@@ -664,7 +664,7 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "Formularbibliothek"
 description = "Formularbibliothek"
-version = "1.8.1";
+version = "1.8.2";
 author = "Jens Kutschke"
 updated = "07.12.2023"
 

@@ -1835,6 +1835,12 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                     GuiLib.dateSelector(txtReparaturRechnung, true);
                                             })
                                         }
+                                        td {
+                                            label(text: 'Rechnungsnr.:')
+                                        }
+                                        td {
+                                            textField(id: 'sReparaturRgnr', name: "_REPA_RGNR", clientPropertyJlawyerdescription: "Rechnungsnummer Reparaturkosten", text: '', columns: 10)
+                                        }
                                     }
                                     tr {
                                         td {

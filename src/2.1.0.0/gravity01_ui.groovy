@@ -1010,6 +1010,11 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                     tabbedPane(id: 'tabs') {
                         panel(name: 'Formular') {
                             vbox {
+                                panel(border: titledBorder(title: 'Datenübernahme')) {
+                                    button(text: 'neuer Adressbucheintrag', actionPerformed: {
+                                                showAddressImportDialog();
+                                            })
+                                }
                                 dynamicPanel=panel(border: titledBorder(title: 'Formulardaten')) {
                                 
                                 }
@@ -1219,6 +1224,234 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
         dialog.setLocationRelativeTo(null);
 
         dialog.setVisible(true);
+    }
+    
+    private void showAddressImportDialog() {
+        JDialog dialog = new JDialog();
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setTitle("Adresse erstellen");
+        
+        
+        
+        
+        javax.swing.JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
+        javax.swing.JTable tblAttributes = new javax.swing.JTable();
+        tblAttributes.putClientProperty("terminateEditOnFocusLost", true);
+        javax.swing.JButton cmdClose = new javax.swing.JButton();
+        javax.swing.JButton cmdConfirm = new javax.swing.JButton();
+
+        dialog.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        java.util.Vector colNames=new java.util.Vector();
+        colNames.add("Platzhalter");
+        colNames.add("Wert");
+        colNames.add("verwenden als");
+
+        tblAttributes.setModel(new javax.swing.table.DefaultTableModel(colNames,0) {
+            public Class getColumnClass(int columnIndex) {
+                return String.class;
+            }
+        });
+        jScrollPane1.setViewportView(tblAttributes);
+
+        cmdClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cancel.png"))); // NOI18N
+        cmdClose.setText("Abbrechen");
+        cmdClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dialog.setVisible(false);
+                dialog.dispose();
+            }
+        });
+
+        cmdConfirm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/agt_action_success.png"))); // NOI18N
+        cmdConfirm.setText("Übernehmen");
+        cmdConfirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAddressFromAttributes(tblAttributes, dialog);
+                
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(dialog.getContentPane());
+        dialog.getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(cmdConfirm)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmdClose))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1057, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmdClose)
+                    .addComponent(cmdConfirm))
+                .addContainerGap())
+        );
+
+        dialog.pack();
+        
+        javax.swing.table.DefaultTableModel tm = (javax.swing.table.DefaultTableModel) tblAttributes.getModel();
+        tm.setRowCount(0);
+        tblAttributes.setDefaultEditor(Object.class, new AttributeCellEditor());
+        
+        java.util.Hashtable<String,String> placeHolders =getPlaceHolderValues("");
+        
+        extractAttributes(tblAttributes, placeHolders);
+        
+
+        // Set the size of the dialog
+        dialog.setSize(700, 600);
+
+        // Set the dialog to be modal
+        dialog.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+
+        // Center the dialog on the screen
+        dialog.setLocationRelativeTo(null);
+
+        dialog.setVisible(true);
+    }
+    
+    private void saveAddressFromAttributes(javax.swing.JTable tblAttributes, javax.swing.JDialog dialog) {
+        
+        java.util.ArrayList multiples=new java.util.ArrayList();
+        java.util.ArrayList keys=new java.util.ArrayList();
+        for(int i=0;i<tblAttributes.getRowCount();i++) {
+            Object v=tblAttributes.getValueAt(i, 2);
+            if(v==null || "".equals(v))
+                continue;
+            if(!keys.contains(v.toString()))
+                keys.add(v.toString());
+            else
+                multiples.add(v.toString());
+        }
+        
+        if(multiples.size()>0) {
+            GuiLib.showInformation("Prüfung", "Es sind doppelte Werte vorhanden für " + multiples.toArray());
+            return;
+        }
+        
+        com.jdimension.jlawyer.persistence.AddressBean ab=new com.jdimension.jlawyer.persistence.AddressBean();
+        for(int i=0;i<tblAttributes.getRowCount();i++) {
+            String k=tblAttributes.getValueAt(i, 2);
+            if(k==null || "".equals(k))
+                continue;
+            
+            String att=k;
+            String v=tblAttributes.getValueAt(i, 1);
+            if(v==null)
+                v="";
+            if(att.equals(AttributeCellEditor.ATTRIBUTE_ABTEILUNG)) {
+                ab.setDepartment(v);
+            } else if(att.equals(AttributeCellEditor.ATTRIBUTE_BERUF)) {
+                ab.setProfession(v);
+            } else if(att.equals(AttributeCellEditor.ATTRIBUTE_EMAIL)) {
+                ab.setEmail(v);
+            } else if(att.equals(AttributeCellEditor.ATTRIBUTE_FAX)) {
+                ab.setFax(v);
+            } else if(att.equals(AttributeCellEditor.ATTRIBUTE_FUNKTION)) {
+                ab.setRole(v);
+            } else if(att.equals(AttributeCellEditor.ATTRIBUTE_HAUSNR)) {
+                ab.setStreetNumber(v);
+            } else if(att.equals(AttributeCellEditor.ATTRIBUTE_LAND)) {
+                ab.setCountry(v);
+            } else if(att.equals(AttributeCellEditor.ATTRIBUTE_MOBIL)) {
+                ab.setMobile(v);
+            } else if(att.equals(AttributeCellEditor.ATTRIBUTE_NAME)) {
+                ab.setName(v);
+            } else if(att.equals(AttributeCellEditor.ATTRIBUTE_ORT)) {
+                ab.setCity(v);
+            } else if(att.equals(AttributeCellEditor.ATTRIBUTE_PLZ)) {
+                ab.setZipCode(v);
+            } else if(att.equals(AttributeCellEditor.ATTRIBUTE_STRASSE)) {
+                ab.setStreet(v);
+            } else if(att.equals(AttributeCellEditor.ATTRIBUTE_TEL)) {
+                ab.setPhone(v);
+            } else if(att.equals(AttributeCellEditor.ATTRIBUTE_UNTERNEHMEN)) {
+                ab.setCompany(v);
+            } else if(att.equals(AttributeCellEditor.ATTRIBUTE_VORNAME)) {
+                ab.setFirstName(v);
+            }
+            
+        }
+        
+        StorageLib.addAddress(ab);
+        
+        dialog.setVisible(false);
+        dialog.dispose();
+    }
+    
+    private void extractAttributes(javax.swing.JTable tblAttributes, java.util.Hashtable<String,String> placeHolders) {
+
+        javax.swing.table.DefaultTableModel tm = (javax.swing.table.DefaultTableModel) tblAttributes.getModel();
+        tm.setRowCount(0);
+        
+        for (String key : placeHolders.keySet()) {
+            
+            if(key.toUpperCase().contains("FORMSTRUCTURE")) {
+                // not needed - contains JSON
+                continue;
+            }
+                
+            String line=placeHolders.get(key);
+            if(line.isEmpty())
+                continue;
+            
+            
+            String field="";
+            if(key.toUpperCase().contains("EMAIL") || line.contains("@") || line.contains("(at)")) {
+                field=AttributeCellEditor.ATTRIBUTE_EMAIL;
+                line=line.replace("E-Mail:", "");
+                line=line.replace("Email:", "");
+                line=line.replace("Mail:", "");
+                line=line.replace("(at)", "@");
+                line=line.replace("(dot)", ".");
+                line=line.replace(":", "");
+                line=line.trim();
+
+            } else if (key.toUpperCase().contains("TELEFON") || line.toLowerCase().contains("telefon") || line.toLowerCase().contains("tel:") || line.toLowerCase().contains("tel.")) {
+                field=AttributeCellEditor.ATTRIBUTE_TEL;
+                line=line.replace("Telefonnummer", "");
+                line=line.replace("telefonnummer", "");
+                line=line.replace("Telefon", "");
+                line=line.replace("telefon", "");
+                line=line.replace("Tel", "");
+                line=line.replace("tel", "");
+                line=line.replace("Tel.", "");
+                line=line.replace("tel.", "");
+                line=line.replace(":", "");
+                line=line.replace(".", "");
+                line=line.trim();
+            } else if (key.toUpperCase().contains("FAX") || line.toLowerCase().contains("fax") || line.toLowerCase().contains("fax:") || line.toLowerCase().contains("telefax") || line.toLowerCase().contains("telefax:")) {
+                field=AttributeCellEditor.ATTRIBUTE_FAX;
+                line=line.replace("Telefax", "");
+                line=line.replace("telefax", "");
+                line=line.replace("Fax", "");
+                line=line.replace("fax", "");
+                line=line.replace(":", "");
+                line=line.replace(".", "");
+                line=line.trim();
+            } else if(key.toUpperCase().contains("PLZ") || line.matches("\\d{5}")) {
+                field=AttributeCellEditor.ATTRIBUTE_PLZ;
+            } else if(key.toUpperCase().contains("STRASSE") || line.toLowerCase().contains("strasse") || line.toLowerCase().contains("straße") || line.toLowerCase().contains("allee")) {
+                field=AttributeCellEditor.ATTRIBUTE_STRASSE;
+            } else if(key.toUpperCase().contains("HAUSNR") || line.matches("\\d{1,3}[abc]?")) {
+                field=AttributeCellEditor.ATTRIBUTE_HAUSNR;
+            }
+            
+            String[] rowValues=[key, line, field];
+            tm.addRow(rowValues);
+        }
+        
     }
     
     private void loadSites() {

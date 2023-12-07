@@ -691,6 +691,7 @@ import com.jdimension.jlawyer.persistence.ArchiveFileReviewsBean;
 import com.jdimension.jlawyer.persistence.ArchiveFileAddressesBean;
 import com.jdimension.jlawyer.persistence.ArchiveFileDocumentsBean;
 import com.jdimension.jlawyer.services.ArchiveFileServiceRemote;
+import com.jdimension.jlawyer.services.AddressServiceRemote;
 import com.jdimension.jlawyer.services.CalendarServiceRemote;
 import com.jdimension.jlawyer.services.JLawyerServiceLocator;
 import com.jdimension.jlawyer.client.settings.UserSettings;
@@ -763,6 +764,19 @@ public class StorageLib {
             
         } catch (Exception ex) {
             ThreadUtils.showErrorDialog(EditorsRegistry.getInstance().getMainWindow(), "Fehler beim Speichern des Dokuments: " + ex.getMessage(), "Fehler");
+        }
+    }
+    
+    public static addAddress(com.jdimension.jlawyer.persistence.AddressBean ab) {
+        ClientSettings settings = ClientSettings.getInstance();
+        try {
+            JLawyerServiceLocator locator = JLawyerServiceLocator.getInstance(settings.getLookupProperties());
+            AddressServiceRemote adr = locator.lookupAddressServiceRemote();
+            adr.createAddress(ab);
+            ThreadUtils.showInformationDialog(EditorsRegistry.getInstance().getMainWindow(), "Adresse wurde gespeichert und kann nun zur Akte hinzugefügt werden.", "Adresse");
+            
+        } catch (Exception ex) {
+            ThreadUtils.showErrorDialog(EditorsRegistry.getInstance().getMainWindow(), "Fehler beim Speichern der Adresse: " + ex.getMessage(), "Fehler");
         }
     }
     

@@ -875,11 +875,11 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         togglePrivatGeschaeft();
         
         berechnen(txtReparaturKosten, txtReparaturKostenMwst, txtReparaturKostenReg, txtReparaturKostenDiff);
-        berechnen(txtNfa, txtNfaMwst, txtNfaReg, txtNfaDiff)
+        berechnen(txtNfa, txtNfaMwst, txtNfaReg, txtNfaDiff, true)
         berechnen(txtReparaturKostenGutachten, null, txtReparaturKostenRegGutachten, txtReparaturKostenDiffGutachten);
         berechnen(txtWertminderung, null, txtWertminderungReg, txtWertminderungDiff);
         berechnenTotalschaden(txtWiederbeschaffungswert, txtWiederbeschaffungswertMwst, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff, radioTotalSchadenStRegel.isSelected(), radioTotalSchadenStDiff.isSelected(), radioTotalSchadenStNeutral.isSelected());
-        berechnen(txtRestwertReg, null, txtRestwert, txtRestwertDiff);
+        berechnen(txtRestwert, null, txtRestwertReg, txtRestwertDiff, true);
         berechnen(txtUnfallPauschale, null, txtUnfallPauschaleReg, txtUnfallPauschaleDiff);
         berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString());
         berechnen(txtKostenGutachten, txtKostenGutachtenMwst, txtKostenGutachtenReg, txtKostenGutachtenDiff);
@@ -1925,10 +1925,10 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'abzüglich Neu-für-alt:')
                                         }
                                         td {
-                                            txtNfa=formattedTextField(id: 'nNfa', name: "_NFA", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtNfa, txtNfaMwst, txtNfaReg, txtNfaDiff) })
+                                            txtNfa=formattedTextField(id: 'nNfa', name: "_NFA", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtNfa, txtNfaMwst, txtNfaReg, txtNfaDiff, true) })
                                         }
                                         td {
-                                            txtNfaMwst=formattedTextField(id: 'nNfaMwst', name: "_NFA_MWST", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, enabled: false, keyReleased: { berechnen(txtNfa, txtNfaMwst, txtNfaReg, txtNfaDiff) })
+                                            txtNfaMwst=formattedTextField(id: 'nNfaMwst', name: "_NFA_MWST", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, enabled: false, keyReleased: { berechnen(txtNfa, txtNfaMwst, txtNfaReg, txtNfaDiff, true) })
                                         }
                                         td {
                                             txtNfaReg=formattedTextField(id: 'nNfaReg', name: "_NFA_REG", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, enabled: false)
@@ -2062,13 +2062,13 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Abzüglich Restwert:')
                                         }
                                         td {
-                                            txtRestwert=formattedTextField(id: 'nRestwert', name: "_RESTWERT", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtRestwertReg, null, txtRestwert, txtRestwertDiff) })
+                                            txtRestwert=formattedTextField(id: 'nRestwert', name: "_RESTWERT", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtRestwert, null, txtRestwertReg, txtRestwertDiff, true) })
                                         }
                                         td {
                                             label(text: '   ')
                                         }
                                         td {
-                                            txtRestwertReg=formattedTextField(id: 'nRestwertReg', name: "_RESTWERT_REG", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtRestwertReg, null, txtRestwert, txtRestwertDiff) })
+                                            txtRestwertReg=formattedTextField(id: 'nRestwertReg', name: "_RESTWERT_REG", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtRestwert, null, txtRestwertReg, txtRestwertDiff, true) })
                                         }
                                         td {
                                             txtRestwertDiff=formattedTextField(id: 'nRestwertDiff', name: "_RESTWERT_DIFF", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, enabled: false)
@@ -2684,7 +2684,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     
     private void togglePrivatGeschaeft() {
         berechnen(txtReparaturKosten, txtReparaturKostenMwst, txtReparaturKostenReg, txtReparaturKostenDiff);
-        berechnen(txtNfa, txtNfaMwst, txtNfaReg, txtNfaDiff);
+        berechnen(txtNfa, txtNfaMwst, txtNfaReg, txtNfaDiff, true);
         berechnen(txtKostenGutachten, txtKostenGutachtenMwst, txtKostenGutachtenReg, txtKostenGutachtenDiff);
         berechnen(txtKostenAkteneinsicht, null, txtKostenAkteneinsichtReg, txtKostenAkteneinsichtDiff);
         berechnen(txtAbschleppKosten, txtAbschleppKostenMwst, txtAbschleppKostenReg, txtAbschleppKostenDiff);
@@ -2751,6 +2751,10 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     }
     
     private void berechnen(JTextField value, JTextField mwst, JTextField reg, JTextField diff) {
+        berechnen(value, mwst, reg, diff, false);
+    }
+    
+    private void berechnen(JTextField value, JTextField mwst, JTextField reg, JTextField diff, boolean negative) {
         
         float sub1=0f;
         float sub2=0f;
@@ -2796,8 +2800,12 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         
             float v=betragFormat.parse(value.text).floatValue();
             float r=betragFormat.parse(reg.text).floatValue();
-            diff.setText(betragFormat.format((float)(v+vat-r)));
-            if((v+vat-r)>0) {
+            float diffCalculated=(float)(v+vat-r);
+            if(negative)
+                diffCalculated=-1f*diffCalculated;
+            diff.setText(betragFormat.format(diffCalculated));
+            
+            if(diffCalculated>0) {
                 diff.setDisabledTextColor(java.awt.Color.RED);
             } else {
                 diff.setDisabledTextColor(java.awt.Color.BLACK);

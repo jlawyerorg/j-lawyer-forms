@@ -1518,7 +1518,11 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             txtNutzungsAusfallVon=formattedTextField(id: 'sNutzungsAusfallVon', clientPropertyJlawyerdescription: "Nutzungsausfall von...", name: "_NUTZAUSFALLVON", format: datumsFormat, columns: 10, text: '', keyReleased: { berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString()) })
                                         }
                                         td {
-                                            
+                                            button(text: 'von/bis zurücksetzen', actionPerformed: {
+                                                    txtNutzungsAusfallVon.setText("");
+                                                    txtNutzungsAusfallBis.setText("");
+                                                    berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString())
+                                            })
                                         }
                                         
                                     }

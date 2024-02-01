@@ -666,6 +666,8 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 import groovy.swing.SwingBuilder
 import java.awt.BorderLayout
 import java.awt.FlowLayout
+import java.awt.GridBagConstraints
+import java.awt.GridBagLayout
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 import java.awt.BorderLayout as BL
@@ -840,15 +842,23 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                 }
             }
         
-            dynamicPanel.setLayout(new java.awt.GridLayout(0, 2, 20, 10));
+            dynamicPanel.setLayout(new GridBagLayout());
+            GridBagConstraints con = new GridBagConstraints();
+            con.fill = GridBagConstraints.HORIZONTAL;
+            con.weightx = 1.0;
+    
+            int row=0;
             for(String id: sortedFieldIds) {
+                row=row+1;
                 println("" + System.currentTimeMillis() + " rendering field " + id);
                 GravityField f=fieldData.get(id);
                 if(f!=null) {
                     if(f.groupLabel!=null) {
                         // open new section with the relevant group caption
                         println("" + System.currentTimeMillis() + "   group label is " + f.groupLabel);
-                        dynamicPanel.add(new JLabel("<html><b>" + f.groupLabel + "</b></html>"));
+                        con.gridx = 0
+                        con.gridy = row - 1
+                        dynamicPanel.add(new JLabel("<html><b>" + f.groupLabel + "</b></html>"), con);
                     } else {
                         String inset="";
                         if(f.id.contains(".")) {
@@ -858,14 +868,20 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             // ignored
                         } else if("section".equals(f.type) || "page".equals(f.type)) {
                             // displayed without caption
-                            dynamicPanel.add(new JLabel());
+                            con.gridx = 0
+                            con.gridy = row - 1
+                            dynamicPanel.add(new JLabel(), con);
                         } else {
-                            dynamicPanel.add(new JLabel(inset + f.label));
+                            con.gridx = 0
+                            con.gridy = row - 1
+                            dynamicPanel.add(new JLabel(inset + f.label), con);
                         }
                     }
                 
-                    if(f.groupLabel!=null) { 
-                        dynamicPanel.add(new JLabel(""));
+                    if(f.groupLabel!=null) {
+                        con.gridx = 1
+                        con.gridy = row - 1
+                        dynamicPanel.add(new JLabel(""), con);
                     } else {
                         if("checkbox".equalsIgnoreCase(f.type)) {
                             JPanel checkboxPanel=new JPanel();
@@ -880,7 +896,9 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             tf.setEnabled(false);
                             tf.putClientProperty("Jlawyerdescription", f.label);
                             checkboxPanel.add(tf, BorderLayout.CENTER);
-                            dynamicPanel.add(checkboxPanel);
+                            con.gridx = 1
+                            con.gridy = row - 1
+                            dynamicPanel.add(checkboxPanel, con);
                         } else if("select".equalsIgnoreCase(f.type)) {
                             JComboBox cb=new JComboBox();
                             for(String valueEntry: f.getValueList()) {
@@ -888,20 +906,26 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             }
                             cb.setName(f.getPlaceHolderName());
                             cb.putClientProperty("Jlawyerdescription", f.label);
-                            dynamicPanel.add(cb);
+                            con.gridx = 1
+                            con.gridy = row - 1
+                            dynamicPanel.add(cb, con);
                         } else if("textarea".equalsIgnoreCase(f.type)) {
                             JTextArea ta=new JTextArea();
                             ta.setText("");
-                            ta.setRows(1);
+                            ta.setRows(5);
                             ta.setLineWrap(true);
                             ta.setWrapStyleWord(true);
                             ta.setName(f.getPlaceHolderName());
                             ta.putClientProperty("Jlawyerdescription", f.label);
                             JScrollPane scrollpane = new JScrollPane(ta);    
-                            dynamicPanel.add(scrollpane);
+                            con.gridx = 1
+                            con.gridy = row - 1
+                            dynamicPanel.add(scrollpane, con);
                         } else if("section".equalsIgnoreCase(f.type) || "page".equalsIgnoreCase(f.type)) {
                             JSeparator sep=new JSeparator();
-                            dynamicPanel.add(sep);
+                            con.gridx = 1
+                            con.gridy = row - 1
+                            dynamicPanel.add(sep, con);
                         } else if("html".equalsIgnoreCase(f.type)) {
                             // ignore, those are display only contents
                         } else if("fileupload".equalsIgnoreCase(f.type)) {
@@ -910,6 +934,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             uploadsPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
                             JTextArea ta=new JTextArea();
                             ta.setRows(1);
+                            ta.setColumns(50);
                             ta.setLineWrap(true);
                             ta.setName(f.getPlaceHolderName());
                             ta.putClientProperty("Jlawyerdescription", f.label);
@@ -924,8 +949,9 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                     }
                                 });
                             uploadsPanel.add(downloadButton);
-                            
-                            dynamicPanel.add(uploadsPanel);
+                            con.gridx = 1
+                            con.gridy = row - 1
+                            dynamicPanel.add(uploadsPanel, con);
                            
                         } else if("signature".equalsIgnoreCase(f.type)) {
                             
@@ -962,13 +988,16 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                     }
                                 });
                             uploadsPanel.add(viewButton);
-                            
-                            dynamicPanel.add(uploadsPanel);
+                            con.gridx = 1
+                            con.gridy = row - 1
+                            dynamicPanel.add(uploadsPanel, con);
                         } else {
                             JTextField tf=new JTextField("", TEXTFIELD_MAXCOLUMNS);
                             tf.setName(f.getPlaceHolderName());
                             tf.putClientProperty("Jlawyerdescription", f.label);
-                            dynamicPanel.add(tf);
+                            con.gridx = 1
+                            con.gridy = row - 1
+                            dynamicPanel.add(tf, con);
                         }
                     }
                 
@@ -1813,15 +1842,23 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                 }
             }
         
-            dynamicPanel.setLayout(new java.awt.GridLayout(0, 2, 20, 10));
+            dynamicPanel.setLayout(new GridBagLayout());
+            GridBagConstraints con = new GridBagConstraints();
+            con.fill = GridBagConstraints.HORIZONTAL;
+            con.weightx = 1.0;
+    
+            int row=0;
             for(String id: sortedFieldIds) {
                 println("" + System.currentTimeMillis() + " rendering field " + id);
+                row = row +1;
                 GravityField f=fieldData.get(id);
                 if(f!=null) {
                     if(f.groupLabel!=null) {
                         // open new section with the relevant group caption
                         println("" + System.currentTimeMillis() + "   group label is " + f.groupLabel);
-                        dynamicPanel.add(new JLabel("<html><b>" + f.groupLabel + "</b></html>"));
+                        con.gridx = 0
+                        con.gridy = row - 1
+                        dynamicPanel.add(new JLabel("<html><b>" + f.groupLabel + "</b></html>"), con);
                     } else {
                         String inset="";
                         if(f.id.contains(".")) {
@@ -1831,14 +1868,20 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             // ignored
                         } else if("section".equals(f.type) || "page".equals(f.type)) {
                             // displayed without caption
-                            dynamicPanel.add(new JLabel());
+                            con.gridx = 0
+                            con.gridy = row - 1
+                            dynamicPanel.add(new JLabel(), con);
                         } else {
-                            dynamicPanel.add(new JLabel(inset + f.label));
+                            con.gridx = 0
+                            con.gridy = row - 1
+                            dynamicPanel.add(new JLabel(inset + f.label), con);
                         }
                     }
                 
                     if(f.groupLabel!=null) { 
-                        dynamicPanel.add(new JLabel(""));
+                        con.gridx = 1
+                        con.gridy = row - 1
+                        dynamicPanel.add(new JLabel(""), con);
                     } else {
                         if("checkbox".equalsIgnoreCase(f.type)) {
                             println("" + System.currentTimeMillis() + " rendering checkbox");
@@ -1857,7 +1900,9 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             tf.setEnabled(false);
                             tf.putClientProperty("Jlawyerdescription", f.label);
                             checkboxPanel.add(tf, BorderLayout.CENTER);
-                            dynamicPanel.add(checkboxPanel);
+                            con.gridx = 1
+                            con.gridy = row - 1
+                            dynamicPanel.add(checkboxPanel, con);
                         } else if("select".equalsIgnoreCase(f.type)) {
                             println("" + System.currentTimeMillis() + " rendering select");
                             println("cb1");
@@ -1874,22 +1919,28 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             println("cb6");
                             cb.putClientProperty("Jlawyerdescription", f.label);
                             println("cb7");
-                            dynamicPanel.add(cb);
+                            con.gridx = 1
+                            con.gridy = row - 1
+                            dynamicPanel.add(cb, con);
                         } else if("textarea".equalsIgnoreCase(f.type)) {
                             println("" + System.currentTimeMillis() + " rendering textarea");
                             JTextArea ta=new JTextArea();
                             ta.setText(f.getValue());
                             ta.setToolTipText(f.getValue());
-                            ta.setRows(1);
+                            ta.setRows(5);
                             ta.setLineWrap(true);
                             ta.setWrapStyleWord(true);
                             ta.setName(f.getPlaceHolderName());
                             ta.putClientProperty("Jlawyerdescription", f.label);
-                            JScrollPane scrollpane = new JScrollPane(ta);    
-                            dynamicPanel.add(scrollpane);
+                            JScrollPane scrollpane = new JScrollPane(ta); 
+                            con.gridx = 1
+                            con.gridy = row - 1
+                            dynamicPanel.add(scrollpane, con);
                         } else if("section".equalsIgnoreCase(f.type) || "page".equalsIgnoreCase(f.type)) {
                             JSeparator sep=new JSeparator();
-                            dynamicPanel.add(sep);
+                            con.gridx = 1
+                            con.gridy = row - 1
+                            dynamicPanel.add(sep, con);
                         } else if("html".equalsIgnoreCase(f.type)) {
                             // ignore, those are display only contents
                         } else if("fileupload".equalsIgnoreCase(f.type)) {
@@ -1900,6 +1951,7 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             ta.setText(f.getValueList().toString());
                             ta.setToolTipText(f.getValueList().toString());
                             ta.setRows(1);
+                            ta.setColumns(50);
                             ta.setLineWrap(true);
                             //ta.setWrapStyleWord(true);
                             ta.setName(f.getPlaceHolderName());
@@ -1915,8 +1967,9 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                     }
                                 });
                             uploadsPanel.add(downloadButton);
-                            
-                            dynamicPanel.add(uploadsPanel);
+                            con.gridx = 1
+                            con.gridy = row - 1
+                            dynamicPanel.add(uploadsPanel, con);
                             
                         } else if("signature".equalsIgnoreCase(f.type)) {
                             
@@ -1953,8 +2006,9 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                                     }
                                 });
                             uploadsPanel.add(viewButton);
-                            
-                            dynamicPanel.add(uploadsPanel);
+                            con.gridx = 1
+                            con.gridy = row - 1
+                            dynamicPanel.add(uploadsPanel, con);
                             
                         } else if("date".equalsIgnoreCase(f.type)) {
                             String dateValue=f.getValue();
@@ -1967,13 +2021,17 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                             JTextField tf=new JTextField(dateValue, TEXTFIELD_MAXCOLUMNS);
                             tf.setName(f.getPlaceHolderName());
                             tf.putClientProperty("Jlawyerdescription", f.label);
-                            dynamicPanel.add(tf);
+                            con.gridx = 1
+                            con.gridy = row - 1
+                            dynamicPanel.add(tf, con);
                         } else {
                             println("" + System.currentTimeMillis() + " rendering anything else");
                             JTextField tf=new JTextField(f.getValue(), TEXTFIELD_MAXCOLUMNS);
                             tf.setName(f.getPlaceHolderName());
                             tf.putClientProperty("Jlawyerdescription", f.label);
-                            dynamicPanel.add(tf);
+                            con.gridx = 1
+                            con.gridy = row - 1
+                            dynamicPanel.add(tf, con);
                         }
                     }
                 

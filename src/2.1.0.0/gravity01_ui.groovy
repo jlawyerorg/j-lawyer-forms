@@ -1473,8 +1473,26 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
                 field=AttributeCellEditor.ATTRIBUTE_PLZ;
             } else if(key.toUpperCase().contains("STRASSE") || line.toLowerCase().contains("strasse") || line.toLowerCase().contains("straße") || line.toLowerCase().contains("allee")) {
                 field=AttributeCellEditor.ATTRIBUTE_STRASSE;
-            } else if(key.toUpperCase().contains("HAUSNR") || line.matches("\\d{1,3}[abc]?")) {
+            } else if(key.toUpperCase().contains("HAUSNR")) {
                 field=AttributeCellEditor.ATTRIBUTE_HAUSNR;
+            } else if(key.toUpperCase().contains("ORT")) {
+                field=AttributeCellEditor.ATTRIBUTE_ORT;
+            } else if(key.toUpperCase().contains("VORNAME")) {
+                field=AttributeCellEditor.ATTRIBUTE_VORNAME;
+            } else if(key.toUpperCase().contains("NAME")) {
+                field=AttributeCellEditor.ATTRIBUTE_NAME;
+            } else if(key.toUpperCase().contains("MOBIL")) {
+                field=AttributeCellEditor.ATTRIBUTE_MOBIL;
+            } else if(key.toUpperCase().contains("UNTERNEHMEN")) {
+                field=AttributeCellEditor.ATTRIBUTE_UNTERNEHMEN;
+            } else if(key.toUpperCase().contains("BERUF")) {
+                field=AttributeCellEditor.ATTRIBUTE_BERUF;
+            } else if(key.toUpperCase().contains("FUNKTION")) {
+                field=AttributeCellEditor.ATTRIBUTE_FUNKTION;
+            } else if(key.toUpperCase().contains("ABTEILUNG")) {
+                field=AttributeCellEditor.ATTRIBUTE_ABTEILUNG;
+            } else if(key.toUpperCase().contains("LAND")) {
+                field=AttributeCellEditor.ATTRIBUTE_LAND;
             }
             
             String[] rowValues=[key, line, field];

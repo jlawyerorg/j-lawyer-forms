@@ -14,7 +14,7 @@
     <form id="famr01" type="plugin" depends="formslib" name="Familienrecht" description="Familienrecht" placeholder="FAMR" version="1.4.0" for="2.2.0.0,2.3.0.1,2.4.0.2,2.5.0.0,2.6.0.0,2.6.0.1" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.0.0.0" files="famr01_meta.groovy,famr01_ui.groovy"/>
     
     <!-- Gravity Forms requires 2.1.0.0 or later -->
-    <form id="gravity01" type="plugin" depends="formslib" name="Gravity Forms" description="Uebernimmt Eingaben aus Wordpress Gravity Forms" placeholder="FORM" version="2.1.0" for="2.2.0.0,2.3.0.1,2.4.0.2,2.5.0.0,2.6.0.0,2.6.0.1" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.1.0.0" files="gravity01_meta.groovy,gravity01_ui.groovy,GravitySite.groovy,GravityField.groovy,GravityLib.groovy">
+    <form id="gravity01" type="plugin" depends="formslib" name="Gravity Forms" description="Uebernimmt Eingaben aus Wordpress Gravity Forms" placeholder="FORM" version="2.2.0" for="2.2.0.0,2.3.0.1,2.4.0.2,2.5.0.0,2.6.0.0,2.6.0.1" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.1.0.0" files="gravity01_meta.groovy,gravity01_ui.groovy,GravitySite.groovy,GravityField.groovy,GravityLib.groovy">
         <setting key="forms.gravity01.site1.sitename" caption="Bezeichnung Website 1:" default="Irgendeine Website" order="1"/>
         <setting key="forms.gravity01.site1.endpoint" caption="API-Endpunkt:" default="https://www.irgendeine-domain-321.de/wp-json/gf/v2/" order="2"/>
         <setting key="forms.gravity01.site1.apiuser" caption="Nutzer / API-Key:" default="ck_123123123123123" order="3"/>

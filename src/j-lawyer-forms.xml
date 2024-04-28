@@ -68,6 +68,6 @@
     		files="strafrecht01_meta.groovy,strafrecht01_ui.groovy"/>
     
     <!-- breaking changes introduced with 2.6: StorageLib has incompatible changes to support external ids for documents --> 
-    <form id="formslib" type="library" name="Formularbibliothek" description="Bibliothek mit Funktionen für alle Falldatenblaetter" placeholder="FORMSLIB" version="1.10.0" for="2.6.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.6.0.0" files="formslib_meta.groovy,FormsLib.groovy,StorageLib.groovy,GuiLib.groovy,TablePropertiesUtils.groovy,AttributeCellEditor.groovy"/>
+    <form id="formslib" type="library" name="Formularbibliothek" description="Bibliothek mit Funktionen für alle Falldatenblaetter" placeholder="FORMSLIB" version="1.10.0" for="2.6.0.0,2.6.0.2" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.6.0.0" files="formslib_meta.groovy,FormsLib.groovy,StorageLib.groovy,GuiLib.groovy,TablePropertiesUtils.groovy,AttributeCellEditor.groovy"/>
     
 </forms>

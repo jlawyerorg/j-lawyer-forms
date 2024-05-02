@@ -853,7 +853,7 @@ public class inkasso03_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Höhe der Teilzahlungen:')
                                         }
                                         td  {
-                                            formattedTextField(id: 'nTeilzahlungen', clientPropertyJlawyerdescription: "Höhe der Teilzahlungen", name: "_TEILZAHLG", format: betragFormat, text: '0,00', columns: 10)
+                                            formattedTextField(id: 'nTeilzahlungen', clientPropertyJlawyerdescription: "Höhe der Teilzahlungen", name: "_TEILZAHLG_HOEHE", format: betragFormat, text: '0,00', columns: 10)
                                         }    
                                     } 
                                 }

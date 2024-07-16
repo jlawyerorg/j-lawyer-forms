@@ -796,6 +796,40 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                             txtDatumAv=textField(id: 'sDatumAv', name: "_DATUMAV", clientPropertyJlawyerdescription: "Wann wurde der Arbeitsvertrag geschlossen?", text: '', columns:10)
                                         
                                         } 
+                                        
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                    
+                                            label(text: 'Beginn des Arbeitsverhältnisses:')
+                                    
+                                    
+                                        }
+                                        td {
+                                            txtDatumAv=textField(id: 'sDatumBeginnAv', name: "_DATUMBEGINNAV", clientPropertyJlawyerdescription: "Beginn des Arbeitsverhältnisses", text: '', columns:10)
+                                        } 
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                    
+                                            label(text: 'Tätigkeit:')
+                                    
+                                    
+                                        }
+                                        td {
+                                            txtTaetigkeit=textField(id: 'sTaetigkeit', name: "_TAETIGKEIT", clientPropertyJlawyerdescription: "Tätigkeit", text: '', columns:30)
+                                        } 
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                    
+                                            label(text: 'Arbeitsort:')
+                                    
+                                    
+                                        }
+                                        td {
+                                            txtArbeitsOrt=textField(id: 'sArbeitsOrt', name: "_ARBEITSORT", clientPropertyJlawyerdescription: "Arbeitsort", text: '', columns:30)
+                                        } 
                                     }
                                     tr {
                                         td (colfill:true) {
@@ -811,8 +845,8 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                     }
                                     tr {
                                         td  {
-                                        label(text: 'Abfindungsmodifikatoren:')
-                                    }   
+                                            label(text: 'Abfindungsmodifikatoren:')
+                                        }   
                                         td  {
                                             comboBox(items: [
                                                             'Betrag eingeben',
@@ -843,6 +877,21 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                                             
 
                                                 ], name: "_ANODERAG", clientPropertyJlawyerdescription: "Ist der Mandant Arbeitnehmer oder Arbeitgeber?", editable: false
+                                            )
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: '> 10 Vollzeitarbeitnehmer')        
+                                        }
+                                        td {
+                                            comboBox(items: [
+                                                            'ja',
+                                                            'nein',
+                                                            'unbekannt'
+                                                            
+
+                                                ], name: "_ANMEHRALS10", clientPropertyJlawyerdescription: "Beschäftigt der Arbeitgeber mehr als 10 Vollzeitarbeitnehmer?", editable: false
                                             )
                                         }
                                     }
@@ -885,7 +934,17 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                     
                                         }
                                         td {
-                                            txtTarif=textField(id: 'sTarif', clientPropertyJlawyerdescription: "Tarifzugehörigkeit", name: "_TARIF", text: '', columns:10)
+                                            comboBox(items: [
+                                                            '',
+                                                            'nein',
+                                                            'TV-Ärzte/VKA',
+                                                            'TV-Ärzte/TdL',
+                                                            'TV-Ärzte Helios/Rhön',
+                                                            'AVR Caritas',
+                                                            'TV-Ärzte/Asklepios',
+                                                            'TV-Ärzte/Rhön'                                                          
+                                                ], name: "_TARIF", clientPropertyJlawyerdescription: "Tarifzugehörigkeit", editable: true
+                                            )
                                         }
                                     }
                                     tr {
@@ -898,10 +957,57 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                         }
                                     }
                                     
+                                }
+                            }    
+                        }        
+                    }
+                    
+                    tr {
+                        td (colfill:true, align: 'left') {
+                            panel(border: titledBorder(title: 'Weiteres zur Person:')) {
+                                tableLayout (cellpadding: 5) {
+                                    tr {
+                                        td {
+                                            label(text: 'Liegt eine Schwerbehinderung vor?')        
+                                        }
+                                        td {
+                                            checkBox(text: '', name: "_SBHG", clientPropertyJlawyerdescription: "Liegt eine Schwerbehinderung vor?", selected: false)
+                                        }
+                                        
                                     }
-                                }    
-                            }        
-                        }                
+                                    tr {
+                                        td {
+                                            label(text: 'Befindet sich der Mandant im Mutterschutz?')        
+                                        }
+                                        td {
+                                            checkBox(text: '', name: "_MS", clientPropertyJlawyerdescription: "Befindet sich der Mandant im Mutterschutz?", selected: false)
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Ist der Mandant Mitglied des Betriebsrates?')        
+                                        }
+                                        td {
+                                            checkBox(text: '', name: "_BRAT", clientPropertyJlawyerdescription: "Ist der Mandant Mitglied des Betriebsrates?", selected: false)
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Ist der Mandant der Datenschutzbeauftragte des Unternehmens?')        
+                                        }
+                                        td {
+                                            checkBox(text: '', name: "_DSB", clientPropertyJlawyerdescription: "Ist der Mandant der Datenschutzbeauftragte des Unternehmens?", selected: false)
+                                        }
+                                        
+                                    }
+                                    
+                                }
+                            }
+                        }
+                    }
+                    
                     tr {
                         td (colfill:true, align: 'left') {
                             panel(border: titledBorder(title: 'Basisdaten zur Kündigung:')) {
@@ -932,6 +1038,15 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                     }
                                     tr {
                                         td {
+                                            label(text: 'Wartezeit KSchG erfüllt?')        
+                                        }
+                                        td {
+                                            checkBox(text: '', name: "_WARTEZEITOK", clientPropertyJlawyerdescription: "Wartezeit KSchG erfüllt?", selected: false)
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td {
                                             label(text: 'Frist für Kündigungsschutzklage verstrichen?')        
                                         }
                                         td {
@@ -939,7 +1054,7 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                             checkBox(text: '', name: "_FRISTKGSCHK", clientPropertyJlawyerdescription: "Frist für Kündigungsschutzklage verstrichen?", selected: true)
                                         }
                                         
-                                            }
+                                    }
                                     tr {
                                         td {
                                             label(text: 'Arbeitgeber in Insolvenz:')        
@@ -949,7 +1064,7 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                             checkBox(text: '', name: "_AGINSO", clientPropertyJlawyerdescription: "Arbeitgeber in Insolvenz", selected: true)
                                         }
                                         
-                                            }
+                                    }
                                     tr {
                                         td {
                                             label(text: 'Gegenansprüche?')        
@@ -958,7 +1073,7 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                             checkBox(text: '', name: "_GEGENANSPRUCH", clientPropertyJlawyerdescription: "Gegenansprüche?", selected: true)
                                         }
                                         
-                                            }
+                                    }
                                     tr {
                                         td {
                                             label(text: 'Weiterbeschäftigungsanspruch?')        
@@ -967,7 +1082,7 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                             checkBox(text: '', name: "_WBANSPRUCH", clientPropertyJlawyerdescription: "Weiterbeschäftigungsanspruch?", selected: true)
                                         }
                                         
-                                            }
+                                    }
                                     tr {
                                         td {
                                             label(text: 'Wiedereinsetzungsantrag gewünscht?')        
@@ -976,7 +1091,7 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                             checkBox(text: '', name: "_WEAGEW", clientPropertyJlawyerdescription: "Wiedereinsetzungsantrag gewünscht?", selected: true)
                                         }
                                         
-                                            }
+                                    }
                                     tr {
                                         td {
                                             label(text: 'Sonstiger besonderer Kündigungsschutz:')        
@@ -985,7 +1100,7 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                             checkBox(text: '', name: "_BESKSCHUTZ", clientPropertyJlawyerdescription: "Sonstiger besonderer Kündigungsschutz", selected: false)
                                         }
                                         
-                                            }
+                                    }
                                     tr {
                                         td {
                                             label(text: 'Art der Kündigung:')        
@@ -1000,7 +1115,7 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                             )
                                         }
                                                                            
-                                            }    
+                                    }    
                                     tr {
                                         td {
                                             label(text: 'Zeugnisanspruch?')        
@@ -1010,17 +1125,17 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                             checkBox(text: '', name: "_ZA", clientPropertyJlawyerdescription: "Zeugnisanspruch?", selected: false)
                                         }
                                                                           
-                                            }    
+                                    }    
                                     tr {
                                         td {
                                             label(text: 'Akteneinsicht gewünscht?')        
                                         }
                                         td {
                                             
-                                             checkBox(text: '', name: "_AE", clientPropertyJlawyerdescription: "Akteneinsicht gewünscht?", selected: false)
+                                            checkBox(text: '', name: "_AE", clientPropertyJlawyerdescription: "Akteneinsicht gewünscht?", selected: false)
                                         }
                                                                         
-                                            }    
+                                    }    
                                     tr {
                                         td {
                                             label(text: 'Außergerichtliche Vertretung gewünscht?')        
@@ -1030,7 +1145,7 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                             checkBox(text: '', name: "_AV", clientPropertyJlawyerdescription: "Außergerichtliche Vertretung gewünscht?", selected: false)
                                         }
                                                                        
-                                            }    
+                                    }    
                                     tr {
                                         td {
                                             label(text: 'Soll ein Antrag auf Prozesskostenhilfe / PKH gestellt werden?')        
@@ -1040,7 +1155,7 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                             checkBox(text: '', name: "_PKH", clientPropertyJlawyerdescription: "Soll ein Antrag auf Prozesskostenhilfe / PKH gestellt werden?", selected: false)
                                         }
                                                                        
-                                            }    
+                                    }    
                                     tr {
                                         td {
                                             label(text: 'Betriebsrat vorhanden?')        
@@ -1065,51 +1180,7 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                     
                                     
                     }    
-                    tr {
-                        td (colfill:true, align: 'left') {
-                            panel(border: titledBorder(title: 'Weiteres zur Person:')) {
-                                tableLayout (cellpadding: 5) {
-                                    tr {
-                                        td {
-                                            label(text: 'Liegt eine Schwerbehinderung vor?')        
-                                        }
-                                        td {
-                                            checkBox(text: '', name: "_SBHG", clientPropertyJlawyerdescription: "Liegt eine Schwerbehinderung vor?", selected: false)
-                                        }
-                                        
-                                            }
-                                    tr {
-                                        td {
-                                            label(text: 'Befindet sich der Mandant im Mutterschutz?')        
-                                        }
-                                        td {
-                                            checkBox(text: '', name: "_MS", clientPropertyJlawyerdescription: "Befindet sich der Mandant im Mutterschutz?", selected: false)
-                                        }
-                                        
-                                            }
-                                    tr {
-                                        td {
-                                            label(text: 'Ist der Mandant Mitglied des Betriebsrates?')        
-                                        }
-                                        td {
-                                            checkBox(text: '', name: "_BRAT", clientPropertyJlawyerdescription: "Ist der Mandant Mitglied des Betriebsrates?", selected: false)
-                                        }
-                                        
-                                            }
-                                    tr {
-                                        td {
-                                            label(text: 'Ist der Mandant der Datenschutzbeauftragte des Unternehmens?')        
-                                        }
-                                        td {
-                                            checkBox(text: '', name: "_DSB", clientPropertyJlawyerdescription: "Ist der Mandant der Datenschutzbeauftragte des Unternehmens?", selected: false)
-                                        }
-                                        
-                                            }
-                                    
-                                    }
-                                }
-                            }
-                        }
+                    
                     
                     tr {
                         td (colfill:true, align: 'left') {

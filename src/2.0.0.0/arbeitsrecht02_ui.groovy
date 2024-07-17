@@ -714,7 +714,7 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                 tableLayout (cellpadding: 5) {
                     tr {
                         td (colfill:true, align: 'left') {
-                            panel(border: titledBorder(title: 'Basisdaten zum Arbeitsvertrag:')) {
+                            panel(border: titledBorder(title: 'Arbeitsvertrag / Arbeitsverhältnis:')) {
                                 tableLayout (cellpadding: 5) {
                                     tr {
                                         td {
@@ -968,37 +968,100 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                 tableLayout (cellpadding: 5) {
                                     tr {
                                         td {
-                                            label(text: 'Liegt eine Schwerbehinderung vor?')        
+                                            label(text: 'Verheiratet?')        
                                         }
                                         td {
-                                            checkBox(text: '', name: "_SBHG", clientPropertyJlawyerdescription: "Liegt eine Schwerbehinderung vor?", selected: false)
-                                        }
-                                        
-                                    }
-                                    tr {
-                                        td {
-                                            label(text: 'Befindet sich der Mandant im Mutterschutz?')        
-                                        }
-                                        td {
-                                            checkBox(text: '', name: "_MS", clientPropertyJlawyerdescription: "Befindet sich der Mandant im Mutterschutz?", selected: false)
+                                            checkBox(text: '', name: "_VERHEIRATET", clientPropertyJlawyerdescription: "Ist Mandant verheiratet?", selected: false)
                                         }
                                         
                                     }
                                     tr {
                                         td {
-                                            label(text: 'Ist der Mandant Mitglied des Betriebsrates?')        
+                                            label(text: 'Unterhaltspflichtige Kinder?')        
                                         }
                                         td {
-                                            checkBox(text: '', name: "_BRAT", clientPropertyJlawyerdescription: "Ist der Mandant Mitglied des Betriebsrates?", selected: false)
+                                            checkBox(text: '', name: "_KINDER", clientPropertyJlawyerdescription: "Hat Mandant unterhaltspflichtige Kinder?", selected: false)
                                         }
                                         
                                     }
                                     tr {
                                         td {
-                                            label(text: 'Ist der Mandant der Datenschutzbeauftragte des Unternehmens?')        
+                                            label(text: 'Sonderkündigungsschutz?')        
                                         }
                                         td {
-                                            checkBox(text: '', name: "_DSB", clientPropertyJlawyerdescription: "Ist der Mandant der Datenschutzbeauftragte des Unternehmens?", selected: false)
+                                            checkBox(text: 'Schwerbehinderung oder Gleichstellung', name: "_SBHG", clientPropertyJlawyerdescription: "Schwerbehinderung oder Gleichstellung", selected: false)
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: ' ')        
+                                        }
+                                        td {
+                                            checkBox(text: 'Strahlenschutzbeauftragter', name: "_SK_STRSCHUTZ", clientPropertyJlawyerdescription: "Strahlenschutzbeauftragter", selected: false)
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: ' ')        
+                                        }
+                                        td {
+                                            checkBox(text: 'Schwangerschaft', name: "_SK_SCHWANGER", clientPropertyJlawyerdescription: "Schwangerschaft", selected: false)
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: ' ')        
+                                        }
+                                        td {
+                                            checkBox(text: 'Mutterschutz', name: "_MS", clientPropertyJlawyerdescription: "Befindet sich der Mandant im Mutterschutz?", selected: false)
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: ' ')        
+                                        }
+                                        td {
+                                            checkBox(text: 'Elternzeit', name: "_SK_ELTERNZEIT", clientPropertyJlawyerdescription: "Befindet sich der Mandant in Elternzeit?", selected: false)
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: ' ')
+                                        }
+                                        td {
+                                            checkBox(text: 'Betriebsrat/Personalrat/MAV (auch in Vergangenheit)', name: "_BRAT", clientPropertyJlawyerdescription: "Betriebsrat/Personalrat/MAV (auch in Vergangenheit)", selected: false)
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: ' ')
+                                        }
+                                        td {
+                                            checkBox(text: 'Wahlvorstand', name: "_SK_WAHLVORST", clientPropertyJlawyerdescription: "Wahlvorstand", selected: false)
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: ' ')        
+                                        }
+                                        td {
+                                            checkBox(text: 'Datenschutzbeauftragter', name: "_DSB", clientPropertyJlawyerdescription: "Ist der Mandant der Datenschutzbeauftragte des Unternehmens?", selected: false)
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: ' ')        
+                                        }
+                                        td {
+                                            textField(id: 'sSkSonstiges', name: "_SK_SONSTIGE", clientPropertyJlawyerdescription: "Sonstiger Sonderkündigungsschutz", text: '', columns:20)
                                         }
                                         
                                     }
@@ -1010,7 +1073,7 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                     
                     tr {
                         td (colfill:true, align: 'left') {
-                            panel(border: titledBorder(title: 'Basisdaten zur Kündigung:')) {
+                            panel(border: titledBorder(title: 'Kündigung:')) {
                                 tableLayout (cellpadding: 5) {    
                                     tr {
                                         td (colfill:true) {
@@ -1021,6 +1084,18 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                         }
                                         td {
                                             txtZugangK=textField(id: 'sZugangK', name: "_ZUGANGK", clientPropertyJlawyerdescription: "Zugang der Kündigung", text: '', columns:10)
+                                        
+                                        }
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                    
+                                            label(text: 'Art des Zugangs:')
+                                    
+                                    
+                                        }
+                                        td {
+                                            txtZugangK=textField(id: 'sZugangArt', name: "_ZUGANGKART", clientPropertyJlawyerdescription: "Art des Zugangs der Kündigung", text: '', columns:20)
                                         
                                         }
                                     }
@@ -1047,6 +1122,27 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                     }
                                     tr {
                                         td {
+                                            label(text: 'Kündigungsfrist eingehalten?')        
+                                        }
+                                        td {
+                                            checkBox(text: '', name: "_KFRISTOK", clientPropertyJlawyerdescription: "Kündigungsfrist eingehalten?", selected: true)
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                    
+                                            label(text: 'Frist für Kündigungsschutzklage bis:')
+                                    
+                                    
+                                        }
+                                        td {
+                                            txtZugangK=textField(id: 'sKlagefrist', name: "_FRISTKGSCHKBIS", clientPropertyJlawyerdescription: "Frist für Kündigungsschutzklage", text: '', columns:10)
+                                        
+                                        }
+                                    }
+                                    tr {
+                                        td {
                                             label(text: 'Frist für Kündigungsschutzklage verstrichen?')        
                                         }
                                         td {
@@ -1067,12 +1163,33 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                     }
                                     tr {
                                         td {
-                                            label(text: 'Gegenansprüche?')        
+                                            label(text: 'Arbeitnehmer wird freigestellt:')        
                                         }
                                         td {
-                                            checkBox(text: '', name: "_GEGENANSPRUCH", clientPropertyJlawyerdescription: "Gegenansprüche?", selected: true)
+                                            
+                                            checkBox(text: '', name: "_ANFREISTELLUNG", clientPropertyJlawyerdescription: "Arbeitnehmer wird freigestellt ja/nein", selected: false)
                                         }
                                         
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Offene Ansprüche?')        
+                                        }
+                                        td {
+                                            checkBox(text: '', name: "_GEGENANSPRUCH", clientPropertyJlawyerdescription: "offene Ansprüche ja/nein", selected: true)
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td (colfill:true) {
+                                    
+                                            label(text: ' ')
+                                    
+                                    
+                                        }
+                                        td {
+                                            txtOffeneAnsprueche=textField(id: 'sOffeneAnsprueche', name: "_GEGENANSPRUCH_TEXT", clientPropertyJlawyerdescription: "offene Ansprüche (Text)", text: '', columns:30)
+                                        } 
                                     }
                                     tr {
                                         td {
@@ -1108,6 +1225,10 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                         td {
                                             comboBox(items: [
                                                             'ordentlich',
+                                                            'außerordentlich, fristlos',
+                                                            'außerordentlich, fristlos + hilfsweise ordentlich',
+                                                            'außerordentlich mit Frist',
+                                                            'außerordentlich, fristlos + außerordentlich mit sozialer Auslauffrist',
                                                             'außerordentlich'
                                                             
 
@@ -1115,7 +1236,26 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                             )
                                         }
                                                                            
-                                    }    
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'weitere Kündigung:')        
+                                        }
+                                        td {
+                                            comboBox(items: [
+                                                            'ordentlich',
+                                                            'außerordentlich, fristlos',
+                                                            'außerordentlich, fristlos + hilfsweise ordentlich',
+                                                            'außerordentlich mit Frist',
+                                                            'außerordentlich, fristlos + außerordentlich mit sozialer Auslauffrist',
+                                                            'außerordentlich'
+                                                            
+
+                                                ], name: "_ARTKWEITERE", clientPropertyJlawyerdescription: "Art der Kündigung (weitere Kündigung)", editable: false
+                                            )
+                                        }
+                                                                           
+                                    }
                                     tr {
                                         td {
                                             label(text: 'Zeugnisanspruch?')        
@@ -1158,16 +1298,45 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                     }    
                                     tr {
                                         td {
-                                            label(text: 'Betriebsrat vorhanden?')        
+                                            label(text: 'Arbeitnehmervertretung vorhanden?')        
                                         }
                                         td {
                                             
                                             comboBox(items: [
-                                                            'kein Betriebsrat',
-                                                            'Betriebsrat vorhanden'
+                                                            'keine',
+                                                            'Betriebsrat',
+                                                            'Personalrat',
+                                                            'MAV'
                                                             
 
-                                                ], name: "_BTRAT", clientPropertyJlawyerdescription: "Betriebsrat vorhanden?", editable: false
+                                                ], name: "_BTRAT", clientPropertyJlawyerdescription: "Arbeitnehmervertretung vorhanden?", editable: true
+                                            )
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: '')
+                                        }
+                                        td {
+                                            label(text: 'Widerspruch durch Arbeitnehmervertretung:')
+                                        }
+                                        
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: '')        
+                                        }
+                                        td {
+                                            
+                                            comboBox(items: [
+                                                            'unbekannt',
+                                                            'Zustimmung',
+                                                            'Widerspruch',
+                                                            'keine Äußerung'
+                                                            
+
+                                                ], name: "_BTRAT_WIDERSPRUCH", clientPropertyJlawyerdescription: "Widerspruch durch Arbeitnehmervertretung", editable: false
                                             )
                                         }
                                         

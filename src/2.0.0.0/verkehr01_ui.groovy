@@ -1,3 +1,4 @@
+
 /*
 GNU AFFERO GENERAL PUBLIC LICENSE
 Version 3, 19 November 2007
@@ -673,6 +674,7 @@ import java.util.ArrayList
 import java.util.List
 import java.util.Hashtable
 import java.util.Locale
+import javax.swing.ImageIcon
 import java.util.Date
 import java.util.Calendar
 import java.lang.String
@@ -813,6 +815,11 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     JTextField txtReparaturEnde;
     JTextField txtReparaturDauer;
     JTextField txtReparaturRechnung;
+    
+    JTextField txtUnfallDatum;
+    JTextField txtHalteFrist;
+    JTextField txtErstzulassung;
+    JTextField txtGErstzulassung;
     
     FormPluginCallback callback=null;
     
@@ -974,26 +981,27 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     
                                         }
                                         td {
-                                            txtUnfallDatum=textField(id: 'sUnfallDatum', name: "_UNFALLDATUM", clientPropertyJlawyerdescription: "Unfalldatum", text: '', columns:10, keyReleased: { 
-                                                
-                                                if(txtUnfallDatum.getText().length()!=10) {
-                                                    txtHalteFrist.text='';
-                                                    return;
+                                            panel {
+                                                tableLayout (cellpadding: 0) {
+                                                    tr {
+                                                        td {
+                                                            txtUnfallDatum=textField(id: 'sUnfallDatum', name: "_UNFALLDATUM", clientPropertyJlawyerdescription: "Unfalldatum", text: '', columns:10, keyReleased: { 
+                                                                    berechnenHalteFrist();
+                                                                })
+                                                        }
+                                                        td {
+                                                            label (text: ' ')
+                                                        }
+                                                        td {
+                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                    GuiLib.dateSelector(txtUnfallDatum, true);
+                                                                    berechnenHalteFrist();
+                                                                })
+                                                        }
+                                                        
+                                                    }
                                                 }
-                                                
-                                                try {
-                                                    Date testDate = new Date().parse("dd.MM.yyyy", txtUnfallDatum.text)
-                                                    Calendar cal = Calendar.getInstance(); 
-                                                    cal.setTime(testDate);
-                                                    cal.add(Calendar.MONTH, 6);
-                                                    testDate = cal.getTime();
-                                                    txtHalteFrist.text=datumsFormat.format(testDate);
-                                                    return;
-                                                } catch (Throwable t) {
-                                                    txtHalteFrist.text='';
-                                                }
-                                            
-                                            })
+                                            }
                                         }
                                     }
                                     tr {
@@ -1004,7 +1012,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     
                                         }
                                         td {
-                                            txtHalteFrist=textField(id: 'sHalteFrist', name: "_HALTEFRIST", clientPropertyJlawyerdescription: "Ablauf der 6-monatigen Haltefrist", text: '', columns: 10, enabled: false)
+                                            txtHalteFrist=textField(id: 'sHalteFrist', name: "_HALTEFRIST", clientPropertyJlawyerdescription: "Ablauf der 6-monatigen Haltefrist", text: '', columns: 10, enabled: true)
                                             
                                         }
                                 
@@ -1396,7 +1404,25 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Erstzulassung:')
                                         }
                                         td {
-                                            txtErstzulassung=textField(id: 'sErstzulassung', clientPropertyJlawyerdescription: "Erstzulassung Mandant", name: "_ERSTZLSSG", text: '', columns:20)
+                                            panel {
+                                                tableLayout (cellpadding: 0) {
+                                                    tr {
+                                                        td {
+                                                            txtErstzulassung=textField(id: 'sErstzulassung', clientPropertyJlawyerdescription: "Erstzulassung Mandant", name: "_ERSTZLSSG", text: '', columns:20)
+                                                        }
+                                                        td {
+                                                            label (text: ' ')
+                                                        }
+                                                        td {
+                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                    GuiLib.dateSelector(txtErstzulassung, true);
+                                                                })
+                                                        }
+                                                        
+                                                    }
+                                                }
+                                            }
+                                            
                                         }
                                         td {
                                     
@@ -1515,7 +1541,25 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     
                                         }
                                         td {
-                                            txtNutzungsAusfallVon=formattedTextField(id: 'sNutzungsAusfallVon', clientPropertyJlawyerdescription: "Nutzungsausfall von...", name: "_NUTZAUSFALLVON", format: datumsFormat, columns: 10, text: '', keyReleased: { berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString()) })
+                                            panel {
+                                                tableLayout (cellpadding: 0) {
+                                                    tr {
+                                                        td {
+                                                            txtNutzungsAusfallVon=formattedTextField(id: 'sNutzungsAusfallVon', clientPropertyJlawyerdescription: "Nutzungsausfall von...", name: "_NUTZAUSFALLVON", format: datumsFormat, columns: 10, text: '', keyReleased: { berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString()) })
+                                                        }
+                                                        td {
+                                                            label (text: ' ')
+                                                        }
+                                                        td {
+                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                    GuiLib.dateSelector(txtNutzungsAusfallVon, true);
+                                                                    berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString());
+                                                                })
+                                                        }
+                                                        
+                                                    }
+                                                }
+                                            }
                                         }
                                         td {
                                             button(text: 'von/bis zurücksetzen', actionPerformed: {
@@ -1532,7 +1576,25 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     
                                         }
                                         td {
-                                            txtNutzungsAusfallBis=formattedTextField(id: 'sNutzungsAusfallBis', clientPropertyJlawyerdescription: "Nutzungsausfall bis...", name: "_NUTZAUSFALLBIS", format: datumsFormat, columns: 10, text: '', keyReleased: { berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString()) })
+                                            panel {
+                                                tableLayout (cellpadding: 0) {
+                                                    tr {
+                                                        td {
+                                                            txtNutzungsAusfallBis=formattedTextField(id: 'sNutzungsAusfallBis', clientPropertyJlawyerdescription: "Nutzungsausfall bis...", name: "_NUTZAUSFALLBIS", format: datumsFormat, columns: 10, text: '', keyReleased: { berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString()) })
+                                                        }
+                                                        td {
+                                                            label (text: ' ')
+                                                        }
+                                                        td {
+                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                    GuiLib.dateSelector(txtNutzungsAusfallBis, true);
+                                                                    berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString());
+                                                                })
+                                                        }
+                                                        
+                                                    }
+                                                }
+                                            }
                                         }
                                         td {
                                             
@@ -1633,7 +1695,25 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Erstzulassung:')
                                         }
                                         td {
-                                            txtGErstzulassung=textField(id: 'sGErstzulassung', clientPropertyJlawyerdescription: "Erstzulassung Gegner", name: "_G_ERSTZLSSG", text: '', columns:20)
+                                            // txtGErstzulassung=textField(id: 'sGErstzulassung', clientPropertyJlawyerdescription: "Erstzulassung Gegner", name: "_G_ERSTZLSSG", text: '', columns:20)
+                                            panel {
+                                                tableLayout (cellpadding: 0) {
+                                                    tr {
+                                                        td {
+                                                            txtGErstzulassung=textField(id: 'sGErstzulassung', clientPropertyJlawyerdescription: "Erstzulassung Gegner", name: "_G_ERSTZLSSG", text: '', columns:20)
+                                                        }
+                                                        td {
+                                                            label (text: ' ')
+                                                        }
+                                                        td {
+                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                    GuiLib.dateSelector(txtGErstzulassung, true);
+                                                                })
+                                                        }
+                                                        
+                                                    }
+                                                }
+                                            }
                                         }
                                         td {
                                     
@@ -1793,10 +1873,12 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Beginn der Reparatur:')
                                         }
                                         td {
-                                           txtReparaturBeginn=formattedTextField(id: 'sReparaturBeginn', clientPropertyJlawyerdescription: "Reparaturbeginn (Datum)", name: "_REPABEGINN", format: datumsFormat, columns: 10, text: '', enabled: false)
+                                           txtReparaturBeginn=formattedTextField(id: 'sReparaturBeginn', clientPropertyJlawyerdescription: "Reparaturbeginn (Datum)", name: "_REPABEGINN", format: datumsFormat, columns: 10, text: '', enabled: true, keyReleased: {
+                                                 berechnenReparaturDauer();  
+                                           })
                                         }
                                         td {
-                                            button(text: 'Auswählen', actionPerformed: {
+                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
                                                     GuiLib.dateSelector(txtReparaturBeginn, true);
                                                     berechnenReparaturDauer();
                                             })
@@ -1807,10 +1889,12 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Abschluss der Reparatur:')
                                         }
                                         td {
-                                           txtReparaturEnde=formattedTextField(id: 'sReparaturEnde', clientPropertyJlawyerdescription: "Reparaturabschluss (Datum)", name: "_REPAENDE", format: datumsFormat, columns: 10, text: '', enabled: false)
+                                           txtReparaturEnde=formattedTextField(id: 'sReparaturEnde', clientPropertyJlawyerdescription: "Reparaturabschluss (Datum)", name: "_REPAENDE", format: datumsFormat, columns: 10, text: '', enabled: true, keyReleased: {
+                                                 berechnenReparaturDauer();  
+                                           })
                                         }
                                         td {
-                                            button(text: 'Auswählen', actionPerformed: {
+                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
                                                 GuiLib.dateSelector(txtReparaturEnde, true);
                                                 berechnenReparaturDauer();
                                             })
@@ -1832,10 +1916,10 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Datum der Reparaturrechnung:')
                                         }
                                         td {
-                                           txtReparaturRechnung=formattedTextField(id: 'sReparaturRechnung', clientPropertyJlawyerdescription: "Reparaturrechnung vom (Datum)", name: "_REPARECHNUNG", format: datumsFormat, columns: 10, text: '', enabled: false)
+                                           txtReparaturRechnung=formattedTextField(id: 'sReparaturRechnung', clientPropertyJlawyerdescription: "Reparaturrechnung vom (Datum)", name: "_REPARECHNUNG", format: datumsFormat, columns: 10, text: '', enabled: true)
                                         }
                                         td {
-                                            button(text: 'Auswählen', actionPerformed: {
+                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
                                                     GuiLib.dateSelector(txtReparaturRechnung, true);
                                             })
                                         }
@@ -2687,6 +2771,19 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                 }  
             }
         }
+        
+        // Set the client property on the text field
+        swing.doLater {
+            txtUnfallDatum.putClientProperty("JTextField.showClearButton", true)
+            txtHalteFrist.putClientProperty("JTextField.showClearButton", true)
+            txtErstzulassung.putClientProperty("JTextField.showClearButton", true)
+            txtNutzungsAusfallVon.putClientProperty("JTextField.showClearButton", true)
+            txtNutzungsAusfallBis.putClientProperty("JTextField.showClearButton", true)
+            txtGErstzulassung.putClientProperty("JTextField.showClearButton", true)
+            txtReparaturBeginn.putClientProperty("JTextField.showClearButton", true)
+            txtReparaturEnde.putClientProperty("JTextField.showClearButton", true)
+            txtReparaturRechnung.putClientProperty("JTextField.showClearButton", true)
+        }
 
         return SCRIPTPANEL;
 
@@ -3050,6 +3147,25 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         
     }
     
+    private void berechnenHalteFrist() {
+        if(txtUnfallDatum.getText().length()!=10) {
+            txtHalteFrist.text='';
+            return;
+        }
+        
+        try {
+            Date testDate = new Date().parse("dd.MM.yyyy", txtUnfallDatum.text)
+            Calendar cal = Calendar.getInstance(); 
+            cal.setTime(testDate);
+            cal.add(Calendar.MONTH, 6);
+            testDate = cal.getTime();
+            txtHalteFrist.text=datumsFormat.format(testDate);
+            return;
+        } catch (Throwable t) {
+            txtHalteFrist.text='';
+        }
+    }
+    
     private void berechnenReparaturDauer() {
         txtReparaturDauer.setText("");
         try {
@@ -3068,6 +3184,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         } catch (Throwable t) {
             System.out.println("Reparaturdauer kann nicht berechnet werden");
             t.printStackTrace();
+            txtReparaturDauer.setText("0");
         }
     }
     

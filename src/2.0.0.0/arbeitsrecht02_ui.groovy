@@ -786,7 +786,7 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                     
                                                     }
                                                     td {
-                                                        txtKündigungsFrist=textField(id: 'sKündigungsFrist', name: "_KFRIST", clientPropertyJlawyerdescription: "Kündigungsfrist", text: '', columns:10)
+                                                        txtKündigungsFrist=textField(id: 'sKündigungsFrist', name: "_KFRIST", clientPropertyJlawyerdescription: "Kündigungsfrist", text: '', columns:30)
                                         
                                                     }    
                                                 }

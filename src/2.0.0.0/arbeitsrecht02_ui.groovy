@@ -1393,6 +1393,82 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                 }
                             }
                         }
+                        panel(name: 'Schriftsatz') {
+                            tableLayout (cellpadding: 5) {
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        panel(border: titledBorder(title: 'Fallbearbeitung:')) {
+                                            tableLayout (cellpadding: 5) {    
+                                                tr {
+                                                    td {
+                                                        label(text: 'Die folgenden Optionen können bspw. genutzt werden, um in Vorlagen mittels Scriptfunktionen (WENNGLEICH o.ä.) Inhalte aufzunehmen / wegzulassen.')        
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'Kündigungsfrist', name: "_DOK_KFRIST", clientPropertyJlawyerdescription: "Schriftsatz: Kündigungsfrist", selected: true)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'Enddatum: frühestmöglich', name: "_DOK_ENDDATUM_FRUEHEST", clientPropertyJlawyerdescription: "Schriftsatz: Enddatum: frühestmöglich", selected: true)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'Endatum: Wunschdatum', name: "_DOK_ENDDATUM_WUNSCH", clientPropertyJlawyerdescription: "Schriftsatz: Endatum: Wunschdatum", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'Endatum: mit Ende Elternzeit', name: "_DOK_ENDDATUM_ELTERNZEIT", clientPropertyJlawyerdescription: "Schriftsatz: Endatum: mit Ende Elternzeit", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'Tarifbindung', name: "_DOK_TARIFBINDG", clientPropertyJlawyerdescription: "Schriftsatz: Tarifbindung", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'Hinweis zu Form der Kündigung', name: "_DOK_HINW_KFORM", clientPropertyJlawyerdescription: "Schriftsatz: Hinweis zu Form der Kündigung", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'Hinweis Sperrfrist ALG', name: "_DOK_HINW_SPERRFRIST", clientPropertyJlawyerdescription: "Schriftsatz: Hinweis Sperrfrist ALG", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'Hinweis Aufhebungsvertrag', name: "_DOK_HINW_AUFHEBVERTR", clientPropertyJlawyerdescription: "Schriftsatz: Hinweis Aufhebungsvertrag", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'weitere Informationen als Anlage / Merkblatt', name: "_DOK_MATERIAL_ANL", clientPropertyJlawyerdescription: "Schriftsatz: weitere Informationen als Anlage / Merkblatt", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'weiterführende Links (bspw. zu Tarifverträgen)', name: "_DOK_MATERIAL_LINKS", clientPropertyJlawyerdescription: "Schriftsatz: weiterführende Links (bspw. zu Tarifverträgen)", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'Entwurf Kündigungsschreiben', name: "_DOK_KENTWURF", clientPropertyJlawyerdescription: "Schriftsatz: Entwurf Kündigungsschreiben", selected: false)
+                                                    }
+                                                }
+                                            }   
+                        
+                                        }     
+                                    }
+                    
+                    
+                                    
+                                }
+                            }
+                        }
                         
                     }
                 }

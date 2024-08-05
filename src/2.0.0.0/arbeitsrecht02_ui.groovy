@@ -1,3 +1,4 @@
+
 /*
 GNU AFFERO GENERAL PUBLIC LICENSE
 Version 3, 19 November 2007
@@ -663,9 +664,12 @@ For more information on this, and how to apply and follow the GNU AGPL, see
  */
 
 import groovy.swing.SwingBuilder
+import java.text.SimpleDateFormat
 import javax.swing.SwingConstants
 import javax.swing.JPanel
 import javax.swing.JTabbedPane
+import javax.swing.JTextField
+import javax.swing.ImageIcon
 import java.util.ArrayList
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 
@@ -673,6 +677,11 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
 
     JPanel SCRIPTPANEL=null;
     FormPluginCallback callback=null;
+    
+    SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
+    
+    JTextField txtDatumAv=null;
+    JTextField txtBetriebszugehoerigkeit=null;
 
     public arbeitsrecht02_ui() {
         super();
@@ -705,6 +714,34 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
     def erstellen() {
 
         lblSteuern.text = 0.19 * Float.parseFloat(txtBetrag.text)
+    }
+    
+    private void berechnenBetriebszugehoerigkeit() {
+        if(txtDatumAv.getText().length()!=10) {
+            txtBetriebszugehoerigkeit.text='-1';
+            return;
+        }
+        
+        try {
+            Date testDate = new Date().parse("dd.MM.yyyy", txtDatumAv.text)
+            Calendar pastCalendar = Calendar.getInstance(); 
+            pastCalendar.setTime(testDate);
+            Calendar todayCalendar = Calendar.getInstance();
+
+            int years = todayCalendar.get(Calendar.YEAR) - pastCalendar.get(Calendar.YEAR);
+            int months = todayCalendar.get(Calendar.MONTH) - pastCalendar.get(Calendar.MONTH);
+            int days = todayCalendar.get(Calendar.DAY_OF_MONTH) - pastCalendar.get(Calendar.DAY_OF_MONTH);
+
+            if (months < 0 || (months == 0 && days < 0)) {
+                years--;
+            }
+
+            txtBetriebszugehoerigkeit.text=''+years;
+            return;
+        } catch (Throwable t) {
+            t.printStackTrace();
+            txtBetriebszugehoerigkeit.text='-1';
+        }
     }
 
     public JPanel getUi() {
@@ -811,8 +848,37 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                     
                                                     }
                                                     td {
-                                                        txtDatumAv=textField(id: 'sDatumBeginnAv', name: "_DATUMBEGINNAV", clientPropertyJlawyerdescription: "Beginn des Arbeitsverhältnisses", text: '', columns:10)
-                                                    } 
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatumAv=textField(id: 'sDatumBeginnAv', name: "_DATUMBEGINNAV", clientPropertyJlawyerdescription: "Beginn des Arbeitsverhältnisses", text: '', columns:10, keyReleased: { 
+                                                                                berechnenBetriebszugehoerigkeit();
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatumAv, true);
+                                                                                berechnenBetriebszugehoerigkeit();
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                                        label(text: 'Dauer der Betriebszugehörigkeit:')
+                                    
+                                                    }
+                                                    td {
+                                                        txtBetriebszugehoerigkeit=textField(id: 'sBetriebszugehoerigkeit', name: "_BETRIEBSZUGEHOERIGKT", clientPropertyJlawyerdescription: "Betriebszugehörigkeit", text: '', columns:30)
+                                                    }
                                                 }
                                                 tr {
                                                     td (colfill:true) {

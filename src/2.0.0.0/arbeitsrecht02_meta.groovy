@@ -547,6 +547,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "Kündigungsschutzklage"
 description = "Kündigungsschutzklage"
-version = "2.4.0";
+version = "2.5.0";
 author = "Christian Pieters, Jens Kutschke"
-updated = "04.08.2024"
+updated = "05.08.2024"

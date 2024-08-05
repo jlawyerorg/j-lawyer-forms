@@ -732,15 +732,21 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
             int months = todayCalendar.get(Calendar.MONTH) - pastCalendar.get(Calendar.MONTH);
             int days = todayCalendar.get(Calendar.DAY_OF_MONTH) - pastCalendar.get(Calendar.DAY_OF_MONTH);
 
-            if (months < 0 || (months == 0 && days < 0)) {
-                years--;
+            if (days < 0) {
+                months--;
+                todayCalendar.add(Calendar.MONTH, -1);
+                days += todayCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
             }
 
-            txtBetriebszugehoerigkeit.text=''+years;
-            return;
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            txtBetriebszugehoerigkeit.text=years + " Jahre und " + months + " Monate";
         } catch (Throwable t) {
             t.printStackTrace();
-            txtBetriebszugehoerigkeit.text='-1';
+            txtBetriebszugehoerigkeit.text='UNBEKANNT';
         }
     }
 
@@ -873,7 +879,7 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                                 }
                                                 tr {
                                                     td (colfill:true) {
-                                                        label(text: 'Dauer der Betriebszugehörigkeit:')
+                                                        label(text: 'Dauer der Betriebszugehörigkeit zum Zeitpunkt der Erfassung:')
                                     
                                                     }
                                                     td {

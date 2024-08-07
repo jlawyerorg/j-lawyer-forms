@@ -1607,12 +1607,12 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                                 }
                                                 tr {
                                                     td {
-                                                        checkBox(text: 'Endatum: Wunschdatum', name: "_DOK_ENDDATUM_WUNSCH", clientPropertyJlawyerdescription: "Schriftsatz: Endatum: Wunschdatum", selected: false)
+                                                        checkBox(text: 'Enddatum: Wunschdatum', name: "_DOK_ENDDATUM_WUNSCH", clientPropertyJlawyerdescription: "Schriftsatz: Enddatum: Wunschdatum", selected: false)
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        checkBox(text: 'Endatum: mit Ende Elternzeit', name: "_DOK_ENDDATUM_ELTERNZEIT", clientPropertyJlawyerdescription: "Schriftsatz: Endatum: mit Ende Elternzeit", selected: false)
+                                                        checkBox(text: 'Enddatum: mit Ende Elternzeit', name: "_DOK_ENDDATUM_ELTERNZEIT", clientPropertyJlawyerdescription: "Schriftsatz: Enddatum: mit Ende Elternzeit", selected: false)
                                                     }
                                                 }
                                                 tr {

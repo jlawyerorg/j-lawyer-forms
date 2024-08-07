@@ -1,3 +1,4 @@
+
 /*
 GNU AFFERO GENERAL PUBLIC LICENSE
 Version 3, 19 November 2007
@@ -663,9 +664,12 @@ For more information on this, and how to apply and follow the GNU AGPL, see
  */
 
 import groovy.swing.SwingBuilder
+import java.text.SimpleDateFormat
 import javax.swing.SwingConstants
 import javax.swing.JPanel
 import javax.swing.JTabbedPane
+import javax.swing.JTextField
+import javax.swing.ImageIcon
 import java.util.ArrayList
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 
@@ -673,6 +677,11 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
 
     JPanel SCRIPTPANEL=null;
     FormPluginCallback callback=null;
+    
+    SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
+    
+    JTextField txtDatumAv=null;
+    JTextField txtBetriebszugehoerigkeit=null;
 
     public arbeitsrecht02_ui() {
         super();
@@ -705,6 +714,40 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
     def erstellen() {
 
         lblSteuern.text = 0.19 * Float.parseFloat(txtBetrag.text)
+    }
+    
+    private void berechnenBetriebszugehoerigkeit() {
+        if(txtDatumAv.getText().length()!=10) {
+            txtBetriebszugehoerigkeit.text='-1';
+            return;
+        }
+        
+        try {
+            Date testDate = new Date().parse("dd.MM.yyyy", txtDatumAv.text)
+            Calendar pastCalendar = Calendar.getInstance(); 
+            pastCalendar.setTime(testDate);
+            Calendar todayCalendar = Calendar.getInstance();
+
+            int years = todayCalendar.get(Calendar.YEAR) - pastCalendar.get(Calendar.YEAR);
+            int months = todayCalendar.get(Calendar.MONTH) - pastCalendar.get(Calendar.MONTH);
+            int days = todayCalendar.get(Calendar.DAY_OF_MONTH) - pastCalendar.get(Calendar.DAY_OF_MONTH);
+
+            if (days < 0) {
+                months--;
+                todayCalendar.add(Calendar.MONTH, -1);
+                days += todayCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+            }
+
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            txtBetriebszugehoerigkeit.text=years + " Jahre und " + months + " Monate";
+        } catch (Throwable t) {
+            t.printStackTrace();
+            txtBetriebszugehoerigkeit.text='UNBEKANNT';
+        }
     }
 
     public JPanel getUi() {
@@ -762,9 +805,25 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                     
                                                     }
                                                     td {
-                                                        txtBefristungAv=textField(id: 'sBefristungAv', name: "_BEFRISTUNGAV", clientPropertyJlawyerdescription: "Bis wann ist der Arbeitsvertrag befristet?", text: '', columns:10)
-                                        
-                                                    }    
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtBefristungAv=textField(id: 'sBefristungAv', name: "_BEFRISTUNGAV", clientPropertyJlawyerdescription: "Bis wann ist der Arbeitsvertrag befristet?", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtBefristungAv, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                                 tr {
                                                     td (colfill:true) {
@@ -798,9 +857,25 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                     
                                                     }
                                                     td {
-                                                        txtDatumAv=textField(id: 'sDatumAv', name: "_DATUMAV", clientPropertyJlawyerdescription: "Wann wurde der Arbeitsvertrag geschlossen?", text: '', columns:10)
-                                        
-                                                    } 
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatumAvUnterschrift=textField(id: 'sDatumAv', name: "_DATUMAV", clientPropertyJlawyerdescription: "Wann wurde der Arbeitsvertrag geschlossen?", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatumAvUnterschrift, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                         
                                                 }
                                                 tr {
@@ -811,8 +886,37 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                     
                                                     }
                                                     td {
-                                                        txtDatumAv=textField(id: 'sDatumBeginnAv', name: "_DATUMBEGINNAV", clientPropertyJlawyerdescription: "Beginn des Arbeitsverhältnisses", text: '', columns:10)
-                                                    } 
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatumAv=textField(id: 'sDatumBeginnAv', name: "_DATUMBEGINNAV", clientPropertyJlawyerdescription: "Beginn des Arbeitsverhältnisses", text: '', columns:10, keyReleased: { 
+                                                                                berechnenBetriebszugehoerigkeit();
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatumAv, true);
+                                                                                berechnenBetriebszugehoerigkeit();
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                                        label(text: 'Dauer der Betriebszugehörigkeit zum Zeitpunkt der Erfassung:')
+                                    
+                                                    }
+                                                    td {
+                                                        txtBetriebszugehoerigkeit=textField(id: 'sBetriebszugehoerigkeit', name: "_BETRIEBSZUGEHOERIGKT", clientPropertyJlawyerdescription: "Betriebszugehörigkeit", text: '', columns:30)
+                                                    }
                                                 }
                                                 tr {
                                                     td (colfill:true) {
@@ -1111,13 +1215,57 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                                 tr {
                                                     td (colfill:true) {
                                     
-                                                        label(text: 'Zugang der Kündigung:')
+                                                        label(text: 'Schreiben vom:')
                                     
                                     
                                                     }
                                                     td {
-                                                        txtZugangK=textField(id: 'sZugangK', name: "_ZUGANGK", clientPropertyJlawyerdescription: "Zugang der Kündigung", text: '', columns:10)
-                                        
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatumSchreibenK=textField(id: 'sDatumSchreibenK', name: "_KSCHREIBENVOM", clientPropertyJlawyerdescription: "Datum auf dem Kündigungsschreiben", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatumSchreibenK, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'zugegangen am:')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtZugangK=textField(id: 'sZugangK', name: "_ZUGANGK", clientPropertyJlawyerdescription: "Datum des Zugangs der Kündigung", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtZugangK, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 }
                                                 tr {
@@ -1128,7 +1276,7 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                     
                                                     }
                                                     td {
-                                                        txtZugangK=textField(id: 'sZugangArt', name: "_ZUGANGKART", clientPropertyJlawyerdescription: "Art des Zugangs der Kündigung", text: '', columns:20)
+                                                        txtZugangKArt=textField(id: 'sZugangArt', name: "_ZUGANGKART", clientPropertyJlawyerdescription: "Art des Zugangs der Kündigung", text: '', columns:20)
                                         
                                                     }
                                                 }
@@ -1140,7 +1288,7 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                     
                                                     }
                                                     td {
-                                                        txtGrundK=textField(id: 'sGrundK', name: "_GRUNDK", clientPropertyJlawyerdescription: "Kündigungsgrund", text: '', columns:10)
+                                                        txtGrundK=textField(id: 'sGrundK', name: "_GRUNDK", clientPropertyJlawyerdescription: "Kündigungsgrund", text: '', columns:30)
                                         
                                                     }
                                                 }
@@ -1170,8 +1318,24 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                     
                                                     }
                                                     td {
-                                                        txtZugangK=textField(id: 'sKlagefrist', name: "_FRISTKGSCHKBIS", clientPropertyJlawyerdescription: "Frist für Kündigungsschutzklage", text: '', columns:10)
-                                        
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtFristKuendigungsschutzKlageBis=textField(id: 'sKlagefrist', name: "_FRISTKGSCHKBIS", clientPropertyJlawyerdescription: "Frist für Kündigungsschutzklage", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtFristKuendigungsschutzKlageBis, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 }
                                                 tr {
@@ -1336,6 +1500,33 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                     
                                     
                                 } 
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        panel(border: titledBorder(title: 'Einschätzung:')) {
+                                            tableLayout (cellpadding: 5) {    
+                                                tr {
+                                                    td (colfill:true) {
+                                                        label(text: 'Kündigung möglich / zulässig:')
+                                                    }
+                                                    td {
+                                                        comboBox(items: [
+                                                            '',
+                                                            'ja',
+                                                            'nein'
+                                                            
+
+                                                            ], name: "_EINSCHTZGKJANEIN", clientPropertyJlawyerdescription: "Einschätzung: Kündigung möglich/zulässig??", editable: false
+                                                        )
+                                                    }
+                                                }
+                                            }   
+                        
+                                        }     
+                                    }
+                    
+                    
+                                    
+                                }
                             }
                         }
                         panel(name: 'Fallbearbeitung') {
@@ -1383,6 +1574,82 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                                     }
                                                                        
                                                 }  
+                                            }   
+                        
+                                        }     
+                                    }
+                    
+                    
+                                    
+                                }
+                            }
+                        }
+                        panel(name: 'Schriftsatz') {
+                            tableLayout (cellpadding: 5) {
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        panel(border: titledBorder(title: 'Fallbearbeitung:')) {
+                                            tableLayout (cellpadding: 5) {    
+                                                tr {
+                                                    td {
+                                                        label(text: 'Die folgenden Optionen können bspw. genutzt werden, um in Vorlagen mittels Scriptfunktionen (WENNGLEICH o.ä.) Inhalte aufzunehmen / wegzulassen.')        
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'Kündigungsfrist', name: "_DOK_KFRIST", clientPropertyJlawyerdescription: "Schriftsatz: Kündigungsfrist", selected: true)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'Enddatum: frühestmöglich', name: "_DOK_ENDDATUM_FRUEHEST", clientPropertyJlawyerdescription: "Schriftsatz: Enddatum: frühestmöglich", selected: true)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'Endatum: Wunschdatum', name: "_DOK_ENDDATUM_WUNSCH", clientPropertyJlawyerdescription: "Schriftsatz: Endatum: Wunschdatum", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'Endatum: mit Ende Elternzeit', name: "_DOK_ENDDATUM_ELTERNZEIT", clientPropertyJlawyerdescription: "Schriftsatz: Endatum: mit Ende Elternzeit", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'Tarifbindung', name: "_DOK_TARIFBINDG", clientPropertyJlawyerdescription: "Schriftsatz: Tarifbindung", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'Hinweis zu Form der Kündigung', name: "_DOK_HINW_KFORM", clientPropertyJlawyerdescription: "Schriftsatz: Hinweis zu Form der Kündigung", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'Hinweis Sperrfrist ALG', name: "_DOK_HINW_SPERRFRIST", clientPropertyJlawyerdescription: "Schriftsatz: Hinweis Sperrfrist ALG", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'Hinweis Aufhebungsvertrag', name: "_DOK_HINW_AUFHEBVERTR", clientPropertyJlawyerdescription: "Schriftsatz: Hinweis Aufhebungsvertrag", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'weitere Informationen als Anlage / Merkblatt', name: "_DOK_MATERIAL_ANL", clientPropertyJlawyerdescription: "Schriftsatz: weitere Informationen als Anlage / Merkblatt", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'weiterführende Links (bspw. zu Tarifverträgen)', name: "_DOK_MATERIAL_LINKS", clientPropertyJlawyerdescription: "Schriftsatz: weiterführende Links (bspw. zu Tarifverträgen)", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'Entwurf Kündigungsschreiben', name: "_DOK_KENTWURF", clientPropertyJlawyerdescription: "Schriftsatz: Entwurf Kündigungsschreiben", selected: false)
+                                                    }
+                                                }
                                             }   
                         
                                         }     

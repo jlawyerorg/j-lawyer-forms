@@ -545,8 +545,8 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 <https://www.gnu.org/licenses/>.
 */
 
-name = "Kündigungsschutzklage"
-description = "Kündigungsschutzklage"
-version = "2.2.0";
+name = "Kündigungsschutz"
+description = "Kündigungsschutz"
+version = "2.5.0";
 author = "Christian Pieters, Jens Kutschke"
-updated = "16.07.2024"
+updated = "07.08.2024"

@@ -549,4 +549,4 @@ name = "Kündigungsschutz"
 description = "Kündigungsschutz"
 version = "2.5.0";
 author = "Christian Pieters, Jens Kutschke"
-updated = "05.08.2024"
+updated = "07.08.2024"

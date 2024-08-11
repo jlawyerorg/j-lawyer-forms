@@ -881,17 +881,17 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 tableLayout {
                                                     tr {
                                                         td {
-                                                            chkZuschlag = checkBox(text: '§ 5a Abs. 1 VBVG (Geldvermögen min. 150K EUR / weiterer nicht selbst bewohnter Wohnraum / Gewerbebetrieb)', clientPropertyJlawyerdescription: "Zuschlag: § 5a Abs. 1", name: "_ZUSCHLAG_PAR5ABS1", selected: false)
+                                                            chkZuschlag = checkBox(text: '§ 10 Abs. 1 VBVG (Geldvermögen min. 150K EUR / weiterer nicht selbst bewohnter Wohnraum / Gewerbebetrieb)', clientPropertyJlawyerdescription: "Zuschlag: § 10 Abs. 1", name: "_ZUSCHLAG_PAR10ABS1", selected: false)
                                                         }
                                                     }
                                                     tr {
                                                         td {
-                                                            chkPauschale1 = checkBox(text: '§ 5a Abs. 2 VBVG (Übernahme einer ehrenamtlichen Betreuung)', clientPropertyJlawyerdescription: "Zuschlag: § 5a Abs. 2", name: "_ZUSCHLAG_PAR5ABS2", selected: false)
+                                                            chkPauschale1 = checkBox(text: '§ 10 Abs. 2 VBVG (Übernahme einer ehrenamtlichen Betreuung)', clientPropertyJlawyerdescription: "Zuschlag: § 10 Abs. 2", name: "_ZUSCHLAG_PAR10ABS2", selected: false)
                                                         }
                                                     }
                                                     tr {
                                                         td {
-                                                            chkPauschale2 = checkBox(text: '§ 5a Abs. 3 VBVG (Übergabe an einen Ehrenamtler)', clientPropertyJlawyerdescription: "Zuschlag: § 5a Abs. 3", name: "_ZUSCHLAG_PAR5ABS3", selected: false)
+                                                            chkPauschale2 = checkBox(text: '§10 Abs. 3 VBVG (Übergabe an einen Ehrenamtler)', clientPropertyJlawyerdescription: "Zuschlag: § 10 Abs. 3", name: "_ZUSCHLAG_PAR10ABS3", selected: false)
                                                         }
                                                     }
                                                 }
@@ -1039,7 +1039,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
         float betrag = 0f
         float pauschale = 0f
         if ((chkPauschale1.isSelected())&&((bestellungdate+1)==datestart)) {
-            lblnr.text = '§ 5a Abs. 2 VBVG'
+            lblnr.text = '§ 10 Abs. 2 VBVG'
             addPauschale(lblnr, 200)
         }
         while (calcdate <= dateende) {
@@ -1053,7 +1053,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
                 }
                 add(vondate, bisdate, lblnr, betrag)
                 if ((chkZuschlag.isSelected())&&(chkVermoegend.isSelected())) {
-                    lblnr.text = '§ 5a Abs. 1 VBVG'
+                    lblnr.text = '§ 10 Abs. 1 VBVG'
                     add(vondate, bisdate, lblnr, 30)
                 }
                 vondate=calcdate+1
@@ -1061,7 +1061,7 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
             calcdate=calcdate+1
         }
         if (chkPauschale2.isSelected()) {
-            lblnr.text = '§ 5a Abs. 3 VBVG'
+            lblnr.text = '§ 10 Abs. 3 VBVG'
             betrag = pauschale * 1.5
             addPauschale(lblnr, betrag)
         }

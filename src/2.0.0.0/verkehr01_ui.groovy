@@ -730,6 +730,10 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     JTextField txtRestwertDiff;
     JCheckBox chkRestwertDiff;
     
+    JTextField txtWiederbeschaffungsaufwand;
+    JTextField txtWiederbeschaffungsaufwandReg;
+    JTextField txtWiederbeschaffungsaufwandDiff;
+    
     JTextField txtUnfallPauschale;
     JTextField txtNutzungsAusfall;
     JLabel lblNutzungsausfallTagessatz;
@@ -902,6 +906,8 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         berechnen(txtSonstigeKosten4, txtSonstigeKosten4Mwst, txtSonstigeKosten4Reg, txtSonstigeKosten4Diff);
 
         berechnen();
+        
+        berechnenWba();
         
     }
 
@@ -2132,13 +2138,13 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Wiederbeschaffungswert:')
                                         }
                                         td {
-                                            txtWiederbeschaffungswert=formattedTextField(id: 'nWiederbeschaffungswert', name: "_WIEDERBESCHAWERT", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnenTotalschaden(txtWiederbeschaffungswert, txtWiederbeschaffungswertMwst, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff, radioTotalSchadenStRegel.isSelected(), radioTotalSchadenStDiff.isSelected(), radioTotalSchadenStNeutral.isSelected()) })
+                                            txtWiederbeschaffungswert=formattedTextField(id: 'nWiederbeschaffungswert', name: "_WIEDERBESCHAWERT", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnenTotalschaden(txtWiederbeschaffungswert, txtWiederbeschaffungswertMwst, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff, radioTotalSchadenStRegel.isSelected(), radioTotalSchadenStDiff.isSelected(), radioTotalSchadenStNeutral.isSelected()); berechnenWba(); })
                                         }
                                         td {
                                             txtWiederbeschaffungswertMwst=formattedTextField(id: 'nWiederbeschaffungswertMwst', name: "_WIEDERBESCHAWERT_MWST", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, enabled: false, keyReleased: { berechnenTotalschaden(txtWiederbeschaffungswert, txtWiederbeschaffungswertMwst, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff, radioTotalSchadenStRegel.isSelected(), radioTotalSchadenStDiff.isSelected(), radioTotalSchadenStNeutral.isSelected()) })
                                         }
                                         td {
-                                            txtWiederbeschaffungswertReg=formattedTextField(id: 'nWiederbeschaffungswertReg', name: "_WIEDERBESCHAWERT_REG", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnenTotalschaden(txtWiederbeschaffungswert, txtWiederbeschaffungswertMwst, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff, radioTotalSchadenStRegel.isSelected(), radioTotalSchadenStDiff.isSelected(), radioTotalSchadenStNeutral.isSelected()) })
+                                            txtWiederbeschaffungswertReg=formattedTextField(id: 'nWiederbeschaffungswertReg', name: "_WIEDERBESCHAWERT_REG", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnenTotalschaden(txtWiederbeschaffungswert, txtWiederbeschaffungswertMwst, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff, radioTotalSchadenStRegel.isSelected(), radioTotalSchadenStDiff.isSelected(), radioTotalSchadenStNeutral.isSelected()); berechnenWba(); })
                                         }
                                         td {
                                             txtWiederbeschaffungswertDiff=formattedTextField(id: 'nWiederbeschaffungswertDiff', name: "_WIEDERBESCHAWERT_DIFF", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, enabled: false)
@@ -2156,13 +2162,13 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Abzüglich Restwert:')
                                         }
                                         td {
-                                            txtRestwert=formattedTextField(id: 'nRestwert', name: "_RESTWERT", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtRestwert, null, txtRestwertReg, txtRestwertDiff, true) })
+                                            txtRestwert=formattedTextField(id: 'nRestwert', name: "_RESTWERT", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtRestwert, null, txtRestwertReg, txtRestwertDiff, true); berechnenWba(); })
                                         }
                                         td {
                                             label(text: '   ')
                                         }
                                         td {
-                                            txtRestwertReg=formattedTextField(id: 'nRestwertReg', name: "_RESTWERT_REG", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtRestwert, null, txtRestwertReg, txtRestwertDiff, true) })
+                                            txtRestwertReg=formattedTextField(id: 'nRestwertReg', name: "_RESTWERT_REG", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, keyReleased: { berechnen(txtRestwert, null, txtRestwertReg, txtRestwertDiff, true); berechnenWba(); })
                                         }
                                         td {
                                             txtRestwertDiff=formattedTextField(id: 'nRestwertDiff', name: "_RESTWERT_DIFF", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, enabled: false)
@@ -2173,6 +2179,27 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                     berechnen()
                                                 
                                                 }) 
+                                        }
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Wiederbeschaffungsaufwand:')
+                                        }
+                                        td {
+                                            txtWiederbeschaffungsaufwand=formattedTextField(id: 'nWiederbeschaffungsaufwand', name: "_WIEDERBESCHAAUFW", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, enabled: false)
+                                        }
+                                        td {
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            txtWiederbeschaffungsaufwandReg=formattedTextField(id: 'nWiederbeschaffungsaufwandReg', name: "_WIEDERBESCHAAUFW_REG", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, enabled: false)
+                                        }
+                                        td {
+                                            txtWiederbeschaffungsaufwandDiff=formattedTextField(id: 'nWiederbeschaffungsaufwandDiff', name: "_WIEDERBESCHAAUFW_DIFF", clientPropertyJlawyerdescription: "", format: betragFormat, text: '0,00', columns: 10, enabled: false)
+                                    
+                                        }
+                                        td {
+                                            label(text: '   ')
                                         }
                                     }
                                     
@@ -2851,6 +2878,38 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         
         berechnen();
     
+    }
+    
+    // Wiederbeschaffungsaufwand
+    private void berechnenWba() {
+        
+        try {
+            float wbw=betragFormat.parse(txtWiederbeschaffungswert.text).floatValue();
+            float rw=betragFormat.parse(txtRestwert.text).floatValue();
+            float wba=(float)(wbw-rw);
+            txtWiederbeschaffungsaufwand.setText(betragFormat.format(wba))
+        } catch (Throwable t) {
+            txtWiederbeschaffungsaufwand.setText(betragFormat.format(0f))
+        }
+        
+        try {
+            float wbw=betragFormat.parse(txtWiederbeschaffungswertReg.text).floatValue();
+            float rw=betragFormat.parse(txtRestwertReg.text).floatValue();
+            float wba=(float)(wbw-rw);
+            txtWiederbeschaffungsaufwandReg.setText(betragFormat.format(wba))
+        } catch (Throwable t) {
+            txtWiederbeschaffungsaufwandReg.setText(betragFormat.format(0f))
+        }
+        
+        try {
+            float wba1=betragFormat.parse(txtWiederbeschaffungsaufwand.text).floatValue();
+            float wba2=betragFormat.parse(txtWiederbeschaffungsaufwandReg.text).floatValue();
+            float wbaDiff=(float)(wba1-wba2);
+            txtWiederbeschaffungsaufwandDiff.setText(betragFormat.format(wbaDiff))
+        } catch (Throwable t) {
+            txtWiederbeschaffungsaufwandDiff.setText(betragFormat.format(0f))
+        }
+        
     }
     
     private void berechnen() {

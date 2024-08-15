@@ -736,7 +736,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     
     JTextField txtUnfallPauschale;
     JTextField txtNutzungsAusfall;
-    JLabel lblNutzungsausfallTagessatz;
+    JTextField txtNutzungsausfallTagessatz;
     JTextField txtKostenGutachten;
     JTextField txtKostenGutachtenMwst;
     JTextField txtKostenAkteneinsicht;
@@ -892,6 +892,11 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         berechnenTotalschaden(txtWiederbeschaffungswert, txtWiederbeschaffungswertMwst, txtWiederbeschaffungswertReg, txtWiederbeschaffungswertDiff, radioTotalSchadenStRegel.isSelected(), radioTotalSchadenStDiff.isSelected(), radioTotalSchadenStNeutral.isSelected());
         berechnen(txtRestwert, null, txtRestwertReg, txtRestwertDiff, true);
         berechnen(txtUnfallPauschale, null, txtUnfallPauschaleReg, txtUnfallPauschaleDiff);
+        
+        if(txtNutzungsausfallTagessatz.text==null || "".equals(txtNutzungsausfallTagessatz.text)) {
+            populateNutzungsausfallTagessatz(cmbNutzAusfallGruppe.getSelectedItem(), cmbFahrzeugart.getSelectedItem().toString());
+        }
+        
         berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString());
         berechnen(txtKostenGutachten, txtKostenGutachtenMwst, txtKostenGutachtenReg, txtKostenGutachtenDiff);
         berechnen(txtKostenAkteneinsicht, null, txtKostenAkteneinsichtReg, txtKostenAkteneinsichtDiff);
@@ -1346,7 +1351,8 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             'E-Scooter',
                                             'andere'
                                                 ], name: "_FHRZGART", clientPropertyJlawyerdescription: "Fahrzeugart", editable: true, actionPerformed: {
-                                                    berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString())
+                                                    populateNutzungsausfallTagessatz(cmbNutzAusfallGruppe.getSelectedItem(), cmbFahrzeugart.getSelectedItem().toString());
+                                                    berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString());
                                                 }
                                             )
                                         }
@@ -1532,12 +1538,26 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             'K',
                                             'L'
                                                 ], name: "_NUTZAUSFALLGRP", clientPropertyJlawyerdescription: "Nutzungsausfallgruppe", editable: true, actionPerformed: {
-                                                    berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString())
+                                                    populateNutzungsausfallTagessatz(cmbNutzAusfallGruppe.getSelectedItem(), cmbFahrzeugart.getSelectedItem().toString());
+                                                    berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString());
                                                 }
                                             )
                                         }
                                         td {
-                                            lblNutzungsausfallTagessatz = label(text: '')
+                                            panel {
+                                                tableLayout (cellpadding: 0) {
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Tagessatz:')
+                                                        }
+                                                        td {
+                                                            txtNutzungsausfallTagessatz = formattedTextField(id: 'sNutzungsAusfallTagessatz', clientPropertyJlawyerdescription: "Nutzungsausfall Tagessatz", name: "_NUTZAUSFALLTAGESSATZ", format: betragFormat, text: '0,00', columns: 6, keyReleased: {
+                                                                    berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString());
+                                                            })
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
                                         
                                     }
@@ -3247,9 +3267,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         }
     }
     
-    private void berechnenNutzungsausfall(JTextField value, JTextField reg, JTextField diff, String ausfallGruppe, JTextField from, JTextField to, String fahrzeugTyp) {
-        
-        lblNutzungsausfallTagessatz.setText("");
+    private void populateNutzungsausfallTagessatz(String ausfallGruppe, String fahrzeugTyp) {
         
         float perDay=0f;
         if("PKW".equalsIgnoreCase(fahrzeugTyp)) {
@@ -3257,7 +3275,13 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         } else if("Motorrad".equalsIgnoreCase(fahrzeugTyp)) {
             perDay=ausfallTabelleKrad.get(ausfallGruppe);
         }
-        lblNutzungsausfallTagessatz.setText("Tagessatz: " + betragFormat.format(perDay) + " EUR");
+        txtNutzungsausfallTagessatz.setText("" + betragFormat.format(perDay));
+        
+    }
+    
+    private void berechnenNutzungsausfall(JTextField value, JTextField reg, JTextField diff, String ausfallGruppe, JTextField from, JTextField to, String fahrzeugTyp) {
+        
+        float perDay=betragFormat.parse(txtNutzungsausfallTagessatz.text).floatValue();
         float nutzungsAusfall=0f;
         try {
             def fromDate = new Date().parse("dd.MM.yyyy HH:mm", from.text + " 00:00");

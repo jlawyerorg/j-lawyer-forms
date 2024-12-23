@@ -1114,7 +1114,30 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                                         label(text: 'Unterhaltspflichtige Kinder?')        
                                                     }
                                                     td {
-                                                        checkBox(text: '', name: "_KINDER", clientPropertyJlawyerdescription: "Hat Mandant unterhaltspflichtige Kinder?", selected: false)
+                                                        
+                                                    }
+                                                    
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        checkBox(text: '', name: "_KINDER", clientPropertyJlawyerdescription: "Hat Mandant unterhaltspflichtige Kinder?", selected: false)
+                                                                    }
+                                                                    td {
+                                                                        label (text: '   Anzahl: ')
+                                                                    }
+                                                                    td {
+                                                                        spnVorbesitzer = spinner(id: 'nKinderAnz', clientPropertyJlawyerdescription: "Anzahl unterhaltspflichtiger Kinder", name: "_KINDERANZ", 
+                                                                            model:spinnerNumberModel(minimum:0, 
+                                                                                maximum: 20,
+                                                                                value:0,
+                                                                                stepSize:1))
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                         
                                                 }

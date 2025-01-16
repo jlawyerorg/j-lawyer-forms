@@ -1101,6 +1101,34 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                         panel(border: titledBorder(title: 'Weiteres zur Person:')) {
                                             tableLayout (cellpadding: 5) {
                                                 tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Geburtsdatum')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtBirthDate=textField(id: 'sGebDatum', name: "_GEBDATUM", clientPropertyJlawyerdescription: "Geburtsdatum Mandant(in)", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtBirthDate, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
                                                     td {
                                                         label(text: 'Verheiratet?')        
                                                     }

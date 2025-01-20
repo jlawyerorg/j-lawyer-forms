@@ -662,10 +662,8 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 <https://www.gnu.org/licenses/>.
 */
 
-name = "Verkehrsunfalldaten"
-description = "Verkehrsunfalldaten"
-version = "2.18.1";
+name = "JUSTIN LEGAL"
+description = "Stellt Daten aus Justin Legal dar"
+version = "0.1.0";
 author = "Jens Kutschke"
-updated = "20.01.2025"
-
-
+updated = "28.12.2024"

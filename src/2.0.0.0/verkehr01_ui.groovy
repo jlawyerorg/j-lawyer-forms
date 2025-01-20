@@ -688,6 +688,10 @@ import javax.swing.JLabel
 import java.awt.Component
 import java.awt.Container
 import java.math.BigDecimal
+import java.math.RoundingMode
+import java.time.format.DateTimeFormatter
+import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 import com.jdimension.jlawyer.client.utils.DesktopUtils
 import com.jdimension.jlawyer.client.settings.ServerSettings
@@ -959,8 +963,8 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         }
                                         td {
                                             button(text: 'Öffnen', actionPerformed: {
-                                                DesktopUtils.openBrowser(txtExternalLink.getText());
-                                            })
+                                                    DesktopUtils.openBrowser(txtExternalLink.getText());
+                                                })
                                         }
                                     }
                 
@@ -1037,16 +1041,16 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         }
                                         td {
                                             button(text: 'Frist in die Akte übernehmen', actionPerformed: {
-                                                        String caseId=callback.getCaseId();
-                                                        int response=GuiLib.askYesNo("Frist eintragen?", "Soll eine Frist für den Ablauf der 6-monatigen Haltefrist erstellt werden?");
-                                                        if(response==javax.swing.JOptionPane.YES_OPTION) {
-                                                            try {
-                                                                StorageLib.addRespite(caseId, "Ablauf 6 Monate Haltefrist", null, new Date().parse("dd.MM.yyyy", txtHalteFrist.text));
-                                                            } catch (Throwable t) {
-                                                                t.printStackTrace();
-                                                            }
+                                                    String caseId=callback.getCaseId();
+                                                    int response=GuiLib.askYesNo("Frist eintragen?", "Soll eine Frist für den Ablauf der 6-monatigen Haltefrist erstellt werden?");
+                                                    if(response==javax.swing.JOptionPane.YES_OPTION) {
+                                                        try {
+                                                            StorageLib.addRespite(caseId, "Ablauf 6 Monate Haltefrist", null, new Date().parse("dd.MM.yyyy", txtHalteFrist.text));
+                                                        } catch (Throwable t) {
+                                                            t.printStackTrace();
                                                         }
-                                                    })
+                                                    }
+                                                })
                                         }
                                     }
                                     tr {
@@ -1553,7 +1557,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                         td {
                                                             txtNutzungsausfallTagessatz = formattedTextField(id: 'sNutzungsAusfallTagessatz', clientPropertyJlawyerdescription: "Nutzungsausfall Tagessatz", name: "_NUTZAUSFALLTAGESSATZ", format: betragFormat, text: '0,00', columns: 6, keyReleased: {
                                                                     berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString());
-                                                            })
+                                                                })
                                                         }
                                                     }
                                                 }
@@ -1592,7 +1596,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                     txtNutzungsAusfallVon.setText("");
                                                     txtNutzungsAusfallBis.setText("");
                                                     berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString())
-                                            })
+                                                })
                                         }
                                         
                                     }
@@ -1899,15 +1903,15 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Beginn der Reparatur:')
                                         }
                                         td {
-                                           txtReparaturBeginn=formattedTextField(id: 'sReparaturBeginn', clientPropertyJlawyerdescription: "Reparaturbeginn (Datum)", name: "_REPABEGINN", format: datumsFormat, columns: 10, text: '', enabled: true, keyReleased: {
-                                                 berechnenReparaturDauer();  
-                                           })
+                                            txtReparaturBeginn=formattedTextField(id: 'sReparaturBeginn', clientPropertyJlawyerdescription: "Reparaturbeginn (Datum)", name: "_REPABEGINN", format: datumsFormat, columns: 10, text: '', enabled: true, keyReleased: {
+                                                    berechnenReparaturDauer();  
+                                                })
                                         }
                                         td {
                                             button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
                                                     GuiLib.dateSelector(txtReparaturBeginn, true);
                                                     berechnenReparaturDauer();
-                                            })
+                                                })
                                         }
                                     }
                                     tr {
@@ -1915,15 +1919,15 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Abschluss der Reparatur:')
                                         }
                                         td {
-                                           txtReparaturEnde=formattedTextField(id: 'sReparaturEnde', clientPropertyJlawyerdescription: "Reparaturabschluss (Datum)", name: "_REPAENDE", format: datumsFormat, columns: 10, text: '', enabled: true, keyReleased: {
-                                                 berechnenReparaturDauer();  
-                                           })
+                                            txtReparaturEnde=formattedTextField(id: 'sReparaturEnde', clientPropertyJlawyerdescription: "Reparaturabschluss (Datum)", name: "_REPAENDE", format: datumsFormat, columns: 10, text: '', enabled: true, keyReleased: {
+                                                    berechnenReparaturDauer();  
+                                                })
                                         }
                                         td {
                                             button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
-                                                GuiLib.dateSelector(txtReparaturEnde, true);
-                                                berechnenReparaturDauer();
-                                            })
+                                                    GuiLib.dateSelector(txtReparaturEnde, true);
+                                                    berechnenReparaturDauer();
+                                                })
                                         }
                                     }
                                     tr {
@@ -1931,7 +1935,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Reparaturdauer (Tage):')
                                         }
                                         td {
-                                           txtReparaturDauer=textField(id: 'sReparaturDauer', clientPropertyJlawyerdescription: "Reparaturdauer in Tagen", name: "_REPATAGE", columns: 10, text: '', enabled: false)
+                                            txtReparaturDauer=textField(id: 'sReparaturDauer', clientPropertyJlawyerdescription: "Reparaturdauer in Tagen", name: "_REPATAGE", columns: 10, text: '', enabled: false)
                                         }
                                         td {
                                             
@@ -1942,12 +1946,12 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Datum der Reparaturrechnung:')
                                         }
                                         td {
-                                           txtReparaturRechnung=formattedTextField(id: 'sReparaturRechnung', clientPropertyJlawyerdescription: "Reparaturrechnung vom (Datum)", name: "_REPARECHNUNG", format: datumsFormat, columns: 10, text: '', enabled: true)
+                                            txtReparaturRechnung=formattedTextField(id: 'sReparaturRechnung', clientPropertyJlawyerdescription: "Reparaturrechnung vom (Datum)", name: "_REPARECHNUNG", format: datumsFormat, columns: 10, text: '', enabled: true)
                                         }
                                         td {
                                             button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
                                                     GuiLib.dateSelector(txtReparaturRechnung, true);
-                                            })
+                                                })
                                         }
                                         td {
                                             label(text: 'Rechnungsnr.:')
@@ -2941,290 +2945,278 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     }
     
     private void berechnen(JTextField value, JTextField mwst, JTextField reg, JTextField diff, boolean negative) {
-        
-        float sub1=0f;
-        float sub2=0f;
-        float sub3=0f;
-        float total=0f;
-        float totalDiff=0f;
-        
+        BigDecimal sub1 = BigDecimal.ZERO
+        BigDecimal sub2 = BigDecimal.ZERO
+        BigDecimal sub3 = BigDecimal.ZERO
+        BigDecimal totalDiff = BigDecimal.ZERO
+
         try {
-            float f1=betragFormat.parse(txtReparaturKosten.getText()).floatValue();
-            float f2=betragFormat.parse(txtReparaturKostenGutachten.getText()).floatValue();
-            if(f1>0 && f2>0) {
-                lblReparaturKostenDoppelt.text="<html><font color=\"red\">Reparaturkosten mglw. doppelt erfasst (lt. Gutachten und Rechnung)</font></html>";
+            BigDecimal f1 = new BigDecimal(betragFormat.parse(txtReparaturKosten.getText()).toString())
+            BigDecimal f2 = new BigDecimal(betragFormat.parse(txtReparaturKostenGutachten.getText()).toString())
+            if (f1.compareTo(BigDecimal.ZERO) > 0 && f2.compareTo(BigDecimal.ZERO) > 0) {
+                lblReparaturKostenDoppelt.text = "<html><font color=\"red\">Reparaturkosten mglw. doppelt erfasst (lt. Gutachten und Rechnung)</font></html>"
             } else {
-                lblReparaturKostenDoppelt.text="";
+                lblReparaturKostenDoppelt.text = ""
             }
-        } catch (Throwable t) {
-            t.printStacktrace();
-        }
-        
-        float vat=0f;
-        try {
-            if(mwst!=null) {
-                BigDecimal n1=new BigDecimal(Float.toString(betragFormat.parse(value.text).floatValue()));
-                BigDecimal n2vat=n1.multiply(new BigDecimal("0.19"));
-                // vat=betragFormat.parse(value.text).floatValue() * 0.19f;
-                vat = n2vat.floatValue();
-            }
-        } catch (Throwable t) {
-            // do nothing
-            
-        }
-        
-        if(radioFahrzeugGesch.isSelected() && mwst!=null) {
-            // Übergeordnet ist die Frage, ob es sich um ein Privatfahrzeug oder Betriebsfahrzeug handelt. Denn soweit es sich um ein Betriebsfahrzeug handelt und der Geschädigte vorsteuerabzugsberechtigt ist, können ausnahmslos alle Schadenpositionen nur netto geltend gemacht werden.
-            vat=0;
-            mwst.setText(betragFormat.format(0f));
-        }
-        if(radioFahrzeugPrivat.isSelected() && mwst!=null) {
-            mwst.setText(betragFormat.format(vat));
-        }
-        
-        if(value !=null && reg!=null && diff !=null) {
-        
-            float v=betragFormat.parse(value.text).floatValue();
-            float r=betragFormat.parse(reg.text).floatValue();
-            float diffCalculated=(float)(v+vat-r);
-            if(negative)
-                diffCalculated=-1f*diffCalculated;
-            diff.setText(betragFormat.format(diffCalculated));
-            
-            if(diffCalculated>0) {
-                diff.setDisabledTextColor(java.awt.Color.RED);
-            } else {
-                diff.setDisabledTextColor(java.awt.Color.BLACK);
-            }
-        }
-        
-        // Summe
-        float fStreitwert=0f;
-        try {
-            float currentSum=0f;
-            if(radioReparaturSchaden.selected) {
-                currentSum+=betragFormat.parse(txtReparaturKosten.text)
-                currentSum+=betragFormat.parse(txtReparaturKostenMwst.text)
-                currentSum+=betragFormat.parse(txtReparaturKostenGutachten.text)
-                currentSum+=betragFormat.parse(txtWertminderung.text)
-                currentSum-=betragFormat.parse(txtNfa.text)
-            } else {
-                currentSum+=betragFormat.parse(txtWiederbeschaffungswert.text)
-                // need to subtract mwst
-                currentSum-=betragFormat.parse(txtWiederbeschaffungswertMwst.text)
-                // this value is subtracted
-                currentSum-=betragFormat.parse(txtRestwert.text)
-            }
-            currentSum+=betragFormat.parse(txtUnfallPauschale.text)
-            currentSum+=betragFormat.parse(txtNutzungsAusfall.text)
-            currentSum+=betragFormat.parse(txtKostenGutachten.text)
-            currentSum+=betragFormat.parse(txtKostenGutachtenMwst.text)
-            currentSum+=betragFormat.parse(txtKostenAkteneinsicht.text)
-            currentSum+=betragFormat.parse(txtAbschleppKosten.text)
-            currentSum+=betragFormat.parse(txtAbschleppKostenMwst.text)
-            currentSum+=betragFormat.parse(txtStandgeld.text)
-            currentSum+=betragFormat.parse(txtStandgeldMwst.text)
-            currentSum+=betragFormat.parse(txtMietwagenKosten.text)
-            currentSum+=betragFormat.parse(txtMietwagenKostenMwst.text)
-            currentSum+=betragFormat.parse(txtAbmeldeKosten.text)
-            currentSum+=betragFormat.parse(txtAnmeldeKosten.text)
-            currentSum+=betragFormat.parse(txtSonstigeKosten.text)
-            currentSum+=betragFormat.parse(txtSonstigeKosten2.text)
-            currentSum+=betragFormat.parse(txtSonstigeKosten3.text)
-            currentSum+=betragFormat.parse(txtSonstigeKosten4.text)
-            currentSum+=betragFormat.parse(txtSonstigeKosten4Mwst.text)
-            
-            sub1=currentSum;
-            txtSummeSchaden.text="" + betragFormat.format(currentSum);
-            
-            fStreitwert=currentSum;
         } catch (Throwable t) {
             t.printStackTrace();
-            txtSummeSchaden.text="? ungueltiger Betrag";
         }
-        
+
+        BigDecimal vat = BigDecimal.ZERO
+        try {
+            if (mwst != null) {
+                BigDecimal n1 = new BigDecimal(betragFormat.parse(value.text).toString())
+                vat = n1.multiply(new BigDecimal("0.19")).setScale(2, RoundingMode.HALF_UP)
+            }
+        } catch (Throwable t) {
+            // Do nothing
+        }
+
+        if (radioFahrzeugGesch.isSelected() && mwst != null) {
+            vat = BigDecimal.ZERO
+            mwst.setText(betragFormat.format(0))
+        }
+        if (radioFahrzeugPrivat.isSelected() && mwst != null) {
+            mwst.setText(betragFormat.format(vat))
+        }
+
+        if (value != null && reg != null && diff != null) {
+            try {
+                BigDecimal v = new BigDecimal(betragFormat.parse(value.text).toString())
+                BigDecimal r = new BigDecimal(betragFormat.parse(reg.text).toString())
+                BigDecimal diffCalculated = v.add(vat).subtract(r).setScale(2, RoundingMode.HALF_UP)
+                if (negative) diffCalculated = diffCalculated.negate()
+                diff.setText(betragFormat.format(diffCalculated))
+
+                diff.setDisabledTextColor(diffCalculated.compareTo(BigDecimal.ZERO) > 0 ? java.awt.Color.RED : java.awt.Color.BLACK)
+            } catch (Throwable t) {
+                t.printStackTrace()
+            }
+        }
+
+        BigDecimal fStreitwert = BigDecimal.ZERO
+        try {
+            BigDecimal currentSum = BigDecimal.ZERO
+            if (radioReparaturSchaden.selected) {
+                currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtReparaturKosten.text).toString()))
+                .add(new BigDecimal(betragFormat.parse(txtReparaturKostenMwst.text).toString()))
+                .add(new BigDecimal(betragFormat.parse(txtReparaturKostenGutachten.text).toString()))
+                .add(new BigDecimal(betragFormat.parse(txtWertminderung.text).toString()))
+                .subtract(new BigDecimal(betragFormat.parse(txtNfa.text).toString()))
+            } else {
+                currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtWiederbeschaffungswert.text).toString()))
+                .subtract(new BigDecimal(betragFormat.parse(txtWiederbeschaffungswertMwst.text).toString()))
+                .subtract(new BigDecimal(betragFormat.parse(txtRestwert.text).toString()))
+            }
+
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtUnfallPauschale.text).toString()))
+            .add(new BigDecimal(betragFormat.parse(txtNutzungsAusfall.text).toString()))
+            .add(new BigDecimal(betragFormat.parse(txtKostenGutachten.text).toString()))
+            .add(new BigDecimal(betragFormat.parse(txtKostenGutachtenMwst.text).toString()))
+            .add(new BigDecimal(betragFormat.parse(txtKostenAkteneinsicht.text).toString()))
+            .add(new BigDecimal(betragFormat.parse(txtAbschleppKosten.text).toString()))
+            .add(new BigDecimal(betragFormat.parse(txtAbschleppKostenMwst.text).toString()))
+            .add(new BigDecimal(betragFormat.parse(txtStandgeld.text).toString()))
+            .add(new BigDecimal(betragFormat.parse(txtStandgeldMwst.text).toString()))
+            .add(new BigDecimal(betragFormat.parse(txtMietwagenKosten.text).toString()))
+            .add(new BigDecimal(betragFormat.parse(txtMietwagenKostenMwst.text).toString()))
+            .add(new BigDecimal(betragFormat.parse(txtAbmeldeKosten.text).toString()))
+            .add(new BigDecimal(betragFormat.parse(txtAnmeldeKosten.text).toString()))
+            .add(new BigDecimal(betragFormat.parse(txtSonstigeKosten.text).toString()))
+            .add(new BigDecimal(betragFormat.parse(txtSonstigeKosten2.text).toString()))
+            .add(new BigDecimal(betragFormat.parse(txtSonstigeKosten3.text).toString()))
+            .add(new BigDecimal(betragFormat.parse(txtSonstigeKosten4.text).toString()))
+            .add(new BigDecimal(betragFormat.parse(txtSonstigeKosten4Mwst.text).toString()))
+
+            sub1 = currentSum
+            txtSummeSchaden.text = betragFormat.format(currentSum)
+            
+            fStreitwert=currentSum
+        } catch (Throwable t) {
+            t.printStackTrace()
+            txtSummeSchaden.text = "? ungueltiger Betrag"
+        }
+
         // reguliert
         try {
-            float currentSum=0f;
-            if(radioReparaturSchaden.selected) {
-                currentSum+=betragFormat.parse(txtReparaturKostenReg.text)
-                currentSum+=betragFormat.parse(txtReparaturKostenRegGutachten.text)
-                currentSum+=betragFormat.parse(txtWertminderungReg.text)
-                currentSum-=betragFormat.parse(txtNfaReg.text)
+            BigDecimal currentSum = BigDecimal.ZERO
+            if (radioReparaturSchaden.selected) {
+                currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtReparaturKostenReg.text).toString()))
+                currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtReparaturKostenRegGutachten.text).toString()))
+                currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtWertminderungReg.text).toString()))
+                currentSum = currentSum.subtract(new BigDecimal(betragFormat.parse(txtNfaReg.text).toString()))
             } else {
-                currentSum+=betragFormat.parse(txtWiederbeschaffungswertReg.text)
+                currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtWiederbeschaffungswertReg.text).toString()))
                 // this value is subtracted
-                currentSum-=betragFormat.parse(txtRestwertReg.text)
+                currentSum = currentSum.subtract(new BigDecimal(betragFormat.parse(txtRestwertReg.text).toString()))
             }
-            currentSum+=betragFormat.parse(txtUnfallPauschaleReg.text)
-            currentSum+=betragFormat.parse(txtNutzungsAusfallReg.text)
-            currentSum+=betragFormat.parse(txtKostenGutachtenReg.text)
-            currentSum+=betragFormat.parse(txtKostenAkteneinsichtReg.text)
-            currentSum+=betragFormat.parse(txtAbschleppKostenReg.text)
-            currentSum+=betragFormat.parse(txtStandgeldReg.text)
-            currentSum+=betragFormat.parse(txtMietwagenKostenReg.text)
-            currentSum+=betragFormat.parse(txtAbmeldeKostenReg.text)
-            currentSum+=betragFormat.parse(txtAnmeldeKostenReg.text)
-            currentSum+=betragFormat.parse(txtSonstigeKostenReg.text)
-            currentSum+=betragFormat.parse(txtSonstigeKosten2Reg.text)
-            currentSum+=betragFormat.parse(txtSonstigeKosten3Reg.text)
-            currentSum+=betragFormat.parse(txtSonstigeKosten4Reg.text)
-            
-            txtSummeReguliert.text="" + betragFormat.format(currentSum);
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtUnfallPauschaleReg.text).toString()))
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtNutzungsAusfallReg.text).toString()))
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtKostenGutachtenReg.text).toString()))
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtKostenAkteneinsichtReg.text).toString()))
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtAbschleppKostenReg.text).toString()))
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtStandgeldReg.text).toString()))
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtMietwagenKostenReg.text).toString()))
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtAbmeldeKostenReg.text).toString()))
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtAnmeldeKostenReg.text).toString()))
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtSonstigeKostenReg.text).toString()))
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtSonstigeKosten2Reg.text).toString()))
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtSonstigeKosten3Reg.text).toString()))
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtSonstigeKosten4Reg.text).toString()))
+
+            txtSummeReguliert.text = betragFormat.format(currentSum)
         } catch (Throwable t) {
-            t.printStackTrace();
-            txtSummeReguliert.text="? ungueltiger Betrag";
+            t.printStackTrace()
+            txtSummeReguliert.text = "? ungueltiger Betrag"
         }
-        
+
         // Differenz
         try {
-            float currentSum=0f;
-            if(radioReparaturSchaden.selected) {
-                if(chkReparaturKostenDiff.selected)
-                currentSum+=betragFormat.parse(txtReparaturKostenDiff.text)
-                if(chkReparaturKostenDiffGutachten.selected)
-                currentSum+=betragFormat.parse(txtReparaturKostenDiffGutachten.text)
-                if(chkWertminderungDiff.selected)
-                currentSum+=betragFormat.parse(txtWertminderungDiff.text)
-                if(chkNfaDiff.selected)
-                    currentSum+=betragFormat.parse(txtNfaDiff.text)
+            BigDecimal currentSum = BigDecimal.ZERO
+            if (radioReparaturSchaden.selected) {
+                if (chkReparaturKostenDiff.selected)
+                currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtReparaturKostenDiff.text).toString()))
+                if (chkReparaturKostenDiffGutachten.selected)
+                currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtReparaturKostenDiffGutachten.text).toString()))
+                if (chkWertminderungDiff.selected)
+                currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtWertminderungDiff.text).toString()))
+                if (chkNfaDiff.selected)
+                currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtNfaDiff.text).toString()))
             } else {
-                if(chkWiederbeschaffungswertDiff.selected)
-                    currentSum+=betragFormat.parse(txtWiederbeschaffungswertDiff.text)
-                if(chkRestwertDiff.selected)
-                    currentSum+=betragFormat.parse(txtRestwertDiff.text)
+                if (chkWiederbeschaffungswertDiff.selected)
+                currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtWiederbeschaffungswertDiff.text).toString()))
+                if (chkRestwertDiff.selected)
+                currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtRestwertDiff.text).toString()))
             }
-            if(chkUnfallPauschaleDiff.selected)
-            currentSum+=betragFormat.parse(txtUnfallPauschaleDiff.text)
-            if(chkNutzungsAusfallDiff.selected)
-            currentSum+=betragFormat.parse(txtNutzungsAusfallDiff.text)
-            if(chkKostenGutachtenDiff.selected)
-            currentSum+=betragFormat.parse(txtKostenGutachtenDiff.text)
-            if(chkKostenAkteneinsichtDiff.selected)
-            currentSum+=betragFormat.parse(txtKostenAkteneinsichtDiff.text)
-            if(chkAbschleppKostenDiff.selected)
-            currentSum+=betragFormat.parse(txtAbschleppKostenDiff.text)
-            if(chkStandgeldDiff.selected)
-            currentSum+=betragFormat.parse(txtStandgeldDiff.text)
-            if(chkMietwagenKostenDiff.selected)
-            currentSum+=betragFormat.parse(txtMietwagenKostenDiff.text)
-            if(chkAbmeldeKostenDiff.selected)
-            currentSum+=betragFormat.parse(txtAbmeldeKostenDiff.text)
-            if(chkAnmeldeKostenDiff.selected)
-            currentSum+=betragFormat.parse(txtAnmeldeKostenDiff.text)
-            if(chkSonstigeKostenDiff.selected)
-            currentSum+=betragFormat.parse(txtSonstigeKostenDiff.text)
-            if(chkSonstigeKosten2Diff.selected)
-            currentSum+=betragFormat.parse(txtSonstigeKosten2Diff.text)
-            if(chkSonstigeKosten3Diff.selected)
-            currentSum+=betragFormat.parse(txtSonstigeKosten3Diff.text)
-            if(chkSonstigeKosten4Diff.selected)
-            currentSum+=betragFormat.parse(txtSonstigeKosten4Diff.text)
-            
-            
-            txtSummeDifferenz.text="" + betragFormat.format(currentSum);
-            totalDiff=totalDiff+currentSum;
+            if (chkUnfallPauschaleDiff.selected)
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtUnfallPauschaleDiff.text).toString()))
+            if (chkNutzungsAusfallDiff.selected)
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtNutzungsAusfallDiff.text).toString()))
+            if (chkKostenGutachtenDiff.selected)
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtKostenGutachtenDiff.text).toString()))
+            if (chkKostenAkteneinsichtDiff.selected)
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtKostenAkteneinsichtDiff.text).toString()))
+            if (chkAbschleppKostenDiff.selected)
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtAbschleppKostenDiff.text).toString()))
+            if (chkStandgeldDiff.selected)
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtStandgeldDiff.text).toString()))
+            if (chkMietwagenKostenDiff.selected)
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtMietwagenKostenDiff.text).toString()))
+            if (chkAbmeldeKostenDiff.selected)
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtAbmeldeKostenDiff.text).toString()))
+            if (chkAnmeldeKostenDiff.selected)
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtAnmeldeKostenDiff.text).toString()))
+            if (chkSonstigeKostenDiff.selected)
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtSonstigeKostenDiff.text).toString()))
+            if (chkSonstigeKosten2Diff.selected)
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtSonstigeKosten2Diff.text).toString()))
+            if (chkSonstigeKosten3Diff.selected)
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtSonstigeKosten3Diff.text).toString()))
+            if (chkSonstigeKosten4Diff.selected)
+            currentSum = currentSum.add(new BigDecimal(betragFormat.parse(txtSonstigeKosten4Diff.text).toString()))
+
+            txtSummeDifferenz.text = betragFormat.format(currentSum)
+            totalDiff = totalDiff.add(currentSum)
         } catch (Throwable t) {
-            t.printStackTrace();
-            txtSummeDifferenz.text="? ungueltiger Betrag";
+            t.printStackTrace()
+            txtSummeDifferenz.text = "? ungueltiger Betrag"
         }
-        
+
         // Anwaltskosten
         try {
-            float vv7002=20f;
-            float vv2300=0f;
-            
-            float faktor=1.3f;
-            
+            BigDecimal vv7002 = BigDecimal.valueOf(20.0);
+            BigDecimal vv2300;
+    
+            BigDecimal faktor = BigDecimal.valueOf(1.3);
+    
             RvgTablesRangeList2021 rl = new RvgTablesRangeList2021();
-            vv2300=Math.max(rl.getMappedValue(fStreitwert) * faktor, 0);
-            //System.out.println("vv2300: " + vv2300);
-            
-            float anwMwst=0.19f;
-            if(radioFahrzeugGesch.isSelected()) {
-               anwMwst=0f;
+            vv2300 = BigDecimal.valueOf(Math.max(rl.getMappedValue(fStreitwert) * faktor.doubleValue(), 0));
+    
+            BigDecimal anwMwst = BigDecimal.valueOf(0.19);
+            if (radioFahrzeugGesch.isSelected()) {
+                anwMwst = BigDecimal.ZERO;
+            } else if (radioFahrzeugPrivat.isSelected()) {
+                anwMwst = BigDecimal.valueOf(0.19);
             }
-            if(radioFahrzeugPrivat.isSelected()) {
-                anwMwst=0.19f;
+
+            if (vv2300.multiply(BigDecimal.valueOf(0.2)).compareTo(vv7002) < 0) {
+                vv7002 = vv2300.multiply(BigDecimal.valueOf(0.2));
             }
-            
-            if((vv2300 * 0.2f) < 20f) {
-                vv7002 = vv2300 * 0.2f;
-            }
-            
-            sub2=vv2300+vv7002;
-            txtAnwaltskostenNetto.text=betragFormat.format(vv2300+vv7002);
-            //System.out.println("netto: " + betragFormat.format(vv2300+vv7002));
-            
-            sub3=(vv2300+vv7002)*anwMwst;
-            txtAnwaltskostenMwst.text=betragFormat.format((vv2300+vv7002)*anwMwst);
-            //System.out.println("mwst: " + betragFormat.format((vv2300+vv7002)*0.19f));
-            //txtAnwaltskostenReg
-            txtAnwaltskostenDiff.text=betragFormat.format(vv2300 +vv7002 + ((vv2300+vv7002)*anwMwst) - betragFormat.parse(txtAnwaltskostenReg.text));
-            totalDiff=totalDiff+(vv2300 +vv7002 + ((vv2300+vv7002)*anwMwst) - betragFormat.parse(txtAnwaltskostenReg.text));
-            
+
+            sub2 = vv2300.add(vv7002);
+            txtAnwaltskostenNetto.text = betragFormat.format(sub2);
+
+            sub3 = sub2.multiply(anwMwst);
+            txtAnwaltskostenMwst.text = betragFormat.format(sub3);
+
+            BigDecimal anwaltskostenReg = new BigDecimal(betragFormat.parse(txtAnwaltskostenReg.text).toString());
+            BigDecimal anwaltskostenDiff = sub2.add(sub3).subtract(anwaltskostenReg);
+            txtAnwaltskostenDiff.text = betragFormat.format(anwaltskostenDiff);
+
+            totalDiff = totalDiff.add(anwaltskostenDiff);
         } catch (Throwable t) {
             t.printStackTrace();
-            txtSummeDifferenz.text="? ungueltiger Betrag";
+            txtSummeDifferenz.text = "? ungueltiger Betrag";
         }
-        
-        txtTotalKosten.text=betragFormat.format(sub1+sub2+sub3);
-        txtTotalDifferenz.text=betragFormat.format(totalDiff);
-        
+
+        txtTotalKosten.text = betragFormat.format(sub1.add(sub2).add(sub3));
+        txtTotalDifferenz.text = betragFormat.format(totalDiff);
+
     }
     
     private void berechnenTotalschaden(JTextField value, JTextField mwst, JTextField reg, JTextField diff, boolean stRegel, boolean stDiff, boolean stNeutral) {
-        
-        float vat=0f;
         try {
+            BigDecimal vat = BigDecimal.ZERO;
+
+            // Calculate VAT based on the selected rule
+            try {
+                if (mwst != null) {
+                    BigDecimal valueAmount = new BigDecimal(betragFormat.parse(value.getText()).toString());
+                    if (stRegel) {
+                        vat = valueAmount.divide(BigDecimal.valueOf(119), 2, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(19));
+                    } else if (stDiff) {
+                        vat = valueAmount.divide(BigDecimal.valueOf(102.5), 2, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(2.5));
+                    } else if (stNeutral) {
+                        vat = BigDecimal.ZERO;
+                    }
+                }
+            } catch (Throwable t) {
+                // do nothing
+            }
             if(mwst!=null) {
-                if(stRegel) {
-                   vat=betragFormat.parse(value.text).floatValue() / 119f * 19f;
-                } else if(stDiff) {
-                    // vat=betragFormat.parse(value.text).floatValue() * 0.025f;
-                    vat=betragFormat.parse(value.text).floatValue() / 102.5f * 2.5f;
-                } else if(stNeutral) {
-                    vat=0f;
-                }
-                
+                mwst.setText(betragFormat.format(vat));
             }
-        } catch (Throwable t) {
-            // do nothing
-            
-        }
-        
-        if(mwst!=null) {
-            mwst.setText(betragFormat.format(vat));
-        }
-        
-        if(value !=null && reg!=null && diff !=null) {
-        
-            float v=betragFormat.parse(value.text).floatValue();
-            float r=betragFormat.parse(reg.text).floatValue();
-            
-            if(radioFahrzeugGesch.isSelected() && mwst!=null) {
-                diff.setText(betragFormat.format((float)(v-r-vat)));
-                if((v-r-vat)>0) {
+
+            if (value != null && reg != null && diff != null) {
+                BigDecimal v = new BigDecimal(betragFormat.parse(value.getText()).toString());
+                BigDecimal r = new BigDecimal(betragFormat.parse(reg.getText()).toString());
+                BigDecimal difference;
+
+                // Calculate the difference based on the selected radio button
+                if (radioFahrzeugGesch.isSelected() && mwst != null) {
+                    difference = v.subtract(r).subtract(vat);
+                } else if (radioFahrzeugPrivat.isSelected() && mwst != null) {
+                    difference = v.subtract(r);
+                } else {
+                    difference = BigDecimal.ZERO;
+                }
+
+                // Update the diff field
+                diff.setText(betragFormat.format(difference));
+                if (difference.compareTo(BigDecimal.ZERO) > 0) {
                     diff.setDisabledTextColor(java.awt.Color.RED);
                 } else {
                     diff.setDisabledTextColor(java.awt.Color.BLACK);
                 }
             }
-            if(radioFahrzeugPrivat.isSelected() && mwst!=null) {
-                diff.setText(betragFormat.format((float)(v-r)));
-                if((v-r)>0) {
-                    diff.setDisabledTextColor(java.awt.Color.RED);
-                } else {
-                    diff.setDisabledTextColor(java.awt.Color.BLACK);
-                }
-            }
-            
-            
+
+            berechnen(null, null, null, null);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        
-        berechnen(null, null, null, null);
-        
     }
+
     
     private void berechnenHalteFrist() {
         if(txtUnfallDatum.getText().length()!=10) {
@@ -3280,38 +3272,45 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     }
     
     private void berechnenNutzungsausfall(JTextField value, JTextField reg, JTextField diff, String ausfallGruppe, JTextField from, JTextField to, String fahrzeugTyp) {
-        
-        float perDay=betragFormat.parse(txtNutzungsausfallTagessatz.text).floatValue();
-        float nutzungsAusfall=0f;
         try {
-            def fromDate = new Date().parse("dd.MM.yyyy HH:mm", from.text + " 00:00");
-            def toDate = new Date().parse("dd.MM.yyyy HH:mm", to.text + " 24:00");
-            
-            def duration = toDate - fromDate;
-            nutzungsAusfall=duration * perDay;
-            if(nutzungsAusfall<0)
-                nutzungsAusfall=0f;
-        } catch (Throwable t) {
-            
-        }
-            
-            
-        if(value !=null && reg!=null && diff !=null) {
-            value.setText(betragFormat.format(nutzungsAusfall));
-            float v=nutzungsAusfall;
-            float r=betragFormat.parse(reg.text).floatValue();
-            diff.setText(betragFormat.format((float)(v-r)));
-            if((v-r)>0) {
-                diff.setDisabledTextColor(java.awt.Color.RED);
-            } else {
-                diff.setDisabledTextColor(java.awt.Color.BLACK);
+            BigDecimal perDay = new BigDecimal(betragFormat.parse(txtNutzungsausfallTagessatz.getText()).toString());
+            BigDecimal nutzungsAusfall = BigDecimal.ZERO;
+
+            // Parse dates
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+            LocalDateTime fromDate = LocalDateTime.parse(from.getText() + " 00:00", formatter);
+            LocalDateTime toDate = LocalDateTime.parse(to.getText() + " 24:00", formatter);
+
+            // Calculate duration in days
+            long duration = ChronoUnit.DAYS.between(fromDate, toDate);
+            if (duration > 0) {
+                nutzungsAusfall = BigDecimal.valueOf(duration).multiply(perDay);
             }
+
+            if (value != null && reg != null && diff != null) {
+                value.setText(betragFormat.format(nutzungsAusfall));
+
+                BigDecimal v = nutzungsAusfall;
+                BigDecimal r = new BigDecimal(betragFormat.parse(reg.getText()).toString());
+                BigDecimal difference = v.subtract(r);
+
+                diff.setText(betragFormat.format(difference));
+
+                // Set text color based on difference
+                if (difference.compareTo(BigDecimal.ZERO) > 0) {
+                    diff.setDisabledTextColor(java.awt.Color.RED);
+                } else {
+                    diff.setDisabledTextColor(java.awt.Color.BLACK);
+                }
+            }
+
+            berechnen(null, null, null, null);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        
-        
-        berechnen(null, null, null, null);
-        
     }
+
 
     private String getDefaultLink() {
         ServerSettings set=ServerSettings.getInstance();

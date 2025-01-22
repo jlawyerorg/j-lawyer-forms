@@ -671,6 +671,7 @@ import javax.swing.SwingConstants
 import javax.swing.JPanel
 import javax.swing.JTabbedPane
 import javax.swing.JTextField
+import javax.swing.JComboBox
 import javax.swing.ImageIcon
 import java.util.ArrayList
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
@@ -679,6 +680,8 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
 
     JPanel SCRIPTPANEL=null;
     FormPluginCallback callback=null;
+    
+    JComboBox cmbGemarkungen=null;
     
     SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -819,12 +822,32 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                 }
                                                 tr {
                                                     td {
-                                                        label(text: 'Gemarkung')        
+                                                        label(text: 'Gemarkung')
                                                     }
                                                     td {
-                                                        textField(name: "_GBGEMARKUNG", clientPropertyJlawyerdescription: "Gemarkung", text: '', columns:30)
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        cmbGemarkungen = comboBox(name: "_GBGEMARKUNG", clientPropertyJlawyerdescription: "Gemarkung", editable: true, actionPerformed: {
+                                                                
+                                                                            })
+                                                                    }
+//                                                                    td {
+//                                                                        label (text: ' ')
+//                                                                    }
+                                                                    td {
+                                                                        button(text: 'Beteiligte zur Akte', actionPerformed: {
+                                                                                this.addDefaultParties();
+                                                                            })
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
+                                                        
                                                     }
-                                        
+                                                    
                                                 }
                                                 tr {
                                                     td {
@@ -1256,9 +1279,30 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                 
             }
         }
+        
+        this.loadGemarkungen();
 
         return SCRIPTPANEL;
 
+    }
+    
+    private void loadGemarkungen() {
+        
+        ArrayList<String> gemarkungen=NotariatLib.getGemarkungen();
+        println "found " + gemarkungen.size() + " gemarkungen"
+        cmbGemarkungen.addItem("");
+        for(String s: gemarkungen) {
+            cmbGemarkungen.addItem(s);
+        }
+    }
+    
+    private void addDefaultParties() {
+        
+        println "adding parties for gemarkung " + cmbGemarkungen.getEditor().getItem().toString();
+        
+        String caseId=callback.getCaseId();
+        NotariatLib.addDefaultParties(caseId, cmbGemarkungen.getEditor().getItem().toString().trim());
+        
     }
     
 

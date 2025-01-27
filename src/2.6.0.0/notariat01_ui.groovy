@@ -786,6 +786,40 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                     }
                                         
                                 }
+                                tr {
+                                    td {
+                                        label(text: ' ')
+                                    }
+                                    td {
+                                        label(text: ' ')
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        label(text: 'Mobiliar:')
+                                    }
+                                    td {
+                                        checkBox(text: 'mitveräußert', name: "_MOBILIARVERK", clientPropertyJlawyerdescription: "Mobiliar mitveräußert ja/nein", selected: false)
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        label(text: 'Wert:')
+                                    }
+                                    td {
+                                        formattedTextField(name: "_MOBILIARWERT", text: '', columns:10, format: betragFormat, clientPropertyJlawyerdescription: "Mobiliar (Wert)")
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, valign: 'TOP') {
+                                        label(text: 'Auflistung:')
+                                    }
+                                    td {
+                                        scrollPane{
+                                            textArea(name: "_MOBILIARLISTE", clientPropertyJlawyerdescription: "Mobiliar (Auflistung)", lineWrap:true,wrapStyleWord:true, columns:50, rows:10,editable:true)
+                                        } 
+                                    }
+                                }
                             }
                         }
                         panel(name: 'Grundbuch') {
@@ -833,9 +867,9 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                                 
                                                                             })
                                                                     }
-//                                                                    td {
-//                                                                        label (text: ' ')
-//                                                                    }
+                                                                    //                                                                    td {
+                                                                    //                                                                        label (text: ' ')
+                                                                    //                                                                    }
                                                                     td {
                                                                         button(text: 'Beteiligte zur Akte', actionPerformed: {
                                                                                 this.addDefaultParties();
@@ -869,6 +903,28 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                 }
                                                 tr {
                                                     td {
+                                                        label(text: 'Gebäude- und Freifläche')
+                                                    }
+                                                    td {
+                                                        textField(name: "_GBGEBFREIFLAECHE", clientPropertyJlawyerdescription: "Gebäude- und Freifläche", text: '', columns:50)
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Größe in qm')
+                                                    }
+                                                    td {
+                                                        spnVorbesitzer = spinner(id: 'nGbGroesseQm', clientPropertyJlawyerdescription: "Größe in qm", name: "_GBGROESSEQM", 
+                                                            model:spinnerNumberModel(minimum:0, 
+                                                                maximum: 100000,
+                                                                value:0,
+                                                                stepSize:1))
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
                                                         label(text: 'eingetragen im Grundbuch des Amtsgerichts')        
                                                     }
                                                     td {
@@ -895,106 +951,41 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                     td (colfill:true, align: 'left') {
                                         panel(border: titledBorder(title: 'Grundbuch Abteilung 2')) {
                                             tableLayout (cellpadding: 5) {
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 1')        
+                                                (1..11).each { index ->
+                                                    tr {
+                                                        td {
+                                                            label(text: "lfd. Nr. $index")
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout(cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            textField(
+                                                                                name: "_GB2LFDNR$index",
+                                                                                clientPropertyJlawyerdescription: "Grundbuch Abteilung 2 lfd. Nr. $index",
+                                                                                text: '',
+                                                                                columns: 30
+                                                                            )
+                                                                        }
+                                                                        td {
+                                                                            comboBox(
+                                                                                items: [
+                                                    '',
+                                                    'bestehen lassen',
+                                                    'löschen'
+                                                                                ],
+                                                                                name: "_GB2LFDNR${index}_LOESCH",
+                                                                                clientPropertyJlawyerdescription: "Grundbuch Abteilung 2 lfd. Nr. $index - bestehen lassen/löschen",
+                                                                                editable: false
+                                                                            )
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
                                                     }
-                                                    td {
-                                                        textField(name: "_GB2LFDNR1", clientPropertyJlawyerdescription: "Grundbuch Abteilung 2 lfd. Nr. 1", text: '', columns:30)
-                                                    }
-                                        
                                                 }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 2')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB2LFDNR2", clientPropertyJlawyerdescription: "Grundbuch Abteilung 2 lfd. Nr. 2", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 3')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB2LFDNR3", clientPropertyJlawyerdescription: "Grundbuch Abteilung 2 lfd. Nr. 3", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 4')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB2LFDNR4", clientPropertyJlawyerdescription: "Grundbuch Abteilung 2 lfd. Nr. 4", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 5')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB2LFDNR5", clientPropertyJlawyerdescription: "Grundbuch Abteilung 2 lfd. Nr. 5", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 6')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB2LFDNR6", clientPropertyJlawyerdescription: "Grundbuch Abteilung 2 lfd. Nr. 6", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 7')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB2LFDNR7", clientPropertyJlawyerdescription: "Grundbuch Abteilung 2 lfd. Nr. 7", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 8')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB2LFDNR8", clientPropertyJlawyerdescription: "Grundbuch Abteilung 2 lfd. Nr. 8", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 9')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB2LFDNR9", clientPropertyJlawyerdescription: "Grundbuch Abteilung 2 lfd. Nr. 9", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 10')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB2LFDNR10", clientPropertyJlawyerdescription: "Grundbuch Abteilung 2 lfd. Nr. 10", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 11')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB2LFDNR11", clientPropertyJlawyerdescription: "Grundbuch Abteilung 2 lfd. Nr. 11", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                
                                     
                                             }
                                         }
@@ -1004,107 +995,43 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                     td (colfill:true, align: 'left') {
                                         panel(border: titledBorder(title: 'Grundbuch Abteilung 3')) {
                                             tableLayout (cellpadding: 5) {
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 1')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB3LFDNR1", clientPropertyJlawyerdescription: "Grundbuch Abteilung 3 lfd. Nr. 1", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 2')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB3LFDNR2", clientPropertyJlawyerdescription: "Grundbuch Abteilung 3 lfd. Nr. 2", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 3')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB3LFDNR3", clientPropertyJlawyerdescription: "Grundbuch Abteilung 3 lfd. Nr. 3", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 4')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB3LFDNR4", clientPropertyJlawyerdescription: "Grundbuch Abteilung 3 lfd. Nr. 4", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 5')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB3LFDNR5", clientPropertyJlawyerdescription: "Grundbuch Abteilung 3 lfd. Nr. 5", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 6')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB3LFDNR6", clientPropertyJlawyerdescription: "Grundbuch Abteilung 3 lfd. Nr. 6", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 7')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB3LFDNR7", clientPropertyJlawyerdescription: "Grundbuch Abteilung 3 lfd. Nr. 7", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 8')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB3LFDNR8", clientPropertyJlawyerdescription: "Grundbuch Abteilung 3 lfd. Nr. 8", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 9')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB3LFDNR9", clientPropertyJlawyerdescription: "Grundbuch Abteilung 3 lfd. Nr. 9", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 10')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB3LFDNR10", clientPropertyJlawyerdescription: "Grundbuch Abteilung 3 lfd. Nr. 10", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'lfd. Nr. 11')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GB3LFDNR11", clientPropertyJlawyerdescription: "Grundbuch Abteilung 3 lfd. Nr. 11", text: '', columns:30)
-                                                    }
-                                        
-                                                }
                                                 
-                                    
+                                                (1..11).each { index ->
+                                                    tr {
+                                                        td {
+                                                            label(text: "lfd. Nr. $index")
+                                                        }
+                                                        td {
+                                                            
+                                                            panel {
+                                                                tableLayout(cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            textField(
+                                                                                name: "_GB3LFDNR$index",
+                                                                                clientPropertyJlawyerdescription: "Grundbuch Abteilung 3 lfd. Nr. $index",
+                                                                                text: '',
+                                                                                columns: 30
+                                                                            )
+                                                                        }
+                                                                        td {
+                                                                            comboBox(
+                                                                                items: [
+                                                                                    '',
+                                                                                    'bestehen lassen',
+                                                                                    'löschen'
+                                                                                ],
+                                                                                name: "_GB3LFDNR${index}_LOESCH",
+                                                                                clientPropertyJlawyerdescription: "Grundbuch Abteilung 3 lfd. Nr. $index - bestehen lassen/löschen",
+                                                                                editable: false
+                                                                            )
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     }

@@ -547,6 +547,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "Notariat: Kaufvertrag"
 description = "Notariat: Kaufvertrag"
-version = "0.1.0";
+version = "0.2.0";
 author = "Jens Kutschke"
-updated = "23.12.2024"
+updated = "27.01.2025"

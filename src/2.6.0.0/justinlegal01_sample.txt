@@ -1,284 +1,260 @@
 {
   "title": "Falldaten aus Justin Legal",
   "description": "Anfrage von Stefan Müller im Verkehrsrecht",
-  "fields": [
-
+  "tabs": [
     {
-      "type": "section",
-      "id": 141,
-
-      "label": "Überschrift eines Teilbereichs",
-      "placeHolder": "",
-      "size": "large",
-      "displayOnly": true,
-
-      "maxLength": "",
-      "labelPlacement": "",
-      "placeholder": "",
-      "choices": "",
-      "tooltiptext": ""
-    },
-    {
-      "type": "textbox",
-      "id": 14,
-
-      "label": "Vorname",
-      "value": "Maximilian",
-      "placeHolder": "VORNAME",
-      "size": "large",
-      "displayOnly": true,
-
-      "maxLength": "",
-      "labelPlacement": "",
-      "placeholder": "",
-      "choices": "",
-      "tooltiptext": "Vorname des Mandanten"
-    },
-    {
-      "type": "textarea",
-      "id": 20,
-
-      "label": "Kommentar",
-      "value": "lorem ipsum lirum larum and so forth",
-      "placeHolder": "KOMMENTAR",
-      "size": "large",
-      "displayOnly": true,
-
-      "maxLength": "",
-      "labelPlacement": "",
-      "placeholder": "",
-      "choices": "",
-      "tooltiptext": "ein umfangreicher Kommentar"
-    },
-    {
-      "type": "textbox",
-      "id": 15,
-
-      "label": "Name",
-      "value": "Muster",
-      "placeHolder": "NAME",
-      "size": "large",
-      "displayOnly": true,
-
-      "maxLength": "",
-      "labelPlacement": "",
-      "placeholder": "",
-      "choices": "",
-      "tooltiptext": "Name des Mandanten"
-    },
-    {
-      "type": "separator",
-      "id": 140,
-
-      "label": "",
-      "placeHolder": "",
-      "size": "large",
-      "displayOnly": true,
-
-      "maxLength": "",
-      "labelPlacement": "",
-      "placeholder": "",
-      "choices": "",
-      "tooltiptext": ""
-    },
-    {
-      "type": "select",
-      "id": 34,
-      "value": "Wert 2",
-      "label": "Welche Werte sind zulässig?",
-      "placeHolder": "WERTE",
-      "size": "large",
-      "choices": [
+      "tabTitle": "Demo-Tab",
+      "fields": [
         {
-          "text": "Wert 1",
-          "value": "Wert 1",
-          "isSelected": false,
-          "price": ""
+          "type": "section",
+          "id": 141,
+          "label": "Überschrift eines Teilbereichs",
+          "placeHolder": "",
+          "size": "large",
+          "displayOnly": true,
+          "maxLength": "",
+          "labelPlacement": "",
+          "placeholder": "",
+          "choices": "",
+          "tooltiptext": ""
         },
         {
-          "text": "Wert 2",
+          "type": "textbox",
+          "id": 14,
+          "label": "Vorname",
+          "value": "Maximilian",
+          "placeHolder": "VORNAME",
+          "size": "large",
+          "displayOnly": true,
+          "maxLength": "",
+          "labelPlacement": "",
+          "placeholder": "",
+          "choices": "",
+          "tooltiptext": "Vorname des Mandanten"
+        },
+        {
+          "type": "textarea",
+          "id": 20,
+          "label": "Kommentar",
+          "value": "lorem ipsum lirum larum and so forth",
+          "placeHolder": "KOMMENTAR",
+          "size": "large",
+          "displayOnly": true,
+          "maxLength": "",
+          "labelPlacement": "",
+          "placeholder": "",
+          "choices": "",
+          "tooltiptext": "ein umfangreicher Kommentar"
+        },
+        {
+          "type": "textbox",
+          "id": 15,
+          "label": "Name",
+          "value": "Muster",
+          "placeHolder": "NAME",
+          "size": "large",
+          "displayOnly": true,
+          "maxLength": "",
+          "labelPlacement": "",
+          "placeholder": "",
+          "choices": "",
+          "tooltiptext": "Name des Mandanten"
+        },
+        {
+          "type": "separator",
+          "id": 140,
+          "label": "",
+          "placeHolder": "",
+          "size": "large",
+          "displayOnly": true,
+          "maxLength": "",
+          "labelPlacement": "",
+          "placeholder": "",
+          "choices": "",
+          "tooltiptext": ""
+        },
+        {
+          "type": "select",
+          "id": 34,
           "value": "Wert 2",
-          "isSelected": false,
-          "price": ""
+          "label": "Welche Werte sind zulässig?",
+          "placeHolder": "WERTE",
+          "size": "large",
+          "choices": [
+            {
+              "text": "Wert 1",
+              "value": "Wert 1",
+              "isSelected": false,
+              "price": ""
+            },
+            {
+              "text": "Wert 2",
+              "value": "Wert 2",
+              "isSelected": false,
+              "price": ""
+            },
+            {
+              "text": "Wert 3",
+              "value": "Wert 3",
+              "isSelected": false,
+              "price": ""
+            }
+          ],
+          "maxLength": "",
+          "labelPlacement": "",
+          "placeholder": "",
+          "tooltiptext": "",
+          "displayOnly": ""
         },
         {
-          "text": "Wert 3",
-          "value": "Wert 3",
-          "isSelected": false,
-          "price": ""
+          "type": "checkbox",
+          "id": 16,
+          "label": "Rechtsschutz vorhanden",
+          "value": "true",
+          "placeHolder": "RSV",
+          "size": "large",
+          "displayOnly": true,
+          "maxLength": "",
+          "labelPlacement": "",
+          "placeholder": "",
+          "choices": "",
+          "tooltiptext": ""
+        },
+        {
+          "type": "amount",
+          "id": 161,
+          "label": "Betrag",
+          "value": "231,56",
+          "placeHolder": "BETRAG",
+          "size": "large",
+          "displayOnly": true,
+          "maxLength": "",
+          "labelPlacement": "",
+          "placeholder": "",
+          "choices": "",
+          "tooltiptext": ""
+        },
+        {
+          "type": "number",
+          "id": 162,
+          "label": "Ganzzahl",
+          "value": "768",
+          "placeHolder": "GANZZAHL",
+          "size": "large",
+          "displayOnly": true,
+          "maxLength": "",
+          "labelPlacement": "",
+          "placeholder": "",
+          "choices": "",
+          "tooltiptext": ""
+        },
+        {
+          "type": "date",
+          "id": 163,
+          "label": "Datum",
+          "value": "23.12.2013",
+          "placeHolder": "SOMEDATE",
+          "size": "large",
+          "displayOnly": true,
+          "maxLength": "",
+          "labelPlacement": "",
+          "placeholder": "",
+          "choices": "",
+          "tooltiptext": ""
+        },
+        {
+          "type": "time",
+          "id": 164,
+          "label": "Zeit",
+          "value": "23:15",
+          "placeHolder": "SOMETIME",
+          "size": "large",
+          "displayOnly": true,
+          "maxLength": "",
+          "labelPlacement": "",
+          "placeholder": "",
+          "choices": "",
+          "tooltiptext": ""
+        },
+        {
+          "type": "email",
+          "id": 165,
+          "label": "Antwort an",
+          "value": "info@j-lawyer.org",
+          "placeHolder": "EMAIL",
+          "size": "large",
+          "displayOnly": true,
+          "maxLength": "",
+          "labelPlacement": "",
+          "placeholder": "",
+          "choices": "",
+          "tooltiptext": ""
+        },
+        {
+          "type": "phone",
+          "id": 166,
+          "label": "Rückruf unter",
+          "value": "+49 112",
+          "placeHolder": "TEL",
+          "size": "large",
+          "displayOnly": true,
+          "maxLength": "",
+          "labelPlacement": "",
+          "placeholder": "",
+          "choices": "",
+          "tooltiptext": ""
+        },
+        {
+          "type": "spacer",
+          "id": 168,
+          "label": "",
+          "value": "",
+          "placeHolder": "",
+          "size": "large",
+          "displayOnly": true,
+          "maxLength": "",
+          "labelPlacement": "",
+          "placeholder": "",
+          "choices": "",
+          "tooltiptext": ""
+        },
+        {
+          "type": "html",
+          "id": 167,
+          "label": "HTML-Text",
+          "value": "<html><b>eine Liste</b><ul><li>Eintrag 1</li><li>Eintrag 2</li><li>Eintrag 3</li></ul></html>",
+          "placeHolder": "HTMLTEXT",
+          "size": "large",
+          "displayOnly": true,
+          "maxLength": "",
+          "labelPlacement": "",
+          "placeholder": "",
+          "choices": "",
+          "tooltiptext": ""
+        },
+        {
+          "type": "address",
+          "id": 168,
+          "label": "nur Anschrift",
+          "street": "Strasse",
+          "streetnr": "42",
+          "city": "Stadt",
+          "zipcode": "12345",
+          "country": "Schweiz",
+          "adjunct": "Postfach 1234",
+          "placeHolder": "ADDRESS",
+          "size": "large",
+          "displayOnly": true,
+          "maxLength": "",
+          "labelPlacement": "",
+          "placeholder": "",
+          "choices": "",
+          "tooltiptext": ""
         }
-      ],
-
-      "maxLength": "",
-      "labelPlacement": "",
-      "placeholder": "",
-      "tooltiptext": "",
-      "displayOnly": ""
+      ]
     },
     {
-      "type": "checkbox",
-      "id": 16,
-
-      "label": "Rechtsschutz vorhanden",
-      "value": "true",
-      "placeHolder": "RSV",
-      "size": "large",
-      "displayOnly": true,
-
-      "maxLength": "",
-      "labelPlacement": "",
-      "placeholder": "",
-      "choices": "",
-      "tooltiptext": ""
-    },
-    {
-      "type": "amount",
-      "id": 161,
-
-      "label": "Betrag",
-      "value": "231,56",
-      "placeHolder": "BETRAG",
-      "size": "large",
-      "displayOnly": true,
-
-      "maxLength": "",
-      "labelPlacement": "",
-      "placeholder": "",
-      "choices": "",
-      "tooltiptext": ""
-    },
-    {
-      "type": "number",
-      "id": 162,
-
-      "label": "Ganzzahl",
-      "value": "768",
-      "placeHolder": "GANZZAHL",
-      "size": "large",
-      "displayOnly": true,
-
-      "maxLength": "",
-      "labelPlacement": "",
-      "placeholder": "",
-      "choices": "",
-      "tooltiptext": ""
-    },
-    {
-      "type": "date",
-      "id": 163,
-
-      "label": "Datum",
-      "value": "23.12.2013",
-      "placeHolder": "SOMEDATE",
-      "size": "large",
-      "displayOnly": true,
-
-      "maxLength": "",
-      "labelPlacement": "",
-      "placeholder": "",
-      "choices": "",
-      "tooltiptext": ""
-    },
-    {
-      "type": "time",
-      "id": 164,
-
-      "label": "Zeit",
-      "value": "23:15",
-      "placeHolder": "SOMETIME",
-      "size": "large",
-      "displayOnly": true,
-
-      "maxLength": "",
-      "labelPlacement": "",
-      "placeholder": "",
-      "choices": "",
-      "tooltiptext": ""
-    },
-    {
-      "type": "email",
-      "id": 165,
-
-      "label": "Antwort an",
-      "value": "info@j-lawyer.org",
-      "placeHolder": "EMAIL",
-      "size": "large",
-      "displayOnly": true,
-
-      "maxLength": "",
-      "labelPlacement": "",
-      "placeholder": "",
-      "choices": "",
-      "tooltiptext": ""
-    },
-    {
-      "type": "phone",
-      "id": 166,
-
-      "label": "Rückruf unter",
-      "value": "+49 112",
-      "placeHolder": "TEL",
-      "size": "large",
-      "displayOnly": true,
-
-      "maxLength": "",
-      "labelPlacement": "",
-      "placeholder": "",
-      "choices": "",
-      "tooltiptext": ""
-    },
-    {
-      "type": "spacer",
-      "id": 168,
-
-      "label": "",
-      "value": "",
-      "placeHolder": "",
-      "size": "large",
-      "displayOnly": true,
-
-      "maxLength": "",
-      "labelPlacement": "",
-      "placeholder": "",
-      "choices": "",
-      "tooltiptext": ""
-    },
-    {
-      "type": "html",
-      "id": 167,
-
-      "label": "HTML-Text",
-      "value": "<html><b>eine Liste</b><ul><li>Eintrag 1</li><li>Eintrag 2</li><li>Eintrag 3</li></ul></html>",
-      "placeHolder": "TEL",
-      "size": "large",
-      "displayOnly": true,
-
-      "maxLength": "",
-      "labelPlacement": "",
-      "placeholder": "",
-      "choices": "",
-      "tooltiptext": ""
-    },
-    {
-      "type": "address",
-      "id": 168,
-      "label": "nur Anschrift oder Kontakt?",
-      "street": "Strasse",
-      "streetnr": "42",
-      "city": "Stadt",
-      "zipcode": "12345",
-      "country": "Schweiz",
-      "adjunct": "Postfach 1234",
-
-      "placeHolder": "TEL",
-      "size": "large",
-      "displayOnly": true,
-
-      "maxLength": "",
-      "labelPlacement": "",
-      "placeholder": "",
-      "choices": "",
-      "tooltiptext": ""
+      "tabTitle": "leerer Tab"
     }
   ],
   "id": 2,

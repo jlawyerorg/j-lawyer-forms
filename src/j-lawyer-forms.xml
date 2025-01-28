@@ -79,4 +79,7 @@
         <setting key="forms.notariat01.template.va" caption="Vorlage Veräußerungsanzeige:" default="Finanzamt_Veräusserungsanzeige.odt" order="5"/>
     </form>
     
+    <form id="justinlegal01" type="plugin" depends="formslib" name="Justin Legal" description="Digitale Mandatsannahme via Justin Legal" placeholder="JULE" version="0.2.0" for="3.1.0.3,3.2.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.6.0.0" files="justinlegal01_meta.groovy,justinlegal01_ui.groovy,JustinField.groovy">
+    </form>
+    
 </forms>

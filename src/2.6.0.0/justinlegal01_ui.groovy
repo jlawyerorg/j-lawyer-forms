@@ -683,6 +683,7 @@ import java.util.Locale
 import javax.swing.ImageIcon
 import javax.swing.JButton
 import java.util.HashMap
+import javax.swing.JComponent
 import javax.swing.JFrame
 import javax.swing.JTable
 import javax.swing.JLabel
@@ -696,6 +697,7 @@ import javax.swing.JCheckBox
 import javax.swing.JRadioButton
 import javax.swing.JScrollPane
 import javax.swing.JSeparator
+import javax.swing.JTabbedPane
 import javax.swing.event.DocumentEvent
 import javax.swing.event.DocumentListener
 import javax.swing.text.MaskFormatter
@@ -726,6 +728,7 @@ public class justinlegal01_ui implements com.jdimension.jlawyer.client.plugins.f
     private String selectedForm=null;
     
     JPanel dynamicPanel=null;
+    JTabbedPane tabbedPane=null;
     
     int TEXTFIELD_MAXCOLUMNS=50;
 
@@ -764,480 +767,525 @@ public class justinlegal01_ui implements com.jdimension.jlawyer.client.plugins.f
             def structResult=slurper.parseText(formStructure);
         
             HashMap fieldData=new HashMap();
-            ArrayList sortedFieldIds=new ArrayList();
             lblFormTitle.setText(structResult.title);
             lblFormDescription.setText(structResult.description);
-            structResult.fields.each {
-                //            if("html".equals(it.type)) {
-                //                continue;
-                //            }
-                if("html".equals(it.type)) {
-                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
-                    sortedFieldIds.add("" + it.id);
-                    JustinField f=new JustinField();
-                    f.id="" + it.id;
-                    f.label=it.label;
-                    f.value=it.value;
-                    f.placeHolder=it.placeHolder;
-                    f.type=it.type;
-                    fieldData.put("" + it.id, f);
-                } else if("spacer".equals(it.type)) {
-                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
-                    sortedFieldIds.add("" + it.id);
-                    JustinField f=new JustinField();
-                    f.id="" + it.id;
-                    f.label=it.label;
-                    f.value=it.value;
-                    f.placeHolder=it.placeHolder;
-                    f.type=it.type;
-                    fieldData.put("" + it.id, f);
-                } else if("amount".equals(it.type)) {
-                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
-                    sortedFieldIds.add("" + it.id);
-                    JustinField f=new JustinField();
-                    f.id="" + it.id;
-                    f.label=it.label;
-                    f.value=it.value;
-                    f.placeHolder=it.placeHolder;
-                    f.type=it.type;
-                    fieldData.put("" + it.id, f);
-                } else if("number".equals(it.type)) {
-                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
-                    sortedFieldIds.add("" + it.id);
-                    JustinField f=new JustinField();
-                    f.id="" + it.id;
-                    f.label=it.label;
-                    f.value=it.value;
-                    f.placeHolder=it.placeHolder;
-                    f.type=it.type;
-                    fieldData.put("" + it.id, f);
-                } else if("date".equals(it.type)) {
-                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
-                    sortedFieldIds.add("" + it.id);
-                    JustinField f=new JustinField();
-                    f.id="" + it.id;
-                    f.label=it.label;
-                    f.value=it.value;
-                    f.placeHolder=it.placeHolder;
-                    f.type=it.type;
-                    fieldData.put("" + it.id, f);
-                } else if("textbox".equals(it.type)) {
-                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
-                    sortedFieldIds.add("" + it.id);
-                    JustinField f=new JustinField();
-                    f.id="" + it.id;
-                    f.label=it.label;
-                    f.value=it.value;
-                    f.placeHolder=it.placeHolder;
-                    f.type=it.type;
-                    fieldData.put("" + it.id, f);
-                } else if("email".equals(it.type)) {
-                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
-                    sortedFieldIds.add("" + it.id);
-                    JustinField f=new JustinField();
-                    f.id="" + it.id;
-                    f.label=it.label;
-                    f.value=it.value;
-                    f.placeHolder=it.placeHolder;
-                    f.type=it.type;
-                    fieldData.put("" + it.id, f);
-                } else if("phone".equals(it.type)) {
-                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
-                    sortedFieldIds.add("" + it.id);
-                    JustinField f=new JustinField();
-                    f.id="" + it.id;
-                    f.label=it.label;
-                    f.value=it.value;
-                    f.placeHolder=it.placeHolder;
-                    f.type=it.type;
-                    fieldData.put("" + it.id, f);
-                } else if("time".equals(it.type)) {
-                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label + " with value " + it.value);
-                    sortedFieldIds.add("" + it.id);
-                    JustinField f=new JustinField();
-                    f.id="" + it.id;
-                    f.label=it.label;
-                    f.value=it.value;
-                    f.placeHolder=it.placeHolder;
-                    f.type=it.type;
-                    fieldData.put("" + it.id, f);
-                } else if("textarea".equals(it.type)) {
-                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
-                    sortedFieldIds.add("" + it.id);
-                    JustinField f=new JustinField();
-                    f.id="" + it.id;
-                    f.label=it.label;
-                    f.value=it.value;
-                    f.placeHolder=it.placeHolder;
-                    f.type=it.type;
-                    fieldData.put("" + it.id, f);
-                } else if("checkbox".equals(it.type)) {
-                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
-                    sortedFieldIds.add("" + it.id);
-                    JustinField f=new JustinField();
-                    f.id="" + it.id;
-                    f.label=it.label;
-                    f.value=it.value;
-                    f.placeHolder=it.placeHolder;
-                    f.type=it.type;
-                    fieldData.put("" + it.id, f);
-                } else if("separator".equals(it.type)) {
-                    sortedFieldIds.add("" + it.id);
-                    JustinField f=new JustinField();
-                    f.id="" + it.id;
-                    f.label=it.label;
-                    f.value=it.value;
-                    f.placeHolder=it.placeHolder;
-                    f.type=it.type;
-                    fieldData.put("" + it.id, f);
-                } else if("section".equals(it.type)) {
-                    sortedFieldIds.add("" + it.id);
-                    JustinField f=new JustinField();
-                    f.id="" + it.id;
-                    f.label=it.label;
-                    f.value=it.value;
-                    f.placeHolder=it.placeHolder;
-                    f.type=it.type;
-                    fieldData.put("" + it.id, f);
-                } else if(it.inputs==null && it.choices==null) {
-                    if(it.displayOnly) {
-                        sortedFieldIds.add("" + it.id);
-                        JustinField fGroup=new JustinField();
-                        fGroup.id="" + it.id;
-                        fGroup.label=it.label;
-                        fGroup.value=it.value;
-                        fGroup.groupLabel=it.label;
-                        fGroup.placeHolder=it.placeHolder;
-                        fGroup.type=it.type;
-                        if("section".equals(it.type) || "page".equals(it.type)) {
-                            fGroup.label="";
-                        }
-                        fieldData.put("" + it.id, fGroup);
-                    } else {
-                        println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
-                        sortedFieldIds.add("" + it.id);
-                        JustinField f=new JustinField();
-                        f.id="" + it.id;
-                        f.label=it.label;
-                        f.value=it.value;
-                        f.placeHolder=it.placeHolder;
-                        f.type=it.type;
-                        fieldData.put("" + it.id, f);
-                    }
-                } else if("select".equals(it.type)) {
-                    // e.g. dropdown
-                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
-                    sortedFieldIds.add("" + it.id);
-                    JustinField fGroup=new JustinField();
-                    fGroup.id="" + it.id;
-                    fGroup.label=it.label;
-                    fGroup.placeHolder=it.placeHolder;
-                    fGroup.type=it.type;
-                    fGroup.value=it.value;
-                    fieldData.put("" + it.id, fGroup);
             
-                    for (choice in it.choices) {
-                        fGroup.addValue(choice.value);
+            // tab title to its panel
+            HashMap<String,JPanel> tabPanels=new HashMap<>();
+            // tab title to list of components
+            HashMap<String,List<JustinField>> tabComponents=new HashMap<>();
+            
+            structResult.tabs.each { tabField -> 
+                println(tabField.tabTitle);
+                JPanel tabPanel=new JPanel();
+                
+                int secondLastPosition = Math.max(0, tabbedPane.tabCount - 1); // Calculate the 2nd last position
+                tabbedPane.insertTab(tabField.tabTitle, null, tabPanel, null, secondLastPosition);
+                
+                tabPanels.put(tabField.tabTitle, tabPanel);
+                ArrayList<JustinField> componentList=new ArrayList<>();
+                tabComponents.put(tabField.tabTitle, componentList);
+                
+                tabField.fields.each { componentField ->
+                    
+                    if("html".equals(componentField.type)) {
+                        println ("" + System.currentTimeMillis() + " id " + componentField.id + " has label " + componentField.label);
+                        JustinField f=new JustinField();
+                        f.id="" + componentField.id;
+                        f.label=componentField.label;
+                        f.value=componentField.value;
+                        f.placeHolder=componentField.placeHolder;
+                        f.type=componentField.type;
+                        fieldData.put("" + componentField.id, f);
+                        componentList.add(f);
+                    } else if("spacer".equals(componentField.type)) {
+                        println ("" + System.currentTimeMillis() + " id " + componentField.id + " has label " + componentField.label);
+                        JustinField f=new JustinField();
+                        f.id="" + componentField.id;
+                        f.label=componentField.label;
+                        f.value=componentField.value;
+                        f.placeHolder=componentField.placeHolder;
+                        f.type=componentField.type;
+                        fieldData.put("" + componentField.id, f);
+                        componentList.add(f);
+                    } else if("amount".equals(componentField.type)) {
+                        println ("" + System.currentTimeMillis() + " id " + componentField.id + " has label " + componentField.label);
+                        JustinField f=new JustinField();
+                        f.id="" + componentField.id;
+                        f.label=componentField.label;
+                        f.value=componentField.value;
+                        f.placeHolder=componentField.placeHolder;
+                        f.type=componentField.type;
+                        fieldData.put("" + componentField.id, f);
+                        componentList.add(f);
+                    } else if("number".equals(componentField.type)) {
+                        println ("" + System.currentTimeMillis() + " id " + componentField.id + " has label " + componentField.label);
+                        JustinField f=new JustinField();
+                        f.id="" + componentField.id;
+                        f.label=componentField.label;
+                        f.value=componentField.value;
+                        f.placeHolder=componentField.placeHolder;
+                        f.type=componentField.type;
+                        fieldData.put("" + componentField.id, f);
+                        componentList.add(f);
+                    } else if("date".equals(componentField.type)) {
+                        println ("" + System.currentTimeMillis() + " id " + componentField.id + " has label " + componentField.label);
+                        JustinField f=new JustinField();
+                        f.id="" + componentField.id;
+                        f.label=componentField.label;
+                        f.value=componentField.value;
+                        f.placeHolder=componentField.placeHolder;
+                        f.type=componentField.type;
+                        fieldData.put("" + componentField.id, f);
+                        componentList.add(f);
+                    } else if("textbox".equals(componentField.type)) {
+                        println ("" + System.currentTimeMillis() + " id " + componentField.id + " has label " + componentField.label);
+                        JustinField f=new JustinField();
+                        f.id="" + componentField.id;
+                        f.label=componentField.label;
+                        f.value=componentField.value;
+                        f.placeHolder=componentField.placeHolder;
+                        f.type=componentField.type;
+                        fieldData.put("" + componentField.id, f);
+                        componentList.add(f);
+                    } else if("email".equals(componentField.type)) {
+                        println ("" + System.currentTimeMillis() + " id " + componentField.id + " has label " + componentField.label);
+                        JustinField f=new JustinField();
+                        f.id="" + componentField.id;
+                        f.label=componentField.label;
+                        f.value=componentField.value;
+                        f.placeHolder=componentField.placeHolder;
+                        f.type=componentField.type;
+                        fieldData.put("" + componentField.id, f);
+                        componentList.add(f);
+                    } else if("phone".equals(componentField.type)) {
+                        println ("" + System.currentTimeMillis() + " id " + componentField.id + " has label " + componentField.label);
+                        JustinField f=new JustinField();
+                        f.id="" + componentField.id;
+                        f.label=componentField.label;
+                        f.value=componentField.value;
+                        f.placeHolder=componentField.placeHolder;
+                        f.type=componentField.type;
+                        fieldData.put("" + componentField.id, f);
+                        componentList.add(f);
+                    } else if("time".equals(componentField.type)) {
+                        println ("" + System.currentTimeMillis() + " id " + componentField.id + " has label " + componentField.label + " with value " + componentField.value);
+                        JustinField f=new JustinField();
+                        f.id="" + componentField.id;
+                        f.label=componentField.label;
+                        f.value=componentField.value;
+                        f.placeHolder=componentField.placeHolder;
+                        f.type=componentField.type;
+                        fieldData.put("" + componentField.id, f);
+                        componentList.add(f);
+                    } else if("textarea".equals(componentField.type)) {
+                        println ("" + System.currentTimeMillis() + " id " + componentField.id + " has label " + componentField.label);
+                        JustinField f=new JustinField();
+                        f.id="" + componentField.id;
+                        f.label=componentField.label;
+                        f.value=componentField.value;
+                        f.placeHolder=componentField.placeHolder;
+                        f.type=componentField.type;
+                        fieldData.put("" + componentField.id, f);
+                        componentList.add(f);
+                    } else if("address".equals(componentField.type)) {
+                        println ("" + System.currentTimeMillis() + " id " + componentField.id + " has label " + componentField.label);
+                        JustinField f=new JustinField();
+                        f.id="" + componentField.id;
+                        f.label=componentField.label;
+                        f.value=componentField.street + " " + componentField.streetnr + System.lineSeparator() + componentField.adjunct + System.lineSeparator() + componentField.zipcode + " " + componentField.city + System.lineSeparator() + componentField.country;
+                        f.placeHolder=componentField.placeHolder;
+                        f.type=componentField.type;
+                        fieldData.put("" + componentField.id, f);
+                        componentList.add(f);
+                    } else if("checkbox".equals(componentField.type)) {
+                        println ("" + System.currentTimeMillis() + " id " + componentField.id + " has label " + componentField.label);
+                        JustinField f=new JustinField();
+                        f.id="" + componentField.id;
+                        f.label=componentField.label;
+                        f.value=componentField.value;
+                        f.placeHolder=componentField.placeHolder;
+                        f.type=componentField.type;
+                        fieldData.put("" + componentField.id, f);
+                        componentList.add(f);
+                    } else if("separator".equals(componentField.type)) {
+                        JustinField f=new JustinField();
+                        f.id="" + componentField.id;
+                        f.label=componentField.label;
+                        f.value=componentField.value;
+                        f.placeHolder=componentField.placeHolder;
+                        f.type=componentField.type;
+                        fieldData.put("" + componentField.id, f);
+                        componentList.add(f);
+                    } else if("section".equals(componentField.type)) {
+                        JustinField f=new JustinField();
+                        f.id="" + componentField.id;
+                        f.label=componentField.label;
+                        f.value=componentField.value;
+                        f.placeHolder=componentField.placeHolder;
+                        f.type=componentField.type;
+                        fieldData.put("" + componentField.id, f);
+                        componentList.add(f);
+                    } else if(componentField.inputs==null && componentField.choices==null) {
+                        if(componentField.displayOnly) {
+                            JustinField fGroup=new JustinField();
+                            fGroup.id="" + componentField.id;
+                            fGroup.label=componentField.label;
+                            fGroup.value=componentField.value;
+                            fGroup.groupLabel=componentField.label;
+                            fGroup.placeHolder=componentField.placeHolder;
+                            fGroup.type=componentField.type;
+                            if("section".equals(componentField.type) || "page".equals(componentField.type)) {
+                                fGroup.label="";
+                            }
+                            fieldData.put("" + componentField.id, fGroup);
+                            componentList.add(fGroup);
+                        } else {
+                            println ("" + System.currentTimeMillis() + " id " + componentField.id + " has label " + componentField.label);
+                            JustinField f=new JustinField();
+                            f.id="" + componentField.id;
+                            f.label=componentField.label;
+                            f.value=componentField.value;
+                            f.placeHolder=componentField.placeHolder;
+                            f.type=componentField.type;
+                            fieldData.put("" + componentField.id, f);
+                            componentList.add(f);
+                        }
+                    } else if("select".equals(componentField.type)) {
+                        // e.g. dropdown
+                        println ("" + System.currentTimeMillis() + " id " + componentField.id + " has label " + componentField.label);
+                        JustinField fGroup=new JustinField();
+                        fGroup.id="" + componentField.id;
+                        fGroup.label=componentField.label;
+                        fGroup.placeHolder=componentField.placeHolder;
+                        fGroup.type=componentField.type;
+                        fGroup.value=componentField.value;
+                        fieldData.put("" + componentField.id, fGroup);
+                        componentList.add(fGroup);
+            
+                        for (choice in componentField.choices) {
+                            fGroup.addValue(choice.value);
+                        }
                     }
+                    
                 }
             }
-        
-            dynamicPanel.setLayout(new GridBagLayout());
-            GridBagConstraints con = new GridBagConstraints();
-            con.fill = GridBagConstraints.HORIZONTAL;
-            con.weightx = 1.0;
+            
+            for(String currentPanelTitle: tabPanels.keySet()) {
+                
+                println("rendering tab " + currentPanelTitle + " with " + tabComponents.get(currentPanelTitle) + " fields");
+                
+                JPanel currentPanel=tabPanels.get(currentPanelTitle);
+                currentPanel.setLayout(new GridBagLayout());
+                GridBagConstraints con = new GridBagConstraints();
+                con.fill = GridBagConstraints.HORIZONTAL;
+                con.weightx = 1.0;
     
-            int row=0;
-            for(String id: sortedFieldIds) {
-                row=row+1;
-                println("" + System.currentTimeMillis() + " rendering field " + id);
-                JustinField f=fieldData.get(id);
-                if(f!=null) {
-                    if(f.groupLabel!=null) {
-                        // open new section with the relevant group caption
-                        println("" + System.currentTimeMillis() + "   group label is " + f.groupLabel);
-                        con.gridx = 0
-                        con.gridy = row - 1
-                        dynamicPanel.add(new JLabel("<html><b>" + f.groupLabel + "</b></html>"), con);
-                    } else {
-                        String inset="";
-                        if(f.id.contains(".")) {
-                            inset="     ";
-                        }
-                        if("separator".equals(f.type)) {
-                            // displayed without caption
-                            JSeparator sep=new JSeparator();
-                            con.gridx = 0
-                            con.gridy = row - 1
-                            dynamicPanel.add(sep, con);
-                            
-                        } else if("section".equals(f.type)) {
-                            // displayed without caption
-                            println("rendering section " + f.getId() + " with value " + f.getLabel());
-                            JLabel label=new JLabel();
-                            label.setText("<html><b>" + f.getLabel() + "</b></html>");
-                            
-                            con.gridx = 0
-                            con.gridy = row - 1
-                            dynamicPanel.add(label, con);
-                        } else if("checkbox".equals(f.type)) {
-                            // displayed without caption
-                            
-                        } else {
-                            con.gridx = 0
-                            con.gridy = row - 1
-                            dynamicPanel.add(new JLabel(inset + f.label), con);
-                        }
-                    }
+                int row=0;
                 
-                    if(f.groupLabel!=null) {
-                        con.gridx = 1
-                        con.gridy = row - 1
-                        dynamicPanel.add(new JLabel(""), con);
-                    } else {
-                        if("checkbox".equalsIgnoreCase(f.type)) {
-                            JCheckBox cb=new JCheckBox();
-                            cb.setName(f.getPlaceHolderName() + "_CHECKBOX");
-                            cb.setText(f.getLabel());
-                            cb.putClientProperty("Jlawyerdescription", f.label);
-                            cb.setSelected("true".equalsIgnoreCase(f.value) || "1".equalsIgnoreCase(f.value) || "ja".equalsIgnoreCase(f.value));
-                            con.gridx = 1
+                for(JustinField f: tabComponents.get(currentPanelTitle)) {
+                    row=row+1;
+                    println("" + System.currentTimeMillis() + " rendering field " + f.id);
+                    if(f!=null) {
+                        if(f.groupLabel!=null) {
+                            // open new section with the relevant group caption
+                            println("" + System.currentTimeMillis() + "   group label is " + f.groupLabel);
+                            con.gridx = 0
                             con.gridy = row - 1
-                            dynamicPanel.add(cb, con);
-                        } else if("select".equalsIgnoreCase(f.type)) {
-                            println("rendering select " + f.getId() + " with value " + f.getValue());
-                            JComboBox cb=new JComboBox();
-                            for(String valueEntry: f.getValueList()) {
-                                cb.addItem(valueEntry);
+                            currentPanel.add(new JLabel("<html><b>" + f.groupLabel + "</b></html>"), con);
+                        } else {
+                            String inset="";
+                            if(f.id.contains(".")) {
+                                inset="     ";
                             }
-                            cb.setName(f.getPlaceHolderName());
-                            cb.setSelectedItem(f.getValue());
-                            cb.putClientProperty("Jlawyerdescription", f.label);
+                            if("separator".equals(f.type)) {
+                                // displayed without caption
+                                JSeparator sep=new JSeparator();
+                                con.gridx = 0
+                                con.gridy = row - 1
+                                currentPanel.add(sep, con);
+                            
+                            } else if("section".equals(f.type)) {
+                                // displayed without caption
+                                println("rendering section " + f.getId() + " with value " + f.getLabel());
+                                JLabel label=new JLabel();
+                                label.setText("<html><b>" + f.getLabel() + "</b></html>");
+                            
+                                con.gridx = 0
+                                con.gridy = row - 1
+                                currentPanel.add(label, con);
+                            } else if("checkbox".equals(f.type)) {
+                                // displayed without caption
+                            
+                            } else {
+                                con.gridx = 0
+                                con.gridy = row - 1
+                                currentPanel.add(new JLabel(inset + f.label), con);
+                            }
+                        }
+                
+                        if(f.groupLabel!=null) {
                             con.gridx = 1
                             con.gridy = row - 1
-                            dynamicPanel.add(cb, con);
-                        } else if("textarea".equalsIgnoreCase(f.type)) {
-                            JTextArea ta=new JTextArea();
-                            ta.setText(f.getValue());
-                            ta.setRows(5);
-                            ta.setLineWrap(true);
-                            ta.setWrapStyleWord(true);
-                            ta.setName(f.getPlaceHolderName());
-                            ta.putClientProperty("Jlawyerdescription", f.label);
-                            JScrollPane scrollpane = new JScrollPane(ta);    
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(scrollpane, con);
-                        } else if("separator".equalsIgnoreCase(f.type)) {
-                            JSeparator sep=new JSeparator();
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(sep, con);
+                            currentPanel.add(new JLabel(""), con);
+                        } else {
+                            if("checkbox".equalsIgnoreCase(f.type)) {
+                                JCheckBox cb=new JCheckBox();
+                                cb.setName(f.getPlaceHolderName() + "_CHECKBOX");
+                                cb.setText(f.getLabel());
+                                cb.putClientProperty("Jlawyerdescription", f.label);
+                                cb.setSelected("true".equalsIgnoreCase(f.value) || "1".equalsIgnoreCase(f.value) || "ja".equalsIgnoreCase(f.value));
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                currentPanel.add(cb, con);
+                            } else if("select".equalsIgnoreCase(f.type)) {
+                                println("rendering select " + f.getId() + " with value " + f.getValue());
+                                JComboBox cb=new JComboBox();
+                                for(String valueEntry: f.getValueList()) {
+                                    cb.addItem(valueEntry);
+                                }
+                                cb.setName(f.getPlaceHolderName());
+                                cb.setSelectedItem(f.getValue());
+                                cb.putClientProperty("Jlawyerdescription", f.label);
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                currentPanel.add(cb, con);
+                            } else if("textarea".equalsIgnoreCase(f.type)) {
+                                JTextArea ta=new JTextArea();
+                                ta.setText(f.getValue());
+                                ta.setRows(5);
+                                ta.setLineWrap(true);
+                                ta.setWrapStyleWord(true);
+                                ta.setName(f.getPlaceHolderName());
+                                ta.putClientProperty("Jlawyerdescription", f.label);
+                                JScrollPane scrollpane = new JScrollPane(ta);    
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                currentPanel.add(scrollpane, con);
+                            } else if("address".equalsIgnoreCase(f.type)) {
+                                JTextArea ta=new JTextArea();
+                                ta.setText(f.getValue());
+                                ta.setRows(5);
+                                ta.setLineWrap(true);
+                                ta.setWrapStyleWord(true);
+                                ta.setName(f.getPlaceHolderName());
+                                ta.putClientProperty("Jlawyerdescription", f.label);
+                                JScrollPane scrollpane = new JScrollPane(ta);    
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                currentPanel.add(scrollpane, con);
+                            } else if("separator".equalsIgnoreCase(f.type)) {
+                                JSeparator sep=new JSeparator();
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                currentPanel.add(sep, con);
                             
-                            row=row+1
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(new JLabel(" "), con);
+                                row=row+1
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                currentPanel.add(new JLabel(" "), con);
                             
-                        } else if("spacer".equalsIgnoreCase(f.type)) {
-                            row=row+1
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(new JLabel(" "), con);
+                            } else if("spacer".equalsIgnoreCase(f.type)) {
+                                row=row+1
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                currentPanel.add(new JLabel(" "), con);
                             
-                        } else if("section".equalsIgnoreCase(f.type)) {
-                            // ignore, those are display only contents
-                        } else if("fileupload".equalsIgnoreCase(f.type)) {
+                            } else if("section".equalsIgnoreCase(f.type)) {
+                                // ignore, those are display only contents
+                            } else if("fileupload".equalsIgnoreCase(f.type)) {
                             
-                            JPanel uploadsPanel=new JPanel();
-                            uploadsPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-                            JTextArea ta=new JTextArea();
-                            ta.setRows(1);
-                            ta.setColumns(50);
-                            ta.setLineWrap(true);
-                            ta.setName(f.getPlaceHolderName());
-                            ta.putClientProperty("Jlawyerdescription", f.label);
-                            JScrollPane scrollpane = new JScrollPane(ta);    
-                            uploadsPanel.add(scrollpane);
+                                JPanel uploadsPanel=new JPanel();
+                                uploadsPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+                                JTextArea ta=new JTextArea();
+                                ta.setRows(1);
+                                ta.setColumns(50);
+                                ta.setLineWrap(true);
+                                ta.setName(f.getPlaceHolderName());
+                                ta.putClientProperty("Jlawyerdescription", f.label);
+                                JScrollPane scrollpane = new JScrollPane(ta);    
+                                uploadsPanel.add(scrollpane);
                             
-                            JButton downloadButton=new JButton();
-                            downloadButton.setText("Download");
-                            downloadButton.addActionListener(new java.awt.event.ActionListener() {
-                                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                        this.callback.downloadFilesToCase(ta.getText());
-                                    }
-                                });
-                            uploadsPanel.add(downloadButton);
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(uploadsPanel, con);
-                        } else if("date".equalsIgnoreCase(f.type)) {
-                            
-                            JPanel datePanel=new JPanel();
-                            datePanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-                            JTextField tf=new JTextField(f.getValue(), TEXTFIELD_MAXCOLUMNS);
-                            tf.setName(f.getPlaceHolderName());
-                            tf.setEnabled(false);
-                            tf.putClientProperty("Jlawyerdescription", f.label);
-                            tf.setColumns(15);
-                            tf.setText(f.getValue());
-                            datePanel.add(tf);
-                            
-                            JButton dateSelectButton=new JButton();
-                            dateSelectButton.setText("");
-                            dateSelectButton.setIcon(new ImageIcon(getClass().getResource("/icons/schedule.png")));
-                            dateSelectButton.addActionListener(new java.awt.event.ActionListener() {
-                                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                        GuiLib.dateSelector(tf, true);
-                                    }
-                                });
-                            datePanel.add(dateSelectButton);
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(datePanel, con);   
-                        } else if("signature".equalsIgnoreCase(f.type)) {
-                            
-                            JPanel uploadsPanel=new JPanel();
-                            uploadsPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-                            
-                            JTextField tf=new JTextField(f.getValue(), TEXTFIELD_MAXCOLUMNS);
-                            tf.setName(f.getPlaceHolderName());
-                            tf.setEnabled(false);
-                            tf.putClientProperty("Jlawyerdescription", f.label);
-                            tf.setColumns(30);
-                            uploadsPanel.add(tf);
-                            
-                            JButton downloadButton=new JButton();
-                            downloadButton.setText("Download");
-                            downloadButton.addActionListener(new java.awt.event.ActionListener() {
-                                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                        String caseId=callback.getCaseId();
-                                        StorageLib.addDocument(caseId, "Unterschrift.png", download(tf.getText(), false));
-                                        GuiLib.showInformation("Unterschrift speichern", "Unterschrift wurde zur Akte gespeichert.");
-                                    }
-                                });
-                            uploadsPanel.add(downloadButton);
-                            
-                            JButton viewButton=new JButton();
-                            viewButton.setText("Anzeigen");
-                            viewButton.addActionListener(new java.awt.event.ActionListener() {
-                                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                        byte[] image=download(tf.getText(), false);
-                                        javax.swing.ImageIcon imageIcon=new javax.swing.ImageIcon(image);
-                                        if(image!=null) {
-                                            showSignature(imageIcon);
+                                JButton downloadButton=new JButton();
+                                downloadButton.setText("Download");
+                                downloadButton.addActionListener(new java.awt.event.ActionListener() {
+                                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                            this.callback.downloadFilesToCase(ta.getText());
                                         }
-                                    }
-                                });
-                            uploadsPanel.add(viewButton);
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(uploadsPanel, con);
-                        } else if("textbox".equalsIgnoreCase(f.type)) {
-                            println("rendering textbox " + f.getId() + " with value " + f.getValue());
-                            JTextField tf=new JTextField("", TEXTFIELD_MAXCOLUMNS);
-                            tf.setName(f.getPlaceHolderName());
-                            tf.setText(f.getValue());
-                            tf.putClientProperty("Jlawyerdescription", f.label);
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(tf, con);
-                        } else if("email".equalsIgnoreCase(f.type)) {
-                            println("rendering email " + f.getId() + " with value " + f.getValue());
-                            JTextField tf=new JTextField("", TEXTFIELD_MAXCOLUMNS);
-                            tf.setName(f.getPlaceHolderName());
-                            tf.setText(f.getValue());
-                            tf.putClientProperty("Jlawyerdescription", f.label);
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(tf, con);
-                        } else if("phone".equalsIgnoreCase(f.type)) {
-                            println("rendering phone " + f.getId() + " with value " + f.getValue());
-                            JTextField tf=new JTextField("", TEXTFIELD_MAXCOLUMNS);
-                            tf.setName(f.getPlaceHolderName());
-                            tf.setText(f.getValue());
-                            tf.putClientProperty("Jlawyerdescription", f.label);
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(tf, con);
-                        } else if("html".equalsIgnoreCase(f.type)) {
-                            println("rendering html " + f.getId() + " with value " + f.getValue());
-                            JLabel tf=new JLabel();
-                            tf.setName(f.getPlaceHolderName());
-                            tf.setText(f.getValue());
-                            tf.putClientProperty("Jlawyerdescription", f.label);
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(tf, con);
-                        } else if("time".equalsIgnoreCase(f.type)) {
-                            println("rendering time " + f.getId() + " with value " + f.getValue());
+                                    });
+                                uploadsPanel.add(downloadButton);
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                currentPanel.add(uploadsPanel, con);
+                            } else if("date".equalsIgnoreCase(f.type)) {
                             
-                            MaskFormatter formatter = new MaskFormatter("##:##");
-                            formatter.setPlaceholderCharacter((char)'_');
-                            formatter.setValidCharacters("0123456789") // Only digits allowed
-                            JFormattedTextField tf=new JFormattedTextField(formatter);
-                            tf.setName(f.getPlaceHolderName());
-                            tf.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-                            tf.setValue(f.getValue());
-                            tf.setColumns(15);
-                            tf.putClientProperty("Jlawyerdescription", f.label);
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(tf, con);
-                        } else if("amount".equalsIgnoreCase(f.type)) {
-                            println("rendering amount " + f.getId() + " with value " + f.getValue());
-                            JFormattedTextField tf=new JFormattedTextField();
-                            tf.setName(f.getPlaceHolderName());
-                            tf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
-                            tf.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-                            tf.setValue(0f);
-                            tf.setColumns(15);
-                            try {
-                                NumberFormat betragFormat = new DecimalFormat("0.00")
-                                tf.setValue(betragFormat.parse(f.getValue()));
-                            } catch (Throwable t) {
-                                println("unable to parse float value from " + f.getValue());
+                                JPanel datePanel=new JPanel();
+                                datePanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+                                JTextField tf=new JTextField(f.getValue(), TEXTFIELD_MAXCOLUMNS);
+                                tf.setName(f.getPlaceHolderName());
+                                tf.setEnabled(false);
+                                tf.putClientProperty("Jlawyerdescription", f.label);
+                                tf.setColumns(15);
+                                tf.setText(f.getValue());
+                                datePanel.add(tf);
+                            
+                                JButton dateSelectButton=new JButton();
+                                dateSelectButton.setText("");
+                                dateSelectButton.setIcon(new ImageIcon(getClass().getResource("/icons/schedule.png")));
+                                dateSelectButton.addActionListener(new java.awt.event.ActionListener() {
+                                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                            GuiLib.dateSelector(tf, true);
+                                        }
+                                    });
+                                datePanel.add(dateSelectButton);
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                currentPanel.add(datePanel, con);   
+                            } else if("signature".equalsIgnoreCase(f.type)) {
+                            
+                                JPanel uploadsPanel=new JPanel();
+                                uploadsPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+                            
+                                JTextField tf=new JTextField(f.getValue(), TEXTFIELD_MAXCOLUMNS);
+                                tf.setName(f.getPlaceHolderName());
+                                tf.setEnabled(false);
+                                tf.putClientProperty("Jlawyerdescription", f.label);
+                                tf.setColumns(30);
+                                uploadsPanel.add(tf);
+                            
+                                JButton downloadButton=new JButton();
+                                downloadButton.setText("Download");
+                                downloadButton.addActionListener(new java.awt.event.ActionListener() {
+                                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                            String caseId=callback.getCaseId();
+                                            StorageLib.addDocument(caseId, "Unterschrift.png", download(tf.getText(), false));
+                                            GuiLib.showInformation("Unterschrift speichern", "Unterschrift wurde zur Akte gespeichert.");
+                                        }
+                                    });
+                                uploadsPanel.add(downloadButton);
+                            
+                                JButton viewButton=new JButton();
+                                viewButton.setText("Anzeigen");
+                                viewButton.addActionListener(new java.awt.event.ActionListener() {
+                                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                            byte[] image=download(tf.getText(), false);
+                                            javax.swing.ImageIcon imageIcon=new javax.swing.ImageIcon(image);
+                                            if(image!=null) {
+                                                showSignature(imageIcon);
+                                            }
+                                        }
+                                    });
+                                uploadsPanel.add(viewButton);
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                currentPanel.add(uploadsPanel, con);
+                            } else if("textbox".equalsIgnoreCase(f.type)) {
+                                println("rendering textbox " + f.getId() + " with value " + f.getValue());
+                                JTextField tf=new JTextField("", TEXTFIELD_MAXCOLUMNS);
+                                tf.setName(f.getPlaceHolderName());
+                                tf.setText(f.getValue());
+                                tf.putClientProperty("Jlawyerdescription", f.label);
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                currentPanel.add(tf, con);
+                            } else if("email".equalsIgnoreCase(f.type)) {
+                                println("rendering email " + f.getId() + " with value " + f.getValue());
+                                JTextField tf=new JTextField("", TEXTFIELD_MAXCOLUMNS);
+                                tf.setName(f.getPlaceHolderName());
+                                tf.setText(f.getValue());
+                                tf.putClientProperty("Jlawyerdescription", f.label);
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                currentPanel.add(tf, con);
+                            } else if("phone".equalsIgnoreCase(f.type)) {
+                                println("rendering phone " + f.getId() + " with value " + f.getValue());
+                                JTextField tf=new JTextField("", TEXTFIELD_MAXCOLUMNS);
+                                tf.setName(f.getPlaceHolderName());
+                                tf.setText(f.getValue());
+                                tf.putClientProperty("Jlawyerdescription", f.label);
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                currentPanel.add(tf, con);
+                            } else if("html".equalsIgnoreCase(f.type)) {
+                                println("rendering html " + f.getId() + " with value " + f.getValue());
+                                JLabel tf=new JLabel();
+                                tf.setName(f.getPlaceHolderName());
+                                tf.setText(f.getValue());
+                                tf.putClientProperty("Jlawyerdescription", f.label);
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                currentPanel.add(tf, con);
+                            } else if("time".equalsIgnoreCase(f.type)) {
+                                println("rendering time " + f.getId() + " with value " + f.getValue());
+                            
+                                MaskFormatter formatter = new MaskFormatter("##:##");
+                                formatter.setPlaceholderCharacter((char)'_');
+                                formatter.setValidCharacters("0123456789") // Only digits allowed
+                                JFormattedTextField tf=new JFormattedTextField(formatter);
+                                tf.setName(f.getPlaceHolderName());
+                                tf.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+                                tf.setValue(f.getValue());
+                                tf.setColumns(15);
+                                tf.putClientProperty("Jlawyerdescription", f.label);
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                currentPanel.add(tf, con);
+                            } else if("amount".equalsIgnoreCase(f.type)) {
+                                println("rendering amount " + f.getId() + " with value " + f.getValue());
+                                JFormattedTextField tf=new JFormattedTextField();
+                                tf.setName(f.getPlaceHolderName());
+                                tf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+                                tf.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+                                tf.setValue(0f);
+                                tf.setColumns(15);
+                                try {
+                                    NumberFormat betragFormat = new DecimalFormat("0.00")
+                                    tf.setValue(betragFormat.parse(f.getValue()));
+                                } catch (Throwable t) {
+                                    println("unable to parse float value from " + f.getValue());
+                                }
+                                tf.putClientProperty("Jlawyerdescription", f.label);
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                currentPanel.add(tf, con);
+                            } else if("number".equalsIgnoreCase(f.type)) {
+                                println("rendering number " + f.getId() + " with value " + f.getValue());
+                                JFormattedTextField tf=new JFormattedTextField();
+                                tf.setName(f.getPlaceHolderName());
+                                tf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("0"))));
+                                tf.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+                                tf.setValue(0f);
+                                tf.setColumns(15);
+                                try {
+                                    NumberFormat betragFormat = new DecimalFormat("0")
+                                    tf.setValue(betragFormat.parse(f.getValue()));
+                                } catch (Throwable t) {
+                                    println("unable to parse integer value from " + f.getValue());
+                                }
+                                tf.putClientProperty("Jlawyerdescription", f.label);
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                currentPanel.add(tf, con);
+                            } else {
+                                JTextField tf=new JTextField("", TEXTFIELD_MAXCOLUMNS);
+                                tf.setName(f.getPlaceHolderName());
+                                tf.setText(f.getValue());
+                                tf.putClientProperty("Jlawyerdescription", f.label);
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                currentPanel.add(tf, con);
                             }
-                            tf.putClientProperty("Jlawyerdescription", f.label);
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(tf, con);
-                        } else if("number".equalsIgnoreCase(f.type)) {
-                            println("rendering number " + f.getId() + " with value " + f.getValue());
-                            JFormattedTextField tf=new JFormattedTextField();
-                            tf.setName(f.getPlaceHolderName());
-                            tf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("0"))));
-                            tf.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-                            tf.setValue(0f);
-                            tf.setColumns(15);
-                            try {
-                                NumberFormat betragFormat = new DecimalFormat("0")
-                                tf.setValue(betragFormat.parse(f.getValue()));
-                            } catch (Throwable t) {
-                                println("unable to parse integer value from " + f.getValue());
-                            }
-                            tf.putClientProperty("Jlawyerdescription", f.label);
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(tf, con);
-                        } else {
-                            JTextField tf=new JTextField("", TEXTFIELD_MAXCOLUMNS);
-                            tf.setName(f.getPlaceHolderName());
-                            tf.setText(f.getValue());
-                            tf.putClientProperty("Jlawyerdescription", f.label);
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(tf, con);
                         }
-                    }
                 
-                } else {
-                    println("" + System.currentTimeMillis() + " " + id + " has no definition, cannot render");
+                    } else {
+                        println("" + System.currentTimeMillis() + " " + id + " has no definition, cannot render");
+                    }
+            
+            
                 }
-            
-            
             }
             println("" + System.currentTimeMillis() + " finished rendering fields");
+            tabbedPane.setSelectedIndex(0);
 
         } catch (Throwable t) {
             System.out.println(t.getMessage());
@@ -1268,19 +1316,7 @@ public class justinlegal01_ui implements com.jdimension.jlawyer.client.plugins.f
                 vbox {
                     lblFormTitle=label("Titel", font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size + 2))
                     lblFormDescription=label("Beschreibung", font: UIManager.getFont("Label.font").deriveFont(Font.PLAIN, UIManager.getFont("Label.font").size + 2))
-                    tabbedPane(id: 'tabs') {
-                        panel(name: 'Formular') {
-                            vbox {
-//                                panel(border: titledBorder(title: 'Datenübernahme')) {
-//                                    button(text: 'neuer Adressbucheintrag', actionPerformed: {
-//                                                showAddressImportDialog();
-//                                            })
-//                                }
-                                dynamicPanel=panel(border: titledBorder(title: 'Formulardaten')) {
-                                
-                                }
-                            }
-                        }       
+                    tabbedPane = tabbedPane(id: 'tabs', tabPlacement: JTabbedPane.LEFT) {
                         panel(name: 'Metadaten') {
             
                             tableLayout (id: 'pluginParent', cellpadding: 5) {

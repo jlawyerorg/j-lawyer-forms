@@ -664,6 +664,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "JUSTIN LEGAL"
 description = "Stellt Daten aus Justin Legal dar"
-version = "0.1.0";
+version = "0.2.0";
 author = "Jens Kutschke"
-updated = "28.12.2024"
+updated = "28.01.2025"

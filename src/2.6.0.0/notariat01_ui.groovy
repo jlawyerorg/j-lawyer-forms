@@ -1134,6 +1134,17 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                         label(text: '')        
                                                     }
                                                     td {
+                                                        button(text: 'Negativzeugnisantrag Stadt', actionPerformed: {
+                                                                                this.addNegativzeugnisantrag();
+                                                                            })
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: '')        
+                                                    }
+                                                    td {
                                                         checkBox(text: 'Zeugnis erteilt', name: "_VVABWZEUGNIS", clientPropertyJlawyerdescription: "Zeugnis erteilt ja/nein", selected: false)
                                                     }
                                         
@@ -1144,6 +1155,17 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                     }
                                                     td {
                                                         checkBox(text: 'Löschungsunterlagen Abteilung II,III vollständig', name: "_VVABWLOESCHUNT", clientPropertyJlawyerdescription: "Löschungsunterlagen Abteilung II,III vollständig ja/nein", selected: false)
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: '')        
+                                                    }
+                                                    td {
+                                                        button(text: 'Finanzamt Veräußerungsanzeige', actionPerformed: {
+                                                                                this.addVeraeusserungsanzeige();
+                                                                            })
                                                     }
                                         
                                                 }
@@ -1231,6 +1253,31 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
         NotariatLib.addDefaultParties(caseId, cmbGemarkungen.getEditor().getItem().toString().trim());
         
     }
+    
+    private void addNegativzeugnisantrag() {
+        
+        println "generating Negativzeugnisantrag";
+        
+        String caseId=callback.getCaseId();
+        String templateName=NotariatLib.getTemplateNza();
+        String fileName=templateName;
+        NotariatLib.addDocumentFromTemplate(caseId, fileName, NotariatLib.getTemplateFolder(), templateName);
+        
+    }
+    
+    private void addVeraeusserungsanzeige() {
+        
+        println "generating Veraeusserungsanzeige";
+        String caseId=callback.getCaseId();
+        String templateName=NotariatLib.getTemplateVa();
+        String fileName=templateName;
+        NotariatLib.addDocumentFromTemplate(caseId, fileName, NotariatLib.getTemplateFolder(), templateName);
+        
+        
+    }
+    
+    
+    
     
 
 }

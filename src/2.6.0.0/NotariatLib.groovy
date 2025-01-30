@@ -673,6 +673,7 @@ import java.util.ArrayList
 import java.util.Hashtable
 import java.util.List
 import java.util.Locale
+import javax.naming.InitialContext
 import javax.swing.JCheckBox
 import javax.swing.JComboBox
 import javax.swing.JComponent
@@ -689,6 +690,7 @@ import com.jdimension.jlawyer.client.settings.ServerSettings
 import com.jdimension.jlawyer.client.settings.ClientSettings;
 import com.jdimension.jlawyer.client.utils.ThreadUtils;
 import com.jdimension.jlawyer.persistence.AddressBean;
+import com.jdimension.jlawyer.persistence.AppUserBean;
 import com.jdimension.jlawyer.persistence.ArchiveFileBean;
 import com.jdimension.jlawyer.persistence.ArchiveFileAddressesBean;
 import com.jdimension.jlawyer.persistence.ArchiveFileDocumentsBean;
@@ -696,15 +698,42 @@ import com.jdimension.jlawyer.persistence.PartyTypeBean;
 import com.jdimension.jlawyer.services.ArchiveFileServiceRemote;
 import com.jdimension.jlawyer.services.AddressServiceRemote;
 import com.jdimension.jlawyer.services.JLawyerServiceLocator;
+import com.jdimension.jlawyer.services.SystemManagementRemote;
+import com.jdimension.jlawyer.services.FormsServiceRemote;
 import com.jdimension.jlawyer.client.events.EventBroker;
 import com.jdimension.jlawyer.client.events.DocumentAddedEvent;
 import com.jdimension.jlawyer.client.editors.EditorsRegistry;
+import com.jdimension.jlawyer.pojo.PartiesTriplet;
+import org.jlawyer.data.tree.GenericNode;
+import com.jdimension.jlawyer.client.events.DocumentAddedEvent;
+import com.jdimension.jlawyer.client.events.EventBroker;
 
 public class NotariatLib {
     
 
     public NotariatLib() {
 
+    }
+    
+    public static String getTemplateFolder() {
+        
+        ServerSettings set=ServerSettings.getInstance();
+        return set.getSetting("forms.notariat01.templatefolder", "");
+        
+    }
+    
+    public static String getTemplateNza() {
+        
+        ServerSettings set=ServerSettings.getInstance();
+        return set.getSetting("forms.notariat01.template.nza", "");
+        
+    }
+    
+    public static String getTemplateVa() {
+        
+        ServerSettings set=ServerSettings.getInstance();
+        return set.getSetting("forms.notariat01.template.va", "");
+        
     }
     
     public static ArrayList<String> getGemarkungen() {
@@ -778,6 +807,91 @@ public class NotariatLib {
         }
         sb.append("</ul>Die Beteiligten werden erst nach erneutem Laden der Akte sichtbar.<html>");
         ThreadUtils.showInformationDialog(EditorsRegistry.getInstance().getMainWindow(), sb.toString(), "Beteiligte hinzufügen");
+    }
+    
+    public static boolean addDocumentFromTemplate(String caseId, String fileName, String folder, String template) throws Exception {
+
+        if (folder == null || "".equals(folder)) {
+            folder = "/";
+        }
+
+        if (!folder.startsWith("/")) {
+            folder = "/" + folder;
+        }
+
+        ClientSettings settings = ClientSettings.getInstance();
+        try {
+            JLawyerServiceLocator locator = JLawyerServiceLocator.getInstance(settings.getLookupProperties());
+            
+            InitialContext ic = new InitialContext();
+            ArchiveFileServiceRemote casesvc = locator.lookupArchiveFileServiceRemote();
+
+            SystemManagementRemote system = (SystemManagementRemote) locator.lookupSystemManagementRemote();
+            
+            FormsServiceRemote forms = locator.lookupFormsServiceRemote();
+            Collection<String> formsPlaceHolderKeys = forms.getPlaceHoldersForCase(caseId);
+            
+            GenericNode root=new GenericNode(null, null, "/");
+            GenericNode templateFolderNode=new GenericNode(null, root, folder);
+            List<String> placeHoldersInTemplate = system.getPlaceHoldersForTemplate(10, templateFolderNode, template, formsPlaceHolderKeys);
+            Collections.sort(placeHoldersInTemplate, String.CASE_INSENSITIVE_ORDER);
+            //Object[] placeHoldersInTemplateArray = placeHoldersInTemplate.stream().filter(ph -> !ph.startsWith("[[")).toArray();
+            Object[] placeHoldersInTemplateArray = placeHoldersInTemplate
+            .stream()
+            .filter { ph -> !ph.startsWith("[[") }
+            .toArray { size -> new Object[size] }
+
+            HashMap<String, Object> placeHoldersInTemplateMap = new HashMap<>();
+            for (Object o : placeHoldersInTemplateArray) {
+                placeHoldersInTemplateMap.put(o.toString(), "");
+            }
+
+            ArchiveFileBean aFile = casesvc.getArchiveFile(caseId);
+            if (aFile == null) {
+                println("can not create document with template " + template + " in folder " + folder + " for case " + caseId + " - case does not exist");
+                return false;
+            }
+
+            
+            HashMap<String, String> formsPlaceHolders = forms.getPlaceHolderValuesForCase(caseId);
+
+            List<PartiesTriplet> parties = new ArrayList<>();
+            List<ArchiveFileAddressesBean> aabList = casesvc.getInvolvementDetailsForCase(caseId);
+            for (ArchiveFileAddressesBean aab : aabList) {
+                PartiesTriplet pt = new PartiesTriplet(aab.getAddressKey(), aab.getReferenceType(), aab);
+                parties.add(pt);
+            }
+            //placeHoldersInTemplateMap = system.getPlaceHolderValues(placeHoldersInTemplateMap, aFile, parties, "", null, formsPlaceHolders, system.getUser(aFile.getLawyer()), system.getUser(aFile.getAssistant()), system.getUser(context.getCallerPrincipal().getName()));
+
+            AppUserBean userLawyer = null;
+            try {
+                userLawyer = system.getUser(aFile.getLawyer());
+            } catch (Throwable t) {
+                println("Unable to find lawyer " + aFile.getLawyer());
+            }
+            AppUserBean userAssistant = null;
+            try {
+                userAssistant = system.getUser(aFile.getAssistant());
+            } catch (Throwable t) {
+                println("Unable to find assistant " + aFile.getLawyer());
+            }
+
+            placeHoldersInTemplateMap = system.getPlaceHolderValues(placeHoldersInTemplateMap, aFile, parties, "", null, formsPlaceHolders, userLawyer, userAssistant, null, null, null, null, null, null, null, null);
+
+            
+            fileName=fileName.replace(".odt", "");
+            fileName=fileName.replace(".docx", "");
+            
+            ArchiveFileDocumentsBean newDoc = casesvc.addDocumentFromTemplate(caseId, fileName, null, templateFolderNode, template, placeHoldersInTemplateMap, "", null);
+            EventBroker eb = EventBroker.getInstance();
+            eb.publishEvent(new DocumentAddedEvent(newDoc));
+            ThreadUtils.showInformationDialog(EditorsRegistry.getInstance().getMainWindow(), "Dokument " + fileName + " erfolgreich erstellt.", "Dokument erstellt");
+            return true;
+        } catch (Exception ex) {
+            println("can not create document with template " + template + " in folder " + folder + " for case " + caseId + " " + ex.getMessage());
+            ThreadUtils.showErrorDialog(EditorsRegistry.getInstance().getMainWindow(), "Fehler beim Generieren des Dokuments: " + ex.getMessage(), "Fehler");
+            return false;
+        }
     }
     
 }

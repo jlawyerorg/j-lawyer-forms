@@ -673,7 +673,10 @@ import javax.swing.JTabbedPane
 import javax.swing.JTextField
 import javax.swing.JComboBox
 import javax.swing.ImageIcon
+import javax.swing.UIManager
+import java.awt.Font
 import java.util.ArrayList
+
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 
 public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
@@ -743,12 +746,204 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                 }
                                 tr {
                                     td {
-                                        label(text: '')        
+                                        label(text: '')
                                     }
                                     td {
                                         checkBox(text: 'Schenkung', name: "_SCHENKUNG", clientPropertyJlawyerdescription: "Schenkung ja/nein", selected: false)
                                     }
                                         
+                                }
+                                tr {
+                                    td (colspan: 2) {
+                                        panel {
+                                            tableLayout(cellpadding: 5) {
+                                                tr {
+                                                    td (align: 'center') {
+                                                        label(text: 'Person', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
+                                                    }
+                                                    td (align: 'center') {
+                                                        label(text: 'Ehepartner?', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
+                                                    }
+                                                    td (align: 'center') {
+                                                        label(text: 'Persönlich bekannt?', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
+                                                    }
+                                                    td (align: 'center') {
+                                                        label(text: 'Als Vertreter für den anderen handelnd', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
+                                                    }
+                                                    td (align: 'center') {
+                                                        label(text: 'Im eigenen Namen handelnd', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
+                                                    }
+                                                    td (align: 'center') {
+                                                        label(text: 'Verbraucher?', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
+                                                    }
+                                                }
+                                                tr {
+                                                    td (align: 'center') {
+                                                        label(text: 'Verkäufer 1')
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_V1_EHEPARTNER", clientPropertyJlawyerdescription: "Verkäufer 1 Ehepartner ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_V1_PERSBEKANNT", clientPropertyJlawyerdescription: "Verkäufer 1 persönlich bekannt ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_V1_VERTRETER", clientPropertyJlawyerdescription: "Verkäufer 1 als Vertreter für den anderen handelnd ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_V1_IMEIGNAMEN", clientPropertyJlawyerdescription: "Verkäufer 1 im eigenen Namen handelnd ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_V1_VERBRAUCHER", clientPropertyJlawyerdescription: "Verkäufer 1 Verbraucher ja/nein", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td (align: 'center') {
+                                                        label(text: 'Verkäufer 2')
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_V2_EHEPARTNER", clientPropertyJlawyerdescription: "Verkäufer 2 Ehepartner ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_V2_PERSBEKANNT", clientPropertyJlawyerdescription: "Verkäufer 2 persönlich bekannt ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_V2_VERTRETER", clientPropertyJlawyerdescription: "Verkäufer 2 als Vertreter für den anderen handelnd ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_V2_IMEIGNAMEN", clientPropertyJlawyerdescription: "Verkäufer 2 im eigenen Namen handelnd ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_V2_VERBRAUCHER", clientPropertyJlawyerdescription: "Verkäufer 2 Verbraucher ja/nein", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td (align: 'center') {
+                                                        label(text: 'Verkäufer 3')
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_V3_EHEPARTNER", clientPropertyJlawyerdescription: "Verkäufer 3 Ehepartner ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_V3_PERSBEKANNT", clientPropertyJlawyerdescription: "Verkäufer 3 persönlich bekannt ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_V3_VERTRETER", clientPropertyJlawyerdescription: "Verkäufer 3 als Vertreter für den anderen handelnd ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_V3_IMEIGNAMEN", clientPropertyJlawyerdescription: "Verkäufer 3 im eigenen Namen handelnd ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_V3_VERBRAUCHER", clientPropertyJlawyerdescription: "Verkäufer 3 Verbraucher ja/nein", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td (align: 'center') {
+                                                        label(text: 'Käufer 1')
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_K1_EHEPARTNER", clientPropertyJlawyerdescription: "Käufer 1 Ehepartner ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_K1_PERSBEKANNT", clientPropertyJlawyerdescription: "Käufer 1 persönlich bekannt ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_K1_VERTRETER", clientPropertyJlawyerdescription: "Käufer 1 als Vertreter für den anderen handelnd ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_K1_IMEIGNAMEN", clientPropertyJlawyerdescription: "Käufer 1 im eigenen Namen handelnd ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_K1_VERBRAUCHER", clientPropertyJlawyerdescription: "Käufer 1 Verbraucher ja/nein", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td (align: 'center') {
+                                                        label(text: 'Käufer 2')
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_K2_EHEPARTNER", clientPropertyJlawyerdescription: "Käufer 2 Ehepartner ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_K2_PERSBEKANNT", clientPropertyJlawyerdescription: "Käufer 2 persönlich bekannt ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_K2_VERTRETER", clientPropertyJlawyerdescription: "Käufer 2 als Vertreter für den anderen handelnd ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_K2_IMEIGNAMEN", clientPropertyJlawyerdescription: "Käufer 2 im eigenen Namen handelnd ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_K2_VERBRAUCHER", clientPropertyJlawyerdescription: "Käufer 2 Verbraucher ja/nein", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td (align: 'center') {
+                                                        label(text: 'Käufer 3')
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_K3_EHEPARTNER", clientPropertyJlawyerdescription: "Käufer 3 Ehepartner ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_K3_PERSBEKANNT", clientPropertyJlawyerdescription: "Käufer 3 persönlich bekannt ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_K3_VERTRETER", clientPropertyJlawyerdescription: "Käufer 3 als Vertreter für den anderen handelnd ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_K3_IMEIGNAMEN", clientPropertyJlawyerdescription: "Käufer 3 im eigenen Namen handelnd ja/nein", selected: false)
+                                                    }
+                                                    td (align: 'center') {
+                                                        checkBox(text: '', name: "_K3_VERBRAUCHER", clientPropertyJlawyerdescription: "Käufer 3 Verbraucher ja/nein", selected: false)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                        
+                                }
+                                tr {
+                                    td (colspan: 2) {
+                                        label(text: ' ')
+                                    }
+                                }
+                                tr {
+                                    td (colspan: 2) {
+                                        label(text: 'Identifikationsnummer / Wirtschaftsidentifikationsnummer')
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        label(text: 'Verkäufer 1:')        
+                                    }
+                                    td {
+                                        textField(name: "_V1_IDNR", clientPropertyJlawyerdescription: "Verkäufer 1 Identifikationsnummer", text: '', columns:30)
+                                    }
+                                        
+                                }
+                                tr {
+                                    td {
+                                        label(text: 'Verkäufer 2:')        
+                                    }
+                                    td {
+                                        textField(name: "_V2_IDNR", clientPropertyJlawyerdescription: "Verkäufer 2 Identifikationsnummer", text: '', columns:30)
+                                    }
+                                        
+                                }
+                                tr {
+                                    td {
+                                        label(text: 'Verkäufer 3:')        
+                                    }
+                                    td {
+                                        textField(name: "_V3_IDNR", clientPropertyJlawyerdescription: "Verkäufer 3 Identifikationsnummer", text: '', columns:30)
+                                    }
+                                        
+                                }
+                                tr {
+                                    td (colspan: 2) {
+                                        label(text: ' ')
+                                    }
                                 }
                                 tr {
                                     td {
@@ -1135,8 +1330,8 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                     }
                                                     td {
                                                         button(text: 'Negativzeugnisantrag Stadt', actionPerformed: {
-                                                                                this.addNegativzeugnisantrag();
-                                                                            })
+                                                                this.addNegativzeugnisantrag();
+                                                            })
                                                     }
                                         
                                                 }
@@ -1164,8 +1359,8 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                     }
                                                     td {
                                                         button(text: 'Finanzamt Veräußerungsanzeige', actionPerformed: {
-                                                                                this.addVeraeusserungsanzeige();
-                                                                            })
+                                                                this.addVeraeusserungsanzeige();
+                                                            })
                                                     }
                                         
                                                 }

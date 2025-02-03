@@ -1467,6 +1467,26 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         }
                                     }
                                     tr {
+                                        td {
+                                            label(text: 'verkehrssicher?')
+                                    
+                                        }
+                                        td {
+                                            comboBox(items: [
+                                            'unbekannt',
+                                            'fahrbereit/verkehrssicher',
+                                            'nicht fahrbereit und/oder verkehrssicher'
+                                                ], name: "_VERKEHRSSICHER", clientPropertyJlawyerdescription: "Fahrzeug Mandant ist verkehrssicher", editable: true, actionPerformed: {
+                                                    
+                                                }
+                                            )
+                                        }
+                                        td {
+                                            
+                                        }
+                                        
+                                    }
+                                    tr {
                                         td (colfill:true, align: 'left') {
                                             label(text: 'Anzahl Vorbesitzer:')
                                         }

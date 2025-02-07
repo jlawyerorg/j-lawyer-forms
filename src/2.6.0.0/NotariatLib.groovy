@@ -751,6 +751,21 @@ public class NotariatLib {
         return gemarkungen;
     }
     
+    public static ArrayList<String> getBanken() {
+        
+        ServerSettings set=ServerSettings.getInstance();
+        String bank=set.getSetting("forms.notariat01.banken", "");
+        
+        ArrayList<String> banken=new ArrayList<>();
+        for(String g: bank.split(",")) {
+            if(g!=null && g.length()>0)
+            banken.add(g);
+        }
+        java.util.Collections.sort(banken);
+        
+        return banken;
+    }
+    
     public static void addDefaultParties(String caseId, String gemarkung) {
         
         ServerSettings set=ServerSettings.getInstance();

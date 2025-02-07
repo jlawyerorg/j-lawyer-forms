@@ -685,6 +685,7 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
     FormPluginCallback callback=null;
     
     JComboBox cmbGemarkungen=null;
+    def cmbBankenMap = [:]  // Map to store combo boxes
     
     SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -788,7 +789,31 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                         checkBox(text: '', name: "_V1_PERSBEKANNT", clientPropertyJlawyerdescription: "Verkäufer 1 persönlich bekannt ja/nein", selected: false)
                                                     }
                                                     td (align: 'center') {
-                                                        checkBox(text: '', name: "_V1_VERTRETER", clientPropertyJlawyerdescription: "Verkäufer 1 als Vertreter für den anderen handelnd ja/nein", selected: false)
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        checkBox(text: '', name: "_V1_VERTRETER", clientPropertyJlawyerdescription: "Verkäufer 1 als Vertreter für den anderen handelnd ja/nein", selected: false)
+                                                                    }
+                                                                    td {
+                                                                       label(text: ' ') 
+                                                                    }
+                                                                    td {
+                                                                        comboBox(items: [
+                                                                            '',
+                                                                            'Verkäufer 1',
+                                                                            'Verkäufer 2',
+                                                                            'Verkäufer 3',
+                                                                            'Käufer 1',
+                                                                            'Käufer 2',
+                                                                            'Käufer 3'
+                                                                            ], name: "_V1_VERTRETER_FUER", clientPropertyJlawyerdescription: "Verkäufer 1 handelt als Vertreter für", editable: false
+                                                                        )
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                     td (align: 'center') {
                                                         checkBox(text: '', name: "_V1_IMEIGNAMEN", clientPropertyJlawyerdescription: "Verkäufer 1 im eigenen Namen handelnd ja/nein", selected: false)
@@ -808,7 +833,31 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                         checkBox(text: '', name: "_V2_PERSBEKANNT", clientPropertyJlawyerdescription: "Verkäufer 2 persönlich bekannt ja/nein", selected: false)
                                                     }
                                                     td (align: 'center') {
-                                                        checkBox(text: '', name: "_V2_VERTRETER", clientPropertyJlawyerdescription: "Verkäufer 2 als Vertreter für den anderen handelnd ja/nein", selected: false)
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        checkBox(text: '', name: "_V2_VERTRETER", clientPropertyJlawyerdescription: "Verkäufer 2 als Vertreter für den anderen handelnd ja/nein", selected: false)
+                                                                    }
+                                                                    td {
+                                                                       label(text: ' ') 
+                                                                    }
+                                                                    td {
+                                                                        comboBox(items: [
+                                                                            '',
+                                                                            'Verkäufer 1',
+                                                                            'Verkäufer 2',
+                                                                            'Verkäufer 3',
+                                                                            'Käufer 1',
+                                                                            'Käufer 2',
+                                                                            'Käufer 3'
+                                                                            ], name: "_V2_VERTRETER_FUER", clientPropertyJlawyerdescription: "Verkäufer 2 handelt als Vertreter für", editable: false
+                                                                        )
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                     td (align: 'center') {
                                                         checkBox(text: '', name: "_V2_IMEIGNAMEN", clientPropertyJlawyerdescription: "Verkäufer 2 im eigenen Namen handelnd ja/nein", selected: false)
@@ -828,7 +877,31 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                         checkBox(text: '', name: "_V3_PERSBEKANNT", clientPropertyJlawyerdescription: "Verkäufer 3 persönlich bekannt ja/nein", selected: false)
                                                     }
                                                     td (align: 'center') {
-                                                        checkBox(text: '', name: "_V3_VERTRETER", clientPropertyJlawyerdescription: "Verkäufer 3 als Vertreter für den anderen handelnd ja/nein", selected: false)
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        checkBox(text: '', name: "_V3_VERTRETER", clientPropertyJlawyerdescription: "Verkäufer 3 als Vertreter für den anderen handelnd ja/nein", selected: false)
+                                                                    }
+                                                                    td {
+                                                                       label(text: ' ') 
+                                                                    }
+                                                                    td {
+                                                                        comboBox(items: [
+                                                                            '',
+                                                                            'Verkäufer 1',
+                                                                            'Verkäufer 2',
+                                                                            'Verkäufer 3',
+                                                                            'Käufer 1',
+                                                                            'Käufer 2',
+                                                                            'Käufer 3'
+                                                                            ], name: "_V3_VERTRETER_FUER", clientPropertyJlawyerdescription: "Verkäufer 3 handelt als Vertreter für", editable: false
+                                                                        )
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                     td (align: 'center') {
                                                         checkBox(text: '', name: "_V3_IMEIGNAMEN", clientPropertyJlawyerdescription: "Verkäufer 3 im eigenen Namen handelnd ja/nein", selected: false)
@@ -848,7 +921,31 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                         checkBox(text: '', name: "_K1_PERSBEKANNT", clientPropertyJlawyerdescription: "Käufer 1 persönlich bekannt ja/nein", selected: false)
                                                     }
                                                     td (align: 'center') {
-                                                        checkBox(text: '', name: "_K1_VERTRETER", clientPropertyJlawyerdescription: "Käufer 1 als Vertreter für den anderen handelnd ja/nein", selected: false)
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        checkBox(text: '', name: "_K1_VERTRETER", clientPropertyJlawyerdescription: "Käufer 1 als Vertreter für den anderen handelnd ja/nein", selected: false)
+                                                                    }
+                                                                    td {
+                                                                       label(text: ' ') 
+                                                                    }
+                                                                    td {
+                                                                        comboBox(items: [
+                                                                            '',
+                                                                            'Verkäufer 1',
+                                                                            'Verkäufer 2',
+                                                                            'Verkäufer 3',
+                                                                            'Käufer 1',
+                                                                            'Käufer 2',
+                                                                            'Käufer 3'
+                                                                            ], name: "_K1_VERTRETER_FUER", clientPropertyJlawyerdescription: "Käufer 1 handelt als Vertreter für", editable: false
+                                                                        )
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                     td (align: 'center') {
                                                         checkBox(text: '', name: "_K1_IMEIGNAMEN", clientPropertyJlawyerdescription: "Käufer 1 im eigenen Namen handelnd ja/nein", selected: false)
@@ -868,7 +965,31 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                         checkBox(text: '', name: "_K2_PERSBEKANNT", clientPropertyJlawyerdescription: "Käufer 2 persönlich bekannt ja/nein", selected: false)
                                                     }
                                                     td (align: 'center') {
-                                                        checkBox(text: '', name: "_K2_VERTRETER", clientPropertyJlawyerdescription: "Käufer 2 als Vertreter für den anderen handelnd ja/nein", selected: false)
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        checkBox(text: '', name: "_K2_VERTRETER", clientPropertyJlawyerdescription: "Käufer 2 als Vertreter für den anderen handelnd ja/nein", selected: false)
+                                                                    }
+                                                                    td {
+                                                                       label(text: ' ') 
+                                                                    }
+                                                                    td {
+                                                                        comboBox(items: [
+                                                                            '',
+                                                                            'Verkäufer 1',
+                                                                            'Verkäufer 2',
+                                                                            'Verkäufer 3',
+                                                                            'Käufer 1',
+                                                                            'Käufer 2',
+                                                                            'Käufer 3'
+                                                                            ], name: "_K2_VERTRETER_FUER", clientPropertyJlawyerdescription: "Käufer 2 handelt als Vertreter für", editable: false
+                                                                        )
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                     td (align: 'center') {
                                                         checkBox(text: '', name: "_K2_IMEIGNAMEN", clientPropertyJlawyerdescription: "Käufer 2 im eigenen Namen handelnd ja/nein", selected: false)
@@ -888,7 +1009,31 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                         checkBox(text: '', name: "_K3_PERSBEKANNT", clientPropertyJlawyerdescription: "Käufer 3 persönlich bekannt ja/nein", selected: false)
                                                     }
                                                     td (align: 'center') {
-                                                        checkBox(text: '', name: "_K3_VERTRETER", clientPropertyJlawyerdescription: "Käufer 3 als Vertreter für den anderen handelnd ja/nein", selected: false)
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        checkBox(text: '', name: "_K3_VERTRETER", clientPropertyJlawyerdescription: "Käufer 3 als Vertreter für den anderen handelnd ja/nein", selected: false)
+                                                                    }
+                                                                    td {
+                                                                       label(text: ' ') 
+                                                                    }
+                                                                    td {
+                                                                        comboBox(items: [
+                                                                            '',
+                                                                            'Verkäufer 1',
+                                                                            'Verkäufer 2',
+                                                                            'Verkäufer 3',
+                                                                            'Käufer 1',
+                                                                            'Käufer 2',
+                                                                            'Käufer 3'
+                                                                            ], name: "_K3_VERTRETER_FUER", clientPropertyJlawyerdescription: "Käufer 3 handelt als Vertreter für", editable: false
+                                                                        )
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                     td (align: 'center') {
                                                         checkBox(text: '', name: "_K3_IMEIGNAMEN", clientPropertyJlawyerdescription: "Käufer 3 im eigenen Namen handelnd ja/nein", selected: false)
@@ -937,6 +1082,33 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                     }
                                     td {
                                         textField(name: "_V3_IDNR", clientPropertyJlawyerdescription: "Verkäufer 3 Identifikationsnummer", text: '', columns:30)
+                                    }
+                                        
+                                }
+                                tr {
+                                    td {
+                                        label(text: 'Käufer 1:')        
+                                    }
+                                    td {
+                                        textField(name: "_K1_IDNR", clientPropertyJlawyerdescription: "Käufer 1 Identifikationsnummer", text: '', columns:30)
+                                    }
+                                        
+                                }
+                                tr {
+                                    td {
+                                        label(text: 'Käufer 2:')        
+                                    }
+                                    td {
+                                        textField(name: "_K2_IDNR", clientPropertyJlawyerdescription: "Käufer 2 Identifikationsnummer", text: '', columns:30)
+                                    }
+                                        
+                                }
+                                tr {
+                                    td {
+                                        label(text: 'Käufer 3:')        
+                                    }
+                                    td {
+                                        textField(name: "_K3_IDNR", clientPropertyJlawyerdescription: "Käufer 3 Identifikationsnummer", text: '', columns:30)
                                     }
                                         
                                 }
@@ -1015,6 +1187,14 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                         } 
                                     }
                                 }
+                                tr {
+                                    td (colfill:true, valign: 'TOP') {
+                                        label(text: 'Grundschuld:')
+                                    }
+                                    td {
+                                        checkBox(text: 'neue Grundschuld für Verkäufer', name: "_GRUNDSCHULD_NEU_VERK", clientPropertyJlawyerdescription: "neue Grundschuld für Verkäufer ja/nein", selected: false)
+                                    }
+                                }
                             }
                         }
                         panel(name: 'Grundbuch') {
@@ -1023,16 +1203,7 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                     td (colfill:true, align: 'left') {
                                         panel(border: titledBorder(title: '')) {
                                             tableLayout (cellpadding: 5) {
-                                                tr {
-                                                    td (colfill:true, valign: 'TOP') {
-                                                        label(text: 'Beschreibung Immobilie/Grundstück:')
-                                                    }
-                                                    td {
-                                                        scrollPane{
-                                                            textArea(name: "_GBBESCHR", clientPropertyJlawyerdescription: "Beschreibung Immobilie/Grundstück", lineWrap:true,wrapStyleWord:true, columns:50, rows:10,editable:true)
-                                                        } 
-                                                    }
-                                                }
+                                                
                                                 tr {
                                                     td {
                                                         label(text: 'Aktuelle Nutzung')        
@@ -1136,7 +1307,16 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                     }
                                         
                                                 }
-                                                
+                                                tr {
+                                                    td (colfill:true, valign: 'TOP') {
+                                                        label(text: 'Beschreibung Immobilie/Grundstück:')
+                                                    }
+                                                    td {
+                                                        scrollPane{
+                                                            textArea(name: "_GBBESCHR", clientPropertyJlawyerdescription: "Beschreibung Immobilie/Grundstück", lineWrap:true,wrapStyleWord:true, columns:50, rows:10,editable:true)
+                                                        } 
+                                                    }
+                                                }
                                     
                                             }
                                         }
@@ -1218,6 +1398,14 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                                                 ],
                                                                                 name: "_GB3LFDNR${index}_LOESCH",
                                                                                 clientPropertyJlawyerdescription: "Grundbuch Abteilung 3 lfd. Nr. $index - bestehen lassen/löschen",
+                                                                                editable: false
+                                                                            )
+                                                                        }
+                                                                        td {
+                                                                            cmbBankenMap[index] = comboBox(
+                                                                                items: [''],
+                                                                                name: "_GB3LFDNR${index}_BANK",
+                                                                                clientPropertyJlawyerdescription: "Grundbuch Abteilung 3 lfd. Nr. $index - Bank",
                                                                                 editable: false
                                                                             )
                                                                         }
@@ -1311,6 +1499,17 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                         label(text: '')        
                                                     }
                                                     td {
+                                                        button(text: 'Negativzeugnisantrag Stadt', actionPerformed: {
+                                                                this.addNegativzeugnisantrag();
+                                                            })
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: '')        
+                                                    }
+                                                    td {
                                                         checkBox(text: 'Auflassungsvormerkung gewünscht', name: "_VVABWAUFLVWUNSCH", clientPropertyJlawyerdescription: "Auflassungsvormerkung gewünscht ja/nein", selected: true)
                                                     }
                                         
@@ -1324,17 +1523,7 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                     }
                                         
                                                 }
-                                                tr {
-                                                    td {
-                                                        label(text: '')        
-                                                    }
-                                                    td {
-                                                        button(text: 'Negativzeugnisantrag Stadt', actionPerformed: {
-                                                                this.addNegativzeugnisantrag();
-                                                            })
-                                                    }
-                                        
-                                                }
+                                                
                                                 tr {
                                                     td {
                                                         label(text: '')        
@@ -1425,6 +1614,7 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
         }
         
         this.loadGemarkungen();
+        this.loadBanken();
 
         return SCRIPTPANEL;
 
@@ -1437,6 +1627,18 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
         cmbGemarkungen.addItem("");
         for(String s: gemarkungen) {
             cmbGemarkungen.addItem(s);
+        }
+    }
+    
+    private void loadBanken() {
+        
+        ArrayList<String> banken=NotariatLib.getBanken();
+        println "found " + banken.size() + " banken"
+        
+        for(int i=1;i<12;i++) {
+            for(String s: banken) {
+                cmbBanken[i].addItem(s);
+            }
         }
     }
     

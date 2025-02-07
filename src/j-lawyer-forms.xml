@@ -71,12 +71,13 @@
     <!-- breaking changes introduced with 2.6: StorageLib has incompatible changes to support external ids for documents --> 
     <form id="formslib" type="library" name="Formularbibliothek" description="Bibliothek mit Funktionen für alle Falldatenblaetter" placeholder="FORMSLIB" version="1.10.0" for="2.6.0.0,2.6.0.2,2.6.1.0,2.7.0.0,3.0.0.1,3.1.0.1,3.1.0.2,3.1.0.3,3.2.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.6.0.0" files="formslib_meta.groovy,FormsLib.groovy,StorageLib.groovy,GuiLib.groovy,TablePropertiesUtils.groovy,AttributeCellEditor.groovy"/>
     
-    <form id="notariat01" type="plugin" depends="formslib" name="Notariat: Kaufvertrag" description="IN ENTWICKLUNG - NICHT NUTZEN" placeholder="NOTKV" version="0.3.0" for="3.0.0.1,3.1.0.3,3.2.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.6.0.0" files="notariat01_meta.groovy,notariat01_ui.groovy,NotariatLib.groovy">
+    <form id="notariat01" type="plugin" depends="formslib" name="Notariat: Kaufvertrag" description="IN ENTWICKLUNG - NICHT NUTZEN" placeholder="NOTKV" version="0.4.0" for="3.0.0.1,3.1.0.3,3.2.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.6.0.0" files="notariat01_meta.groovy,notariat01_ui.groovy,NotariatLib.groovy">
         <setting key="forms.notariat01.gemarkungen" caption="Gemarkungen (kommasepariert):" default="Dresden,Berlin,Köln" order="1"/>
-        <setting key="forms.notariat01.partytypes" caption="Beteiligtentypen (kommasepariert):" default="Bauamt,Grundbuchamt,Finanzamt,Gutachterausschuss" order="2"/>
-        <setting key="forms.notariat01.templatefolder" caption="Vorlagenordner:" default="Notariat" order="3"/>
-        <setting key="forms.notariat01.template.nza" caption="Vorlage Negativzeugnisantrag:" default="Negativzeugnisantrag_Stadt.odt" order="4"/>
-        <setting key="forms.notariat01.template.va" caption="Vorlage Veräußerungsanzeige:" default="Finanzamt_Veräusserungsanzeige.odt" order="5"/>
+        <setting key="forms.notariat01.banken" caption="Banken (kommasepariert):" default="Sparkasse,Volksbank,andere Bank" order="2"/>
+        <setting key="forms.notariat01.partytypes" caption="Beteiligtentypen (kommasepariert):" default="Bauamt,Grundbuchamt,Finanzamt,Gutachterausschuss" order="3"/>
+        <setting key="forms.notariat01.templatefolder" caption="Vorlagenordner:" default="Notariat" order="4"/>
+        <setting key="forms.notariat01.template.nza" caption="Vorlage Negativzeugnisantrag:" default="Negativzeugnisantrag_Stadt.odt" order="5"/>
+        <setting key="forms.notariat01.template.va" caption="Vorlage Veräußerungsanzeige:" default="Finanzamt_Veräusserungsanzeige.odt" order="6"/>
     </form>
     
     <form id="justinlegal01" type="plugin" depends="formslib" name="Justin Legal" description="Digitale Mandatsannahme via Justin Legal" placeholder="JULE" version="0.2.0" for="3.1.0.3,3.2.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.6.0.0" files="justinlegal01_meta.groovy,justinlegal01_ui.groovy,JustinField.groovy">

@@ -1637,7 +1637,7 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
         
         for(int i=1;i<12;i++) {
             for(String s: banken) {
-                cmbBanken[i].addItem(s);
+                cmbBankenMap[i].addItem(s);
             }
         }
     }

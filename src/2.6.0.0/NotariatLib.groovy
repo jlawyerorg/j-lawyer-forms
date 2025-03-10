@@ -736,6 +736,27 @@ public class NotariatLib {
         
     }
     
+    public static String getTemplateLbw() {
+        
+        ServerSettings set=ServerSettings.getInstance();
+        return set.getSetting("forms.notariat01.template.lbw", "");
+        
+    }
+    
+    public static String getTemplateAuflv() {
+        
+        ServerSettings set=ServerSettings.getInstance();
+        return set.getSetting("forms.notariat01.template.auflv", "");
+        
+    }
+    
+    public static String getTemplateAufl() {
+        
+        ServerSettings set=ServerSettings.getInstance();
+        return set.getSetting("forms.notariat01.template.aufl", "");
+        
+    }
+    
     public static ArrayList<String> getGemarkungen() {
         
         ServerSettings set=ServerSettings.getInstance();

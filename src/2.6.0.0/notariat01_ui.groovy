@@ -1220,6 +1220,24 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                     }
                                         
                                                 }
+                                                 tr {
+                                                    td {
+                                                        label(text: 'eingetragen im Grundbuch des Amtsgerichts')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_GBAGER", clientPropertyJlawyerdescription: "eingetragen im Grundbuch des Amtsgerichts", text: '', columns:30)
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Blatt')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_GBBLATT", clientPropertyJlawyerdescription: "Blatt", text: '', columns:30)
+                                                    }
+                                        
+                                                }
                                                 tr {
                                                     td {
                                                         label(text: 'Gemarkung')
@@ -1251,37 +1269,37 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                 }
                                                 tr {
                                                     td {
-                                                        label(text: 'Flur')        
+                                                        label(text: 'lfd Nr. 1 Flur')        
                                                     }
                                                     td {
-                                                        textField(name: "_GBFLUR", clientPropertyJlawyerdescription: "Flur", text: '', columns:30)
-                                                    }
-                                        
-                                                }
-                                                tr {
-                                                    td {
-                                                        label(text: 'Flurstück')        
-                                                    }
-                                                    td {
-                                                        textField(name: "_GBFLURSTCK", clientPropertyJlawyerdescription: "Flurstück", text: '', columns:30)
+                                                        textField(name: "_GBFLUR", clientPropertyJlawyerdescription: "Flur 1", text: '', columns:30)
                                                     }
                                         
                                                 }
                                                 tr {
                                                     td {
-                                                        label(text: 'Gebäude- und Freifläche')
+                                                        label(text: 'lfd Nr. 1 Flurstück')        
                                                     }
                                                     td {
-                                                        textField(name: "_GBGEBFREIFLAECHE", clientPropertyJlawyerdescription: "Gebäude- und Freifläche", text: '', columns:50)
+                                                        textField(name: "_GBFLURSTCK", clientPropertyJlawyerdescription: "Flurstück 1", text: '', columns:30)
                                                     }
                                         
                                                 }
                                                 tr {
                                                     td {
-                                                        label(text: 'Größe in qm')
+                                                        label(text: 'lfd Nr. 1 Gebäude- und Freifläche')
                                                     }
                                                     td {
-                                                        spnVorbesitzer = spinner(id: 'nGbGroesseQm', clientPropertyJlawyerdescription: "Größe in qm", name: "_GBGROESSEQM", 
+                                                        textField(name: "_GBGEBFREIFLAECHE", clientPropertyJlawyerdescription: "Wirtschaftsart und Lage 1", text: '', columns:50)
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'lfd Nr. 1 Größe in qm')
+                                                    }
+                                                    td {
+                                                        spnVorbesitzer = spinner(id: 'nGbGroesseQm', clientPropertyJlawyerdescription: "Größe in qm1", name: "_GBGROESSEQM", 
                                                             model:spinnerNumberModel(minimum:0, 
                                                                 maximum: 100000,
                                                                 value:0,
@@ -1289,24 +1307,168 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                     }
                                         
                                                 }
-                                                tr {
+						 tr {
                                                     td {
-                                                        label(text: 'eingetragen im Grundbuch des Amtsgerichts')        
+                                                        label(text: 'lfd Nr. 2 Flur')        
                                                     }
                                                     td {
-                                                        textField(name: "_GBAGER", clientPropertyJlawyerdescription: "eingetragen im Grundbuch des Amtsgerichts", text: '', columns:30)
+                                                        textField(name: "_GBFLUR2", clientPropertyJlawyerdescription: "Flur 2", text: '', columns:30)
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'lfd Nr. 2 Flurstück')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_GBFLURSTCK2", clientPropertyJlawyerdescription: "Flurstück 2", text: '', columns:30)
                                                     }
                                         
                                                 }
                                                 tr {
                                                     td {
-                                                        label(text: 'Blatt')        
+                                                        label(text: 'lfd Nr. 2 Wirtschaftsart und Freifläche')
                                                     }
                                                     td {
-                                                        textField(name: "_GBBLATT", clientPropertyJlawyerdescription: "Blatt", text: '', columns:30)
+                                                        textField(name: "_GBGEBFREIFLAECHE2", clientPropertyJlawyerdescription: "Wirtschaftsart und Lage 2", text: '', columns:50)
                                                     }
                                         
                                                 }
+                                                tr {
+                                                    td {
+                                                        label(text: 'lfd Nr. 2 Größe in qm')
+                                                    }
+                                                    td {
+                                                        spnVorbesitzer = spinner(id: 'nGbGroesseQm', clientPropertyJlawyerdescription: "Größe in qm2", name: "_GBGROESSEQM2", 
+                                                            model:spinnerNumberModel(minimum:0, 
+                                                                maximum: 100000,
+                                                                value:0,
+                                                                stepSize:1))
+                                                    }
+                                        
+                                                }
+						 tr {
+                                                    td {
+                                                        label(text: 'lfd Nr. 3 Flur')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_GBFLUR3", clientPropertyJlawyerdescription: "Flur 3", text: '', columns:30)
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'lfd Nr. 3 Flurstück')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_GBFLURSTCK3", clientPropertyJlawyerdescription: "Flurstück 3", text: '', columns:30)
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'lfd Nr. 3 Wirtschaftsart und Lage')
+                                                    }
+                                                    td {
+                                                        textField(name: "_GBGEBFREIFLAECHE3", clientPropertyJlawyerdescription: "Wirtschaftsart und Lage 3", text: '', columns:50)
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'lfd Nr. 3 Größe in qm')
+                                                    }
+                                                    td {
+                                                        spnVorbesitzer = spinner(id: 'nGbGroesseQm', clientPropertyJlawyerdescription: "Größe in qm3", name: "_GBGROESSEQM3", 
+                                                            model:spinnerNumberModel(minimum:0, 
+                                                                maximum: 100000,
+                                                                value:0,
+                                                                stepSize:1))
+                                                    }
+                                        
+                                                }
+						 tr {
+                                                    td {
+                                                        label(text: 'lfd Nr. 4 Flur')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_GBFLUR4", clientPropertyJlawyerdescription: "Flur 4", text: '', columns:30)
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'lfd Nr. 4 Flurstück')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_GBFLURSTCK4", clientPropertyJlawyerdescription: "Flurstück 4", text: '', columns:30)
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'lfd. Nr. 4 Wirtschaftsart und Lage')
+                                                    }
+                                                    td {
+                                                        textField(name: "_GBGEBFREIFLAECHE4", clientPropertyJlawyerdescription: "Wirtschaftsart und Lage 4", text: '', columns:50)
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'lfd Nr. 4 Größe in qm')
+                                                    }
+                                                    td {
+                                                        spnVorbesitzer = spinner(id: 'nGbGroesseQm', clientPropertyJlawyerdescription: "Größe in qm4", name: "_GBGROESSEQM4", 
+                                                            model:spinnerNumberModel(minimum:0, 
+                                                                maximum: 100000,
+                                                                value:0,
+                                                                stepSize:1))
+                                                    }
+                                        
+                                                }
+						 tr {
+                                                    td {
+                                                        label(text: 'lfd Nr. 5 Flur')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_GBFLUR5", clientPropertyJlawyerdescription: "Flur 5", text: '', columns:30)
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'lfd Nr. 5 Flurstück')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_GBFLURSTCK5", clientPropertyJlawyerdescription: "Flurstück 5", text: '', columns:30)
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'lfd Nr. 5 Wirtschaftsart und Lage')
+                                                    }
+                                                    td {
+                                                        textField(name: "_GBGEBFREIFLAECHE5", clientPropertyJlawyerdescription: "Wirtschaftsart und Lage 5", text: '', columns:50)
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'lfd Nr. 5 Größe in qm')
+                                                    }
+                                                    td {
+                                                        spnVorbesitzer = spinner(id: 'nGbGroesseQm', clientPropertyJlawyerdescription: "Größe in qm5", name: "_GBGROESSEQM5", 
+                                                            model:spinnerNumberModel(minimum:0, 
+                                                                maximum: 100000,
+                                                                value:0,
+                                                                stepSize:1))
+                                                    }
+                                        
+                                                }
+
+                                                
                                                 tr {
                                                     td (colfill:true, valign: 'TOP') {
                                                         label(text: 'Beschreibung Immobilie/Grundstück:')
@@ -1499,9 +1661,193 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                         label(text: '')        
                                                     }
                                                     td {
+                                                        button(text: 'Finanzamt Veräußerungsanzeige', actionPerformed: {
+                                                                this.addVeraeusserungsanzeige();
+                                                            })
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: '')        
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtVaaGeschicktAm=textField(name: "_DATUM_VAEA_GESENDET", clientPropertyJlawyerdescription: "Veräußerungsanzeige geschickt am", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtVaaGeschicktAm, true);
+                                                                            })
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: '')        
+                                                    }
+                                                    td {
                                                         button(text: 'Negativzeugnisantrag Stadt', actionPerformed: {
                                                                 this.addNegativzeugnisantrag();
                                                             })
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: '')        
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtNzGeschicktAm=textField(name: "_DATUM_NZ_GESENDET", clientPropertyJlawyerdescription: "Negativzeugnisantrag geschickt am", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtNzGeschicktAm, true);
+                                                                            })
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: '')        
+                                                    }
+                                                    td {
+                                                        button(text: 'Löschungsbewilligung', actionPerformed: {
+                                                                this.addLoeschungsbewilligung();
+                                                            })
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: '')        
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtLbwGeschicktAm=textField(name: "_DATUM_LB_GESENDET", clientPropertyJlawyerdescription: "Löschungsbewilligung geschickt am", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtLbwGeschicktAm, true);
+                                                                            })
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: '')        
+                                                    }
+                                                    td {
+                                                        button(text: 'Grundbuch Auflassungsvormerkung', actionPerformed: {
+                                                                this.addAuflassungsvormerkung();
+                                                            })
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: '')        
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtAuflvGeschicktAm=textField(name: "_DATUM_AUFLV_GESENDET", clientPropertyJlawyerdescription: "Auflassungsvormerkung geschickt am", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtAuflvGeschicktAm, true);
+                                                                            })
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: '')        
+                                                    }
+                                                    td {
+                                                        button(text: 'Grundbuch Auflassung', actionPerformed: {
+                                                                this.addAuflassung();
+                                                            })
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: '')        
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtAuflGeschicktAm=textField(name: "_DATUM_AUFL_GESENDET", clientPropertyJlawyerdescription: "Auflassung geschickt am", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtAuflGeschicktAm, true);
+                                                                            })
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                         
                                                 }
@@ -1542,17 +1888,7 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                     }
                                         
                                                 }
-                                                tr {
-                                                    td {
-                                                        label(text: '')        
-                                                    }
-                                                    td {
-                                                        button(text: 'Finanzamt Veräußerungsanzeige', actionPerformed: {
-                                                                this.addVeraeusserungsanzeige();
-                                                            })
-                                                    }
-                                        
-                                                }
+                                                
                                                 tr {
                                                     td {
                                                         label(text: '')        
@@ -1667,6 +2003,39 @@ public class notariat01_ui implements com.jdimension.jlawyer.client.plugins.form
         println "generating Veraeusserungsanzeige";
         String caseId=callback.getCaseId();
         String templateName=NotariatLib.getTemplateVa();
+        String fileName=templateName;
+        NotariatLib.addDocumentFromTemplate(caseId, fileName, NotariatLib.getTemplateFolder(), templateName);
+        
+        
+    }
+    
+    private void addLoeschungsbewilligung() {
+        
+        println "generating Löschungsbewilligung";
+        String caseId=callback.getCaseId();
+        String templateName=NotariatLib.getTemplateLbw();
+        String fileName=templateName;
+        NotariatLib.addDocumentFromTemplate(caseId, fileName, NotariatLib.getTemplateFolder(), templateName);
+        
+        
+    }
+    
+    private void addAuflassungsvormerkung() {
+        
+        println "generating Auflassungsvormerkung";
+        String caseId=callback.getCaseId();
+        String templateName=NotariatLib.getTemplateAuflv();
+        String fileName=templateName;
+        NotariatLib.addDocumentFromTemplate(caseId, fileName, NotariatLib.getTemplateFolder(), templateName);
+        
+        
+    }
+    
+    private void addAuflassung() {
+        
+        println "generating Auflassung";
+        String caseId=callback.getCaseId();
+        String templateName=NotariatLib.getTemplateAufl();
         String fileName=templateName;
         NotariatLib.addDocumentFromTemplate(caseId, fileName, NotariatLib.getTemplateFolder(), templateName);
         

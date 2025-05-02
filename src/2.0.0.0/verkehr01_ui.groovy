@@ -705,6 +705,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     JRadioButton radioTotalSchadenStRegel;
     JRadioButton radioTotalSchadenStDiff;
     JRadioButton radioTotalSchadenStNeutral;
+    JRadioButton radioRvg2021;
     JTextField txtReparaturKosten;
     JTextField txtReparaturKostenMwst;
     JTextField txtReparaturKostenReg;
@@ -2753,6 +2754,31 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                             panel(border: titledBorder(title: 'Anwaltskosten:')) {
                                 tableLayout (cellpadding: 5) {
                                     tr {
+                                        td (colfill:true) {
+                                            grpRvg = buttonGroup(id:'grpRvg')
+                                            radioRvg2021 = radioButton (text: 'RVG 2021', name: "_RVG2021", clientPropertyJlawyerdescription: "Berechnung nach RVG 2021", buttonGroup: grpRvg, selected: true, actionPerformed: {
+                                                    berechnen()
+                                                
+                                                })
+                                        }
+                                        td (colspan: 2) {
+                                            radioRvg2025 = radioButton (text: 'RVG 2025', name: "_RVG2025", clientPropertyJlawyerdescription: "Berechnung nach RVG 2025", buttonGroup: grpRvg, selected: false, actionPerformed: {
+                                                    berechnen()
+                                                
+                                                })
+                                        }
+                                        td {
+                                            label(text: '')
+                                    
+                                        }
+                                        td {
+                                            label(text: '')
+                                        }
+                                        td {
+                                            label(text: '')
+                                        }
+                                    }
+                                    tr {
                                         td {
                                             label(text: '')
                                         }
@@ -3149,8 +3175,14 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     
             BigDecimal faktor = BigDecimal.valueOf(1.3);
     
-            RvgTablesRangeList2021 rl = new RvgTablesRangeList2021();
-            vv2300 = BigDecimal.valueOf(Math.max(rl.getMappedValue(fStreitwert) * faktor.doubleValue(), 0));
+            if(radioRvg2021.isSelected()) {
+                RvgTablesRangeList2021 rl = new RvgTablesRangeList2021();
+                vv2300 = BigDecimal.valueOf(Math.max(rl.getMappedValue(fStreitwert) * faktor.doubleValue(), 0));
+            } else {
+                RvgTablesRangeList2025 rl = new RvgTablesRangeList2025();
+                vv2300 = BigDecimal.valueOf(Math.max(rl.getMappedValue(fStreitwert) * faktor.doubleValue(), 0));
+            }
+            
     
             BigDecimal anwMwst = BigDecimal.valueOf(0.19);
             if (radioFahrzeugGesch.isSelected()) {

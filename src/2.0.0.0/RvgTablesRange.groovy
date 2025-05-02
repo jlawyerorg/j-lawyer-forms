@@ -674,4 +674,5 @@ class RvgTablesRange {
     }
     
     boolean contains(float number){(number > low && number <= high)}
+    boolean contains(double number){(number > low && number <= high)}
 }

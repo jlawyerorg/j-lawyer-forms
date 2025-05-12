@@ -1897,8 +1897,33 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         td {
                                             label(text: 'Gutachtennummer:')
                                         }
-                                        td (colspan: 3) {
+                                        td {
                                             textField(id: 'sGutachtennummer', clientPropertyJlawyerdescription: "Gutachtennummer", name: "_GUTACHTENNR", text: '', columns:20)
+                                        }
+                                        td {
+                                            label(text: 'Gutachten vom')
+                                        }
+                                        td {
+                                            panel {
+                                                tableLayout (cellpadding: 0) {
+                                                    tr {
+                                                        td (align: 'right') {
+                                                            txtGutachtenVom=formattedTextField(id: 'sGutachtenVom', clientPropertyJlawyerdescription: "Gutachten vom (Datum)", name: "_GUTACHTENVOM", format: datumsFormat, columns: 10, text: '', enabled: true, keyReleased: {
+                                                                    berechnenReparaturDauer();  
+                                                                })
+                                                        }
+                                                        td {
+                                                            label (text: ' ')
+                                                        }
+                                                        td {
+                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                    GuiLib.dateSelector(txtGutachtenVom, true);
+                                                                })
+                                                        }
+                                                        
+                                                    }
+                                                }
+                                            }
                                         }
                                         
                                     }

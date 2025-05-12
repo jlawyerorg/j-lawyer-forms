@@ -1010,7 +1010,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                         }
                                                         td {
                                                             button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
-                                                                    GuiLib.dateSelector(v, true);
+                                                                    GuiLib.dateSelector(txtUnfallDatum, true);
                                                                     berechnenHalteFrist();
                                                                 })
                                                         }

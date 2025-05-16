@@ -2,7 +2,7 @@
 <forms>
 
     <!-- breaking changes introduced with 2.0: StorageLib has incompatible changes to support calendar events --> 
-    <form id="verkehr01" type="plugin" depends="formslib" name="Verkehrsunfalldaten" description="Falldatenblatt zur Erfassung von Verkehrsunfalldaten - Schwerpunkt Sachschäden" placeholder="VRKHR" version="2.21.0" for="2.6.0.2,2.6.1.0,2.7.0.0,3.0.0.1,3.1.0.1,3.1.0.2,3.1.0.3,3.2.0.0,3.3.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.0.0.0" files="verkehr01_meta.groovy,verkehr01_ui.groovy,RvgTablesRange.groovy,RvgTablesRangeList2021.groovy,RvgTablesRangeList2025.groovy">
+    <form id="verkehr01" type="plugin" depends="formslib" name="Verkehrsunfalldaten" description="Falldatenblatt zur Erfassung von Verkehrsunfalldaten - Schwerpunkt Sachschäden" placeholder="VRKHR" version="2.22.0" for="2.6.0.2,2.6.1.0,2.7.0.0,3.0.0.1,3.1.0.1,3.1.0.2,3.1.0.3,3.2.0.0,3.3.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.0.0.0" files="verkehr01_meta.groovy,verkehr01_ui.groovy,RvgTablesRange.groovy,RvgTablesRangeList2021.groovy,RvgTablesRangeList2025.groovy">
         <setting key="forms.verkehr01.site.extlink" caption="externer Link:" default="https://www" order="1"/>
     </form>
     <form id="miete01" type="plugin" depends="formslib" name="Mietrechtssachen" description="Falldatenblatt zur Erfassung von Mieter-/Vermieterinformationen" placeholder="MIETE" version="1.0.0" for="2.6.0.2,2.6.1.0,2.7.0.0,3.0.0.1,3.1.0.1,3.1.0.2,3.1.0.3,3.2.0.0,3.3.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.0.0.0" files="miete01_meta.groovy,miete01_ui.groovy"/>

@@ -3349,42 +3349,49 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     }
     
     private void berechnenNutzungsausfall(JTextField value, JTextField reg, JTextField diff, String ausfallGruppe, JTextField from, JTextField to, String fahrzeugTyp) {
-        try {
-            BigDecimal perDay = new BigDecimal(betragFormat.parse(txtNutzungsausfallTagessatz.getText()).toString());
-            BigDecimal nutzungsAusfall = BigDecimal.ZERO;
-
-            // Parse dates
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-            LocalDateTime fromDate = LocalDateTime.parse(from.getText() + " 00:00", formatter);
-            LocalDateTime toDate = LocalDateTime.parse(to.getText() + " 24:00", formatter);
-
-            // Calculate duration in days
-            long duration = ChronoUnit.DAYS.between(fromDate, toDate);
-            if (duration > 0) {
-                nutzungsAusfall = BigDecimal.valueOf(duration).multiply(perDay);
-            }
-
-            if (value != null && reg != null && diff != null) {
-                value.setText(betragFormat.format(nutzungsAusfall));
-
-                BigDecimal v = nutzungsAusfall;
-                BigDecimal r = new BigDecimal(betragFormat.parse(reg.getText()).toString());
-                BigDecimal difference = v.subtract(r);
-
-                diff.setText(betragFormat.format(difference));
-
-                // Set text color based on difference
-                if (difference.compareTo(BigDecimal.ZERO) > 0) {
-                    diff.setDisabledTextColor(java.awt.Color.RED);
-                } else {
-                    diff.setDisabledTextColor(java.awt.Color.BLACK);
+        
+        if("".equals(from.getText()) || "".equals(to.getText()) || "".equals(ausfallGruppe)  || "".equals(ausfallGruppe)) {
+            value.setText(betragFormat.format(0f));
+            diff.setText(betragFormat.format(0f));
+        } else {
+            
+            try {
+                BigDecimal perDay = new BigDecimal(betragFormat.parse(txtNutzungsausfallTagessatz.getText()).toString());
+                BigDecimal nutzungsAusfall = BigDecimal.ZERO;
+                
+                // Parse dates
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+                LocalDateTime fromDate = LocalDateTime.parse(from.getText() + " 00:00", formatter);
+                LocalDateTime toDate = LocalDateTime.parse(to.getText() + " 24:00", formatter);
+                
+                // Calculate duration in days
+                long duration = ChronoUnit.DAYS.between(fromDate, toDate);
+                if (duration > 0) {
+                    nutzungsAusfall = BigDecimal.valueOf(duration).multiply(perDay);
                 }
+                
+                if (value != null && reg != null && diff != null) {
+                    value.setText(betragFormat.format(nutzungsAusfall));
+                    
+                    BigDecimal v = nutzungsAusfall;
+                    BigDecimal r = new BigDecimal(betragFormat.parse(reg.getText()).toString());
+                    BigDecimal difference = v.subtract(r);
+                    
+                    diff.setText(betragFormat.format(difference));
+                    
+                    // Set text color based on difference
+                    if (difference.compareTo(BigDecimal.ZERO) > 0) {
+                        diff.setDisabledTextColor(java.awt.Color.RED);
+                    } else {
+                        diff.setDisabledTextColor(java.awt.Color.BLACK);
+                    }
+                }
+                
+                berechnen(null, null, null, null);
+                
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            berechnen(null, null, null, null);
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

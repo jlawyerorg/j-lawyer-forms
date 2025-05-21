@@ -3202,10 +3202,10 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     
             if(radioRvg2021.isSelected()) {
                 RvgTablesRangeList2021 rl = new RvgTablesRangeList2021();
-                vv2300 = BigDecimal.valueOf(Math.max(rl.getMappedValue(fStreitwert) * faktor.doubleValue(), 0));
+                vv2300 = BigDecimal.valueOf(Math.max(rl.getMappedValue(fStreitwert) * faktor.doubleValue(), 0)).setScale(2, RoundingMode.HALF_UP);
             } else {
                 RvgTablesRangeList2025 rl = new RvgTablesRangeList2025();
-                vv2300 = BigDecimal.valueOf(Math.max(rl.getMappedValue(fStreitwert) * faktor.doubleValue(), 0));
+                vv2300 = BigDecimal.valueOf(Math.max(rl.getMappedValue(fStreitwert) * faktor.doubleValue(), 0)).setScale(2, RoundingMode.HALF_UP);
             }
             
     
@@ -3216,18 +3216,19 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                 anwMwst = BigDecimal.valueOf(0.19);
             }
 
-            if (vv2300.multiply(BigDecimal.valueOf(0.2)).compareTo(vv7002) < 0) {
-                vv7002 = vv2300.multiply(BigDecimal.valueOf(0.2));
+            BigDecimal vv2300_20 = vv2300.multiply(BigDecimal.valueOf(0.2)).setScale(2, RoundingMode.HALF_UP)
+            if (vv2300_20.compareTo(vv7002) < 0) {
+                vv7002 = vv2300_20;
             }
 
-            sub2 = vv2300.add(vv7002);
+            sub2 = vv2300.add(vv7002).setScale(2, RoundingMode.HALF_UP);
             txtAnwaltskostenNetto.text = betragFormat.format(sub2);
 
-            sub3 = sub2.multiply(anwMwst);
+            sub3 = sub2.multiply(anwMwst).setScale(2, RoundingMode.HALF_UP);
             txtAnwaltskostenMwst.text = betragFormat.format(sub3);
 
             BigDecimal anwaltskostenReg = new BigDecimal(betragFormat.parse(txtAnwaltskostenReg.text).toString());
-            BigDecimal anwaltskostenDiff = sub2.add(sub3).subtract(anwaltskostenReg);
+            BigDecimal anwaltskostenDiff = sub2.add(sub3).subtract(anwaltskostenReg).setScale(2, RoundingMode.HALF_UP);
             txtAnwaltskostenDiff.text = betragFormat.format(anwaltskostenDiff);
 
             totalDiff = totalDiff.add(anwaltskostenDiff);

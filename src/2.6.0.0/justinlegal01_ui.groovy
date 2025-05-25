@@ -735,6 +735,10 @@ public class justinlegal01_ui implements com.jdimension.jlawyer.client.plugins.f
     public justinlegal01_ui() {
         super();
     }
+    
+    public String getAsHtml() {
+        return GuiLib.getAsHtml(this.SCRIPTPANEL);
+    }
 
     public ArrayList<String> getPlaceHolders(String prefix) {
         ArrayList<String> placeHolders=FormsLib.getPlaceHolders(prefix, this.SCRIPTPANEL);

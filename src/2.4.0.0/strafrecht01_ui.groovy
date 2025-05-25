@@ -739,7 +739,9 @@ public class strafrecht01_ui implements com.jdimension.jlawyer.client.plugins.fo
 
 
 
-
+    public String getAsHtml() {
+        return GuiLib.getAsHtml(this.SCRIPTPANEL);
+    }
 
     public ArrayList<String> getPlaceHolders(String prefix) {
         ArrayList<String> placeHolders=FormsLib.getPlaceHolders(prefix, this.SCRIPTPANEL);

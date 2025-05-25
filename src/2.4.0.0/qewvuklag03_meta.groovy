@@ -664,6 +664,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "UKlaG Dokumente"
 description = "Falldatenblatt zur Erfassung von Dokumenten"
-version = "0.9.0";
+version = "1.0.0";
 author = "Jens Kutschke"
-updated = "19.06.2023"
+updated = "25.05.2025"

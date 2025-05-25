@@ -664,6 +664,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "UKlaG Beanstandung"
 description = "Falldatenblatt zur Erfassung einer Beanstandung nach UKlaG"
-version = "0.8.0";
+version = "1.0.0";
 author = "Jens Kutschke"
-updated = "12.07.2022"
+updated = "25.05.2025"

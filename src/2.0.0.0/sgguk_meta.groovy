@@ -1,7 +1,7 @@
 name = "Untätigkeitsklage SGG"
 description = "Untätigkeitsklage-Generator"
-version = "1.1.0";
+version = "1.2.0";
 author = "Stephan Manske, Jens Kutschke"
-updated = "04.03.2021"
+updated = "25.05.2025"
 
 

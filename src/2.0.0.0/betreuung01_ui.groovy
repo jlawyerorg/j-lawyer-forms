@@ -721,6 +721,10 @@ public class betreuung01_ui implements com.jdimension.jlawyer.client.plugins.for
     public betreuung01_ui() {
         super();
     }
+    
+    public String getAsHtml() {
+        return GuiLib.getAsHtml(this.SCRIPTPANEL);
+    }
 
     public void setCallback(FormPluginCallback callback) {
         this.callback=callback;

@@ -685,6 +685,11 @@ import javax.swing.JCheckBox
 import javax.swing.JComboBox
 import javax.swing.JRadioButton
 import javax.swing.JLabel
+import javax.swing.JTabbedPane
+import javax.swing.JFormattedTextField
+import javax.swing.JSpinner
+import javax.swing.JTextArea
+import javax.swing.border.TitledBorder
 import java.awt.Component
 import java.awt.Container
 import java.math.BigDecimal
@@ -869,7 +874,11 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         ausfallTabelleKrad.put("L",76f);
         
     }
-
+    
+    public String getAsHtml() {
+        return GuiLib.getAsHtml(this.SCRIPTPANEL);
+    }
+    
     public ArrayList<String> getPlaceHolders(String prefix) {
         ArrayList<String> placeHolders=FormsLib.getPlaceHolders(prefix, this.SCRIPTPANEL);
         return placeHolders;
@@ -918,6 +927,10 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         berechnen();
         
         berechnenWba();
+        
+        // String renderedHtml=generateHtmlFromComponent(getUi());
+        // System.out.println(renderedHtml);
+        
         
     }
 

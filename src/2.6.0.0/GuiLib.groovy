@@ -695,10 +695,6 @@ import javax.swing.JOptionPane;
 import com.jdimension.jlawyer.client.components.MultiCalDialog;
 import com.jdimension.jlawyer.client.editors.EditorsRegistry;
 
-import info.clearthought.layout.TableLayout
-import info.clearthought.layout.TableLayoutConstraints
-
-
 public class GuiLib {
     
 
@@ -794,7 +790,6 @@ public class GuiLib {
             }
 
             def tableHtml = "<table style='border: none; border-collapse: collapse;'>${rows.join("\n")}</table>"
-            //return title ? "<fieldset><legend>${escapeHtml(title)}</legend>${tableHtml}</fieldset>" : tableHtml
             return title ? "<p>&nbsp;</p><h2>${escapeHtml(title)}</h2><hr/>${tableHtml}" : tableHtml
         } else {
             // fallback for panels with FlowLayout etc.
@@ -804,31 +799,24 @@ public class GuiLib {
     }
 
     if (comp instanceof JLabel) {
-        //return "<label>${escapeHtml(comp.getText())}</label>"
         def text = escapeHtml(comp.getText())
         return comp.font?.bold ? "<b>${text}</b>" : text
     }
 
     if (comp instanceof JTextField || comp instanceof JFormattedTextField) {
-        //return """<input type="text" value="${escapeHtml(comp.getText())}" readonly size="${comp.getColumns() ?: 20}"/>"""
         return escapeHtml(comp.getText())
     }
 
     if (comp instanceof JSpinner) {
-        //return """<input type="text" value="${escapeHtml(comp.getValue()?.toString() ?: "")}" readonly/>"""
         return escapeHtml(comp.getValue()?.toString() ?: "")
     }
 
     if (comp instanceof JComboBox) {
         def selected = comp.getSelectedItem()?.toString() ?: ""
-        //return """<select disabled><option selected>${escapeHtml(selected)}</option></select>"""
         return escapeHtml(selected)
     }
 
     if (comp instanceof JCheckBox) {
-//        def checked = comp.isSelected() ? "checked" : ""
-//        return """<label><input type="checkbox" ${checked} disabled/> ${escapeHtml(comp.getText())}</label>"""
-        
         if(comp.isSelected()) {
             return "[x] " + escapeHtml(comp.getText())
         } else {
@@ -837,9 +825,6 @@ public class GuiLib {
     }
 
     if (comp instanceof JRadioButton) {
-//        def checked = comp.isSelected() ? "checked" : ""
-//        return """<label><input type="radio" ${checked} disabled/> ${escapeHtml(comp.getText())}</label>"""
-        
         if(comp.isSelected()) {
             return "[x] " + escapeHtml(comp.getText())
         } else {
@@ -848,7 +833,6 @@ public class GuiLib {
     }
 
     if (comp instanceof JTextArea) {
-        //return """<textarea readonly rows="4" cols="40">${escapeHtml(comp.getText())}</textarea>"""
         return escapeHtml(comp.getText())
     }
 
@@ -858,67 +842,6 @@ public class GuiLib {
 
     return ""
 }
-    
-//    private static String generateHtmlFromComponent(Component comp) {
-//        if (comp instanceof JTabbedPane) {
-//            def tabs = (0..<comp.tabCount).collect { i ->
-//                def title = comp.getTitleAt(i)
-//                def content = generateHtmlFromComponent(comp.getComponentAt(i))
-//                return "<h2>${escapeHtml(title)}</h2>\n<div>${content}</div>"
-//            }
-//            return tabs.join("\n")
-//        }
-//
-//        if (comp instanceof JPanel) {
-//            def border = comp.getBorder()
-//            def title = (border instanceof TitledBorder) ? border.getTitle() : null
-//            def content = comp.components.collect { generateHtmlFromComponent(it) }.join("\n")
-//            if (title) {
-//                return "<fieldset><legend>${escapeHtml(title)}</legend>\n${content}</fieldset>"
-//            } else {
-//                return "<div>${content}</div>"
-//            }
-//        }
-//
-//        if (comp instanceof JLabel) {
-//            return "<label>${escapeHtml(comp.getText())}</label><br/>"
-//        }
-//
-//        if (comp instanceof JTextField || comp instanceof JFormattedTextField) {
-//            return """<input type="text" value="${escapeHtml(comp.getText())}" readonly/><br/>"""
-//        }
-//
-//        if (comp instanceof JSpinner) {
-//            return """<input type="text" value="${escapeHtml(comp.getValue()?.toString() ?: "")}" readonly/><br/>"""
-//        }
-//
-//        if (comp instanceof JComboBox) {
-//            def selected = comp.getSelectedItem()?.toString() ?: ""
-//            return """<select disabled><option selected>${escapeHtml(selected)}</option></select><br/>"""
-//        }
-//
-//        if (comp instanceof JCheckBox) {
-//            def checked = comp.isSelected() ? "checked" : ""
-//            return """<label><input type="checkbox" ${checked} disabled/> ${escapeHtml(comp.getText())}</label><br/>"""
-//        }
-//
-//        if (comp instanceof JRadioButton) {
-//            def checked = comp.isSelected() ? "checked" : ""
-//            return """<label><input type="radio" ${checked} disabled/> ${escapeHtml(comp.getText())}</label><br/>"""
-//        }
-//
-//        if (comp instanceof JTextArea) {
-//            return """<textarea readonly rows="4" cols="40">${escapeHtml(comp.getText())}</textarea><br/>"""
-//        }
-//
-//        if (comp instanceof Container) {
-//            // For any other container type, recurse into children
-//            return comp.components.collect { generateHtmlFromComponent(it) }.join("\n")
-//        }
-//
-//        // Default for unsupported components
-//        return ""
-//    }
 
     // Helper to escape HTML special characters
     private static String escapeHtml(String input) {

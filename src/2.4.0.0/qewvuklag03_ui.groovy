@@ -759,6 +759,10 @@ public class qewvuklag03_ui implements com.jdimension.jlawyer.client.plugins.for
     public qewvuklag03_ui() {
         super();
     }
+    
+    public String getAsHtml() {
+        return GuiLib.getAsHtml(this.SCRIPTPANEL);
+    }
 
     public ArrayList<String> getPlaceHolders(String prefix) {
         ArrayList<String> placeHolders=FormsLib.getPlaceHolders(prefix, this.SCRIPTPANEL);

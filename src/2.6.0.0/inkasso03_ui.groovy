@@ -688,6 +688,10 @@ public class inkasso03_ui implements com.jdimension.jlawyer.client.plugins.form.
         betragFormat.setMaximumFractionDigits(2);
         betragFormat.setMinimumFractionDigits(2);
     }
+    
+    public String getAsHtml() {
+        return GuiLib.getAsHtml(this.SCRIPTPANEL);
+    }
 
     public ArrayList<String> getPlaceHolders(String prefix) {
         ArrayList<String> placeHolders=FormsLib.getPlaceHolders(prefix, this.SCRIPTPANEL);

@@ -665,6 +665,7 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 import groovy.swing.SwingBuilder
 import java.awt.BorderLayout as BL
+import java.awt.GridBagLayout
 import groovy.beans.Bindable
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -681,12 +682,21 @@ import javax.swing.JPanel
 import javax.swing.JRadioButton
 import javax.swing.JSpinner
 import javax.swing.JTextField
+import javax.swing.JLabel
+import javax.swing.JTabbedPane
+import javax.swing.JFormattedTextField
+import javax.swing.JTextArea
+import javax.swing.border.TitledBorder
+
 import java.awt.Component
 import java.awt.Container
 import com.jdimension.jlawyer.client.editors.EditorsRegistry;
 import javax.swing.JOptionPane;
 import com.jdimension.jlawyer.client.components.MultiCalDialog;
 import com.jdimension.jlawyer.client.editors.EditorsRegistry;
+
+import info.clearthought.layout.TableLayout
+import info.clearthought.layout.TableLayoutConstraints
 
 
 public class GuiLib {
@@ -715,6 +725,209 @@ public class GuiLib {
     public static void dateSelector(JTextField target, boolean holidayWarning) {
         MultiCalDialog dlg = new MultiCalDialog(target, EditorsRegistry.getInstance().getMainWindow(), true, false);
         dlg.setVisible(true);
+    }
+    
+    public static String getAsHtml(Component comp) {
+        return "<html>" + generateHtmlFromComponent(comp) + "</html>";
+    }
+    
+    private static String generateHtmlFromComponent(Component comp) {
+    if (comp instanceof JTabbedPane) {
+        return (0..<comp.tabCount).collect { i ->
+            def title = comp.getTitleAt(i)
+            def content = generateHtmlFromComponent(comp.getComponentAt(i))
+            return "<h1>${escapeHtml(title)}</h1>\n<div>${content}</div>"
+        }.join("\n")
+    }
+
+    if (comp instanceof JPanel) {
+        def layout = comp.getLayout()
+        def border = comp.getBorder()
+        def title = (border instanceof TitledBorder) ? border.getTitle() : null
+
+        if (layout instanceof GridBagLayout) {
+            def componentMap = [:]  // Map of (x,y) → (comp, constraints)
+            int maxRow = 0
+            int maxCol = 0
+
+            comp.components.each { c ->
+                def gbc = layout.getConstraints(c)
+                int row = gbc.gridy
+                int col = gbc.gridx
+                int rowspan = gbc.gridheight
+                int colspan = gbc.gridwidth
+                maxRow = Math.max(maxRow, row + rowspan - 1)
+                maxCol = Math.max(maxCol, col + colspan - 1)
+
+                componentMap["${row},${col}"] = [comp: c, gbc: gbc]
+            }
+
+            def occupied = new HashSet<String>()
+            def rows = []
+
+            for (int r = 0; r <= maxRow; r++) {
+                def cols = []
+                for (int c = 0; c <= maxCol; c++) {
+                    def key = "${r},${c}"
+                    if (occupied.contains(key)) {
+                        continue // skip cells covered by rowspan/colspan
+                    }
+
+                    def entry = componentMap[key]
+                    if (entry) {
+                        def childHtml = generateHtmlFromComponent(entry.comp)
+                        def rowspan = entry.gbc.gridheight > 1 ? " rowspan='${entry.gbc.gridheight}'" : ""
+                        def colspan = entry.gbc.gridwidth > 1 ? " colspan='${entry.gbc.gridwidth}'" : ""
+                        cols << "<td${rowspan}${colspan}>${childHtml}</td>"
+
+                        // mark covered cells as occupied
+                        for (int dr = 0; dr < entry.gbc.gridheight; dr++) {
+                            for (int dc = 0; dc < entry.gbc.gridwidth; dc++) {
+                                occupied << "${r + dr},${c + dc}"
+                            }
+                        }
+                    } else {
+                        cols << "<td>&nbsp;</td>"
+                    }
+                }
+                rows << "<tr>${cols.join('')}</tr>"
+            }
+
+            def tableHtml = "<table style='border: none; border-collapse: collapse;'>${rows.join("\n")}</table>"
+            //return title ? "<fieldset><legend>${escapeHtml(title)}</legend>${tableHtml}</fieldset>" : tableHtml
+            return title ? "<p>&nbsp;</p><h2>${escapeHtml(title)}</h2><hr/>${tableHtml}" : tableHtml
+        } else {
+            // fallback for panels with FlowLayout etc.
+            def content = comp.components.collect { generateHtmlFromComponent(it) }.join("\n")
+            return title ? "<p>&nbsp;</p><h2>${escapeHtml(title)}</h2><hr/>${content}" : "<div>${content}</div>"
+        }
+    }
+
+    if (comp instanceof JLabel) {
+        //return "<label>${escapeHtml(comp.getText())}</label>"
+        def text = escapeHtml(comp.getText())
+        return comp.font?.bold ? "<b>${text}</b>" : text
+    }
+
+    if (comp instanceof JTextField || comp instanceof JFormattedTextField) {
+        //return """<input type="text" value="${escapeHtml(comp.getText())}" readonly size="${comp.getColumns() ?: 20}"/>"""
+        return escapeHtml(comp.getText())
+    }
+
+    if (comp instanceof JSpinner) {
+        //return """<input type="text" value="${escapeHtml(comp.getValue()?.toString() ?: "")}" readonly/>"""
+        return escapeHtml(comp.getValue()?.toString() ?: "")
+    }
+
+    if (comp instanceof JComboBox) {
+        def selected = comp.getSelectedItem()?.toString() ?: ""
+        //return """<select disabled><option selected>${escapeHtml(selected)}</option></select>"""
+        return escapeHtml(selected)
+    }
+
+    if (comp instanceof JCheckBox) {
+//        def checked = comp.isSelected() ? "checked" : ""
+//        return """<label><input type="checkbox" ${checked} disabled/> ${escapeHtml(comp.getText())}</label>"""
+        
+        if(comp.isSelected()) {
+            return "[x] " + escapeHtml(comp.getText())
+        } else {
+            return "[&nbsp;] " + escapeHtml(comp.getText())
+        }
+    }
+
+    if (comp instanceof JRadioButton) {
+//        def checked = comp.isSelected() ? "checked" : ""
+//        return """<label><input type="radio" ${checked} disabled/> ${escapeHtml(comp.getText())}</label>"""
+        
+        if(comp.isSelected()) {
+            return "[x] " + escapeHtml(comp.getText())
+        } else {
+            return "[&nbsp;] " + escapeHtml(comp.getText())
+        }
+    }
+
+    if (comp instanceof JTextArea) {
+        //return """<textarea readonly rows="4" cols="40">${escapeHtml(comp.getText())}</textarea>"""
+        return escapeHtml(comp.getText())
+    }
+
+    if (comp instanceof Container) {
+        return comp.components.collect { generateHtmlFromComponent(it) }.join("\n")
+    }
+
+    return ""
+}
+    
+//    private static String generateHtmlFromComponent(Component comp) {
+//        if (comp instanceof JTabbedPane) {
+//            def tabs = (0..<comp.tabCount).collect { i ->
+//                def title = comp.getTitleAt(i)
+//                def content = generateHtmlFromComponent(comp.getComponentAt(i))
+//                return "<h2>${escapeHtml(title)}</h2>\n<div>${content}</div>"
+//            }
+//            return tabs.join("\n")
+//        }
+//
+//        if (comp instanceof JPanel) {
+//            def border = comp.getBorder()
+//            def title = (border instanceof TitledBorder) ? border.getTitle() : null
+//            def content = comp.components.collect { generateHtmlFromComponent(it) }.join("\n")
+//            if (title) {
+//                return "<fieldset><legend>${escapeHtml(title)}</legend>\n${content}</fieldset>"
+//            } else {
+//                return "<div>${content}</div>"
+//            }
+//        }
+//
+//        if (comp instanceof JLabel) {
+//            return "<label>${escapeHtml(comp.getText())}</label><br/>"
+//        }
+//
+//        if (comp instanceof JTextField || comp instanceof JFormattedTextField) {
+//            return """<input type="text" value="${escapeHtml(comp.getText())}" readonly/><br/>"""
+//        }
+//
+//        if (comp instanceof JSpinner) {
+//            return """<input type="text" value="${escapeHtml(comp.getValue()?.toString() ?: "")}" readonly/><br/>"""
+//        }
+//
+//        if (comp instanceof JComboBox) {
+//            def selected = comp.getSelectedItem()?.toString() ?: ""
+//            return """<select disabled><option selected>${escapeHtml(selected)}</option></select><br/>"""
+//        }
+//
+//        if (comp instanceof JCheckBox) {
+//            def checked = comp.isSelected() ? "checked" : ""
+//            return """<label><input type="checkbox" ${checked} disabled/> ${escapeHtml(comp.getText())}</label><br/>"""
+//        }
+//
+//        if (comp instanceof JRadioButton) {
+//            def checked = comp.isSelected() ? "checked" : ""
+//            return """<label><input type="radio" ${checked} disabled/> ${escapeHtml(comp.getText())}</label><br/>"""
+//        }
+//
+//        if (comp instanceof JTextArea) {
+//            return """<textarea readonly rows="4" cols="40">${escapeHtml(comp.getText())}</textarea><br/>"""
+//        }
+//
+//        if (comp instanceof Container) {
+//            // For any other container type, recurse into children
+//            return comp.components.collect { generateHtmlFromComponent(it) }.join("\n")
+//        }
+//
+//        // Default for unsupported components
+//        return ""
+//    }
+
+    // Helper to escape HTML special characters
+    private static String escapeHtml(String input) {
+        if (input == null) return ""
+        return input.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace("\"", "&quot;")
+        .replace("'", "&#039;")
     }
     
 }

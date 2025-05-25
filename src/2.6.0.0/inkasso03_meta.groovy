@@ -547,6 +547,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "Forderung"
 description = "Detaildaten zu einer Forderung"
-version = "0.9.0";
+version = "1.0.0";
 author = "Jens Kutschke"
-updated = "30.04.2024"
+updated = "25.05.2025"

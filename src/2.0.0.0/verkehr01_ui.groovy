@@ -2794,13 +2794,13 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     tr {
                                         td (colfill:true) {
                                             grpRvg = buttonGroup(id:'grpRvg')
-                                            radioRvg2021 = radioButton (text: 'RVG 2021', name: "_RVG2021", clientPropertyJlawyerdescription: "Berechnung nach RVG 2021", buttonGroup: grpRvg, selected: true, actionPerformed: {
+                                            radioRvg2021 = radioButton (text: 'RVG 2021', name: "_RVG2021", clientPropertyJlawyerdescription: "Berechnung nach RVG 2021", buttonGroup: grpRvg, selected: false, actionPerformed: {
                                                     berechnen()
                                                 
                                                 })
                                         }
                                         td (colspan: 2) {
-                                            radioRvg2025 = radioButton (text: 'RVG 2025', name: "_RVG2025", clientPropertyJlawyerdescription: "Berechnung nach RVG 2025", buttonGroup: grpRvg, selected: false, actionPerformed: {
+                                            radioRvg2025 = radioButton (text: 'RVG 2025', name: "_RVG2025", clientPropertyJlawyerdescription: "Berechnung nach RVG 2025", buttonGroup: grpRvg, selected: true, actionPerformed: {
                                                     berechnen()
                                                 
                                                 })

@@ -751,15 +751,24 @@ public class justinlegal01_ui implements com.jdimension.jlawyer.client.plugins.f
     }
     
     public void setPlaceHolderValues(String prefix, Hashtable placeHolderValues) {
+        
         String formStructure=placeHolderValues.get(prefix + "_FORMSTRUCTURE");
+        
+        println ("rendering justin legal form, form structure key is " + prefix + "_FORMSTRUCTURE");
+        
         // for forms that have just been added to a case with no import yet
         if(formStructure!=null && !("".equals(formStructure))) {
+            
+            println ("form structure present - begin rendering justin legal form");
+            
             rebuildUi(formStructure);
             long start=System.currentTimeMillis();
             println ("" + start + " setting placeholder values");
             FormsLib.setPlaceHolderValues(prefix, placeHolderValues, this.SCRIPTPANEL);
             long end=System.currentTimeMillis();
             println ("" + end + " finished setting placeholder values, duration=" + (end-start));
+        } else {
+            println ("empty form structure");
         }
     }
     

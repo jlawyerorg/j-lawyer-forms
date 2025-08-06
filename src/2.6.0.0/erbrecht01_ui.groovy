@@ -685,6 +685,8 @@ public class erbrecht01_ui implements com.jdimension.jlawyer.client.plugins.form
     FormPluginCallback callback=null;
     
     SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
+    
+    def txtFields = [:]  // map to hold references to text fields
 
     public erbrecht01_ui() {
         super();
@@ -727,17 +729,383 @@ public class erbrecht01_ui implements com.jdimension.jlawyer.client.plugins.form
                 
                 vbox {
                     tabPaneMain = tabbedPane(id: 'tabs', tabPlacement: JTabbedPane.LEFT) {
-                        panel(name: 'Beteiligte') {
+                        panel(name: 'Beteiligte: Erblasser') {
                             tableLayout (cellpadding: 5) {
+                                
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        panel(border: titledBorder(title: 'Erblasser')) {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        label(text: 'Vorname:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETEL_VORNAME", clientPropertyJlawyerdescription: "Beteiligte: Erblasser, Vorname", text: '', columns:20)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Zuname:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETEL_NAME", clientPropertyJlawyerdescription: "Beteiligte: Erblasser, Zuname", text: '', columns:20)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Geburtsdatum')        
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtBetErblasserGebdatum=textField(name: "_BETEL_GEBDATUM", clientPropertyJlawyerdescription: "Beteiligte: Erblasser, Geburtsdatum", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtBetErblasserGebdatum, true);
+                                                                            })
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Strasse / Hausnummer:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETEL_STRASSE", clientPropertyJlawyerdescription: "Beteiligte: Erblasser, Strasse/Hausnummer", text: '', columns:20)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'PLZ:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETEL_PLZ", clientPropertyJlawyerdescription: "Beteiligte: Erblasser, Postleitzahl", text: '', columns:10)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Ort:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETEL_ORT", clientPropertyJlawyerdescription: "Beteiligte: Erblasser, Ort", text: '', columns:20)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Sterbedatum')        
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtBetErblasserSterbedatum=textField(name: "_BETEL_STERBEDATUM", clientPropertyJlawyerdescription: "Beteiligte: Erblasser, Sterbedatum", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtBetErblasserSterbedatum, true);
+                                                                            })
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Sterbeort:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETEL_STERBEORT", clientPropertyJlawyerdescription: "Beteiligte: Erblasser, Sterbeort", text: '', columns:20)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Staatsangehörigkeit') 
+                                                    }
+                                                    td {
+                                                        comboBox(items: [
+                                                                                '',
+                                                                                'deutsch'
+                                                            ], name: "_BETEL_STAANG", clientPropertyJlawyerdescription: "Beteiligte: Erblasser, Staatsangehörigkeit", editable: true
+                                                        )
+                                                    }
+
+                                                }
+                                    
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        panel(name: 'Beteiligte: Ehepartner') {
+                            tableLayout (cellpadding: 5) {
+                                
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        panel(border: titledBorder(title: 'Ehepartner')) {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        label(text: 'Vorname:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETEHEP_VORNAME", clientPropertyJlawyerdescription: "Beteiligte: Ehepartner, Vorname", text: '', columns:20)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Zuname:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETEHEP_NAME", clientPropertyJlawyerdescription: "Beteiligte: Ehepartner, Zuname", text: '', columns:20)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Geburtsdatum')        
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtBetEhepartnerGebdatum=textField(name: "_BETEHEP_GEBDATUM", clientPropertyJlawyerdescription: "Beteiligte: Ehepartner, Geburtsdatum", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtBetEhepartnerGebdatum, true);
+                                                                            })
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Strasse / Hausnummer:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETEHEP_STRASSE", clientPropertyJlawyerdescription: "Beteiligte: Ehepartner, Strasse/Hausnummer", text: '', columns:20)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'PLZ:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETEHEP_PLZ", clientPropertyJlawyerdescription: "Beteiligte: Ehepartner, Postleitzahl", text: '', columns:10)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Ort:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETEHEP_ORT", clientPropertyJlawyerdescription: "Beteiligte: Ehepartner, Ort", text: '', columns:20)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Güterstand') 
+                                                    }
+                                                    td {
+                                                        comboBox(items: [
+                                                                                '',
+                                                                                'Zugewinngemeinschaft',
+                                                                                'Gütertrennung',
+                                                                                'Gütergemeinschaft'
+                                                            ], name: "_BETEHEP_GUETERST", clientPropertyJlawyerdescription: "Beteiligte: Ehepartner, Güterstand", editable: true
+                                                        )
+                                                    }
+
+                                                }
+                                    
+                                            }
+                                        }
+                                    }
+                                }
                                 
                             }
                         }
-                        panel(name: 'Testament') {
+                        panel(name: 'Beteiligte: Kinder') {
+                            tableLayout (cellpadding: 5) {
+                                
+                                (1..3).each { index ->
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            panel(border: titledBorder(title: "Kind ${index}")) {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Vorname:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETK${index}_VORNAME", clientPropertyJlawyerdescription: "Beteiligte: Kind $index, Vorname", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Zuname:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETK${index}_NAME", clientPropertyJlawyerdescription: "Beteiligte: Kind $index, Zuname", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Geburtsdatum')        
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_BETK${index}_GEBDATUM", clientPropertyJlawyerdescription: "Beteiligte: Kind $index, Geburtsdatum", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                                })
+                                                                            txtFields["kind${index}"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["kind${index}"], true);
+                                                                                })
+                                                                        }
+                                                        
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                        
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Strasse / Hausnummer:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETK${index}_STRASSE", clientPropertyJlawyerdescription: "Beteiligte: Kind $index, Strasse/Hausnummer", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'PLZ:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETK${index}_PLZ", clientPropertyJlawyerdescription: "Beteiligte: Kind $index, Postleitzahl", text: '', columns:10)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Ort:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETK${index}_ORT", clientPropertyJlawyerdescription: "Beteiligte: Kind $index, Ort", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Verwandtschaftsverhältnis') 
+                                                        }
+                                                        td {
+                                                            comboBox(items: [
+                                                                                '',
+                                                                                ''
+                                                                ], name: "_BETK${index}_GUETERST", clientPropertyJlawyerdescription: "Beteiligte: Kind $index, Verwandtschaftsverhältnis", editable: true
+                                                            )
+                                                        }
+
+                                                    }
+                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        }
+                        panel(name: 'Testament: Art') {
                             tableLayout (cellpadding: 5) {
                                 tr {
                                     td (colfill:true, align: 'left') {
-                                        panel(border: titledBorder(title: '')) {
+                                        panel(border: titledBorder(title: 'Art der letztwilligen Verfügung')) {
                                             tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        label(text: '') 
+                                                    }
+                                                    td {
+                                                        comboBox(items: [
+                                                                '',
+                                                                'Gemeinschaftliches Testament',
+                                                                'Einzeltestament',
+                                                                'Erbvertrag'
+                                                            ], name: "_TST_ART", clientPropertyJlawyerdescription: "Testament: Art der letztwilligen Verfügung", editable: true
+                                                        )
+                                                    }
+
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Datum der Errichtung')        
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtErrichtungDatum=textField(name: "_TST_ERRDATUM", clientPropertyJlawyerdescription: "Testament: Datum der Errichtung", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtErrichtungDatum, true);
+                                                                            })
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                        
+                                                }
                                                 
                                                 
                                     
@@ -745,31 +1113,762 @@ public class erbrecht01_ui implements com.jdimension.jlawyer.client.plugins.form
                                         }
                                     }
                                 }
-                                tr {
-                                    td (colfill:true, align: 'left') {
-                                        panel(border: titledBorder(title: 'Titel 1')) {
-                                            tableLayout (cellpadding: 5) {
-                                                
+                                
+                            }
+                        }
+                        panel(name: 'Testament: Erbeinsetzung') {
+                            tableLayout (cellpadding: 5) {
+                                (1..3).each { index ->
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            panel(border: titledBorder(title: "Erbe ${index}")) {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Vorname:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETE${index}_VORNAME", clientPropertyJlawyerdescription: "Beteiligte: Erbe $index, Vorname", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Zuname:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETE${index}_NAME", clientPropertyJlawyerdescription: "Beteiligte: Erbe $index, Zuname", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Geburtsdatum')        
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_BETE${index}_GEBDATUM", clientPropertyJlawyerdescription: "Beteiligte: Erbe $index, Geburtsdatum", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                                })
+                                                                            txtFields["erbe${index}"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["erbe${index}"], true);
+                                                                                })
+                                                                        }
+                                                        
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                        
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Strasse / Hausnummer:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETE${index}_STRASSE", clientPropertyJlawyerdescription: "Beteiligte: Erbe $index, Strasse/Hausnummer", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'PLZ:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETE${index}_PLZ", clientPropertyJlawyerdescription: "Beteiligte: Erbe $index, Postleitzahl", text: '', columns:10)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Ort:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETE${index}_ORT", clientPropertyJlawyerdescription: "Beteiligte: Erbe $index, Ort", text: '', columns:20)
+                                                        }
+                                                    }
                                     
+                                                }
                                             }
                                         }
                                     }
+                                    
                                 }
-                                tr {
-                                    td (colfill:true, align: 'left') {
-                                        panel(border: titledBorder(title: 'Titel 2')) {
-                                            tableLayout (cellpadding: 5) {
-                                                
-                                                
+                                
+                                (1..3).each { index ->
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            panel(border: titledBorder(title: "Ersatzerbe ${index}")) {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Vorname:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETEE${index}_VORNAME", clientPropertyJlawyerdescription: "Beteiligte: Ersatzerbe $index, Vorname", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Zuname:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETEE${index}_NAME", clientPropertyJlawyerdescription: "Beteiligte: Ersatzerbe $index, Zuname", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Geburtsdatum')        
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_BETEE${index}_GEBDATUM", clientPropertyJlawyerdescription: "Beteiligte: Ersatzerbe $index, Geburtsdatum", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                                })
+                                                                            txtFields["ersatzerbe${index}"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["ersatzerbe${index}"], true);
+                                                                                })
+                                                                        }
+                                                        
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                        
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Strasse / Hausnummer:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETEE${index}_STRASSE", clientPropertyJlawyerdescription: "Beteiligte: Ersatzerbe $index, Strasse/Hausnummer", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'PLZ:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETEE${index}_PLZ", clientPropertyJlawyerdescription: "Beteiligte: Ersatzerbe $index, Postleitzahl", text: '', columns:10)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Ort:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETEE${index}_ORT", clientPropertyJlawyerdescription: "Beteiligte: Ersatzerbe $index, Ort", text: '', columns:20)
+                                                        }
+                                                    }
+                                    
+                                                }
                                             }
                                         }
                                     }
+                                    
                                 }
                             }
                         }
                         
+                        panel(name: 'Testament: Vermächtnisnehmer') {
+                            tableLayout (cellpadding: 5) {
+                                (1..3).each { index ->
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            panel(border: titledBorder(title: "Vermächtnisnehmer ${index}")) {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Vorname:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETVN${index}_VORNAME", clientPropertyJlawyerdescription: "Beteiligte: Vermächtnisnehmer $index, Vorname", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Zuname:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETVN${index}_NAME", clientPropertyJlawyerdescription: "Beteiligte: Vermächtnisnehmer $index, Zuname", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Geburtsdatum')        
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_BETVN${index}_GEBDATUM", clientPropertyJlawyerdescription: "Beteiligte: Vermächtnisnehmer $index, Geburtsdatum", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                                })
+                                                                            txtFields["vn${index}"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["vn${index}"], true);
+                                                                                })
+                                                                        }
+                                                        
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                        
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Strasse / Hausnummer:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETVN${index}_STRASSE", clientPropertyJlawyerdescription: "Beteiligte: Vermächtnisnehmer $index, Strasse/Hausnummer", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'PLZ:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETVN${index}_PLZ", clientPropertyJlawyerdescription: "Beteiligte: Vermächtnisnehmer $index, Postleitzahl", text: '', columns:10)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Ort:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETVN${index}_ORT", clientPropertyJlawyerdescription: "Beteiligte: Vermächtnisnehmer $index, Ort", text: '', columns:20)
+                                                        }
+                                                    }
+                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                                
+                                (1..3).each { index ->
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            panel(border: titledBorder(title: "Ersatzvermächtnisnehmer ${index}")) {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Vorname:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETEVN${index}_VORNAME", clientPropertyJlawyerdescription: "Beteiligte: Ersatzvermächtnisnehmer $index, Vorname", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Zuname:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETEVN${index}_NAME", clientPropertyJlawyerdescription: "Beteiligte: Ersatzvermächtnisnehmer $index, Zuname", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Geburtsdatum')        
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_BETEVN${index}_GEBDATUM", clientPropertyJlawyerdescription: "Beteiligte: Ersatzvermächtnisnehmer $index, Geburtsdatum", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                                })
+                                                                            txtFields["evn${index}"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["evn${index}"], true);
+                                                                                })
+                                                                        }
+                                                        
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                        
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Strasse / Hausnummer:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETEVN${index}_STRASSE", clientPropertyJlawyerdescription: "Beteiligte: Ersatzvermächtnisnehmer $index, Strasse/Hausnummer", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'PLZ:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETEVN${index}_PLZ", clientPropertyJlawyerdescription: "Beteiligte: Ersatzvermächtnisnehmer $index, Postleitzahl", text: '', columns:10)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Ort:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETEVN${index}_ORT", clientPropertyJlawyerdescription: "Beteiligte: Ersatzvermächtnisnehmer $index, Ort", text: '', columns:20)
+                                                        }
+                                                    }
+                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        }
                         
+                        panel(name: 'Testament: Vollstrecker') {
+                            tableLayout (cellpadding: 5) {
+                                
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        panel(border: titledBorder(title: 'Haupttestamentsvollstrecker')) {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        label(text: 'Vorname:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETHTV_VORNAME", clientPropertyJlawyerdescription: "Beteiligte: Haupttestamentsvollstrecker, Vorname", text: '', columns:20)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Zuname:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETHTV_NAME", clientPropertyJlawyerdescription: "Beteiligte: Haupttestamentsvollstrecker, Zuname", text: '', columns:20)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Geburtsdatum')        
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtBetHauptvollstreckerGebdatum=textField(name: "_BETHTV_GEBDATUM", clientPropertyJlawyerdescription: "Beteiligte: Haupttestamentsvollstrecker, Geburtsdatum", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtBetHauptvollstreckerGebdatum, true);
+                                                                            })
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Strasse / Hausnummer:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETHTV_STRASSE", clientPropertyJlawyerdescription: "Beteiligte: Haupttestamentsvollstrecker, Strasse/Hausnummer", text: '', columns:20)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'PLZ:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETHTV_PLZ", clientPropertyJlawyerdescription: "Beteiligte: Haupttestamentsvollstrecker, Postleitzahl", text: '', columns:10)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Ort:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETHTV_ORT", clientPropertyJlawyerdescription: "Beteiligte: Haupttestamentsvollstrecker, Ort", text: '', columns:20)
+                                                    }
+                                                }
+                                    
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        panel(border: titledBorder(title: 'Ersatztestamentsvollstrecker')) {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        label(text: 'Vorname:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETETV_VORNAME", clientPropertyJlawyerdescription: "Beteiligte: Ersatztestamentsvollstrecker, Vorname", text: '', columns:20)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Zuname:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETETV_NAME", clientPropertyJlawyerdescription: "Beteiligte: Ersatztestamentsvollstrecker, Zuname", text: '', columns:20)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Geburtsdatum')        
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtBetErsatzvollstreckerGebdatum=textField(name: "_BETETV_GEBDATUM", clientPropertyJlawyerdescription: "Beteiligte: Ersatztestamentsvollstrecker, Geburtsdatum", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtBetErsatzvollstreckerGebdatum, true);
+                                                                            })
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Strasse / Hausnummer:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETETV_STRASSE", clientPropertyJlawyerdescription: "Beteiligte: Ersatztestamentsvollstrecker, Strasse/Hausnummer", text: '', columns:20)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'PLZ:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETETV_PLZ", clientPropertyJlawyerdescription: "Beteiligte: Ersatztestamentsvollstrecker, Postleitzahl", text: '', columns:10)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Ort:')        
+                                                    }
+                                                    td {
+                                                        textField(name: "_BETETV_ORT", clientPropertyJlawyerdescription: "Beteiligte: Ersatztestamentsvollstrecker, Ort", text: '', columns:20)
+                                                    }
+                                                }
+                                    
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                            }
+                        }
                         
+                        panel(name: 'Testament: Vor-/Nacherben') {
+                            tableLayout (cellpadding: 5) {
+                                
+                                (1..2).each { index ->
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            panel(border: titledBorder(title: "Vorerbe ${index}")) {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Vorname:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETVE${index}_VORNAME", clientPropertyJlawyerdescription: "Beteiligte: Vorerbe $index, Vorname", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Zuname:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETVE${index}_NAME", clientPropertyJlawyerdescription: "Beteiligte: Vorerbe $index, Zuname", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Geburtsdatum')        
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_BETVE${index}_GEBDATUM", clientPropertyJlawyerdescription: "Beteiligte: Vorerbe $index, Geburtsdatum", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                                })
+                                                                            txtFields["vorerbe${index}"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["vorerbe${index}"], true);
+                                                                                })
+                                                                        }
+                                                        
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                        
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Strasse / Hausnummer:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETVE${index}_STRASSE", clientPropertyJlawyerdescription: "Beteiligte: Vorerbe $index, Strasse/Hausnummer", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'PLZ:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETVE${index}_PLZ", clientPropertyJlawyerdescription: "Beteiligte: Vorerbe $index, Postleitzahl", text: '', columns:10)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Ort:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETVE${index}_ORT", clientPropertyJlawyerdescription: "Beteiligte: Vorerbe $index, Ort", text: '', columns:20)
+                                                        }
+                                                    }
+                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                                
+                                (1..2).each { index ->
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            panel(border: titledBorder(title: "Nacherbe ${index}")) {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Vorname:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETNE${index}_VORNAME", clientPropertyJlawyerdescription: "Beteiligte: Nacherbe $index, Vorname", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Zuname:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETNE${index}_NAME", clientPropertyJlawyerdescription: "Beteiligte: Nacherbe $index, Zuname", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Geburtsdatum')        
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_BETNE${index}_GEBDATUM", clientPropertyJlawyerdescription: "Beteiligte: Nacherbe $index, Geburtsdatum", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                                })
+                                                                            txtFields["nacherbe${index}"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["nacherbe${index}"], true);
+                                                                                })
+                                                                        }
+                                                        
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                        
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Strasse / Hausnummer:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETNE${index}_STRASSE", clientPropertyJlawyerdescription: "Beteiligte: Nacherbe $index, Strasse/Hausnummer", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'PLZ:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETNE${index}_PLZ", clientPropertyJlawyerdescription: "Beteiligte: Nacherbe $index, Postleitzahl", text: '', columns:10)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Ort:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETNE${index}_ORT", clientPropertyJlawyerdescription: "Beteiligte: Nacherbe $index, Ort", text: '', columns:20)
+                                                        }
+                                                    }
+                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        }
+                        
+                        panel(name: 'Testament: Pflichtteilberechtigte') {
+                            tableLayout (cellpadding: 5) {
+                                
+                                (1..3).each { index ->
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            panel(border: titledBorder(title: "Pflichtteilberechtigter ${index}")) {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Vorname:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETPB${index}_VORNAME", clientPropertyJlawyerdescription: "Beteiligte: Pflichtteilberechtigter $index, Vorname", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Zuname:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETPB${index}_NAME", clientPropertyJlawyerdescription: "Beteiligte: Pflichtteilberechtigter $index, Zuname", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Geburtsdatum')        
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_BETPB${index}_GEBDATUM", clientPropertyJlawyerdescription: "Beteiligte: Pflichtteilberechtigter $index, Geburtsdatum", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                                })
+                                                                            txtFields["pflichtb${index}"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["pflichtb${index}"], true);
+                                                                                })
+                                                                        }
+                                                        
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                        
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Strasse / Hausnummer:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETPB${index}_STRASSE", clientPropertyJlawyerdescription: "Beteiligte: Pflichtteilberechtigter $index, Strasse/Hausnummer", text: '', columns:20)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'PLZ:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETPB${index}_PLZ", clientPropertyJlawyerdescription: "Beteiligte: Pflichtteilberechtigter $index, Postleitzahl", text: '', columns:10)
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td {
+                                                            label(text: 'Ort:')        
+                                                        }
+                                                        td {
+                                                            textField(name: "_BETPB${index}_ORT", clientPropertyJlawyerdescription: "Beteiligte: Pflichtteilberechtigter $index, Ort", text: '', columns:20)
+                                                        }
+                                                    }
+                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        }
                     }
                 }
 

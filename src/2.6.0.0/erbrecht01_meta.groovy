@@ -547,6 +547,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "Erbrecht"
 description = "Erbrecht: Beteiligte und Testament"
-version = "0.1.0";
+version = "0.2.0";
 author = "Jens Kutschke"
 updated = "06.08.2025"

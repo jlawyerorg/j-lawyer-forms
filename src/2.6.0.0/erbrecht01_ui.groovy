@@ -1042,7 +1042,21 @@ public class erbrecht01_ui implements com.jdimension.jlawyer.client.plugins.form
                                                         td {
                                                             comboBox(items: [
                                                                                 '',
-                                                                                ''
+                                                                                'Sohn',
+                                                                                'Tochter',
+                                                                                'Vater',
+                                                                                'Mutter',
+                                                                                'Großvater',
+                                                                                'Großmutter',
+                                                                                'Onkel',
+                                                                                'Tante',
+                                                                                'Neffe',
+                                                                                'Nichte',
+                                                                                'Enkel',
+                                                                                'Enkelin',
+                                                                                'Cousin',
+                                                                                'Cousine'
+
                                                                 ], name: "_BETK${index}_GUETERST", clientPropertyJlawyerdescription: "Beteiligte: Kind $index, Verwandtschaftsverhältnis", editable: true
                                                             )
                                                         }

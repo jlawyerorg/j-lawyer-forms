@@ -667,6 +667,7 @@ import groovy.swing.SwingBuilder
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 import java.time.LocalDate
+import java.time.Period
 import javax.swing.SwingConstants
 import javax.swing.table.DefaultTableModel
 
@@ -687,6 +688,9 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
     // Tabelle + Model initial anlegen
     def model = new DefaultTableModel();
     def table = new JTable(model)
+    
+    def summaryModel = new DefaultTableModel();
+    def summaryTable = new JTable(summaryModel)
     
     SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
     
@@ -1848,7 +1852,8 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                 tr {
                                     td (colfill:true, align: 'left') {
                                         button("Aktualisieren", actionPerformed: {
-                                                table.setModel(buildTable())
+                                                table.setModel(buildTable());
+                                                summaryTable.setModel(buildSummaryTable());
                                             })  
                                     }        
                                 }
@@ -1858,7 +1863,7 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                             tableLayout (cellpadding: 5) {
                                                 tr {
                                                     td {
-                                                        scrollPane {
+                                                        scrollPane(preferredSize: [700,300]) {
                                                             widget(table)
                                                         } 
                                                     }
@@ -1874,17 +1879,15 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                 }
                                 tr {
                                     td (colfill:true, align: 'left') {
-                                        panel(border: titledBorder(title: 'Zeiten pro Kind:')) {
+                                        panel(border: titledBorder(title: 'Summen pro Kind:')) {
                                             tableLayout (cellpadding: 5) {
                                                 tr {
                                                     td {
-                                                        label(text: 'tbd')       
+                                                        scrollPane(preferredSize: [700,300]) {
+                                                            widget(summaryTable)
+                                                        } 
                                                     }
-                                                    td {
-                                                                                        
-                                                        
-                                                    }
-                                        
+                                                    
                                                 }
                                          
                                                 
@@ -1957,10 +1960,19 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                         def vonDate = LocalDate.parse(vonStr, formatter)
                         def bisDate = bisStr ? LocalDate.parse(bisStr, formatter) : null
 
+                        // Dauer berechnen (wenn bisDate vorhanden)
+                        def dauer = ""
+                        if (bisDate) {
+                            def p = Period.between(vonDate, bisDate)
+                            def totalMonate = p.years * 12 + p.months
+                            dauer = "${totalMonate} Monate, ${p.days} Tage"
+                        }
+
                         zeitraeume << [
                             von: vonDate,
                             bis: bisDate,
-                            kind: "Kind ${kind}"
+                            kind: "Kind ${kind}",
+                            dauer: dauer
                         ]
                     } catch (Exception e) {
                         println "Ungültiges Datum in ${vonKey}/${bisKey}: ${e.message}"
@@ -1973,12 +1985,61 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
         zeitraeume.sort { it.von }
 
         // Daten für JTable vorbereiten
-        def columnNames = ["von", "bis", "Kind"] as Object[]
+        def columnNames = ["von", "bis", "Kind", "Dauer"] as Object[]
         def data = zeitraeume.collect { zr ->
             [
                 zr.von?.format(formatter),
                 zr.bis ? zr.bis.format(formatter) : "",
-                zr.kind
+                zr.kind,
+                zr.dauer
+            ] as Object[]
+        } as Object[][]
+
+        new DefaultTableModel(data, columnNames)
+    }
+    
+    def buildSummaryTable = {
+        def summen = [:].withDefault { [monate:0, tage:0] }
+
+        (1..4).each { kind ->
+            (1..3).each { zr ->
+                def vonKey = "_K${kind}ZR${zr}VON"
+                def bisKey = "_K${kind}ZR${zr}BIS"
+
+                def vonStr = txtFields[vonKey]?.text?.trim()
+                def bisStr = txtFields[bisKey]?.text?.trim()
+
+                if (vonStr && bisStr) {
+                    try {
+                        def vonDate = LocalDate.parse(vonStr, formatter)
+                        def bisDate = LocalDate.parse(bisStr, formatter)
+
+                        def p = Period.between(vonDate, bisDate)
+                        def totalMonate = p.years * 12 + p.months
+
+                        summen["Kind ${kind}"].monate += totalMonate
+                        summen["Kind ${kind}"].tage   += p.days
+                    } catch (Exception e) {
+                        println "Ungültiges Datum in ${vonKey}/${bisKey}: ${e.message}"
+                    }
+                }
+            }
+        }
+
+        // Tage in Monate umrechnen, falls gewünscht (z.B. >30 Tage → +1 Monat)
+        summen.each { kind, werte ->
+            if (werte.tage >= 30) {
+                werte.monate += (werte.tage.intdiv(30))
+                werte.tage   = werte.tage % 30
+            }
+        }
+
+        // Tabelle vorbereiten
+        def columnNames = ["Kind", "Gesamtdauer"] as Object[]
+        def data = summen.collect { kind, werte ->
+            [
+                kind,
+            "${werte.monate} Monate, ${werte.tage} Tage"
             ] as Object[]
         } as Object[][]
 

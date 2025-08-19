@@ -665,9 +665,14 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 import groovy.swing.SwingBuilder
 import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
+import java.time.LocalDate
 import javax.swing.SwingConstants
+import javax.swing.table.DefaultTableModel
+
 import javax.swing.JPanel
 import javax.swing.JTabbedPane
+import javax.swing.JTable
 import javax.swing.JTextField
 import javax.swing.ImageIcon
 import java.util.ArrayList
@@ -679,8 +684,14 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
     FormPluginCallback callback=null;
     def txtFields = [:]  // map to hold references to text fields
     
+    // Tabelle + Model initial anlegen
+    def model = new DefaultTableModel();
+    def table = new JTable(model)
+    
     SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
     
+    // Formatter für dd.MM.yyyy
+    def formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     public arbeitsrecht03_ui() {
         super();
@@ -1836,16 +1847,22 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                             tableLayout (cellpadding: 5) {
                                 tr {
                                     td (colfill:true, align: 'left') {
+                                        button("Aktualisieren", actionPerformed: {
+                                                table.setModel(buildTable())
+                                            })  
+                                    }        
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
                                         panel(border: titledBorder(title: 'Zeiträume:')) {
                                             tableLayout (cellpadding: 5) {
                                                 tr {
                                                     td {
-                                                        label(text: 'tbd')        
+                                                        scrollPane {
+                                                            widget(table)
+                                                        } 
                                                     }
-                                                    td {
-                                                                                        
-                                                        
-                                                    }
+                                                    
                                         
                                                 }
                                          
@@ -1921,6 +1938,51 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
 
         return SCRIPTPANEL;
 
+    }
+    
+    // Hilfsmethode, um die Tabelle aus den Textfeldern zu befüllen
+    def buildTable = {
+        def zeitraeume = []
+
+        (1..4).each { kind ->
+            (1..3).each { zr ->
+                def vonKey = "_K${kind}ZR${zr}VON"
+                def bisKey = "_K${kind}ZR${zr}BIS"
+
+                def vonStr = txtFields[vonKey]?.text?.trim()
+                def bisStr = txtFields[bisKey]?.text?.trim()
+
+                if (vonStr) {
+                    try {
+                        def vonDate = LocalDate.parse(vonStr, formatter)
+                        def bisDate = bisStr ? LocalDate.parse(bisStr, formatter) : null
+
+                        zeitraeume << [
+                            von: vonDate,
+                            bis: bisDate,
+                            kind: "Kind ${kind}"
+                        ]
+                    } catch (Exception e) {
+                        println "Ungültiges Datum in ${vonKey}/${bisKey}: ${e.message}"
+                    }
+                }
+            }
+        }
+
+        // Sortieren nach "von"
+        zeitraeume.sort { it.von }
+
+        // Daten für JTable vorbereiten
+        def columnNames = ["von", "bis", "Kind"] as Object[]
+        def data = zeitraeume.collect { zr ->
+            [
+                zr.von?.format(formatter),
+                zr.bis ? zr.bis.format(formatter) : "",
+                zr.kind
+            ] as Object[]
+        } as Object[][]
+
+        new DefaultTableModel(data, columnNames)
     }
     
 

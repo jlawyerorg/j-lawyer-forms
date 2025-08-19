@@ -665,20 +665,64 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 import groovy.swing.SwingBuilder
 import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
+import java.time.LocalDate
+import java.time.Period
 import javax.swing.SwingConstants
+import javax.swing.table.DefaultTableModel
+import java.awt.*
+import javax.swing.*
+
 import javax.swing.JPanel
 import javax.swing.JTabbedPane
+import javax.swing.JTable
 import javax.swing.JTextField
 import javax.swing.ImageIcon
 import java.util.ArrayList
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 
 public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
-
+    
     JPanel SCRIPTPANEL=null;
     FormPluginCallback callback=null;
+    def txtFields = [:]  // map to hold references to text fields
+    
+    // Tabelle + Model initial anlegen
+    def model = new DefaultTableModel();
+    def table = new JTable(model)
+    
+    def summaryModel = new DefaultTableModel();
+    def summaryTable = new JTable(summaryModel)
     
     SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
+    
+    // Formatter für dd.MM.yyyy
+    def formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    
+    def buildZeitraeumeFromFields = { txtFields ->
+        def formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        def result = []
+
+        (1..4).each { k ->
+            (1..4).each { z ->
+                def vonStr = txtFields["_K${k}ZR${z}VON"]?.text
+                def bisStr = txtFields["_K${k}ZR${z}BIS"]?.text
+
+                if (vonStr) {
+                    try {
+                        def von = LocalDate.parse(vonStr, formatter)
+                        def bis = bisStr ? LocalDate.parse(bisStr, formatter) : null
+                        result << [von: von, bis: bis, kind: "K${k}"]
+                    } catch (ignored) {
+                        // ungültiges Datum ignorieren
+                    }
+                }
+            }
+        }
+        return result
+    }
+    
+    JPanel chartPanel = new ZeitstrahlPanel();
     
 
     public arbeitsrecht03_ui() {
@@ -721,24 +765,37 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                 
                 vbox {
                     tabPaneMain = tabbedPane(id: 'tabs', tabPlacement: JTabbedPane.LEFT) {
-                        panel(name: 'Arbeitsvertrag') {
+                        panel(name: 'Beschäftigung') {
                             tableLayout (cellpadding: 5) {
                                 tr {
                                     td (colfill:true, align: 'left') {
-                                        panel(border: titledBorder(title: 'Arbeitsvertrag / Arbeitsverhältnis:')) {
+                                        panel(border: titledBorder(title: 'Beschäftigung:')) {
                                             tableLayout (cellpadding: 5) {
                                                 tr {
                                                     td {
-                                                        label(text: 'Arbeitsvertrag vorhanden?')        
+                                                        label(text: 'beschäftigt als')        
                                                     }
                                                     td {
                                                                                         
                                                         comboBox(items: [
-                                                            'bestehender Arbeitsvertrag',
+                                                            '',
+                                                            '-- Gesundheitsbranche --',
+                                                            'Ärzt*in in Weiterbildung im stationären Bereich',
+                                                            'Fachärzt*in',
+                                                            'Oberärzt*in',
+                                                            'Leitende Oberärzt*in',
+                                                            'Chefärzt*in',
+                                                            'Ärzt*in in Weiterbildung im ambulanten Bereich',
+                                                            'angestellte(r) Fachärzt*in auf einem Vertragsarztsitz',
+                                                            'Sicherstellungsassistent(in)',
+                                                            'Ärztliche(r) Leiter(in) im MVZ',
+                                                            '',
+                                                            '-- Sonstige --',
+                                                            'sonstige Beschäftigung',
                                                             'kein Arbeitsvertrag vorhanden'
                                                             
 
-                                                            ], name: "_AVVORHANDEN", clientPropertyJlawyerdescription: "Arbeitsvertrag vorhanden?", editable: false
+                                                            ], name: "_BESCHAEFTIGUNG", clientPropertyJlawyerdescription: "beschäftigt als", editable: true
                                                         )
                                                     }
                                         
@@ -752,16 +809,36 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                 }
                                 tr {
                                     td (colfill:true, align: 'left') {
-                                        panel(border: titledBorder(title: 'Besonderheiten:')) {
+                                        panel(border: titledBorder(title: 'Krankenversicherung:')) {
                                             tableLayout (cellpadding: 5) {
                                                 tr {
                                                     td (colfill:true, valign: 'left') {
-                                                        label(text: '')
+                                                        label(text: 'Krankenversicherung:')
                                                     }
                                                     td {
-                                                        scrollPane{
-                                                            textArea(id:'sBesonderheiten', name: "_BESONDERHEITEN", clientPropertyJlawyerdescription: "Besonderheiten", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
-                                                        }
+                                                        comboBox(items: [
+                                                            '',
+                                                            'gesetzlich',
+                                                            'privat'
+                                                            
+
+                                                            ], name: "_KV", clientPropertyJlawyerdescription: "Krankenversicherung", editable: true
+                                                        )
+                                                    }
+                                                } 
+                                                tr {
+                                                    td (colfill:true, valign: 'left') {
+                                                        label(text: 'Krankenversicherung Kinder:')
+                                                    }
+                                                    td {
+                                                        comboBox(items: [
+                                                            '',
+                                                            'gesetzlich',
+                                                            'privat'
+                                                            
+
+                                                            ], name: "_KVKIND", clientPropertyJlawyerdescription: "Krankenversicherung Kinder", editable: true
+                                                        )
                                                     }
                                                 } 
                                             }
@@ -774,16 +851,28 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                 }
                             }
                         }
-                        panel(name: 'Person') {
+                        panel(name: 'Kind 1') {
                             tableLayout (cellpadding: 5) {
                                 tr {
                                     td (colfill:true, align: 'left') {
-                                        panel(border: titledBorder(title: 'Weiteres zur Person:')) {
+                                        panel(border: titledBorder(title: 'Kind 1:')) {
                                             tableLayout (cellpadding: 5) {
                                                 tr {
                                                     td (colfill:true) {
                                     
-                                                        label(text: 'Geburtsdatum')
+                                                        label(text: 'Vorname:')
+                                    
+                                    
+                                                    }
+                                                    td {           
+                                                        textField(name: "_K1NAME", clientPropertyJlawyerdescription: "Kind 1 Vorname", text: '', columns:15)
+                                                        
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Geburtsdatum (tatsächlich oder errechnet)')
                                     
                                     
                                                     }
@@ -792,14 +881,14 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                             tableLayout (cellpadding: 0) {
                                                                 tr {
                                                                     td {
-                                                                        txtBirthDate=textField(id: 'sGebDatum', name: "_GEBDATUM", clientPropertyJlawyerdescription: "Geburtsdatum Mandant(in)", text: '', columns:10)
+                                                                        txtK1BirthDate=textField(name: "_K1GEBDATUM", clientPropertyJlawyerdescription: "Kind 1 Geburtsdatum", text: '', columns:10)
                                                                     }
                                                                     td {
                                                                         label (text: ' ')
                                                                     }
                                                                     td {
                                                                         button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
-                                                                                GuiLib.dateSelector(txtBirthDate, true);
+                                                                                GuiLib.dateSelector(txtK1BirthDate, true);
                                                                             })
                                                                     }
                                                                     
@@ -808,15 +897,1057 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                         }
                                                     }
                                                 }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Mutterschutz vor Entbindung ab')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtK1MschutzVon=textField(name: "_K1MSVON", clientPropertyJlawyerdescription: "Kind 1 Mutterschutz vor Entbindung ab", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtK1MschutzVon, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Mutterschutz nach Entbindung bis')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtK1MschutzBis=textField(name: "_K1MSBIS", clientPropertyJlawyerdescription: "Kind 1 Mutterschutz nach Entbindung bis", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtK1MschutzBis, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true, valign: 'left') {
+                                                        label(text: 'Verlängerung Mutterschutz auf 12 Wochen nach der Entbindung:')
+                                                    }
+                                                    td {
+                                                        comboBox(items: [
+                                                            '',
+                                                            'ja',
+                                                            'nein'
+                                                            
+
+                                                            ], name: "_K1MSVERL", clientPropertyJlawyerdescription: "Kind 1 Verlängerung Mutterschutz auf 12 Wochen nach der Entbindung ja/nein", editable: true
+                                                        )
+                                                    }
+                                                }
                                                 
                                     
                                             }
                                         }
                                     }
                                 }
+                                
+                                // Zeiträume
+                                (1..3).each { index ->
+                                    
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            panel(border: titledBorder(title: "Zeitraum ${index}:")) {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'von')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_K1ZR${index}VON", clientPropertyJlawyerdescription: "Kind 1 Zeitraum ${index} von", text: '', columns:10)
+                                                                            txtFields["_K1ZR${index}VON"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["_K1ZR${index}VON"], true);
+                                                                                })
+                                                                        }
+                                                                    
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'bis')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_K1ZR${index}BIS", clientPropertyJlawyerdescription: "Kind 1 Zeitraum ${index} bis", text: '', columns:10)
+                                                                            txtFields["_K1ZR${index}BIS"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["_K1ZR${index}BIS"], true);
+                                                                                })
+                                                                        }
+                                                                    
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'vorzeitig unterbrochen')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            comboBox(items: [
+                                                            'nein',
+                                                            'ja'
+                                                            
+
+                                                                ], name: "_K1ZR${index}UNTERBR", clientPropertyJlawyerdescription: "Kind 1 Zeitraum ${index} unterbrochen ja/nein", editable: false
+                                                            )
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'unterbrochen am')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_K1ZR${index}UNTERBRDATUM", clientPropertyJlawyerdescription: "Kind 1 Zeitraum ${index} unterbrochen am", text: '', columns:10)
+                                                                            txtFields["_K1ZR${index}UNTERBRDATUM"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["_K1ZR${index}UNTERBRDATUM"], true);
+                                                                                })
+                                                                        }
+                                                                    
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true, valign: 'left') {
+                                                            label(text: 'Grund')
+                                                        }
+                                                        td {
+                                                            scrollPane{
+                                                                textArea(name: "_K1ZR${index}UNTERBRGRUND", clientPropertyJlawyerdescription: "Kind 1 Zeitraum ${index} Unterbrechungsgrund", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                                            }
+                                                        }
+                                                    } 
+                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                }
                             }
                         }
                         
+                        // Kind 2
+                        panel(name: 'Kind 2') {
+                            tableLayout (cellpadding: 5) {
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        panel(border: titledBorder(title: 'Kind 2:')) {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Vorname:')
+                                    
+                                    
+                                                    }
+                                                    td {           
+                                                        textField(name: "_K2NAME", clientPropertyJlawyerdescription: "Kind 2 Vorname", text: '', columns:15)
+                                                        
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Geburtsdatum (tatsächlich oder errechnet)')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtK2BirthDate=textField(name: "_K2GEBDATUM", clientPropertyJlawyerdescription: "Kind 2 Geburtsdatum", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtK2BirthDate, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Mutterschutz vor Entbindung ab')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtK2MschutzVon=textField(name: "_K2MSVON", clientPropertyJlawyerdescription: "Kind 2 Mutterschutz vor Entbindung ab", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtK2MschutzVon, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Mutterschutz nach Entbindung bis')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtK2MschutzBis=textField(name: "_K2MSBIS", clientPropertyJlawyerdescription: "Kind 2 Mutterschutz nach Entbindung bis", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtK2MschutzBis, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true, valign: 'left') {
+                                                        label(text: 'Verlängerung Mutterschutz auf 12 Wochen nach der Entbindung:')
+                                                    }
+                                                    td {
+                                                        comboBox(items: [
+                                                            '',
+                                                            'ja',
+                                                            'nein'
+                                                            
+
+                                                            ], name: "_K2MSVERL", clientPropertyJlawyerdescription: "Kind 2 Verlängerung Mutterschutz auf 12 Wochen nach der Entbindung ja/nein", editable: true
+                                                        )
+                                                    }
+                                                }
+                                                
+                                    
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                // Zeiträume
+                                (1..3).each { index ->
+                                    
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            panel(border: titledBorder(title: "Zeitraum ${index}:")) {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'von')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_K2ZR${index}VON", clientPropertyJlawyerdescription: "Kind 2 Zeitraum ${index} von", text: '', columns:10)
+                                                                            txtFields["_K2ZR${index}VON"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["_K2ZR${index}VON"], true);
+                                                                                })
+                                                                        }
+                                                                    
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'bis')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_K2ZR${index}BIS", clientPropertyJlawyerdescription: "Kind 2 Zeitraum ${index} bis", text: '', columns:10)
+                                                                            txtFields["_K2ZR${index}BIS"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["_K2ZR${index}BIS"], true);
+                                                                                })
+                                                                        }
+                                                                    
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'vorzeitig unterbrochen')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            comboBox(items: [
+                                                            'nein',
+                                                            'ja'
+                                                            
+
+                                                                ], name: "_K2ZR${index}UNTERBR", clientPropertyJlawyerdescription: "Kind 2 Zeitraum ${index} unterbrochen ja/nein", editable: false
+                                                            )
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'unterbrochen am')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_K2ZR${index}UNTERBRDATUM", clientPropertyJlawyerdescription: "Kind 2 Zeitraum ${index} unterbrochen am", text: '', columns:10)
+                                                                            txtFields["_K2ZR${index}UNTERBRDATUM"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["_K2ZR${index}UNTERBRDATUM"], true);
+                                                                                })
+                                                                        }
+                                                                    
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true, valign: 'left') {
+                                                            label(text: 'Grund')
+                                                        }
+                                                        td {
+                                                            scrollPane{
+                                                                textArea(name: "_K2ZR${index}UNTERBRGRUND", clientPropertyJlawyerdescription: "Kind 2 Zeitraum ${index} Unterbrechungsgrund", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                                            }
+                                                        }
+                                                    } 
+                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        }
+                        
+                        
+                        // Kind 3
+                        panel(name: 'Kind 3') {
+                            tableLayout (cellpadding: 5) {
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        panel(border: titledBorder(title: 'Kind 3:')) {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Vorname:')
+                                    
+                                    
+                                                    }
+                                                    td {           
+                                                        textField(name: "_K3NAME", clientPropertyJlawyerdescription: "Kind 3 Vorname", text: '', columns:15)
+                                                        
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Geburtsdatum (tatsächlich oder errechnet)')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtK3BirthDate=textField(name: "_K3GEBDATUM", clientPropertyJlawyerdescription: "Kind 3 Geburtsdatum", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtK3BirthDate, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Mutterschutz vor Entbindung ab')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtK3MschutzVon=textField(name: "_K3MSVON", clientPropertyJlawyerdescription: "Kind 3 Mutterschutz vor Entbindung ab", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtK3MschutzVon, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Mutterschutz nach Entbindung bis')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtK3MschutzBis=textField(name: "_K3MSBIS", clientPropertyJlawyerdescription: "Kind 3 Mutterschutz nach Entbindung bis", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtK3MschutzBis, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true, valign: 'left') {
+                                                        label(text: 'Verlängerung Mutterschutz auf 12 Wochen nach der Entbindung:')
+                                                    }
+                                                    td {
+                                                        comboBox(items: [
+                                                            '',
+                                                            'ja',
+                                                            'nein'
+                                                            
+
+                                                            ], name: "_K3MSVERL", clientPropertyJlawyerdescription: "Kind 3 Verlängerung Mutterschutz auf 12 Wochen nach der Entbindung ja/nein", editable: true
+                                                        )
+                                                    }
+                                                }
+                                                
+                                    
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                // Zeiträume
+                                (1..3).each { index ->
+                                    
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            panel(border: titledBorder(title: "Zeitraum ${index}:")) {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'von')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_K3ZR${index}VON", clientPropertyJlawyerdescription: "Kind 3 Zeitraum ${index} von", text: '', columns:10)
+                                                                            txtFields["_K3ZR${index}VON"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["_K3ZR${index}VON"], true);
+                                                                                })
+                                                                        }
+                                                                    
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'bis')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_K3ZR${index}BIS", clientPropertyJlawyerdescription: "Kind 3 Zeitraum ${index} bis", text: '', columns:10)
+                                                                            txtFields["_K3ZR${index}BIS"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["_K3ZR${index}BIS"], true);
+                                                                                })
+                                                                        }
+                                                                    
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'vorzeitig unterbrochen')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            comboBox(items: [
+                                                            'nein',
+                                                            'ja'
+                                                            
+
+                                                                ], name: "_K3ZR${index}UNTERBR", clientPropertyJlawyerdescription: "Kind 3 Zeitraum ${index} unterbrochen ja/nein", editable: false
+                                                            )
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'unterbrochen am')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_K3ZR${index}UNTERBRDATUM", clientPropertyJlawyerdescription: "Kind 3 Zeitraum ${index} unterbrochen am", text: '', columns:10)
+                                                                            txtFields["_K3ZR${index}UNTERBRDATUM"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["_K3ZR${index}UNTERBRDATUM"], true);
+                                                                                })
+                                                                        }
+                                                                    
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true, valign: 'left') {
+                                                            label(text: 'Grund')
+                                                        }
+                                                        td {
+                                                            scrollPane{
+                                                                textArea(name: "_K3ZR${index}UNTERBRGRUND", clientPropertyJlawyerdescription: "Kind 3 Zeitraum ${index} Unterbrechungsgrund", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                                            }
+                                                        }
+                                                    } 
+                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        }
+                        
+                        // Kind 4
+                        panel(name: 'Kind 4') {
+                            tableLayout (cellpadding: 5) {
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        panel(border: titledBorder(title: 'Kind 4:')) {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Vorname:')
+                                    
+                                    
+                                                    }
+                                                    td {           
+                                                        textField(name: "_K4NAME", clientPropertyJlawyerdescription: "Kind 4 Vorname", text: '', columns:15)
+                                                        
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Geburtsdatum (tatsächlich oder errechnet)')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtK4BirthDate=textField(name: "_K4GEBDATUM", clientPropertyJlawyerdescription: "Kind 4 Geburtsdatum", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtK4BirthDate, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Mutterschutz vor Entbindung ab')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtK4MschutzVon=textField(name: "_K4MSVON", clientPropertyJlawyerdescription: "Kind 4 Mutterschutz vor Entbindung ab", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtK4MschutzVon, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Mutterschutz nach Entbindung bis')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtK4MschutzBis=textField(name: "_K4MSBIS", clientPropertyJlawyerdescription: "Kind 4 Mutterschutz nach Entbindung bis", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtK4MschutzBis, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true, valign: 'left') {
+                                                        label(text: 'Verlängerung Mutterschutz auf 12 Wochen nach der Entbindung:')
+                                                    }
+                                                    td {
+                                                        comboBox(items: [
+                                                            '',
+                                                            'ja',
+                                                            'nein'
+                                                            
+
+                                                            ], name: "_K4MSVERL", clientPropertyJlawyerdescription: "Kind 4 Verlängerung Mutterschutz auf 12 Wochen nach der Entbindung ja/nein", editable: true
+                                                        )
+                                                    }
+                                                }
+                                                
+                                    
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                // Zeiträume
+                                (1..3).each { index ->
+                                    
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            panel(border: titledBorder(title: "Zeitraum ${index}:")) {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'von')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_K4ZR${index}VON", clientPropertyJlawyerdescription: "Kind 4 Zeitraum ${index} von", text: '', columns:10)
+                                                                            txtFields["_K4ZR${index}VON"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["_K4ZR${index}VON"], true);
+                                                                                })
+                                                                        }
+                                                                    
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'bis')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_K4ZR${index}BIS", clientPropertyJlawyerdescription: "Kind 4 Zeitraum ${index} bis", text: '', columns:10)
+                                                                            txtFields["_K4ZR${index}BIS"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["_K4ZR${index}BIS"], true);
+                                                                                })
+                                                                        }
+                                                                    
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'vorzeitig unterbrochen')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            comboBox(items: [
+                                                            'nein',
+                                                            'ja'
+                                                            
+
+                                                                ], name: "_K4ZR${index}UNTERBR", clientPropertyJlawyerdescription: "Kind 4 Zeitraum ${index} unterbrochen ja/nein", editable: false
+                                                            )
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'unterbrochen am')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_K4ZR${index}UNTERBRDATUM", clientPropertyJlawyerdescription: "Kind 4 Zeitraum ${index} unterbrochen am", text: '', columns:10)
+                                                                            txtFields["_K4ZR${index}UNTERBRDATUM"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["_K4ZR${index}UNTERBRDATUM"], true);
+                                                                                })
+                                                                        }
+                                                                    
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true, valign: 'left') {
+                                                            label(text: 'Grund')
+                                                        }
+                                                        td {
+                                                            scrollPane{
+                                                                textArea(name: "_K4ZR${index}UNTERBRGRUND", clientPropertyJlawyerdescription: "Kind 4 Zeitraum ${index} Unterbrechungsgrund", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                                            }
+                                                        }
+                                                    } 
+                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        }
+                        
+                        panel(name: 'Übersicht') {
+                            tableLayout (cellpadding: 5) {
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        button("Aktualisieren", actionPerformed: {
+                                                table.setModel(buildTable());
+                                                summaryTable.setModel(buildSummaryTable());
+                                                chartPanel.zeitraeume = buildZeitraeumeFromFields(txtFields);
+                                                chartPanel.repaint();
+                                            })  
+                                    }        
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        
+                                            
+                                                
+                                                    
+                                        scrollPane(preferredSize: [700,300]) {
+                                            widget(table)
+                                        } 
+                                                    
+                                                    
+                                        
+                                                
+                                         
+                                                
+                                    
+                                            
+                                           
+                                    }        
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        panel(border: titledBorder(title: 'Summen pro Kind:')) {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        scrollPane(preferredSize: [700,300]) {
+                                                            widget(summaryTable)
+                                                        } 
+                                                    }
+                                                    
+                                                }
+                                         
+                                                
+                                    
+                                            }
+                                        }    
+                                    }        
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        panel(border: titledBorder(title: 'grafische Darstellung:')) {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        //panel(border: titledBorder(title: 'Grafische Darstellung')) {
+                                                            widget(chartPanel)
+                                                        //}
+                                                    }
+                                                    
+                                        
+                                                }
+                                         
+                                                
+                                    
+                                            }
+                                        }    
+                                    }        
+                                }
+                            }
+                        }
                         
                     }
                 }
@@ -841,10 +1972,112 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
 
     }
     
+    // Hilfsmethode, um die Tabelle aus den Textfeldern zu befüllen
+    def buildTable = {
+        def zeitraeume = []
 
+        (1..4).each { kind ->
+            (1..3).each { zr ->
+                def vonKey = "_K${kind}ZR${zr}VON"
+                def bisKey = "_K${kind}ZR${zr}BIS"
+
+                def vonStr = txtFields[vonKey]?.text?.trim()
+                def bisStr = txtFields[bisKey]?.text?.trim()
+
+                if (vonStr) {
+                    try {
+                        def vonDate = LocalDate.parse(vonStr, formatter)
+                        def bisDate = bisStr ? LocalDate.parse(bisStr, formatter) : null
+
+                        // Dauer berechnen (wenn bisDate vorhanden)
+                        def dauer = ""
+                        if (bisDate) {
+                            def p = Period.between(vonDate, bisDate)
+                            def totalMonate = p.years * 12 + p.months
+                            dauer = "${totalMonate} Monate, ${p.days} Tage"
+                        }
+
+                        zeitraeume << [
+                            von: vonDate,
+                            bis: bisDate,
+                            kind: "Kind ${kind}",
+                            dauer: dauer
+                        ]
+                    } catch (Exception e) {
+                        println "Ungültiges Datum in ${vonKey}/${bisKey}: ${e.message}"
+                    }
+                }
+            }
+        }
+
+        // Sortieren nach "von"
+        zeitraeume.sort { it.von }
+
+        // Daten für JTable vorbereiten
+        def columnNames = ["von", "bis", "Kind", "Dauer"] as Object[]
+        def data = zeitraeume.collect { zr ->
+            [
+                zr.von?.format(formatter),
+                zr.bis ? zr.bis.format(formatter) : "",
+                zr.kind,
+                zr.dauer
+            ] as Object[]
+        } as Object[][]
+
+        new DefaultTableModel(data, columnNames)
+    }
+    
+    def buildSummaryTable = {
+        def summen = [:].withDefault { [monate:0, tage:0] }
+
+        (1..4).each { kind ->
+            (1..3).each { zr ->
+                def vonKey = "_K${kind}ZR${zr}VON"
+                def bisKey = "_K${kind}ZR${zr}BIS"
+
+                def vonStr = txtFields[vonKey]?.text?.trim()
+                def bisStr = txtFields[bisKey]?.text?.trim()
+
+                if (vonStr && bisStr) {
+                    try {
+                        def vonDate = LocalDate.parse(vonStr, formatter)
+                        def bisDate = LocalDate.parse(bisStr, formatter)
+
+                        def p = Period.between(vonDate, bisDate)
+                        def totalMonate = p.years * 12 + p.months
+
+                        summen["Kind ${kind}"].monate += totalMonate
+                        summen["Kind ${kind}"].tage   += p.days
+                    } catch (Exception e) {
+                        println "Ungültiges Datum in ${vonKey}/${bisKey}: ${e.message}"
+                    }
+                }
+            }
+        }
+
+        // Tage in Monate umrechnen, falls gewünscht (z.B. >30 Tage → +1 Monat)
+        summen.each { kind, werte ->
+            if (werte.tage >= 30) {
+                werte.monate += (werte.tage.intdiv(30))
+                werte.tage   = werte.tage % 30
+            }
+        }
+
+        // Tabelle vorbereiten
+        def columnNames = ["Kind", "Gesamtdauer"] as Object[]
+        def data = summen.collect { kind, werte ->
+            [
+                kind,
+            "${werte.monate} Monate, ${werte.tage} Tage"
+            ] as Object[]
+        } as Object[][]
+
+        new DefaultTableModel(data, columnNames)
+    }
+    
+    
 }
                                     
-                                    
-                                         
+                         
                                     
 

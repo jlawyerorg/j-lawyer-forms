@@ -75,17 +75,9 @@
         <property environment="env"/>
         <scp file="src/j-lawyer-forms.xml" todir="${env.UPLOADUSER}:${env.UPLOADPWD}@${env.UPLOADFORMSMETAXML}" trust="true"/>
         
-        <!-- scp todir="${env.UPLOADUSER}:${env.UPLOADPWD}@${env.UPLOADFORMS}" trust="true">
-          <fileset dir="src/1.12.0.0"/>
-        </scp -->
-        
-        <!-- scp todir="${env.UPLOADUSER}:${env.UPLOADPWD}@www.j-lawyer.org:${env.UPLOADFORMSBASE}/1.12.0.0/" trust="true">
-          <fileset dir="src/1.12.0.0"/>
-        </scp -->
-        
-        <scp todir="${env.UPLOADUSER}:${env.UPLOADPWD}@www.j-lawyer.org:${env.UPLOADFORMSBASE}/1.14.0.0/" trust="true">
+        <!-- scp todir="${env.UPLOADUSER}:${env.UPLOADPWD}@www.j-lawyer.org:${env.UPLOADFORMSBASE}/1.14.0.0/" trust="true">
           <fileset dir="src/1.14.0.0"/>
-        </scp>
+        </scp -->
         
         <scp todir="${env.UPLOADUSER}:${env.UPLOADPWD}@www.j-lawyer.org:${env.UPLOADFORMSBASE}/2.0.0.0/" trust="true">
           <fileset dir="src/2.0.0.0"/>
@@ -101,6 +93,10 @@
         
         <scp todir="${env.UPLOADUSER}:${env.UPLOADPWD}@www.j-lawyer.org:${env.UPLOADFORMSBASE}/2.6.0.0/" trust="true">
           <fileset dir="src/2.6.0.0"/>
+        </scp>
+        
+        <scp todir="${env.UPLOADUSER}:${env.UPLOADPWD}@www.j-lawyer.org:${env.UPLOADFORMSBASE}/3.4.0.0/" trust="true">
+          <fileset dir="src/3.4.0.0"/>
         </scp>
         
 

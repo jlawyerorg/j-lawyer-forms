@@ -670,6 +670,8 @@ import java.time.LocalDate
 import java.time.Period
 import javax.swing.SwingConstants
 import javax.swing.table.DefaultTableModel
+import java.awt.*
+import javax.swing.*
 
 import javax.swing.JPanel
 import javax.swing.JTabbedPane
@@ -696,6 +698,9 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
     
     // Formatter für dd.MM.yyyy
     def formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    
+    def zeitraeumeAktuell = []
+    ZeitstrahlPanel chartPanel = new ZeitstrahlPanel([], formatter)
 
     public arbeitsrecht03_ui() {
         super();
@@ -1854,6 +1859,8 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                         button("Aktualisieren", actionPerformed: {
                                                 table.setModel(buildTable());
                                                 summaryTable.setModel(buildSummaryTable());
+                                                chartPanel.zeitraeume = zeitraeumeAktuell;
+                                                chartPanel.repaint();
                                             })  
                                     }        
                                 }
@@ -1902,12 +1909,11 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                             tableLayout (cellpadding: 5) {
                                                 tr {
                                                     td {
-                                                        label(text: 'tbd')       
+                                                        panel(border: titledBorder(title: 'Grafische Darstellung')) {
+                                                            widget(chartPanel)
+                                                        }
                                                     }
-                                                    td {
-                                                                                        
-                                                        
-                                                    }
+                                                    
                                         
                                                 }
                                          
@@ -2046,10 +2052,92 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
         new DefaultTableModel(data, columnNames)
     }
     
+    def buildChartPanel = {
+        zeitraeumeAktuell = []
+        (1..4).each { kind ->
+            (1..3).each { zr ->
+                def vonKey = "_K${kind}ZR${zr}VON"
+                def bisKey = "_K${kind}ZR${zr}BIS"
+
+                def vonStr = txtFields[vonKey]?.text?.trim()
+                def bisStr = txtFields[bisKey]?.text?.trim()
+
+                if (vonStr) {
+                    try {
+                        def vonDate = LocalDate.parse(vonStr, formatter)
+                        def bisDate = bisStr ? LocalDate.parse(bisStr, formatter) : null
+                        zeitraeumeAktuell << [von: vonDate, bis: bisDate, kind: "Kind ${kind}"]
+                    } catch (Exception e) {
+                        println "Ungültiges Datum in ${vonKey}/${bisKey}: ${e.message}"
+                    }
+                }
+            }
+        }
+        return new ZeitstrahlPanel(zeitraeumeAktuell, formatter)
+    }
+    
 
 }
                                     
-                                    
+class ZeitstrahlPanel extends JPanel {
+    def zeitraeume
+    def formatter
+
+    ZeitstrahlPanel(zeitraeume, formatter) {
+        this.zeitraeume = zeitraeume
+        this.formatter = formatter
+        setPreferredSize(new Dimension(800, 200))
+    }
+
+    @Override
+    protected void paintComponent(java.awt.Graphics g) {
+        super.paintComponent(g)
+        Graphics2D g2 = (Graphics2D) g
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+
+        if (!zeitraeume) return
+
+        // min/max Datum bestimmen
+        def minDate = zeitraeume.collect { it.von }.min()
+        def maxDate = zeitraeume.collect { it.bis ?: it.von }.max()
+        if (!minDate || !maxDate) return
+
+        long daysTotal = java.time.temporal.ChronoUnit.DAYS.between(minDate, maxDate) + 1
+
+        int width = getWidth()
+        int height = getHeight()
+        int rowHeight = height / 4  // 4 Kinder
+
+        // Achse zeichnen
+        g2.color = Color.GRAY
+        g2.drawLine(50, height-30, width-20, height-30)
+
+        // Zeiträume zeichnen
+        zeitraeume.each { zr ->
+            def kidIndex = (zr.kind[-1] as int) - 1 // Kind 1-4 -> Zeile 0-3
+            int y = kidIndex * rowHeight + 20
+
+            long startDays = java.time.temporal.ChronoUnit.DAYS.between(minDate, zr.von)
+            long endDays = java.time.temporal.ChronoUnit.DAYS.between(minDate, zr.bis ?: zr.von)
+
+            int x1 = 50 + (startDays * (width-70) / daysTotal) as int
+            int x2 = 50 + (endDays   * (width-70) / daysTotal) as int
+
+            g2.color = new Color(100, 150, 240, 180)
+            g2.fillRect(x1, y, (x2-x1).max(5), rowHeight-30)
+
+            g2.color = Color.BLACK
+            g2.drawString("${zr.von.format(formatter)} - ${zr.bis?.format(formatter) ?: ''}", x1, y-5)
+        }
+
+        // Kind-Beschriftungen
+        (1..4).each { k ->
+            int y = (k-1)*rowHeight + 20
+            g2.color = Color.BLACK
+            g2.drawString("Kind ${k}", 10, y + (rowHeight/2))
+        }
+    }
+}                        
                                          
                                     
 

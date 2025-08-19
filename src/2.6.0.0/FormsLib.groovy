@@ -867,4 +867,37 @@ public class FormsLib {
 
     }
 
+    public static Hashtable getPromptKeys(JPanel rootComponent) {
+        Hashtable<String,String> promptKeys=new Hashtable<String,String>();
+        collectPromptKeys(rootComponent, promptKeys);
+        return promptKeys;
+}
+    
+    private static void collectPromptKeys (Component component, Hashtable holders) {
+        if(component.getName()!=null) {
+            if(component.getName().startsWith("_")) {
+                
+                if(component instanceof JComponent) {
+                    String promptKey=null;
+                    if(((JComponent)component).getClientProperty("AiPromptKey")!=null) {
+                        promptKey=((JComponent)component).getClientProperty("AiPromptKey");
+                    }
+                    
+                    String promptDescription=null;
+                    if(((JComponent)component).getClientProperty("AiPromptDescription")!=null) {
+                        promptDescription=((JComponent)component).getClientProperty("AiPromptDescription");
+                    }
+                    
+                    if(promptKey!=null && promptDescription!=null)
+                        holders.put(promptKey, promptDescription);
+                }
+                
+            }
+        }
+        
+        for(Component c: ((Container)component).getComponents()) {
+            collectPromptKeys(c, holders);
+        }
+    }
+
 }

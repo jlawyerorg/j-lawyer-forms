@@ -1128,7 +1128,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         }
                                         td {
                                             scrollPane{
-                                                textArea(id:'sUnfalllHergang', name: "_UNFALLHERGANG", clientPropertyJlawyerdescription: "Unfallhergang", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                                textArea(id:'sUnfalllHergang', name: "_UNFALLHERGANG", clientPropertyJlawyerdescription: "Unfallhergang", clientPropertyAiPromptKey: "unfall_hergang", clientPropertyAiPromptDescription: "Unfallhergang oder Schadenhergang", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
                                             } 
                                         }
                                     }
@@ -1847,7 +1847,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Schadennummer:')
                                         }
                                         td {
-                                            textField(id: 'sSchadennr', clientPropertyJlawyerdescription: "Schadennr. Gegner", name: "_G_SCHADNR", text: '', columns:20)
+                                            textField(id: 'sSchadennr', clientPropertyJlawyerdescription: "Schadennr. Gegner", clientPropertyAiPromptKey: "schaden_nummer", clientPropertyAiPromptDescription: "Schadennummer", name: "_G_SCHADNR", text: '', columns:20)
                                         }
                                         td {
                                     
@@ -3418,6 +3418,93 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     
     public boolean isAiEnabled() {
         return true;
+    }
+    
+    public String getExtractionPrompt() {
+        
+        Hashtable promptKeys=FormsLib.getPromptKeys(this.SCRIPTPANEL);
+        
+        StringBuilder sb=new StringBuilder();
+        sb.append("Extrahiere aus einem Text die folgenden Informationen zum Vorgang, zum Fahrzeug des Anspruchstellers, zum Anspruchsteller, zur Werkstatt / Reparaturfirma und zur Versicherung: \r\n");
+        for(Object key: promptKeys.keys()) {
+            sb.append("- ").append(key.toString()).append(": ").append(promptKeys.get(key).toString()).append("\r\n");
+        }
+        sb.append("\r\n");
+        sb.append("Gib das Ergebnis ausschließlich im JSON-Format aus und verändere die JSON-Attributnamen nicht. Lasse jegliche Kommentare oder Hinweise weg (bspw. \"Hier ist das Ergebnis ...\" soll nicht erscheinen). Hier ist ein Beispieldokument:\r\n\r\n");
+        sb.append("{\r\n");
+        Iterator<String> it = promptKeys.keySet().iterator();
+        while (it.hasNext()) {
+            String key = it.next();
+            sb.append("\"").append(key).append("\": \"...\"");
+            if (it.hasNext()) {
+                sb.append(",\n");
+            } else {
+                sb.append("\n");
+            }
+        }
+        sb.append("}\r\n\r\n");
+        sb.append("Hier der Text: \r\n\r\n");
+        
+        
+        String prompt="""
+Extrahiere aus diesem Text diese Informationen zum Vorgang, zum Fahrzeug des Anspruchstellers, zum Anspruchsteller, zur Werkstatt / Reparaturfirma und zur Versicherung: 
+- versicherungs_nr: Versicherungsnummer / Versicherungsschein-Nr.
+- halter_vorname: Vorname des Halters / Auftraggebers / Anspruchstellers 
+- halter_name: Name des Halters / Auftraggebers / Anspruchstellers, ohne Anschrift
+- halter_strasse: Strasse des Halters / Auftraggebers / Anspruchstellers 
+- halter_plz: Postleitzahl des Halters / Auftraggebers / Anspruchstellers, ohne Ortsangabe
+- halter_ort: Wohnort des Halters / Auftraggebers / Anspruchstellers, ohne Postleitzahl
+- fahrzeug_kennzeichen: amtliches Kennzeichen des Fahrzeugs des Halters / Auftraggebers / Anspruchstellers oder amtliches Kennzeichen aus den Fahrzeugdaten
+- fahrzeug_hersteller: Hersteller oder Fabrikat des Fahrzeugs des Halters / Auftraggebers / Anspruchstellers
+- fahrzeug_modell: Typ / Untertyp / Modell des Fahrzeugs des Halters / Auftraggebers / Anspruchstellers
+- fahrzeug_art: Art des Fahrzeugs des Halters / Auftraggebers / Anspruchstellers, beispielsweise "PKW", "LKW", "Krad"
+- fahrzeug_vin: Fahrgestellnummer / Fahrzeugidentifikationsnummer / VIN des Fahrzeugs des Halters / Auftraggebers / Anspruchstellers
+- fahrzeug_erstzulassung: Datum der Erstzulassung des Fahrzeugs des Halters / Auftraggebers / Anspruchstellers
+- fahrzeug_km: Kilometerstand / km-Stand / Laufleistung / Tachostand des Fahrzeugs des Halters / Auftraggebers / Anspruchstellers
+- fahrzeug_leasing: "geleast", wenn das Fahrzeug des Halters / Auftraggebers / Anspruchstellers geleast ist. "finanziert", wenn das Fahrzeug des Halters / Auftraggebers / Anspruchstellers finanziert ist.
+- versicherung_name: Unternehmensname / Firma der Versicherung, ohne Anschrift
+- versicherung_strasse: Strasse der Versicherung
+- versicherung_plz: Postleitzahl der Versicherung, ohne Ortsangabe
+- versicherung_ort: Wohnort der Versicherung, ohne Postleitzahl
+- werkstatt_name: Unternehmensname / Firma der Werkstatt / Reparaturfirma, ohne Anschrift
+- werkstatt_strasse: Strasse Werkstatt / Reparaturfirma
+- werkstatt_plz: Postleitzahl Werkstatt / Reparaturfirma, ohne Ortsangabe
+- werkstatt_ort: Wohnort Werkstatt / Reparaturfirma, ohne Postleitzahl
+
+Gib das Ergebnis ausschließlich im JSON-Format aus und verändere die JSON-Attributnamen nicht. Lasse jegliche Kommentare oder Hinweise weg (bspw. "Hier ist das Ergebnis ..." soll nicht erscheinen). Hier ist ein Beispieldokument:
+
+{
+"schaden_nr": "...",
+"versicherungs_nr": "...",
+"unfall_hergang": "...",
+"halter_vorname": "...",
+"halter_name": "...",
+"halter_strasse": "...",
+"halter_plz": "...",
+"halter_ort": "...",
+"fahrzeug_kennzeichen": "...",
+"fahrzeug_hersteller": "...",
+"fahrzeug_modell": "...",
+"fahrzeug_art": "...",
+"fahrzeug_vin": "...",
+"fahrzeug_erstzulassung": "...",
+"fahrzeug_km": "...",
+"fahrzeug_leasing": "...",
+"versicherung_name": "...",
+"versicherung_strasse": "...",
+"versicherung_plz": "...",
+"versicherung_ort": "...",
+"werkstatt_name": "...",
+"werkstatt_strasse": "...",
+"werkstatt_plz": "...",
+"werkstatt_ort": "..."
+}
+
+Hier der Text:
+
+"""
+        
+        return sb.toString();
     }
     
 }

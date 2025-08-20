@@ -547,6 +547,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "Elternzeit"
 description = "Elternzeiten erfassen und darstellen"
-version = "0.2.0";
+version = "0.3.0";
 author = "Jens Kutschke"
 updated = "19.08.2025"

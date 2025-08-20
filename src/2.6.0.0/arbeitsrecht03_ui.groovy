@@ -872,7 +872,7 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                 tr {
                                                     td (colfill:true) {
                                     
-                                                        label(text: 'Geburtsdatum (tatsächlich oder errechnet)')
+                                                        label(text: 'Tatsächliches Geburtsdatum')
                                     
                                     
                                                     }
@@ -881,7 +881,7 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                             tableLayout (cellpadding: 0) {
                                                                 tr {
                                                                     td {
-                                                                        txtK1BirthDate=textField(name: "_K1GEBDATUM", clientPropertyJlawyerdescription: "Kind 1 Geburtsdatum", text: '', columns:10)
+                                                                        txtK1BirthDate=textField(name: "_K1GEBDATUM", clientPropertyJlawyerdescription: "Kind 1 tatsächliches Geburtsdatum", text: '', columns:10)
                                                                     }
                                                                     td {
                                                                         label (text: ' ')
@@ -889,6 +889,34 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                                     td {
                                                                         button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
                                                                                 GuiLib.dateSelector(txtK1BirthDate, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Errechnetes Geburtsdatum')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtK1BirthDateEstimate=textField(name: "_K1GEBDATUMERR", clientPropertyJlawyerdescription: "Kind 1 errechnetes Geburtsdatum", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtK1BirthDateEstimate, true);
                                                                             })
                                                                     }
                                                                     
@@ -1128,7 +1156,7 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                 tr {
                                                     td (colfill:true) {
                                     
-                                                        label(text: 'Geburtsdatum (tatsächlich oder errechnet)')
+                                                        label(text: 'Tatsächliches Geburtsdatum')
                                     
                                     
                                                     }
@@ -1137,7 +1165,7 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                             tableLayout (cellpadding: 0) {
                                                                 tr {
                                                                     td {
-                                                                        txtK2BirthDate=textField(name: "_K2GEBDATUM", clientPropertyJlawyerdescription: "Kind 2 Geburtsdatum", text: '', columns:10)
+                                                                        txtK2BirthDate=textField(name: "_K2GEBDATUM", clientPropertyJlawyerdescription: "Kind 2 tatsächliches Geburtsdatum", text: '', columns:10)
                                                                     }
                                                                     td {
                                                                         label (text: ' ')
@@ -1145,6 +1173,34 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                                     td {
                                                                         button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
                                                                                 GuiLib.dateSelector(txtK2BirthDate, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Errechnetes Geburtsdatum')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtK2BirthDateEstimate=textField(name: "_K2GEBDATUMERR", clientPropertyJlawyerdescription: "Kind 2 errechnetes Geburtsdatum", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtK2BirthDateEstimate, true);
                                                                             })
                                                                     }
                                                                     
@@ -1385,7 +1441,7 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                 tr {
                                                     td (colfill:true) {
                                     
-                                                        label(text: 'Geburtsdatum (tatsächlich oder errechnet)')
+                                                        label(text: 'Tatsächliches Geburtsdatum')
                                     
                                     
                                                     }
@@ -1394,7 +1450,7 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                             tableLayout (cellpadding: 0) {
                                                                 tr {
                                                                     td {
-                                                                        txtK3BirthDate=textField(name: "_K3GEBDATUM", clientPropertyJlawyerdescription: "Kind 3 Geburtsdatum", text: '', columns:10)
+                                                                        txtK3BirthDate=textField(name: "_K3GEBDATUM", clientPropertyJlawyerdescription: "Kind 3 tatsächliches Geburtsdatum", text: '', columns:10)
                                                                     }
                                                                     td {
                                                                         label (text: ' ')
@@ -1402,6 +1458,34 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                                     td {
                                                                         button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
                                                                                 GuiLib.dateSelector(txtK3BirthDate, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Errechnetes Geburtsdatum')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtK3BirthDateEstimate=textField(name: "_K3GEBDATUMERR", clientPropertyJlawyerdescription: "Kind 3 errechnetes Geburtsdatum", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtK3BirthDateEstimate, true);
                                                                             })
                                                                     }
                                                                     
@@ -1641,7 +1725,7 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                 tr {
                                                     td (colfill:true) {
                                     
-                                                        label(text: 'Geburtsdatum (tatsächlich oder errechnet)')
+                                                        label(text: 'Tatsächliches Geburtsdatum')
                                     
                                     
                                                     }
@@ -1650,7 +1734,7 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                             tableLayout (cellpadding: 0) {
                                                                 tr {
                                                                     td {
-                                                                        txtK4BirthDate=textField(name: "_K4GEBDATUM", clientPropertyJlawyerdescription: "Kind 4 Geburtsdatum", text: '', columns:10)
+                                                                        txtK4BirthDate=textField(name: "_K4GEBDATUM", clientPropertyJlawyerdescription: "Kind 4 tatsächliches Geburtsdatum", text: '', columns:10)
                                                                     }
                                                                     td {
                                                                         label (text: ' ')
@@ -1658,6 +1742,34 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                                     td {
                                                                         button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
                                                                                 GuiLib.dateSelector(txtK4BirthDate, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'Errechnetes Geburtsdatum')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtK4BirthDateEstimate=textField(name: "_K4GEBDATUMERR", clientPropertyJlawyerdescription: "Kind 4 errechnetes Geburtsdatum", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtK4BirthDateEstimate, true);
                                                                             })
                                                                     }
                                                                     
@@ -1889,6 +2001,26 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                 }
                                 tr {
                                     td (colfill:true, align: 'left') {
+                                        panel(border: titledBorder(title: 'grafische Darstellung:')) {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        //panel(border: titledBorder(title: 'Grafische Darstellung')) {
+                                                            widget(chartPanel)
+                                                        //}
+                                                    }
+                                                    
+                                        
+                                                }
+                                         
+                                                
+                                    
+                                            }
+                                        }    
+                                    }        
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
                                         
                                             
                                                 
@@ -1926,26 +2058,7 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                         }    
                                     }        
                                 }
-                                tr {
-                                    td (colfill:true, align: 'left') {
-                                        panel(border: titledBorder(title: 'grafische Darstellung:')) {
-                                            tableLayout (cellpadding: 5) {
-                                                tr {
-                                                    td {
-                                                        //panel(border: titledBorder(title: 'Grafische Darstellung')) {
-                                                            widget(chartPanel)
-                                                        //}
-                                                    }
-                                                    
-                                        
-                                                }
-                                         
-                                                
-                                    
-                                            }
-                                        }    
-                                    }        
-                                }
+                                
                             }
                         }
                         

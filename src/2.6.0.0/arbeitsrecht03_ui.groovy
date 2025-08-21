@@ -724,6 +724,22 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
     
     JPanel chartPanel = new ZeitstrahlPanel();
     
+    JTextField txtK1MuschuBeginn=null;
+    JTextField txtK1MuschuEnde=null;
+    JComboBox cmbK1MuschuDauer=null;
+    
+    JTextField txtK2MuschuBeginn=null;
+    JTextField txtK2MuschuEnde=null;
+    JComboBox cmbK2MuschuDauer=null;
+    
+    JTextField txtK3MuschuBeginn=null;
+    JTextField txtK3MuschuEnde=null;
+    JComboBox cmbK3MuschuDauer=null;
+    
+    JTextField txtK4MuschuBeginn=null;
+    JTextField txtK4MuschuEnde=null;
+    JComboBox cmbK4MuschuDauer=null;
+    
 
     public arbeitsrecht03_ui() {
         super();
@@ -755,6 +771,41 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
     public void setCallback(FormPluginCallback callback) {
         this.callback=callback;
     }
+    
+    private void berechneMutterschutz(String dueDateStr, String actualDateStr, JComboBox cmbMutterschutzDauer, JTextField txtBeginn, JTextField txtEnde) {
+        try {
+            txtBeginn.setText("");
+            txtEnde.setText("");
+            
+            int weeks=8;
+            if("ja".equalsIgnoreCase(cmbMutterschutzDauer.getSelectedItem().toString()))
+                weeks=12;
+            
+            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+            LocalDate dueDate = LocalDate.parse(dueDateStr, fmt)
+            LocalDate actualDate = LocalDate.parse(actualDateStr, fmt)
+
+            // Beginn: 6 Wochen (42 Tage) vor errechnetem Termin
+            LocalDate start = dueDate.minusWeeks(6)
+
+            // Grundsätzlich: 8 Wochen nach Geburt
+            LocalDate end = actualDate.plusWeeks(weeks)
+
+            // Wenn Geburt früher war -> ungenutzte Tage vor Geburt hinten anhängen
+            long unusedDays = java.time.temporal.ChronoUnit.DAYS.between(actualDate, dueDate)
+            if (unusedDays > 0) {
+                end = end.plusDays(unusedDays)
+            }
+
+            txtBeginn.setText(start.format(fmt));
+            txtEnde.setText(end.format(fmt));
+        
+        } catch (Exception ex) {
+            txtBeginn.setText("");
+            txtEnde.setText("");
+        }
+    }
+
     
     
     public JPanel getUi() {
@@ -986,7 +1037,7 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                         label(text: 'Verlängerung Mutterschutz auf 12 Wochen nach der Entbindung:')
                                                     }
                                                     td {
-                                                        comboBox(items: [
+                                                        cmbK1MuschuDauer=comboBox(items: [
                                                             '',
                                                             'ja',
                                                             'nein'
@@ -994,6 +1045,69 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
 
                                                             ], name: "_K1MSVERL", clientPropertyJlawyerdescription: "Kind 1 Verlängerung Mutterschutz auf 12 Wochen nach der Entbindung ja/nein", editable: true
                                                         )
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: ' ')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: '')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        label(text: 'errechnete Mutterschutzzeit')
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: 'Aktualisieren', actionPerformed: {
+                                                                                berechneMutterschutz(txtK1BirthDateEstimate.text, txtK1BirthDate.text, cmbK1MuschuDauer, txtK1MuschuBeginn, txtK1MuschuEnde);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'errechneter Beginn des Mutterschutzes:')
+                                    
+                                    
+                                                    }
+                                                    td {           
+                                                        txtK1MuschuBeginn=textField(name: "_K1MUSCHBEGINN", clientPropertyJlawyerdescription: "Kind 1 errechneter Beginn des Mutterschutzes", text: '', columns:10, enabled: false)
+                                                        
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'errechnetes Ende des Mutterschutzes:')
+                                    
+                                    
+                                                    }
+                                                    td {           
+                                                        txtK1MuschuEnde=textField(name: "_K1MUSCHENDE", clientPropertyJlawyerdescription: "Kind 1 errechnetes Ende des Mutterschutzes", text: '', columns:10, enabled: false)
+                                                        
                                                     }
                                                 }
                                                 
@@ -1270,7 +1384,7 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                         label(text: 'Verlängerung Mutterschutz auf 12 Wochen nach der Entbindung:')
                                                     }
                                                     td {
-                                                        comboBox(items: [
+                                                        cmbK2MuschuDauer=comboBox(items: [
                                                             '',
                                                             'ja',
                                                             'nein'
@@ -1280,7 +1394,69 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                         )
                                                     }
                                                 }
-                                                
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: ' ')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: '')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        label(text: 'errechnete Mutterschutzzeit')
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: 'Aktualisieren', actionPerformed: {
+                                                                                berechneMutterschutz(txtK2BirthDateEstimate.text, txtK2BirthDate.text, cmbK2MuschuDauer, txtK2MuschuBeginn, txtK2MuschuEnde);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'errechneter Beginn des Mutterschutzes:')
+                                    
+                                    
+                                                    }
+                                                    td {           
+                                                        txtK2MuschuBeginn=textField(name: "_K2MUSCHBEGINN", clientPropertyJlawyerdescription: "Kind 2 errechneter Beginn des Mutterschutzes", text: '', columns:10, enabled: false)
+                                                        
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'errechnetes Ende des Mutterschutzes:')
+                                    
+                                    
+                                                    }
+                                                    td {           
+                                                        txtK2MuschuEnde=textField(name: "_K2MUSCHENDE", clientPropertyJlawyerdescription: "Kind 2 errechnetes Ende des Mutterschutzes", text: '', columns:10, enabled: false)
+                                                        
+                                                    }
+                                                }
                                     
                                             }
                                         }
@@ -1555,7 +1731,7 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                         label(text: 'Verlängerung Mutterschutz auf 12 Wochen nach der Entbindung:')
                                                     }
                                                     td {
-                                                        comboBox(items: [
+                                                        cmbK3MuschuDauer=comboBox(items: [
                                                             '',
                                                             'ja',
                                                             'nein'
@@ -1565,7 +1741,69 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                         )
                                                     }
                                                 }
-                                                
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: ' ')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: '')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        label(text: 'errechnete Mutterschutzzeit')
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: 'Aktualisieren', actionPerformed: {
+                                                                                berechneMutterschutz(txtK3BirthDateEstimate.text, txtK3BirthDate.text, cmbK3MuschuDauer, txtK3MuschuBeginn, txtK3MuschuEnde);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'errechneter Beginn des Mutterschutzes:')
+                                    
+                                    
+                                                    }
+                                                    td {           
+                                                        txtK3MuschuBeginn=textField(name: "_K3MUSCHBEGINN", clientPropertyJlawyerdescription: "Kind 3 errechneter Beginn des Mutterschutzes", text: '', columns:10, enabled: false)
+                                                        
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'errechnetes Ende des Mutterschutzes:')
+                                    
+                                    
+                                                    }
+                                                    td {           
+                                                        txtK3MuschuEnde=textField(name: "_K3MUSCHENDE", clientPropertyJlawyerdescription: "Kind 3 errechnetes Ende des Mutterschutzes", text: '', columns:10, enabled: false)
+                                                        
+                                                    }
+                                                }
                                     
                                             }
                                         }
@@ -1839,7 +2077,7 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                         label(text: 'Verlängerung Mutterschutz auf 12 Wochen nach der Entbindung:')
                                                     }
                                                     td {
-                                                        comboBox(items: [
+                                                        cmbK4MuschuDauer=comboBox(items: [
                                                             '',
                                                             'ja',
                                                             'nein'
@@ -1849,7 +2087,69 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                         )
                                                     }
                                                 }
-                                                
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: ' ')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: '')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        label(text: 'errechnete Mutterschutzzeit')
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: 'Aktualisieren', actionPerformed: {
+                                                                                berechneMutterschutz(txtK4BirthDateEstimate.text, txtK4BirthDate.text, cmbK4MuschuDauer, txtK4MuschuBeginn, txtK4MuschuEnde);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'errechneter Beginn des Mutterschutzes:')
+                                    
+                                    
+                                                    }
+                                                    td {           
+                                                        txtK4MuschuBeginn=textField(name: "_K4MUSCHBEGINN", clientPropertyJlawyerdescription: "Kind 4 errechneter Beginn des Mutterschutzes", text: '', columns:10, enabled: false)
+                                                        
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
+                                                        label(text: 'errechnetes Ende des Mutterschutzes:')
+                                    
+                                    
+                                                    }
+                                                    td {           
+                                                        txtK4MuschuEnde=textField(name: "_K4MUSCHENDE", clientPropertyJlawyerdescription: "Kind 4 errechnetes Ende des Mutterschutzes", text: '', columns:10, enabled: false)
+                                                        
+                                                    }
+                                                }
                                     
                                             }
                                         }
@@ -2006,7 +2306,7 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                                                 tr {
                                                     td {
                                                         //panel(border: titledBorder(title: 'Grafische Darstellung')) {
-                                                            widget(chartPanel)
+                                                        widget(chartPanel)
                                                         //}
                                                     }
                                                     

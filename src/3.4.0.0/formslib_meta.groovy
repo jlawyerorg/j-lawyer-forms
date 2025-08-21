@@ -662,9 +662,9 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 <https://www.gnu.org/licenses/>.
 */
 
-name = "Verkehrsunfalldaten"
-description = "Verkehrsunfalldaten"
-version = "3.1.0";
+name = "Formularbibliothek"
+description = "Formularbibliothek"
+version = "3.0.0";
 author = "Jens Kutschke"
 updated = "21.08.2025"
 

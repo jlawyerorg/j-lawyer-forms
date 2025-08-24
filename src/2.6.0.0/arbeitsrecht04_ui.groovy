@@ -734,25 +734,225 @@ public class arbeitsrecht04_ui implements com.jdimension.jlawyer.client.plugins.
                             tableLayout (cellpadding: 5) {
                                 tr {
                                     td (colfill:true, align: 'left') {
-                                           
+                                        label(text: '(potentieller) Arbeitgeber')
                                     }        
+                                    td (colfill:true, align: 'left') {
+                                        textField(name: "_ARBEITGEBER", clientPropertyJlawyerdescription: "(potentieller) Arbeitgeber", text: '', columns:30)
+                                    }
                                 }
                                 tr {
                                     td (colfill:true, align: 'left') {
-                                        
+                                        label(text: '')
+                                    }        
+                                    td (colfill:true, align: 'left') {
+                                        textArea(name: "_ARBEITGEBERDETAIL", clientPropertyJlawyerdescription: "(potentieller) Arbeitgeber (Details)", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
                                     }
-                    
-                    
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Bereich')
+                                    }        
+                                    td (colfill:true, align: 'left') {
+                                        textField(name: "_BEREICH", clientPropertyJlawyerdescription: "Bereich", text: '', columns:30)
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Vertragsart')
+                                    }        
+                                    td (colfill:true, align: 'left') {
+                                        comboBox(items: [
+                                                            '',
+                                                            '-- Gesundheitsbranche --',
+                                                            'Krankenhaus',
+                                                            'Praxis',
+                                                            'Klinik',
+                                                            '',
+                                                            '-- Sonstige --',
+                                                            'sonstige'
+                                                            
+
+                                            ], name: "_VERTRAGSART", clientPropertyJlawyerdescription: "Vertragsart", editable: true
+                                        )
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Vollzeit?')
+                                    }        
+                                    td (colfill:true, align: 'left') {
+                                        comboBox(items: [
+                                                            '',
+                                                            'Vollzeit',
+                                                            'Teilzeit',
+                                                            'nicht bekannt'
+                                                            
+
+                                            ], name: "_VERTRAGVOLLZEIT", clientPropertyJlawyerdescription: "Vertragsart", editable: true
+                                        )
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Befristung')
+                                    }        
+                                    td (colfill:true, align: 'left') {
+                                        comboBox(items: [
+                                                            '',
+                                                            'ja',
+                                                            'nein',
+                                                            'nicht bekannt'
+                                                            
+
+                                            ], name: "_VERTRAGBEFRISTUNG", clientPropertyJlawyerdescription: "Vertrag befristet?", editable: true
+                                        )
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Gehalt')
+                                    }        
+                                    td (colfill:true, align: 'left') {
+                                        textField(name: "_VERTRAGGEHALT", clientPropertyJlawyerdescription: "Gehalt", text: '', columns:15)
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true) {
                                     
-                        
+                                        label(text: 'Tarifzugehörigkeit:')
+                                    
+                                    
+                                    }
+                                    td {
+                                        comboBox(items: [
+                                                            '',
+                                                            'nein',
+                                                            '--Gesundheitsbranche--',
+                                                            'TV-Ärzte/VKA',
+                                                            'TV-Ärzte/TdL',
+                                                            'TV-Ärzte Helios/Rhön',
+                                                            'AVR Caritas',
+                                                            'TV-Ärzte/Asklepios',
+                                                            'TV-Ärzte/Rhön',
+                                                            '',
+                                                            '--Sonstige--',
+                                                            'sonstiger Tarifvertrag'
+                                            ], name: "_VERTRAGTARIF", clientPropertyJlawyerdescription: "Tarifzugehörigkeit", editable: true
+                                        )
+                                    }
+                                }
+                                
+                                
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Kommentar')
+                                    }        
+                                    td (colfill:true, align: 'left') {
+                                        textArea(name: "_KOMMENTAR", clientPropertyJlawyerdescription: "Kommentar", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                    }
                                 }
                             }
                         }
                         panel(name: 'Prüfung') {
                             tableLayout (cellpadding: 5) {
                                 tr {
+                                    td (colfill:true) {
+                                    
+                                        label(text: 'Vertrag geprüft am')
+                                    
+                                    
+                                    }
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        txtGeprueftAm=textField(name: "_PRFGVOM", clientPropertyJlawyerdescription: "Vertrag geprüft am", text: '', columns:10)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                GuiLib.dateSelector(txtGeprueftAm, true);
+                                                            })
+                                                    }
+                                                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true) {
+                                    
+                                        label(text: 'Stellungnahme verschickt am')
+                                    
+                                    
+                                    }
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        txtStellungnahmeVersand=textField(name: "_PRFGVERSAND", clientPropertyJlawyerdescription: "Stellungnahme verschickt am", text: '', columns:10)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                GuiLib.dateSelector(txtStellungnahmeVersand, true);
+                                                            })
+                                                    }
+                                                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true) {
+                                    
+                                        label(text: 'nachhaken am')
+                                    
+                                    
+                                    }
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        txtNachhakenAm=textField(name: "_PRFGNACHHAKEN", clientPropertyJlawyerdescription: "nachhaken am", text: '', columns:10)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                GuiLib.dateSelector(txtNachhakenAm, true);
+                                                            })
+                                                    }
+                                                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
                                     td (colfill:true, align: 'left') {
-                                        
+                                        label(text: '')
+                                    }        
+                                    td (colfill:true, align: 'left') {
+                                        button(text: 'Wiedervorlage notieren', actionPerformed: {
+                                                if(callback!=null) {
+                                                    String caseId=callback.getCaseId();
+                                                    int response=GuiLib.askYesNo("Wiedervorlage anlegen?", "Soll eine Wiedervorlage zum Nachhaken erstellt werden?");
+                                                    if(response==javax.swing.JOptionPane.YES_OPTION) {
+                                                        StorageLib.addReminder(caseId, "Nachhak-Brief / -E-Mail senden", null, new Date().parse("dd.MM.yyy", txtNachhakenAm.text));
+                                                    }
+                                                }
+                                            })
                                     }
                                 }
                                 

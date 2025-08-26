@@ -677,7 +677,6 @@ import javax.swing.ImageIcon
 import javax.swing.UIManager
 import java.awt.Font
 import java.util.ArrayList
-import javax.swing.BoxLayout
 
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 
@@ -733,25 +732,28 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                             tableLayout (cellpadding: 5) {
                                 // UVZ Nummer
                                 tr {
-                                    td(colspan: 4, align: 'center') {
+                                    td {
                                         panel(border: titledBorder(title: 'UVZ-Nummer')) {
-                                            tableLayout {
+                                            tableLayout (cellpadding: 5) {
                                                 tr {
                                                     td { label(text: 'UVZ-Nummer:') }
-                                                    td { txtUvzNummer = textField(text: '/' + Calendar.getInstance().get(Calendar.YEAR), columns: 15) }
+                                                    td { txtUvzNummer = textField(text: '/' + Calendar.getInstance().get(Calendar.YEAR), columns: 15, name: "_UVZNR", clientPropertyJlawyerdescription: "UVZ-Nummer") }
+                                                }
+                                                tr {
                                                     td { label(text: 'Kennzeichen:') }
-                                                    td { cmbUvzMark = comboBox(items: ('A'..'Z').toArray(new String[0]), selectedIndex: 0) }
+                                                    td { cmbUvzMark = comboBox(items: ('A'..'Z').toArray(new String[0]), selectedIndex: 0, name: "_UVZKZ", clientPropertyJlawyerdescription: "Kennzeichen") }
                                                 }
                                             }
                                         }
                                     }
+                                    
                                 }
 
                                 // Operationsdaten inkl. Datum, Urkundperson, Vertreter, Ort
                                 tr {
-                                    td(colspan: 4, align: 'center') {
+                                    td {
                                         panel(border: titledBorder(title: 'Aktion im Urkundenverzeichnis')) {
-                                            tableLayout {
+                                            tableLayout (cellpadding: 5) {
                                                 tr {
                                                     td { label(text: 'Operationstyp:') }
                                                     td {
@@ -761,38 +763,68 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                 'DELETE_DEED_ENTRY',
                                                 'ARCHIVE_DEED_ENTRY',
                                                 'RESTORE_DEED_ENTRY'
-                                                            ], selectedIndex: 0)
+                                                            ], selectedIndex: 0, name: "_OPTYP", clientPropertyJlawyerdescription: "Operationstyp")
                                                     }
+                                                }
+                                                tr {
                                                     td { label(text: 'Datum des Amtsgeschäfts:') }
                                                     td {
-                                                        txtDeedDate = formattedTextField(format: datumsFormat, columns: 10, text: datumsFormat.format(new Date()))
-                                                        button(text: '', icon: new ImageIcon(getClass().getResource('/icons/schedule.png')),
-                                                            actionPerformed: { GuiLib.dateSelector(txtDeedDate, true) })
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDeedDate=textField(name: "_DTGESCHAEFT", clientPropertyJlawyerdescription: "Datum des Amtsgeschäfts", text: '', columns:10, keyReleased: { 
+                                                                                
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDeedDate, true);
+                                                                            })
+                                                                    }
+                                                        
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 }
                                                 tr {
                                                     td { label(text: 'Urkundperson:') }
-                                                    td { txtDeedOfPerson = textField(text: 'Karcher, Sascha', columns: 20) }
-                                                    td { chkNotaryRepresentative = checkBox(text: 'Vertreter') }
-                                                    td { chkUvzNumberNotAssigned = checkBox(text: 'UVZ-Nummer nicht zugewiesen') }
+                                                    td { txtDeedOfPerson = textField(text: '', columns: 20, name: "_UPERSON", clientPropertyJlawyerdescription: "Urkundperson") }
+                                                }
+                                                tr {
+                                                    td { label (text: ' ') }
+                                                    td { chkNotaryRepresentative = checkBox(text: 'Vertreter', name: "_VERTRETER", clientPropertyJlawyerdescription: "Vertreter ja/nein") }
+                                                }
+                                                tr {
+                                                    td { label (text: ' ') }
+                                                    td { chkUvzNumberNotAssigned = checkBox(text: 'UVZ-Nummer nicht zugewiesen', name: "_KEINEUVZ", clientPropertyJlawyerdescription: "UVZ-Nummer nicht zugewiesen ja/nein") }
                                                 }
                                                 tr {
                                                     td { label(text: 'Ort der Beurkundung:') }
-                                                    td { txtLocation = textField(text: 'Geschäftsstelle', columns: 20) }
-                                                    td { chkStrictlyConfidential = checkBox(text: 'Streng vertraulich') }
+                                                    td { txtLocation = textField(text: 'Geschäftsstelle', columns: 20, name: "_UORT", clientPropertyJlawyerdescription: "Ort der Beurkundung") }
+                                                }
+                                                tr {
                                                     td { label(text: '') }
+                                                    td { chkStrictlyConfidential = checkBox(text: 'Streng vertraulich', name: "_UVERTRAULICH", clientPropertyJlawyerdescription: "streng vertraulich ja/nein") }
                                                 }
                                             }
                                         }
                                     }
                                 }
 
-                                // Geschäftsgegenstand Dropdown + Zusatz
                                 tr {
-                                    td(colspan: 4, align: 'center') {
+                                    td {
                                         panel(border: titledBorder(title: 'Geschäftsgegenstand')) {
-                                            tableLayout {
+                                            tableLayout (cellpadding: 5) {
+                                                // Geschäftsgegenstand Dropdown + Zusatz
                                                 tr {
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
                                                     td {
                                                         cmbBusinessPurpose = comboBox(items: [
                                                 'Adoptionsantrag',
@@ -884,24 +916,24 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                 'Löschungszustimmung',
                                                 'Verwalterzustimmung',
                                                 'Sonstiges:'
-                                                            ])
+                                                            ], name: "_GEGENSTAND", clientPropertyJlawyerdescription: "Geschäftsgegenstand")
                                                     }
                                                 }
+                                
                                                 tr {
-                                                    td { label(text: 'Zusatzgeschäftsgegenstand:') }
-                                                    td { txtAddonBusinessPurpose = textField(columns: 30) }
+                                                    td {
+                                                        label(text: 'Zusatzgeschäftsgegenstand:')
+                                                    }
+                                                    td {
+                                                        txtAddonBusinessPurpose = textField(columns: 30, name: "_GEGENSTANDZ", clientPropertyJlawyerdescription: "Zusatzgeschäftsgegenstand")
+                                                    }
                                                 }
-                                            }
-                                        }
-                                    }
-                                }
 
-                                // Urkundenart Dropdown
-                                tr {
-                                    td(colspan: 4, align: 'center') {
-                                        panel(border: titledBorder(title: 'Urkundenart')) {
-                                            tableLayout {
+                                                // Urkundenart Dropdown
                                                 tr {
+                                                    td {
+                                                        label(text: 'Urkundenart:')
+                                                    }
                                                     td {
                                                         cmbDeedType = comboBox(items: [
                                                 'Begl. von Unterschriften, Handzeichen oder qeS ohne Anfertigung eines Urkundenentwurfs',
@@ -910,43 +942,71 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                 'Verfügungen von Todes wegen',
                                                 'Vermittlungen von Auseinandersetzungen/Beurkundungen und Beschlüsse nach SachenRBerG',
                                                 '(Sonstige) Beurkundungen und Beschlüsse'
-                                                            ])
+                                                            ], name: "_UART", clientPropertyJlawyerdescription: "Urkundenart")
                                                     }
                                                 }
-                                            }
-                                        }
-                                    }
-                                }
 
-                                // Spezielle Checkboxen
-                                tr {
-                                    td(colspan: 4) {
-                                        panel {
-                                            chkDepositedInheritanceContract = checkBox(text: 'Notariell verwahrter Erbvertrag')
-                                            chkRelevantForPublicArchives = checkBox(text: 'Relevant für öffentliche Archive', selected: true)
-                                            chkVideoCommunication = checkBox(text: 'Videokommunikation', selected: true)
-                                            chkWithDraft = checkBox(text: 'Vollzugsentwurf (§ 2 Abs. 2 Satz 2 UA-GebS)', selected: true)
-                                        }
-                                    }
-                                }
-
+                                                // Spezielle Checkboxen
+                                                tr {
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        chkDepositedInheritanceContract = checkBox(text: 'Notariell verwahrter Erbvertrag', name: "_VERWAHRUNG", clientPropertyJlawyerdescription: "Notariell verwahrter Erbvertrag ja/nein")
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        chkRelevantForPublicArchives = checkBox(text: 'Relevant für öffentliche Archive', selected: true, name: "_OEFFARCH", clientPropertyJlawyerdescription: "relevant für öffentliche Archive ja/nein")
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        chkVideoCommunication = checkBox(text: 'Videokommunikation', selected: true, name: "_VIDEO", clientPropertyJlawyerdescription: "Videokommunikation ja/nein")
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        chkWithDraft = checkBox(text: 'Vollzugsentwurf (§ 2 Abs. 2 Satz 2 UA-GebS)', selected: true, name: "_VOLLZUGSENTW", clientPropertyJlawyerdescription: "Vollzugsentwurf ja/nein")
+                                                    }
+                                                }
+                                
+                                
+                                            }}}}
+                                
+                            }
+                        }
+                        panel(name: 'Beteiligte') {
+                            tableLayout (cellpadding: 5) {
                                 // Beteiligte Dynamisch
                                 tr {
-                                    td(colspan: 4, align: 'center') {
-                                        panel(border: titledBorder(title: 'Beteiligte')) {
-                                            pnlParticipantsContainer = panel(layout: new BoxLayout(swing.panel(), BoxLayout.Y_AXIS))
-                                            button(text: 'Beteiligten hinzufügen', actionPerformed: {
-                                                    addParticipant()
-                                                })
-                                        }
+                                    td {
+                                        //                                        panel(border: titledBorder(title: 'Beteiligte')) {
+                                        //                                            pnlParticipantsContainer = panel(layout: new BoxLayout(swing.panel(), BoxLayout.Y_AXIS))
+                                        //                                            button(text: 'Beteiligten hinzufügen', actionPerformed: {
+                                        //                                                    addParticipant()
+                                        //                                                })
+                                        //                                        }
                                     }
                                 }
-
+                            }
+                        }
+                        panel(name: 'Export') {
+                            tableLayout (cellpadding: 5) {
                                 // Dokumente
                                 tr {
-                                    td(colspan: 4, align: 'center') {
+                                    td {
                                         panel(border: titledBorder(title: 'Dokumente')) {
-                                            tableLayout {
+                                            tableLayout (cellpadding: 5) {
                                                 tr {
                                                     td {
                                                         btnSelectMainDocument = button(text: 'Hauptdokument wählen', actionPerformed: {
@@ -964,17 +1024,12 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
 
                                 // Export
                                 tr {
-                                    td(colspan: 4, align: 'center') {
+                                    td {
                                         btnJsonExport = button(text: 'UVZ Export', actionPerformed: {
                                                 exportToZip()
                                             })
                                     }
                                 }
-                            }
-                        }
-                        panel(name: 'Grundbuch') {
-                            tableLayout (cellpadding: 5) {
-                                
                             }
                         }
                         

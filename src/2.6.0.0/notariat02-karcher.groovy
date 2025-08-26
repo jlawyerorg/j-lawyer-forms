@@ -448,24 +448,4 @@ public class uvz_export_ui implements com.jdimension.jlawyer.client.plugins.form
         }
     }
 
-    private void resetForm() {
-        txtUvzNummer.setText('/'+Calendar.getInstance().get(Calendar.YEAR))
-        cmbUvzMark.setSelectedIndex(0)
-        cmbOperationType.setSelectedIndex(0)
-        chkUvzNumberNotAssigned.setSelected(false)
-        chkStrictlyConfidential.setSelected(false)
-        txtDeedDate.setText(datumsFormat.format(new Date()))
-        txtDeedOfPerson.setText('Noth, Dr. Nora')
-        chkNotaryRepresentative.setSelected(false)
-        txtLocation.setText('Geschäftsstelle')
-        cmbBusinessPurpose.setSelectedIndex(0)
-        txtAddonBusinessPurpose.setText('')
-        cmbDeedType.setSelectedIndex(0)
-        chkDepositedInheritanceContract.setSelected(false)
-        chkRelevantForPublicArchives.setSelected(true)
-        chkVideoCommunication.setSelected(true)
-        chkWithDraft.setSelected(true)
-        pnlParticipantsContainer?.removeAll()
-        participantCount = 0
-    }
 }

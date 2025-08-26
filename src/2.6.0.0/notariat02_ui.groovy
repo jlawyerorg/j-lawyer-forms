@@ -686,6 +686,14 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
     FormPluginCallback callback=null;
     
     SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
+    
+    def operationTypes = [
+    'ADD_DEED_ENTRY'    : 'Neuen Eintrag hinzufügen',
+    'UPDATE_DEED_ENTRY' : 'Eintrag ändern',
+    'DELETE_DEED_ENTRY' : 'Eintrag löschen',
+    'ARCHIVE_DEED_ENTRY': 'Eintrag archivieren',
+    'RESTORE_DEED_ENTRY': 'Eintrag wiederherstellen'
+    ]
 
     public notariat02_ui() {
         super();
@@ -757,13 +765,11 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                 tr {
                                                     td { label(text: 'Operationstyp:') }
                                                     td {
-                                                        cmbOperationType = comboBox(items: [
-                                                'ADD_DEED_ENTRY',
-                                                'UPDATE_DEED_ENTRY',
-                                                'DELETE_DEED_ENTRY',
-                                                'ARCHIVE_DEED_ENTRY',
-                                                'RESTORE_DEED_ENTRY'
-                                                            ], selectedIndex: 0, name: "_OPTYP", clientPropertyJlawyerdescription: "Operationstyp")
+                                                        cmbOperationType = comboBox(items: operationTypes.values().toList(), selectedIndex: 0, name: "_OPTYP", clientPropertyJlawyerdescription: "Operationstyp")
+                                                        // rück-mapping:
+                                                        // def selectedLabel = cmbOperationType.selectedItem
+                                                        // def selectedKey = operationTypes.find { k,v -> v == selectedLabel }?.key
+                                                        // println "Export-Wert: $selectedKey"
                                                     }
                                                 }
                                                 tr {

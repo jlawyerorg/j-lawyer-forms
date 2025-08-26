@@ -677,7 +677,6 @@ import javax.swing.ImageIcon
 import javax.swing.UIManager
 import java.awt.Font
 import java.util.ArrayList
-import javax.swing.BoxLayout
 
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 
@@ -933,12 +932,12 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                 // Beteiligte Dynamisch
                                 tr {
                                     td(colspan: 4, align: 'center') {
-                                        panel(border: titledBorder(title: 'Beteiligte')) {
-                                            pnlParticipantsContainer = panel(layout: new BoxLayout(swing.panel(), BoxLayout.Y_AXIS))
-                                            button(text: 'Beteiligten hinzufügen', actionPerformed: {
-                                                    addParticipant()
-                                                })
-                                        }
+//                                        panel(border: titledBorder(title: 'Beteiligte')) {
+//                                            pnlParticipantsContainer = panel(layout: new BoxLayout(swing.panel(), BoxLayout.Y_AXIS))
+//                                            button(text: 'Beteiligten hinzufügen', actionPerformed: {
+//                                                    addParticipant()
+//                                                })
+//                                        }
                                     }
                                 }
 

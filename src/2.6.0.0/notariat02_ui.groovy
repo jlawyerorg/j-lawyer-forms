@@ -684,6 +684,7 @@ import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
 
     JPanel SCRIPTPANEL=null;
+    def txtFields = [:]  // map to hold references to text fields
     FormPluginCallback callback=null;
     
     SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -695,7 +696,7 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
         //'ARCHIVE_DEED_ENTRY': 'Eintrag archivieren',
         //'RESTORE_DEED_ENTRY': 'Eintrag wiederherstellen'
     ]
-
+    
     public notariat02_ui() {
         super();
     }
@@ -750,7 +751,7 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                 }
                                                 tr {
                                                     td { label(text: 'Kennzeichen:') }
-                                                    td { cmbUvzMark = comboBox(items: ('A'..'Z').toArray(new String[0]), selectedIndex: 0, name: "_UVZKZ", clientPropertyJlawyerdescription: "Kennzeichen") }
+                                                    td { cmbUvzMark = comboBox(items: [''] + ('A'..'Z'), selectedIndex: 0, name: "_UVZKZ", clientPropertyJlawyerdescription: "Kennzeichen") }
                                                 }
                                             }
                                         }
@@ -1002,43 +1003,199 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                         panel(name: 'Beteiligte') {
                             tableLayout (cellpadding: 5) {
                                 // Beteiligte Dynamisch
-                                tr {
-                                    td {
-                                        //                                        panel(border: titledBorder(title: 'Beteiligte')) {
-                                        //                                            pnlParticipantsContainer = panel(layout: new BoxLayout(swing.panel(), BoxLayout.Y_AXIS))
-                                        //                                            button(text: 'Beteiligten hinzufügen', actionPerformed: {
-                                        //                                                    addParticipant()
-                                        //                                                })
-                                        //                                        }
+                                (1..10).each { index ->
+                                    
+                                    tr {
+                                        td (colfill:true, align: 'left') {
+                                            panel(border: titledBorder(title: "Beteiligte(r) ${index}:")) {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td (colfill:true, valign: 'left') {
+                                                            label(text: ' ')
+                                                        }
+                                                        td {
+                                                            checkBox(text: 'in Exportdatei aufnehmen', selected: false, name: "_BET${index}EXP", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Export ja/nein")
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true, valign: 'left') {
+                                                            label(text: 'Vorname')
+                                                        }
+                                                        td {
+                                                            textField(columns: 30, name: "_BET${index}VORNAME", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Vorname")
+                                                        }
+                                                    } 
+                                                    tr {
+                                                        td (colfill:true, valign: 'left') {
+                                                            label(text: 'Name')
+                                                        }
+                                                        td {
+                                                            textField(columns: 30, name: "_BET${index}NAME", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Name")
+                                                        }
+                                                    } 
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'Geburtsdatum')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(name: "_BET${index}GEBDATUM", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Geburtsdatum", text: '', columns:10)
+                                                                            txtFields["_BET${index}GEBDATUM"] = txt
+                                                                        }
+                                                                        td {
+                                                                            label (text: ' ')
+                                                                        }
+                                                                        td {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                    GuiLib.dateSelector(txtFields["_BET${index}GEBDATUM"], true);
+                                                                                })
+                                                                        }
+                                                                    
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'Rolle')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            
+                                                            comboBox(items: [
+                                                                    'Vertreter/in',
+                                                                    'Vertretene/r',
+                                                                        'Vertreter/in und Vertretene/r'
+                                                                        
+                                                                        
+                                                                ], name: "_BET${index}ROLLE", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Rolle", editable: false
+                                                            )
+                                                            
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'Beteiligtentyp')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            
+                                                            comboBox(items: [
+                                                                    'Freie Bezeichnung',
+                                                                    'Natürliche Person',
+                                                                        'Organisation'
+                                                                        
+                                                                        
+                                                                ], name: "_BET${index}TYP", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Typ", editable: false
+                                                            )
+                                                            
+                                                        }
+                                                    }
+                                                    tr {
+                                                        td (colfill:true) {
+                                    
+                                                            label(text: 'Beschreibung (Freie Bezeichnung)')
+                                    
+                                    
+                                                        }
+                                                        td {
+                                                            // Achtung, es gibt im Schema participantFree und participantOrganization
+                                                            txtParticipantFree=textField(columns: 30, name: "_BET${index}BESCHR", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Beschreibung")
+                                                        }
+                                                    } 
+                                    
+                                                }
+                                            }
+                                        }
                                     }
+                                    
                                 }
                             }
                         }
                         panel(name: 'Export') {
                             tableLayout (cellpadding: 5) {
-                                // Dokumente
+                                tr {
+                                    td (colfill:true, valign: 'left') {
+                                        label(text: 'Bemerkungen')
+                                    }
+                                } 
                                 tr {
                                     td {
+                                        scrollPane{
+                                            textArea(name: "_BEMERKUNG", clientPropertyJlawyerdescription: "Bemerkungen", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                        }
+                                    }
+                                } 
+                                
+                                // Dokumente
+                                tr {
+                                    td  {
                                         panel(border: titledBorder(title: 'Dokumente')) {
                                             tableLayout (cellpadding: 5) {
                                                 tr {
+                                                    td (colfill:true, valign: 'left') {
+                                                        label(text: 'Hauptdokument')
+                                                    }
                                                     td {
-                                                        btnSelectMainDocument = button(text: 'Hauptdokument wählen', actionPerformed: {
+                                                        btnSelectMainDocument = button(text: 'Datei auswählen', actionPerformed: {
                                                                 JFileChooser fc = new JFileChooser()
                                                                 if (fc.showOpenDialog(SCRIPTPANEL) == JFileChooser.APPROVE_OPTION) {
                                                                     mainDocumentFile = fc.getSelectedFile()
+                                                                    lblMainDocumentFile.text=mainDocumentFile.getName();
                                                                 }
                                                             })
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true, valign: 'left') {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        lblMainDocumentFile=label(text: ' ')
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true, valign: 'left') {
+                                                        label(text: 'Begleitdokument')
+                                                    }
+                                                    td {
+                                                        btnSelectMainDocument = button(text: 'Datei auswählen', actionPerformed: {
+                                                                JFileChooser fc = new JFileChooser()
+                                                                if (fc.showOpenDialog(SCRIPTPANEL) == JFileChooser.APPROVE_OPTION) {
+                                                                    File otherDocumentFile = fc.getSelectedFile()
+                                                                    lblOtherDocumentFile.text=otherDocumentFile.getName();
+                                                                }
+                                                            })
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true, valign: 'left') {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        lblOtherDocumentFile=label(text: ' ')
                                                     }
                                                 }
                                             }
                                         }
                                     }
                                 }
+                                
 
                                 // Export
                                 tr {
-                                    td {
+                                    td  {
                                         btnJsonExport = button(text: 'UVZ Export', actionPerformed: {
                                                 exportToZip()
                                             })

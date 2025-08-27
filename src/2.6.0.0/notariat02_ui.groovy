@@ -799,12 +799,12 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                 }
                                                 tr {
                                                     td { label(text: 'Urkundperson:') }
-                                                    td { txtDeedOfPerson = textField(text: NotariatLib.getUrkundPerson(), columns: 20, name: "_UPERSON", clientPropertyJlawyerdescription: "Urkundperson") }
+                                                    td { txtDeedOfPerson = textField(text: getUrkundPerson(), columns: 20, name: "_UPERSON", clientPropertyJlawyerdescription: "Urkundperson") }
                                                 }
                                                 tr {
                                                     td { label (text: ' ') }
                                                     td { chkNotaryRepresentative = checkBox(text: 'Vertreter', name: "_VERTRETER", clientPropertyJlawyerdescription: "Vertreter ja/nein", actionPerformed: {
-                                                                                txtDeedOfPersonRepresentative.setText(NotariatLib.getUrkundPersonVertreter());
+                                                                                txtDeedOfPersonRepresentative.setText(getUrkundPersonVertreter());
                                                                             })
                                                 }
                                                 tr {
@@ -1068,6 +1068,20 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
         
         return SCRIPTPANEL;
 
+    }
+    
+    private static String getUrkundPerson() {
+        
+        ServerSettings set=ServerSettings.getInstance();
+        return set.getSetting("forms.notariat02.urkundperson", "");
+        
+    }
+    
+    private static String getUrkundPersonVertreter() {
+        
+        ServerSettings set=ServerSettings.getInstance();
+        return set.getSetting("forms.notariat02.urkundpersonvertr", "");
+        
     }
     
     

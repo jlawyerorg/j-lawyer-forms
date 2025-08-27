@@ -757,20 +757,6 @@ public class NotariatLib {
         
     }
     
-    public static String getUrkundPerson() {
-        
-        ServerSettings set=ServerSettings.getInstance();
-        return set.getSetting("forms.notariat02.urkundperson", "");
-        
-    }
-    
-    public static String getUrkundPersonVertreter() {
-        
-        ServerSettings set=ServerSettings.getInstance();
-        return set.getSetting("forms.notariat02.urkundpersonvertr", "");
-        
-    }
-    
     public static ArrayList<String> getGemarkungen() {
         
         ServerSettings set=ServerSettings.getInstance();

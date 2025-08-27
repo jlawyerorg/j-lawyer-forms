@@ -688,11 +688,11 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
     SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
     
     def operationTypes = [
-    'ADD_DEED_ENTRY'    : 'Neuen Eintrag hinzufügen',
-    'UPDATE_DEED_ENTRY' : 'Eintrag ändern',
-    'DELETE_DEED_ENTRY' : 'Eintrag löschen',
-    'ARCHIVE_DEED_ENTRY': 'Eintrag archivieren',
-    'RESTORE_DEED_ENTRY': 'Eintrag wiederherstellen'
+    'ADD_DEED_ENTRY'    : 'Neuer Eintrag',
+    'UPDATE_DEED_ENTRY' : 'Eintrag ändern'
+    //'DELETE_DEED_ENTRY' : 'Eintrag löschen',
+    //'ARCHIVE_DEED_ENTRY': 'Eintrag archivieren',
+    //'RESTORE_DEED_ENTRY': 'Eintrag wiederherstellen'
     ]
 
     public notariat02_ui() {
@@ -779,7 +779,7 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                             tableLayout (cellpadding: 0) {
                                                                 tr {
                                                                     td {
-                                                                        txtDeedDate=textField(name: "_DTGESCHAEFT", clientPropertyJlawyerdescription: "Datum des Amtsgeschäfts", text: '', columns:10, keyReleased: { 
+                                                                        txtDeedDate=textField(name: "_DTGESCHAEFT", clientPropertyJlawyerdescription: "Datum des Amtsgeschäfts", text: datumsFormat.format(new Date()), columns:10, keyReleased: { 
                                                                                 
                                                                             })
                                                                     }
@@ -799,11 +799,17 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                 }
                                                 tr {
                                                     td { label(text: 'Urkundperson:') }
-                                                    td { txtDeedOfPerson = textField(text: '', columns: 20, name: "_UPERSON", clientPropertyJlawyerdescription: "Urkundperson") }
+                                                    td { txtDeedOfPerson = textField(text: NotariatLib.getUrkundPerson(), columns: 20, name: "_UPERSON", clientPropertyJlawyerdescription: "Urkundperson") }
                                                 }
                                                 tr {
                                                     td { label (text: ' ') }
-                                                    td { chkNotaryRepresentative = checkBox(text: 'Vertreter', name: "_VERTRETER", clientPropertyJlawyerdescription: "Vertreter ja/nein") }
+                                                    td { chkNotaryRepresentative = checkBox(text: 'Vertreter', name: "_VERTRETER", clientPropertyJlawyerdescription: "Vertreter ja/nein", actionPerformed: {
+                                                                                txtDeedOfPersonRepresentative.setText(NotariatLib.getUrkundPersonVertreter());
+                                                                            })
+                                                }
+                                                tr {
+                                                    td { label (text: 'Vertreter:') }
+                                                    td { txtDeedOfPersonRepresentative = textField(text: '', columns: 20, name: "_UPERSONVERT", clientPropertyJlawyerdescription: "Urkundperson (Vertreter)") }
                                                 }
                                                 tr {
                                                     td { label (text: ' ') }
@@ -958,7 +964,7 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                         label(text: ' ')
                                                     }
                                                     td {
-                                                        chkDepositedInheritanceContract = checkBox(text: 'Notariell verwahrter Erbvertrag', name: "_VERWAHRUNG", clientPropertyJlawyerdescription: "Notariell verwahrter Erbvertrag ja/nein")
+                                                        chkDepositedInheritanceContract = checkBox(text: 'Notariell verwahrter Erbvertrag', selected: false, name: "_VERWAHRUNG", clientPropertyJlawyerdescription: "Notariell verwahrter Erbvertrag ja/nein")
                                                     }
                                                 }
                                                 tr {
@@ -966,7 +972,7 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                         label(text: ' ')
                                                     }
                                                     td {
-                                                        chkRelevantForPublicArchives = checkBox(text: 'Relevant für öffentliche Archive', selected: true, name: "_OEFFARCH", clientPropertyJlawyerdescription: "relevant für öffentliche Archive ja/nein")
+                                                        chkRelevantForPublicArchives = checkBox(text: 'Relevant für öffentliche Archive', selected: false, name: "_OEFFARCH", clientPropertyJlawyerdescription: "relevant für öffentliche Archive ja/nein")
                                                     }
                                                 }
                                                 tr {
@@ -974,7 +980,7 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                         label(text: ' ')
                                                     }
                                                     td {
-                                                        chkVideoCommunication = checkBox(text: 'Videokommunikation', selected: true, name: "_VIDEO", clientPropertyJlawyerdescription: "Videokommunikation ja/nein")
+                                                        chkVideoCommunication = checkBox(text: 'Videokommunikation', selected: false, name: "_VIDEO", clientPropertyJlawyerdescription: "Videokommunikation ja/nein")
                                                     }
                                                 }
                                                 tr {
@@ -982,7 +988,7 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                         label(text: ' ')
                                                     }
                                                     td {
-                                                        chkWithDraft = checkBox(text: 'Vollzugsentwurf (§ 2 Abs. 2 Satz 2 UA-GebS)', selected: true, name: "_VOLLZUGSENTW", clientPropertyJlawyerdescription: "Vollzugsentwurf ja/nein")
+                                                        chkWithDraft = checkBox(text: 'Vollzugsentwurf (§ 2 Abs. 2 Satz 2 UA-GebS)', selected: false, name: "_VOLLZUGSENTW", clientPropertyJlawyerdescription: "Vollzugsentwurf ja/nein")
                                                     }
                                                 }
                                 

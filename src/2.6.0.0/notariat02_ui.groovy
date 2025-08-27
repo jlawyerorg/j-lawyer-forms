@@ -677,6 +677,7 @@ import javax.swing.ImageIcon
 import javax.swing.UIManager
 import java.awt.Font
 import java.util.ArrayList
+import com.jdimension.jlawyer.client.settings.ServerSettings
 
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 
@@ -690,9 +691,9 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
     def operationTypes = [
     'ADD_DEED_ENTRY'    : 'Neuer Eintrag',
     'UPDATE_DEED_ENTRY' : 'Eintrag ändern'
-    //'DELETE_DEED_ENTRY' : 'Eintrag löschen',
-    //'ARCHIVE_DEED_ENTRY': 'Eintrag archivieren',
-    //'RESTORE_DEED_ENTRY': 'Eintrag wiederherstellen'
+        //'DELETE_DEED_ENTRY' : 'Eintrag löschen',
+        //'ARCHIVE_DEED_ENTRY': 'Eintrag archivieren',
+        //'RESTORE_DEED_ENTRY': 'Eintrag wiederherstellen'
     ]
 
     public notariat02_ui() {
@@ -804,8 +805,9 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                 tr {
                                                     td { label (text: ' ') }
                                                     td { chkNotaryRepresentative = checkBox(text: 'Vertreter', name: "_VERTRETER", clientPropertyJlawyerdescription: "Vertreter ja/nein", actionPerformed: {
-                                                                                txtDeedOfPersonRepresentative.setText(getUrkundPersonVertreter());
-                                                                            })
+                                                                txtDeedOfPersonRepresentative.setText(getUrkundPersonVertreter());
+                                                            })
+                                                    }
                                                 }
                                                 tr {
                                                     td { label (text: 'Vertreter:') }
@@ -1070,6 +1072,8 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
 
     }
     
+    
+    
     private static String getUrkundPerson() {
         
         ServerSettings set=ServerSettings.getInstance();
@@ -1084,11 +1088,11 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
         
     }
     
-    
 
 }
                                     
                                     
-                                         
+    
+
                                     
 

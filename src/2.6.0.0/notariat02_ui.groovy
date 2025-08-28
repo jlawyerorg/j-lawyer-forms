@@ -1048,8 +1048,6 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                                                     }
                                                                                 })
                                                                         }
-                                                                        
-                                                                    
                                                                     }
                                                                 }
                                                             }

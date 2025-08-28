@@ -695,6 +695,7 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
 
     JPanel SCRIPTPANEL=null;
     def txtFields = [:]  // map to hold references to text fields
+    def rdFields = [:]  // map to hold references to radio buttons
     FormPluginCallback callback=null;
     
     SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -1014,7 +1015,7 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                             tableLayout (cellpadding: 5) {
                                 // Beteiligte Dynamisch
                                 (1..10).each { index ->
-                                    
+                                    def group = buttonGroup()
                                     tr {
                                         td (colfill:true, align: 'left') {
                                             panel(border: titledBorder(title: "Beteiligte(r) ${index}:")) {
@@ -1030,7 +1031,20 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                                                     def chosen = showAddressDialog(addresses)
                                                                                     if (chosen) {
                                                                                         println "User picked: $chosen"
-                                                                                        // → pass to your further processing
+                                                                                        if(rdFields["_BET${index}_NP"].selected) {
+                                                                                            // natürliche Person
+                                                                                            txtFields["_BET${index}_NP_VORNAME"].text=chosen.firstName
+                                                                                            txtFields["_BET${index}_NP_NAME"].text=chosen.name
+                                                                                            txtFields["_BET${index}_NP_GNAME"].text=chosen.birthName
+                                                                                            txtFields["_BET${index}_NP_GEBDATUM"].text=chosen.birthDate
+                                                                                            txtFields["_BET${index}_NP_ORT"].text=chosen.city
+                                                                                        } else if(rdFields["_BET${index}_O"].selected) {
+                                                                                            // Organisation
+                                                                                            txtFields["_BET${index}_O_NAME"].text=chosen.company
+                                                                                            txtFields["_BET${index}_O_ORT"].text=chosen.city
+                                                                                        } else {
+                                                                                            // frei bezeichnet
+                                                                                        }
                                                                                     }
                                                                                 })
                                                                         }
@@ -1046,102 +1060,219 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                         }
                                                     }
                                                     tr {
-                                                        td (colfill:true, valign: 'left') {
-                                                            label(text: 'Vorname')
+                                                        td {
+                                                            def rd=radioButton(text: "natürliche Person", name: "_BET${index}_NP", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} natürliche Person ja/nein", buttonGroup: group, selected: true)
+                                                            rdFields["_BET${index}_NP"]=rd
                                                         }
                                                         td {
-                                                            textField(columns: 30, name: "_BET${index}VORNAME", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Vorname")
-                                                        }
-                                                    } 
-                                                    tr {
-                                                        td (colfill:true, valign: 'left') {
-                                                            label(text: 'Name')
+                                                            def rd=radioButton(text: "Organisation", name: "_BET${index}_O", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Organisation ja/nein", buttonGroup: group, selected: false)
+                                                            rdFields["_BET${index}_O"]=rd
                                                         }
                                                         td {
-                                                            textField(columns: 30, name: "_BET${index}NAME", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Name")
-                                                        }
-                                                    } 
-                                                    tr {
-                                                        td (colfill:true) {
-                                    
-                                                            label(text: 'Geburtsdatum')
-                                    
-                                    
-                                                        }
-                                                        td {
-                                                            panel {
-                                                                tableLayout (cellpadding: 0) {
-                                                                    tr {
-                                                                        td {
-                                                                            def txt=textField(name: "_BET${index}GEBDATUM", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Geburtsdatum", text: '', columns:10)
-                                                                            txtFields["_BET${index}GEBDATUM"] = txt
-                                                                        }
-                                                                        td {
-                                                                            label (text: ' ')
-                                                                        }
-                                                                        td {
-                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
-                                                                                    GuiLib.dateSelector(txtFields["_BET${index}GEBDATUM"], true);
-                                                                                })
-                                                                        }
-                                                                    
-                                                                    }
-                                                                }
-                                                            }
+                                                            def rd=radioButton(text: "frei bezeichnet", name: "_BET${index}_F", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} frei bezeichnet ja/nein", buttonGroup: group, selected: false)
+                                                            rdFields["_BET${index}_F"]=rd
                                                         }
                                                     }
                                                     tr {
-                                                        td (colfill:true) {
+                                                        // natürliche Person
+                                                        td (colfill:true, valign: 'top') {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td (colfill:true, valign: 'left') {
+                                                                            label(text: 'Vorname(n)')
+                                                                        }
+                                                                    } 
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(columns: 30, name: "_BET${index}_NP_VORNAME", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Vorname")
+                                                                            txtFields["_BET${index}_NP_VORNAME"]=txt
+                                                                        }
+                                                                    } 
+                                                                    tr {
+                                                                        td (colfill:true, valign: 'left') {
+                                                                            label(text: 'Name')
+                                                                        }
+                                                                    } 
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(columns: 30, name: "_BET${index}_NP_NAME", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Name")
+                                                                            txtFields["_BET${index}_NP_NAME"]=txt
+                                                                        }
+                                                                    } 
+                                                                    tr {
+                                                                        td (colfill:true, valign: 'left') {
+                                                                            label(text: 'Geburtsname')
+                                                                        }
+                                                                    } 
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(columns: 30, name: "_BET${index}_NP_GNAME", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Geburtsname")
+                                                                            txtFields["_BET${index}_NP_GNAME"]=txt
+                                                                        }
+                                                                    } 
+                                                                    tr {
+                                                                        td (colfill:true) {
                                     
-                                                            label(text: 'Rolle')
+                                                                            label(text: 'Geburtsdatum')
                                     
                                     
-                                                        }
-                                                        td {
+                                                                        }
+                                                                    }
+                                                                    tr {
+                                                                        td {
+                                                                            panel {
+                                                                                tableLayout (cellpadding: 0) {
+                                                                                    tr {
+                                                                                        td {
+                                                                                            def txt=textField(name: "_BET${index}_NP_GEBDATUM", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Geburtsdatum", text: '', columns:10)
+                                                                                            txtFields["_BET${index}_NP_GEBDATUM"] = txt
+                                                                                        }
+                                                                                        td {
+                                                                                            label (text: ' ')
+                                                                                        }
+                                                                                        td {
+                                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                                    GuiLib.dateSelector(txtFields["_BET${index}_NP_GEBDATUM"], true);
+                                                                                                })
+                                                                                        }
+                                                                    
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    tr {
+                                                                        td (colfill:true, valign: 'left') {
+                                                                            label(text: 'Wohnort')
+                                                                        }
+                                                                    } 
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(columns: 30, name: "_BET${index}_NP_ORT", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Wohnort")
+                                                                            txtFields["_BET${index}_NP_ORT"] = txt
+                                                                        }
+                                                                    } 
+                                                                    tr {
+                                                                        td (colfill:true) {
+                                    
+                                                                            label(text: 'Rolle')
+                                    
+                                    
+                                                                        }
+                                                                    }
+                                                                    tr {
+                                                                        td {
                                                             
-                                                            comboBox(items: [
+                                                                            comboBox(items: [
                                                                     'Vertreter/in',
                                                                     'Vertretene/r',
                                                                         'Vertreter/in und Vertretene/r'
                                                                         
                                                                         
-                                                                ], name: "_BET${index}ROLLE", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Rolle", editable: false
-                                                            )
+                                                                                ], name: "_BET${index}_NP_ROLLE", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Rolle", editable: false
+                                                                            )
+                                                            
+                                                                        }
+                                                                    }
+                                                                     
+                                                                }
+                                                            }
+                                                            
+                                                        }
+                                                        
+                                                        // Organisation
+                                                        td (colfill:true, valign: 'top') {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td (colfill:true, valign: 'left') {
+                                                                            label(text: 'Name')
+                                                                        }
+                                                                    } 
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(columns: 30, name: "_BET${index}_O_NAME", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Name")
+                                                                            txtFields["_BET${index}_O_NAME"] = txt
+                                                                        }
+                                                                    } 
+                                                                    tr {
+                                                                        td (colfill:true, valign: 'left') {
+                                                                            label(text: 'Sitz der Organisation')
+                                                                        }
+                                                                    } 
+                                                                    tr {
+                                                                        td {
+                                                                            def txt=textField(columns: 30, name: "_BET${index}_O_ORT", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Ort")
+                                                                            txtFields["_BET${index}_O_ORT"] = txt
+                                                                        }
+                                                                    } 
+                                                                }
+                                                            }
+                                                            
+                                                        }
+                                                        
+                                                        // frei bezeichnet
+                                                        td (colfill:true, valign: 'top') {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td (colfill:true) {
+                                    
+                                                                            label(text: 'Beschreibung (Freie Bezeichnung)')
+                                    
+                                    
+                                                                        }
+                                                                    }
+                                                                    tr {
+                                                                        td {
+                                                                            // Achtung, es gibt im Schema participantFree und participantOrganization
+                                                                            txtParticipantFree=textField(columns: 30, name: "_BET${index}_F_BESCHR", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Beschreibung")
+                                                                        }
+                                                                    }
+                                                                    tr {
+                                                                        td (colfill:true) {
+                                    
+                                                                            label(text: 'Anzahl')
+                                                                        }
+                                                                    }
+                                                                    tr {
+                                                                        td {
+                                                                            spinner(clientPropertyJlawyerdescription: "Anzahl", name: "_BET${index}_F_ANZ", 
+                                                                                model:spinnerNumberModel(minimum:0, 
+                                                                                    maximum: 20,
+                                                                                    value:0,
+                                                                                    stepSize:1))
+                                                                        }
+                                                                    }
+                                                                    tr {
+                                                                        td (colfill:true) {
+                                    
+                                                                            label(text: 'Rolle')
+                                    
+                                    
+                                                                        }
+                                                                    }
+                                                                    tr {
+                                                                        td {
+                                                            
+                                                                            comboBox(items: [
+                                                                    'Vertreter/in',
+                                                                    'Vertretene/r',
+                                                                        'Vertreter/in und Vertretene/r'
+                                                                        
+                                                                        
+                                                                                ], name: "_BET${index}_F_ROLLE", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Rolle", editable: false
+                                                                            )
+                                                            
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
                                                             
                                                         }
                                                     }
-                                                    tr {
-                                                        td (colfill:true) {
-                                    
-                                                            label(text: 'Beteiligtentyp')
-                                    
-                                    
-                                                        }
-                                                        td {
-                                                            
-                                                            comboBox(items: [
-                                                                    'Freie Bezeichnung',
-                                                                    'Natürliche Person',
-                                                                        'Organisation'
-                                                                        
-                                                                        
-                                                                ], name: "_BET${index}TYP", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Typ", editable: false
-                                                            )
-                                                            
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true) {
-                                    
-                                                            label(text: 'Beschreibung (Freie Bezeichnung)')
-                                    
-                                    
-                                                        }
-                                                        td {
-                                                            // Achtung, es gibt im Schema participantFree und participantOrganization
-                                                            txtParticipantFree=textField(columns: 30, name: "_BET${index}BESCHR", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Beschreibung")
-                                                        }
-                                                    } 
+
                                     
                                                 }
                                             }
@@ -1183,6 +1314,23 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                                     lblMainDocumentFile.text=mainDocumentFile.getName();
                                                                 }
                                                             })
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Dokumententyp:')
+                                                    }
+                                                    td {
+                                                        comboBox(items: [
+                                                                    'Elektronische Fassung der Urschrift',
+                                                                    'Elektronisches Original',
+                                                                        'Elektronische Abschrift (beglaubigt)',
+                                                                'Elektronische Fassung der begl. Abschrift',
+                                                                'Elektronische Abschrift (einfach)'
+                                                                        
+                                                                        
+                                                            ], name: "_HDOK_TYP", clientPropertyJlawyerdescription: "Hauptdokument: Dokumententyp", editable: false
+                                                        )
                                                     }
                                                 }
                                                 tr {

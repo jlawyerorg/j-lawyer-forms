@@ -670,14 +670,24 @@ import java.text.NumberFormat
 import javax.swing.SwingConstants
 import javax.swing.JPanel
 import javax.swing.JTabbedPane
+import javax.swing.JTable
 import javax.swing.JTextField
 import javax.swing.JComboBox
 import javax.swing.JFileChooser
 import javax.swing.ImageIcon
 import javax.swing.UIManager
+import javax.swing.ListSelectionModel
+import javax.swing.table.DefaultTableModel
 import java.awt.Font
+import java.awt.BorderLayout
 import java.util.ArrayList
 import com.jdimension.jlawyer.client.settings.ServerSettings
+import com.jdimension.jlawyer.client.settings.ClientSettings;
+import com.jdimension.jlawyer.services.JLawyerServiceLocator;
+import com.jdimension.jlawyer.services.ArchiveFileServiceRemote;
+import com.jdimension.jlawyer.client.utils.ThreadUtils;
+import com.jdimension.jlawyer.persistence.AddressBean;
+import com.jdimension.jlawyer.client.editors.EditorsRegistry;
 
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 
@@ -1010,8 +1020,26 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                             panel(border: titledBorder(title: "Beteiligte(r) ${index}:")) {
                                                 tableLayout (cellpadding: 5) {
                                                     tr {
-                                                        td (colfill:true, valign: 'left') {
-                                                            label(text: ' ')
+                                                        td (colfill:true, valign: 'right') {
+                                                            panel {
+                                                                tableLayout (cellpadding: 0) {
+                                                                    tr {
+                                                                        td (colfill:true, align: 'right') {
+                                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/find.png")), actionPerformed: {
+                                                                                    List<AddressBean> addresses=getAddressesForCase(callback.getCaseId());
+                                                                                    def chosen = showAddressDialog(addresses)
+                                                                                    if (chosen) {
+                                                                                        println "User picked: $chosen"
+                                                                                        // → pass to your further processing
+                                                                                    }
+                                                                                })
+                                                                        }
+                                                                        
+                                                                    
+                                                                    }
+                                                                }
+                                                            }
+                                                            
                                                         }
                                                         td {
                                                             checkBox(text: 'in Exportdatei aufnehmen', selected: false, name: "_BET${index}EXP", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Export ja/nein")
@@ -1243,6 +1271,75 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
         ServerSettings set=ServerSettings.getInstance();
         return set.getSetting("forms.notariat02.urkundpersonvertr", "");
         
+    }
+    
+    private static List<AddressBean> getAddressesForCase(String caseId) {
+        
+        ClientSettings settings = ClientSettings.getInstance();
+        try {
+            JLawyerServiceLocator locator = JLawyerServiceLocator.getInstance(settings.getLookupProperties());
+            ArchiveFileServiceRemote afs = locator.lookupArchiveFileServiceRemote();
+            return afs.getAddressesForCase(caseId);
+                    
+            
+        } catch (Exception ex) {
+            ThreadUtils.showErrorDialog(EditorsRegistry.getInstance().getMainWindow(), "Fehler beim Ermitteln der Beteiligten: " + ex.getMessage(), "Fehler");
+        }
+            
+    }
+    
+    // helper method to show the dialog and return the selected AddressBean
+    def showAddressDialog(List<AddressBean> addresses) {
+        def swing = new SwingBuilder()
+        def dlg
+        AddressBean selected = null
+
+        // sort by name
+        def sorted = addresses.sort { it.name }
+
+        // column headers
+        def columns = ["Name", "Vorname", "Firma", "PLZ", "Ort"]
+
+        // row data
+        def rows = sorted.collect { a ->
+            [a.name, a.firstName, a.company, a.zipCode, a.city] as Object[]
+        }
+
+        // build table model + JTable
+        def model = new DefaultTableModel(rows as Object[][], columns as Object[])
+        def jTable = new JTable(model)
+        jTable.selectionMode = ListSelectionModel.SINGLE_SELECTION
+        jTable.autoCreateRowSorter = true
+
+        swing.edt {
+            dlg = swing.dialog(
+                modal: true,
+                title: "Beteiligten auswählen",
+                size: [600, 400],
+                locationRelativeTo: null
+            ) {
+                borderLayout()
+                scrollPane(constraints: BorderLayout.CENTER) {
+                    widget(jTable)   // embed the JTable we created
+                }
+                panel(constraints: BorderLayout.SOUTH) {
+                    button(text: "Abbrechen", actionPerformed: { dlg.dispose() })
+                    button(text: "Übernehmen", defaultButton: true, actionPerformed: {
+                            int viewRow = jTable.selectedRow
+                            if (viewRow >= 0) {
+                                int modelRow = jTable.convertRowIndexToModel(viewRow)
+                                selected = sorted[modelRow]
+                                dlg.dispose()
+                            } else {
+                                JOptionPane.showMessageDialog(dlg, "Bitte eine Adresse auswählen.")
+                            }
+                        })
+                }
+            }
+        }
+
+        dlg.visible = true
+        return selected
     }
     
 

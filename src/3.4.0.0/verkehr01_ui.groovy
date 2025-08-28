@@ -1046,7 +1046,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 tableLayout (cellpadding: 0) {
                                                     tr {
                                                         td {
-                                                            txtUnfallDatum=textField(id: 'sUnfallDatum', name: "_UNFALLDATUM", clientPropertyJlawyerdescription: "Unfalldatum", text: '', columns:10, keyReleased: { 
+                                                            txtUnfallDatum=textField(id: 'sUnfallDatum', name: "_UNFALLDATUM", clientPropertyJlawyerdescription: "Unfalldatum", clientPropertyAiPromptKey: "unfall_datum", clientPropertyAiPromptDescription: "Unfalldatum", text: '', columns:10, keyReleased: { 
                                                                     berechnenHalteFrist();
                                                                 })
                                                         }
@@ -1105,7 +1105,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     
                                         }
                                         td {
-                                            txtUnfallOrt=textField(id: 'sUnfallZeit', name: "_UNFALLZEIT", clientPropertyJlawyerdescription: "Unfallzeit", text: '', columns:10)
+                                            txtUnfallOrt=textField(id: 'sUnfallZeit', name: "_UNFALLZEIT", clientPropertyJlawyerdescription: "Unfallzeit", clientPropertyAiPromptKey: "unfall_zeit", clientPropertyAiPromptDescription: "Unfallzeit", text: '', columns:10)
                                         }
                                 
                                     }
@@ -1124,7 +1124,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Strasse:')
                                         }
                                         td {
-                                            txtUnfallStrasse=textField(id: 'sUnfallStrasse', name: "_UNFALLSTRASSE", clientPropertyJlawyerdescription: "Unfallort: Strasse", text: '', columns:50)
+                                            txtUnfallStrasse=textField(id: 'sUnfallStrasse', name: "_UNFALLSTRASSE", clientPropertyJlawyerdescription: "Unfallort: Strasse", clientPropertyAiPromptKey: "unfall_strasse", clientPropertyAiPromptDescription: "Unfallstrasse / Strasse auf welcher Unfall passierte", text: '', columns:50)
                                         }
                                 
                                     }
@@ -1134,7 +1134,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     
                                         }
                                         td {
-                                            txtUnfallPlz=textField(id: 'sUnfallPlz', name: "_UNFALLPLZ", clientPropertyJlawyerdescription: "Unfallort: PLZ", text: '', columns:10)
+                                            txtUnfallPlz=textField(id: 'sUnfallPlz', name: "_UNFALLPLZ", clientPropertyJlawyerdescription: "Unfallort: PLZ", clientPropertyAiPromptKey: "unfall_plz", clientPropertyAiPromptDescription: "PLZ / Postleitzahl wo der Unfall passierte", text: '', columns:10)
                                         }
                                     }
                                     tr {
@@ -1143,7 +1143,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     
                                         }
                                         td {
-                                            txtUnfallOrt=textField(id: 'sUnfallOrt', name: "_UNFALLORT", clientPropertyJlawyerdescription: "Unfallort: Ort", text: '', columns:50)
+                                            txtUnfallOrt=textField(id: 'sUnfallOrt', name: "_UNFALLORT", clientPropertyJlawyerdescription: "Unfallort: Ort", clientPropertyAiPromptKey: "unfall_ort", clientPropertyAiPromptDescription: "Ort / Stadt wo der Unfall passierte", text: '', columns:50)
                                         }
                                     }
                                     tr {
@@ -1151,7 +1151,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Land:')
                                         }
                                         td {
-                                            txtUnfallLand=textField(id: 'sUnfallLand', name: "_UNFALLLAND", clientPropertyJlawyerdescription: "Unfallort: Land", text: '', columns:50)
+                                            txtUnfallLand=textField(id: 'sUnfallLand', name: "_UNFALLLAND", clientPropertyJlawyerdescription: "Unfallort: Land", clientPropertyAiPromptKey: "unfall_land", clientPropertyAiPromptDescription: "Land, in welchem der Unfall passierte", text: '', columns:50)
                                         }
                                     }
                                     tr {
@@ -1171,7 +1171,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                         }
                                         td {
                                             scrollPane{
-                                                chkPolizeiAufgenommen = checkBox(text: 'polizeilich aufgenommen', name: "_POLAUFGEN", clientPropertyJlawyerdescription: "polizeilich aufgenommen?", selected: false)
+                                                chkPolizeiAufgenommen = checkBox(text: 'polizeilich aufgenommen', name: "_POLAUFGEN", clientPropertyJlawyerdescription: "polizeilich aufgenommen?", clientPropertyAiPromptKey: "unfall_polizei", clientPropertyAiPromptDescription: "Wurde der Unfall polizeilich aufgenommen? Zulässige Werte: ja, nein", selected: false)
                                             } 
                                         }
                                     }
@@ -1180,7 +1180,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'polizeiliches Aktenzeichen:')
                                         }
                                         td {
-                                            textField(id: 'sPolizeiAufgen', name: "_POLAZ", clientPropertyJlawyerdescription: "polizeiliches Aktenzeichen", text: '', columns:50)
+                                            textField(id: 'sPolizeiAufgen', name: "_POLAZ", clientPropertyJlawyerdescription: "polizeiliches Aktenzeichen", clientPropertyAiPromptKey: "polizei_aktenzeichen", clientPropertyAiPromptDescription: "polizeiliches Aktenzeichen", text: '', columns:50)
                                         }
                                     }
                                 }   
@@ -1400,7 +1400,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             'S-Pedelec',
                                             'E-Scooter',
                                             'andere'
-                                                ], name: "_FHRZGART", clientPropertyJlawyerdescription: "Fahrzeugart", clientPropertyAiPromptKey: "fahrzeug_art", clientPropertyAiPromptDescription: "Art des Fahrzeugs des Halters / Auftraggebers / Anspruchstellers, zulässige Werte sind \"PKW\", \"LKW\", \"Motorrad\"", editable: true, actionPerformed: {
+                                                ], name: "_FHRZGART", clientPropertyJlawyerdescription: "Fahrzeugart", clientPropertyAiPromptKey: "fahrzeug_art", clientPropertyAiPromptDescription: "Art des Fahrzeugs des Halters / Auftraggebers / Anspruchstellers, zulässige Werte: PKW, LKW, Motorrad", editable: true, actionPerformed: {
                                                     populateNutzungsausfallTagessatz(cmbNutzAusfallGruppe.getSelectedItem(), cmbFahrzeugart.getSelectedItem().toString());
                                                     berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString());
                                                 }
@@ -1506,7 +1506,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: '   ')
                                         }
                                         td {
-                                            checkBox(text: 'finanziert / geleast', clientPropertyJlawyerdescription: "Fahrzeug Mandant ist finanziert/geleast", name: "_FINANZIERT", selected: false)
+                                            checkBox(text: 'finanziert / geleast', clientPropertyJlawyerdescription: "Fahrzeug Mandant ist finanziert/geleast", clientPropertyAiPromptKey: "fahrzeug_finanziert", clientPropertyAiPromptDescription: "Ist das Fahrzeug des Mandanten / Anspruchstellers finanziert oder geleast? Zulässige Werte: ja, nein", name: "_FINANZIERT", selected: false)
                                         }
                                         td {
                                     
@@ -1522,7 +1522,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             'unbekannt',
                                             'fahrbereit/verkehrssicher',
                                             'nicht fahrbereit und/oder verkehrssicher'
-                                                ], name: "_VERKEHRSSICHER", clientPropertyJlawyerdescription: "Fahrzeug Mandant ist verkehrssicher", editable: true, actionPerformed: {
+                                                ], name: "_VERKEHRSSICHER", clientPropertyJlawyerdescription: "Fahrzeug Mandant ist verkehrssicher", clientPropertyAiPromptKey: "fahrzeug_verkehrssicher", clientPropertyAiPromptDescription: "Ist das Fahrzeug des Mandanten / Anspruchstellers verkehrssicher? Zulässige Werte: unbekannt, fahrbereit/verkehrssicher, nicht fahrbereit und/oder verkehrssicher", editable: true, actionPerformed: {
                                                     
                                                 }
                                             )
@@ -1537,7 +1537,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Anzahl Vorbesitzer:')
                                         }
                                         td {
-                                            spnVorbesitzer = spinner(id: 'nVorbesitzer', clientPropertyJlawyerdescription: "Anzahl Vorbesitzer Mandant", name: "_ANZVORBESITZER", 
+                                            spnVorbesitzer = spinner(id: 'nVorbesitzer', clientPropertyJlawyerdescription: "Anzahl Vorbesitzer Mandant", clientPropertyAiPromptKey: "fahrzeug_vorbesitzer", clientPropertyAiPromptDescription: "Anzahl der Vorbesitzer des Fahrzeugs des Mandanten / Anspruchstellers", name: "_ANZVORBESITZER", 
                                                 model:spinnerNumberModel(minimum:1, 
                                                     maximum: 30,
                                                     value:1,
@@ -1607,7 +1607,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             'J',
                                             'K',
                                             'L'
-                                                ], name: "_NUTZAUSFALLGRP", clientPropertyJlawyerdescription: "Nutzungsausfallgruppe", editable: true, actionPerformed: {
+                                                ], name: "_NUTZAUSFALLGRP", clientPropertyJlawyerdescription: "Nutzungsausfallgruppe", clientPropertyAiPromptKey: "fahrzeug_nutzungsausfallgruppe", clientPropertyAiPromptDescription: "Nutzungsausfallgruppe des Fahrzeugs des Mandanten / Anspruchstellers. Zulässige Werte: A, B, C, D, E, F, G, H, I, J, K, L", editable: true, actionPerformed: {
                                                     populateNutzungsausfallTagessatz(cmbNutzAusfallGruppe.getSelectedItem(), cmbFahrzeugart.getSelectedItem().toString());
                                                     berechnenNutzungsausfall(txtNutzungsAusfall, txtNutzungsAusfallReg, txtNutzungsAusfallDiff, cmbNutzAusfallGruppe.getSelectedItem(), txtNutzungsAusfallVon, txtNutzungsAusfallBis, cmbFahrzeugart.getSelectedItem().toString());
                                                 }

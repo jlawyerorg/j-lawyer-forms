@@ -712,13 +712,50 @@ public class arbeitsrecht03_ui implements com.jdimension.jlawyer.client.plugins.
                     try {
                         def von = LocalDate.parse(vonStr, formatter)
                         def bis = bisStr ? LocalDate.parse(bisStr, formatter) : null
-                        result << [von: von, bis: bis, kind: "K${k}"]
+                        result << [von: von, bis: bis, kind: "K${k}", color: Color.BLUE]
                     } catch (ignored) {
                         // ungültiges Datum ignorieren
                     }
                 }
             }
         }
+        
+        try {
+            def von = LocalDate.parse(txtK1MuschuBeginn.text, formatter)
+            def bis = LocalDate.parse(txtK1MuschuEnde.text, formatter)
+            result << [von: von, bis: bis, kind: "K1", color: Color.GREEN]
+        } catch (Exception e) {
+            println "Ungültiges Datum in ${txtK1MuschuBeginn.text}/${txtK1MuschuEnde.text}: ${e.message}"
+            // ungültiges Datum ignorieren
+        }
+        
+        try {
+            def von = LocalDate.parse(txtK2MuschuBeginn.text, formatter)
+            def bis = LocalDate.parse(txtK2MuschuEnde.text, formatter)
+            result << [von: von, bis: bis, kind: "K2", color: Color.GREEN]
+        } catch (Exception e) {
+            println "Ungültiges Datum in ${txtK2MuschuBeginn.text}/${txtK2MuschuEnde.text}: ${e.message}"
+            // ungültiges Datum ignorieren
+        }
+        
+        try {
+            def von = LocalDate.parse(txtK3MuschuBeginn.text, formatter)
+            def bis = LocalDate.parse(txtK3MuschuEnde.text, formatter)
+            result << [von: von, bis: bis, kind: "K3", color: Color.GREEN]
+        } catch (Exception e) {
+            println "Ungültiges Datum in ${txtK3MuschuBeginn.text}/${txtK3MuschuEnde.text}: ${e.message}"
+            // ungültiges Datum ignorieren
+        }
+        
+        try {
+            def von = LocalDate.parse(txtK4MuschuBeginn.text, formatter)
+            def bis = LocalDate.parse(txtK4MuschuEnde.text, formatter)
+            result << [von: von, bis: bis, kind: "K4", color: Color.GREEN]
+        } catch (Exception e) {
+            println "Ungültiges Datum in ${txtK4MuschuBeginn.text}/${txtK4MuschuEnde.text}: ${e.message}"
+            // ungültiges Datum ignorieren
+        }
+        
         return result
     }
     

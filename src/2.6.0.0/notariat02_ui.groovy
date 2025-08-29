@@ -1022,6 +1022,19 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                 tableLayout (cellpadding: 5) {
                                                     tr {
                                                         td (colfill:true, valign: 'right') {
+                                                            comboBox(items: [
+                                                                    'in eigenem Namen',
+                                                                    'Vertreter/in',
+                                                                    'Vertretene/r',
+                                                                        'Vertreter/in und Vertretene/r'
+                                                                        
+                                                                        
+                                                                ], name: "_BET${index}_ROLLE", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Rolle", editable: false
+                                                            )
+                                                            
+                                                            
+                                                        }
+                                                        td {
                                                             panel {
                                                                 tableLayout (cellpadding: 0) {
                                                                     tr {
@@ -1151,28 +1164,6 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                                             txtFields["_BET${index}_NP_ORT"] = txt
                                                                         }
                                                                     } 
-                                                                    tr {
-                                                                        td (colfill:true) {
-                                    
-                                                                            label(text: 'Rolle')
-                                    
-                                    
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td {
-                                                            
-                                                                            comboBox(items: [
-                                                                    'Vertreter/in',
-                                                                    'Vertretene/r',
-                                                                        'Vertreter/in und Vertretene/r'
-                                                                        
-                                                                        
-                                                                                ], name: "_BET${index}_NP_ROLLE", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Rolle", editable: false
-                                                                            )
-                                                            
-                                                                        }
-                                                                    }
                                                                      
                                                                 }
                                                             }
@@ -1243,28 +1234,7 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                                                     stepSize:1))
                                                                         }
                                                                     }
-                                                                    tr {
-                                                                        td (colfill:true) {
-                                    
-                                                                            label(text: 'Rolle')
-                                    
-                                    
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td {
-                                                            
-                                                                            comboBox(items: [
-                                                                    'Vertreter/in',
-                                                                    'Vertretene/r',
-                                                                        'Vertreter/in und Vertretene/r'
-                                                                        
-                                                                        
-                                                                                ], name: "_BET${index}_F_ROLLE", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Rolle", editable: false
-                                                                            )
-                                                            
-                                                                        }
-                                                                    }
+                                                                    
                                                                 }
                                                             }
                                                             
@@ -1351,6 +1321,25 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                                     lblOtherDocumentFile.text=otherDocumentFile.getName();
                                                                 }
                                                             })
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: 'Dokumententyp:')
+                                                    }
+                                                    td {
+                                                        comboBox(items: [
+                                                            'Elektronische Fassung eines Papierdokuments',
+                                                            'Sonstiges elektronisches Dokument',
+                                                            'Reinschrift (beglaubigt)',
+                                                            'Reinschrift (nicht beglaubigt)',
+                                                            'Elektronischer Vermerk nach § 44a / § 44b BeurkG',
+                                                            'Papier-Vermerk nach § 44a / § 44b BeurkG',
+                                                            'Sonstige elektronische Eigenurkunde',
+                                                            'Elektronische Abschrift (einfach)',
+                                                            'Elektronische Abschrift (beglaubigt)'       
+                                                            ], name: "_BDOK_TYP", clientPropertyJlawyerdescription: "Begleitdokument: Dokumententyp", editable: false
+                                                        )
                                                     }
                                                 }
                                                 tr {

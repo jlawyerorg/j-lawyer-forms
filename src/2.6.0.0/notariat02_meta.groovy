@@ -547,6 +547,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "Notariat: UVZ"
 description = "Falldatenblatt für Eintragungen im Urkundenverzeichnis"
-version = "0.6.0";
+version = "0.7.0";
 author = "Jens Kutschke"
-updated = "28.08.2025"
+updated = "29.08.2025"

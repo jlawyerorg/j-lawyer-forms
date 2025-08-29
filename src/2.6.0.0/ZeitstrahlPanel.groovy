@@ -715,7 +715,7 @@ public class ZeitstrahlPanel extends JPanel {
                 int x1 = 50 + (startDays * (width-70) / daysTotal) as int
                 int x2 = 50 + (endDays   * (width-70) / daysTotal) as int
 
-                g2.color = new Color(100, 150, 240, 180)
+                g2.color = zr.color
                 g2.fillRect(x1, y, Math.max(x2-x1, 5), rowHeight-30)
                 
                 g2.drawLine(10, y-25, getWidth()-10, y-25)

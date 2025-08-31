@@ -1021,12 +1021,14 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                             panel(border: titledBorder(title: "Beteiligte(r) ${index}:")) {
                                                 tableLayout (cellpadding: 5) {
                                                     tr {
+                                                        td {
+                                                            checkBox(text: 'im eigenen Namen', selected: false, name: "_BET${index}INEIGNAME", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} in eigenem Namen ja/nein")
+                                                        }
                                                         td (colfill:true, valign: 'right') {
                                                             comboBox(items: [
-                                                                    'in eigenem Namen',
                                                                     'Vertreter/in',
                                                                     'Vertretene/r',
-                                                                        'Vertreter/in und Vertretene/r'
+                                                                    'Vertreter/in und Vertretene/r'
                                                                         
                                                                         
                                                                 ], name: "_BET${index}_ROLLE", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Rolle", editable: false
@@ -1061,13 +1063,19 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                                                     }
                                                                                 })
                                                                         }
+                                                                        td {
+                                                                            checkBox(text: 'in Exportdatei aufnehmen', selected: false, name: "_BET${index}EXP", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Export ja/nein")
+                                                                        }
                                                                     }
                                                                 }
                                                             }
                                                             
                                                         }
-                                                        td {
-                                                            checkBox(text: 'in Exportdatei aufnehmen', selected: false, name: "_BET${index}EXP", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Export ja/nein")
+                                                    }
+                                                    tr {
+                                                        td (colspan: 3, colfill: true) {
+                                                            separator(preferredSize: [1, 2])
+                                                            
                                                         }
                                                     }
                                                     tr {

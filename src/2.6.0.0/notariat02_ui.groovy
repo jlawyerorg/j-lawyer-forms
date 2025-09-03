@@ -675,7 +675,9 @@ import javax.swing.JPanel
 import javax.swing.JTabbedPane
 import javax.swing.JTable
 import javax.swing.JTextField
+import javax.swing.JTextArea
 import javax.swing.JComboBox
+import javax.swing.JCheckBox
 import javax.swing.JFileChooser
 import javax.swing.ImageIcon
 import javax.swing.UIManager
@@ -684,8 +686,10 @@ import javax.swing.table.DefaultTableModel
 import java.awt.Font
 import java.awt.BorderLayout
 import java.util.ArrayList
+import java.nio.file.*
 import com.jdimension.jlawyer.client.settings.ServerSettings
 import com.jdimension.jlawyer.client.settings.ClientSettings;
+import com.jdimension.jlawyer.client.settings.UserSettings;
 import com.jdimension.jlawyer.services.JLawyerServiceLocator;
 import com.jdimension.jlawyer.services.ArchiveFileServiceRemote;
 import com.jdimension.jlawyer.client.utils.ThreadUtils;
@@ -697,8 +701,35 @@ import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
 
     JPanel SCRIPTPANEL=null;
+    JTextField txtUvzNummer=null;
+    JTextField txtDeedDate=null;
+    JTextField txtDeedOfPerson=null;
+    JTextField txtLocation=null;
+    JTextField txtAddonBusinessPurpose=null;
+    JTextArea taBemerkung=null;
+    JComboBox cmbOperationType=null;
+    JComboBox cmbBusinessPurpose=null;
+    JComboBox cmbDeedType=null;
+    JComboBox cmbUvzMark=null;
+    JComboBox cmbHDocTyp=null;
+    JComboBox cmbBDocTyp=null;
+    JCheckBox chkUvzNumberNotAssigned=null;
+    JCheckBox chkStrictlyConfidential=null;
+    JCheckBox chkNotaryRepresentative=null;
+    JCheckBox chkDepositedInheritanceContract=null;
+    JCheckBox  chkRelevantForPublicArchives=null;
+    JCheckBox  chkVideoCommunication=null;
+    JCheckBox  chkWithDraft=null;
+    
+    File mainDocumentFile=null;
+    File otherDocumentFile=null;
+    
     def txtFields = [:]  // map to hold references to text fields
     def rdFields = [:]  // map to hold references to radio buttons
+    def chkFields = [:]
+    def cmbFields = [:]
+    def spnFields = [:]
+    
     FormPluginCallback callback=null;
     
     SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -1025,10 +1056,11 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                 tableLayout (cellpadding: 5) {
                                                     tr {
                                                         td {
-                                                            checkBox(text: 'im eigenen Namen', selected: false, name: "_BET${index}INEIGNAME", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} in eigenem Namen ja/nein")
+                                                            def chk=checkBox(text: 'im eigenen Namen', selected: false, name: "_BET${index}INEIGNAME", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} in eigenem Namen ja/nein")
+                                                            chkFields["_BET${index}INEIGNAME"] = chk
                                                         }
                                                         td (colfill:true, valign: 'right') {
-                                                            comboBox(items: [
+                                                            def cmb=comboBox(items: [
                                                                     'Vertreter/in',
                                                                     'Vertretene/r',
                                                                     'Vertreter/in und Vertretene/r'
@@ -1036,7 +1068,7 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                                         
                                                                 ], name: "_BET${index}_ROLLE", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Rolle", editable: false
                                                             )
-                                                            
+                                                            cmbFields["_BET${index}_ROLLE"] = cmb
                                                             
                                                         }
                                                         td {
@@ -1067,7 +1099,8 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                                                 })
                                                                         }
                                                                         td {
-                                                                            checkBox(text: 'in Exportdatei aufnehmen', selected: false, name: "_BET${index}EXP", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Export ja/nein")
+                                                                            def chk=checkBox(text: 'in Exportdatei aufnehmen', selected: false, name: "_BET${index}EXP", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Export ja/nein")
+                                                                            chkFields["_BET${index}EXP"] = chk
                                                                         }
                                                                     }
                                                                 }
@@ -1227,7 +1260,8 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                                     tr {
                                                                         td {
                                                                             // Achtung, es gibt im Schema participantFree und participantOrganization
-                                                                            txtParticipantFree=textField(columns: 30, name: "_BET${index}_F_BESCHR", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Beschreibung")
+                                                                            def txt=txtParticipantFree=textField(columns: 30, name: "_BET${index}_F_BESCHR", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} Beschreibung")
+                                                                            txtFields["_BET${index}_F_BESCHR"] = txt
                                                                         }
                                                                     }
                                                                     tr {
@@ -1238,11 +1272,12 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                                     }
                                                                     tr {
                                                                         td {
-                                                                            spinner(clientPropertyJlawyerdescription: "Anzahl", name: "_BET${index}_F_ANZ", 
+                                                                            def spn=spinner(clientPropertyJlawyerdescription: "Anzahl", name: "_BET${index}_F_ANZ", 
                                                                                 model:spinnerNumberModel(minimum:0, 
                                                                                     maximum: 20,
                                                                                     value:0,
                                                                                     stepSize:1))
+                                                                            spnFields["_BET${index}_F_ANZ"] = spn
                                                                         }
                                                                     }
                                                                     
@@ -1271,7 +1306,7 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                 tr {
                                     td {
                                         scrollPane{
-                                            textArea(name: "_BEMERKUNG", clientPropertyJlawyerdescription: "Bemerkungen", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
+                                            taBemerkung=textArea(name: "_BEMERKUNG", clientPropertyJlawyerdescription: "Bemerkungen", lineWrap:true,wrapStyleWord:true, columns:50, rows:6,editable:true)
                                         }
                                     }
                                 } 
@@ -1300,7 +1335,7 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                         label(text: 'Dokumententyp:')
                                                     }
                                                     td {
-                                                        comboBox(items: [
+                                                        cmbHDocTyp=comboBox(items: [
                                                                     'Elektronische Fassung der Urschrift',
                                                                     'Elektronisches Original',
                                                                         'Elektronische Abschrift (beglaubigt)',
@@ -1328,7 +1363,7 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                         btnSelectMainDocument = button(text: 'Datei auswählen', actionPerformed: {
                                                                 JFileChooser fc = new JFileChooser()
                                                                 if (fc.showOpenDialog(SCRIPTPANEL) == JFileChooser.APPROVE_OPTION) {
-                                                                    File otherDocumentFile = fc.getSelectedFile()
+                                                                    otherDocumentFile = fc.getSelectedFile()
                                                                     lblOtherDocumentFile.text=otherDocumentFile.getName();
                                                                 }
                                                             })
@@ -1339,7 +1374,7 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                         label(text: 'Dokumententyp:')
                                                     }
                                                     td {
-                                                        comboBox(items: [
+                                                        cmbBDocTyp=comboBox(items: [
                                                             'Elektronische Fassung eines Papierdokuments',
                                                             'Sonstiges elektronisches Dokument',
                                                             'Reinschrift (beglaubigt)',
@@ -1505,14 +1540,14 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
         def exportData = [
             exportVersion     : "1.6.1",
             exportDateTime    : exportDateTime,
-            exportUser        : System.getProperty("user.name"),
-            sourceApplication : "Groovy UVZ Oberfläche",
+            exportUser        : UserSettings.getInstance().getCurrentUser().getPrincipalId(),
+            sourceApplication : "j-lawyer.org",
             uvzNr : [
                 year   : uvzYear,
                 counter: uvzCounter,
                 mark   : cmbUvzMark.selectedItem ?: ""
             ],
-            originOfficialActivityId : "127", // optional/Platzhalter
+            //originOfficialActivityId : "127", // optional/Platzhalter
             operationData : [
                 operationType         : operationTypeKey,
                 uvzNumberNotAssigned  : chkUvzNumberNotAssigned.isSelected(),
@@ -1530,7 +1565,7 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                 withDraft                   : chkWithDraft.isSelected(),
                 participantEntities         : buildParticipants(),
                 remarks : [
-                    [ text: _BEMERKUNG.text ]
+                    [ text: taBemerkung.text ]
                 ],
                 mainDocumentMetaData : buildMainDocument(),
                 otherDocumentMetaData: buildOtherDocuments()
@@ -1544,36 +1579,36 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
 
     def buildParticipants() {
         def participants = []
-        (1..10).each { idx ->
-            def include = rdFields["_BET${idx}_NP"] || rdFields["_BET${idx}_O"] || rdFields["_BET${idx}_F"]
-            if (include && swing.findComponent("_BET${idx}EXP")?.isSelected()) {
-                if (rdFields["_BET${idx}_NP"].isSelected()) {
+        (1..10).each { index ->
+            if (chkFields["_BET${index}EXP"]?.isSelected()) {
+                if (rdFields["_BET${index}_NP"]?.isSelected()) {
                     participants << [
                         participantType: "Natürliche Person",
-                        firstNames     : txtFields["_BET${idx}_NP_VORNAME"]?.text,
-                        surname        : txtFields["_BET${idx}_NP_NAME"]?.text,
-                        birthName      : txtFields["_BET${idx}_NP_GNAME"]?.text,
-                        birthDate      : txtFields["_BET${idx}_NP_GEBDATUM"]?.text,
-                        city           : txtFields["_BET${idx}_NP_ORT"]?.text,
-                        inOwnName      : swing.findComponent("_BET${idx}INEIGNAME")?.isSelected(),
-                        proxyRole      : swing.findComponent("_BET${idx}_ROLLE")?.selectedItem
+                        firstNames     : txtFields["_BET${index}_NP_VORNAME"]?.text,
+                        surname        : txtFields["_BET${index}_NP_NAME"]?.text,
+                        birthName      : txtFields["_BET${index}_NP_GNAME"]?.text,
+                        birthDate      : txtFields["_BET${index}_NP_GEBDATUM"]?.text,
+                        city           : txtFields["_BET${index}_NP_ORT"]?.text,
+                        inOwnName      : chkFields["_BET${index}INEIGNAME"]?.isSelected(),
+                        proxyRole      : cmbFields["_BET${index}_ROLLE"]?.selectedItem
                     ]
                 }
-                else if (rdFields["_BET${idx}_O"].isSelected()) {
+                else if (rdFields["_BET${index}_O"]?.isSelected()) {
                     participants << [
                         participantType: "Organisation",
-                        name           : txtFields["_BET${idx}_O_NAME"]?.text,
-                        residenceCity  : txtFields["_BET${idx}_O_ORT"]?.text,
-                        proxyRole      : swing.findComponent("_BET${idx}_ROLLE")?.selectedItem
+                        name           : txtFields["_BET${index}_O_NAME"]?.text,
+                        residenceCity  : txtFields["_BET${index}_O_ORT"]?.text,
+                        inOwnName      : chkFields["_BET${index}INEIGNAME"]?.isSelected(),
+                        proxyRole      : cmbFields["_BET${index}_ROLLE"]?.selectedItem
                     ]
                 }
-                else if (rdFields["_BET${idx}_F"].isSelected()) {
+                else if (rdFields["_BET${index}_F"]?.isSelected()) {
                     participants << [
                         participantType: "Freie Bezeichnung",
-                        freeDescription: swing.findComponent("_BET${idx}_F_BESCHR")?.text,
-                        number         : swing.findComponent("_BET${idx}_F_ANZ")?.value,
-                        proxyRole      : swing.findComponent("_BET${idx}_ROLLE")?.selectedItem,
-                        inOwnName      : swing.findComponent("_BET${idx}INEIGNAME")?.isSelected()
+                        freeDescription: txtFields["_BET${index}_F_BESCHR"]?.text,
+                        number         : spnFields["_BET${index}_F_ANZ"]?.value,
+                        proxyRole      : cmbFields["_BET${index}_ROLLE"]?.selectedItem,
+                        inOwnName      : chkFields["_BET${index}INEIGNAME"]?.isSelected()
                     ]
                 }
             }
@@ -1585,28 +1620,56 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
         if (!mainDocumentFile) return null
         return [
             documentReference: [ fileReference: mainDocumentFile.name ],
-            documentType     : swing.findComponent("_HDOK_TYP")?.selectedItem,
+            documentType     : cmbHDocTyp.selectedItem,
             documentTitle    : mainDocumentFile.name
         ]
     }
 
     def buildOtherDocuments() {
-        if (!lblOtherDocumentFile.text?.trim()) return []
+        if (otherDocumentFile==null) return []
         return [[
-                documentReference: [ fileReference: lblOtherDocumentFile.text ],
-                documentType     : swing.findComponent("_BDOK_TYP")?.selectedItem,
-                documentTitle    : lblOtherDocumentFile.text
+                documentReference: [ fileReference: otherDocumentFile.name ],
+                documentType     : cmbBDocTyp.selectedItem,
+                documentTitle    : otherDocumentFile.name
             ]]
     }
 
     // Export in Datei:
     def exportToZip() {
-        def json = buildJsonExport()
-        def f = new File("uvz_export.json")
-        f.text = json
-        javax.swing.JOptionPane.showMessageDialog(SCRIPTPANEL, "Export gespeichert: ${f.absolutePath}")
+        def chooser = new JFileChooser()
+        chooser.fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
+        chooser.dialogTitle = "Export-Verzeichnis wählen"
+
+        if (chooser.showSaveDialog(EditorsRegistry.getInstance().getMainWindow()) == JFileChooser.APPROVE_OPTION) {
+            File exportDir = chooser.selectedFile
+
+            // JSON-Datei schreiben
+            def json = buildJsonExport()
+            def jsonFile = new File(exportDir, "uvz_export.json")
+            jsonFile.text = json
+
+            // Hauptdokument kopieren (falls vorhanden)
+            if (mainDocumentFile && mainDocumentFile.exists()) {
+                Files.copy(mainDocumentFile.toPath(), 
+                    new File(exportDir, mainDocumentFile.name).toPath(),
+                    StandardCopyOption.REPLACE_EXISTING)
+            }
+
+            // Begleitdokument kopieren (falls vorhanden)
+            if (otherDocumentFile && otherDocumentFile.exists()) {
+                
+                    Files.copy(otherDocumentFile.toPath(),
+                        new File(exportDir, otherDocumentFile.name).toPath(),
+                        StandardCopyOption.REPLACE_EXISTING)
+                
+            }
+
+            javax.swing.JOptionPane.showMessageDialog(
+                EditorsRegistry.getInstance().getMainWindow(),
+            "Export gespeichert in: ${exportDir.absolutePath}"
+            )
+        }
     }
-    
 
 }
                                     

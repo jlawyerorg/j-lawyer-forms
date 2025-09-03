@@ -664,9 +664,12 @@ For more information on this, and how to apply and follow the GNU AGPL, see
  */
 
 import groovy.swing.SwingBuilder
+import groovy.json.JsonOutput
 import java.text.SimpleDateFormat
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.time.*
+import java.time.format.DateTimeFormatter
 import javax.swing.SwingConstants
 import javax.swing.JPanel
 import javax.swing.JTabbedPane
@@ -1483,6 +1486,125 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
 
         dlg.visible = true
         return selected
+    }
+    
+    def buildJsonExport() {
+        // aktuelles Datum/Zeit im Format wie im Beispiel
+        def now = OffsetDateTime.now(ZoneOffset.UTC)
+        def exportDateTime = now.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+
+        def uvzNummerParts = txtUvzNummer.text.split("/")
+        def uvzCounter = uvzNummerParts[0].isInteger() ? uvzNummerParts[0] as int : 0
+        def uvzYear   = uvzNummerParts.size() > 1 ? uvzNummerParts[1] as int : Calendar.instance.get(Calendar.YEAR)
+
+        // Mapping OperationType (ComboBox zeigt Label, JSON braucht Key)
+        def selectedLabel = cmbOperationType.selectedItem
+        def operationTypeKey = operationTypes.find { k,v -> v == selectedLabel }?.key ?: ""
+
+        // Grundstruktur
+        def exportData = [
+            exportVersion     : "1.6.1",
+            exportDateTime    : exportDateTime,
+            exportUser        : System.getProperty("user.name"),
+            sourceApplication : "Groovy UVZ Oberfläche",
+            uvzNr : [
+                year   : uvzYear,
+                counter: uvzCounter,
+                mark   : cmbUvzMark.selectedItem ?: ""
+            ],
+            originOfficialActivityId : "127", // optional/Platzhalter
+            operationData : [
+                operationType         : operationTypeKey,
+                uvzNumberNotAssigned  : chkUvzNumberNotAssigned.isSelected(),
+                strictlyConfidential  : chkStrictlyConfidential.isSelected(),
+                deedDate              : txtDeedDate.text,
+                deedOfPerson          : txtDeedOfPerson.text,
+                notaryRepresentative  : chkNotaryRepresentative.isSelected(),
+                location              : txtLocation.text,
+                businessPurpose       : cmbBusinessPurpose.selectedItem,
+                addonBusinessPurpose  : txtAddonBusinessPurpose.text,
+                deedType              : cmbDeedType.selectedItem,
+                depositedInheritanceContract: chkDepositedInheritanceContract.isSelected(),
+                relevantForPublicArchives   : chkRelevantForPublicArchives.isSelected(),
+                videoCommunication          : chkVideoCommunication.isSelected(),
+                withDraft                   : chkWithDraft.isSelected(),
+                participantEntities         : buildParticipants(),
+                remarks : [
+                    [ text: _BEMERKUNG.text ]
+                ],
+                mainDocumentMetaData : buildMainDocument(),
+                otherDocumentMetaData: buildOtherDocuments()
+            ]
+        ]
+
+        return JsonOutput.prettyPrint(JsonOutput.toJson(exportData))
+    }
+
+    // Hilfsfunktionen:
+
+    def buildParticipants() {
+        def participants = []
+        (1..10).each { idx ->
+            def include = rdFields["_BET${idx}_NP"] || rdFields["_BET${idx}_O"] || rdFields["_BET${idx}_F"]
+            if (include && swing.findComponent("_BET${idx}EXP")?.isSelected()) {
+                if (rdFields["_BET${idx}_NP"].isSelected()) {
+                    participants << [
+                        participantType: "Natürliche Person",
+                        firstNames     : txtFields["_BET${idx}_NP_VORNAME"]?.text,
+                        surname        : txtFields["_BET${idx}_NP_NAME"]?.text,
+                        birthName      : txtFields["_BET${idx}_NP_GNAME"]?.text,
+                        birthDate      : txtFields["_BET${idx}_NP_GEBDATUM"]?.text,
+                        city           : txtFields["_BET${idx}_NP_ORT"]?.text,
+                        inOwnName      : swing.findComponent("_BET${idx}INEIGNAME")?.isSelected(),
+                        proxyRole      : swing.findComponent("_BET${idx}_ROLLE")?.selectedItem
+                    ]
+                }
+                else if (rdFields["_BET${idx}_O"].isSelected()) {
+                    participants << [
+                        participantType: "Organisation",
+                        name           : txtFields["_BET${idx}_O_NAME"]?.text,
+                        residenceCity  : txtFields["_BET${idx}_O_ORT"]?.text,
+                        proxyRole      : swing.findComponent("_BET${idx}_ROLLE")?.selectedItem
+                    ]
+                }
+                else if (rdFields["_BET${idx}_F"].isSelected()) {
+                    participants << [
+                        participantType: "Freie Bezeichnung",
+                        freeDescription: swing.findComponent("_BET${idx}_F_BESCHR")?.text,
+                        number         : swing.findComponent("_BET${idx}_F_ANZ")?.value,
+                        proxyRole      : swing.findComponent("_BET${idx}_ROLLE")?.selectedItem,
+                        inOwnName      : swing.findComponent("_BET${idx}INEIGNAME")?.isSelected()
+                    ]
+                }
+            }
+        }
+        return participants
+    }
+
+    def buildMainDocument() {
+        if (!mainDocumentFile) return null
+        return [
+            documentReference: [ fileReference: mainDocumentFile.name ],
+            documentType     : swing.findComponent("_HDOK_TYP")?.selectedItem,
+            documentTitle    : mainDocumentFile.name
+        ]
+    }
+
+    def buildOtherDocuments() {
+        if (!lblOtherDocumentFile.text?.trim()) return []
+        return [[
+                documentReference: [ fileReference: lblOtherDocumentFile.text ],
+                documentType     : swing.findComponent("_BDOK_TYP")?.selectedItem,
+                documentTitle    : lblOtherDocumentFile.text
+            ]]
+    }
+
+    // Export in Datei:
+    def exportToZip() {
+        def json = buildJsonExport()
+        def f = new File("uvz_export.json")
+        f.text = json
+        javax.swing.JOptionPane.showMessageDialog(SCRIPTPANEL, "Export gespeichert: ${f.absolutePath}")
     }
     
 

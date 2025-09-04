@@ -733,6 +733,7 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
     FormPluginCallback callback=null;
     
     SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
+    SimpleDateFormat jsonDatumsFormat = new SimpleDateFormat("yyyy-MM-dd");
     
     def operationTypes = [
     'ADD_DEED_ENTRY'    : 'Neuer Eintrag',
@@ -1056,11 +1057,12 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                                                 tableLayout (cellpadding: 5) {
                                                     tr {
                                                         td {
-                                                            def chk=checkBox(text: 'im eigenen Namen', selected: false, name: "_BET${index}INEIGNAME", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} in eigenem Namen ja/nein")
+                                                            def chk=checkBox(text: 'im eigenen Namen', selected: true, name: "_BET${index}INEIGNAME", clientPropertyJlawyerdescription: "Beteiligte(r) ${index} in eigenem Namen ja/nein")
                                                             chkFields["_BET${index}INEIGNAME"] = chk
                                                         }
                                                         td (colfill:true, valign: 'right') {
                                                             def cmb=comboBox(items: [
+                                                                    '',
                                                                     'Vertreter/in',
                                                                     'Vertretene/r',
                                                                     'Vertreter/in und Vertretene/r'
@@ -1536,7 +1538,42 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
         def selectedLabel = cmbOperationType.selectedItem
         def operationTypeKey = operationTypes.find { k,v -> v == selectedLabel }?.key ?: ""
 
-        // Grundstruktur
+        // deedDate konvertieren
+        String deedDate = null
+        try {
+            deedDate = jsonDatumsFormat.format(datumsFormat.parse(txtDeedDate.text))
+        } catch (Throwable t) {
+            // ignorieren
+        }
+
+        // Grundstruktur ohne deedDate
+        def operationData = [
+            operationType               : operationTypeKey,
+            uvzNumberNotAssigned        : chkUvzNumberNotAssigned.isSelected(),
+            strictlyConfidential        : chkStrictlyConfidential.isSelected(),
+            deedOfPerson                : txtDeedOfPerson.text,
+            notaryRepresentative        : chkNotaryRepresentative.isSelected(),
+            location                    : txtLocation.text,
+            businessPurpose             : cmbBusinessPurpose.selectedItem,
+            addonBusinessPurpose        : txtAddonBusinessPurpose.text,
+            deedType                    : cmbDeedType.selectedItem,
+            depositedInheritanceContract: chkDepositedInheritanceContract.isSelected(),
+            relevantForPublicArchives   : chkRelevantForPublicArchives.isSelected(),
+            videoCommunication          : chkVideoCommunication.isSelected(),
+            withDraft                   : chkWithDraft.isSelected(),
+            participantEntities         : buildParticipants(),
+            remarks : [
+                [ text: taBemerkung.text ]
+            ],
+            mainDocumentMetaData : buildMainDocument(),
+            otherDocumentMetaData: buildOtherDocuments()
+        ]
+
+        // deedDate nur hinzufügen, wenn nicht null
+        if (deedDate) {
+            operationData.deedDate = deedDate
+        }
+
         def exportData = [
             exportVersion     : "1.6.1",
             exportDateTime    : exportDateTime,
@@ -1547,29 +1584,8 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                 counter: uvzCounter,
                 mark   : cmbUvzMark.selectedItem ?: ""
             ],
-            //originOfficialActivityId : "127", // optional/Platzhalter
-            operationData : [
-                operationType         : operationTypeKey,
-                uvzNumberNotAssigned  : chkUvzNumberNotAssigned.isSelected(),
-                strictlyConfidential  : chkStrictlyConfidential.isSelected(),
-                deedDate              : txtDeedDate.text,
-                deedOfPerson          : txtDeedOfPerson.text,
-                notaryRepresentative  : chkNotaryRepresentative.isSelected(),
-                location              : txtLocation.text,
-                businessPurpose       : cmbBusinessPurpose.selectedItem,
-                addonBusinessPurpose  : txtAddonBusinessPurpose.text,
-                deedType              : cmbDeedType.selectedItem,
-                depositedInheritanceContract: chkDepositedInheritanceContract.isSelected(),
-                relevantForPublicArchives   : chkRelevantForPublicArchives.isSelected(),
-                videoCommunication          : chkVideoCommunication.isSelected(),
-                withDraft                   : chkWithDraft.isSelected(),
-                participantEntities         : buildParticipants(),
-                remarks : [
-                    [ text: taBemerkung.text ]
-                ],
-                mainDocumentMetaData : buildMainDocument(),
-                otherDocumentMetaData: buildOtherDocuments()
-            ]
+            originOfficialActivityId : "127",
+            operationData     : operationData
         ]
 
         return JsonOutput.prettyPrint(JsonOutput.toJson(exportData))
@@ -1581,35 +1597,85 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
         def participants = []
         (1..10).each { index ->
             if (chkFields["_BET${index}EXP"]?.isSelected()) {
+                
+                if(chkFields["_BET${index}INEIGNAME"]?.isSelected()) {
+                    cmbFields["_BET${index}_ROLLE"].setSelectedItem("");
+                }
+                
                 if (rdFields["_BET${index}_NP"]?.isSelected()) {
-                    participants << [
+                    String birthDate = null
+                    try {
+                        birthDate = jsonDatumsFormat.format(datumsFormat.parse(txtFields["_BET${index}_NP_GEBDATUM"].text))
+                    } catch (Throwable t) {
+                        // ignorieren
+                    }
+                    
+                    String proxyRole=null;
+                    if(!"".equals(cmbFields["_BET${index}_ROLLE"]?.selectedItem)) {
+                        proxyRole=cmbFields["_BET${index}_ROLLE"]?.selectedItem;
+                    }
+
+                    // Grunddaten
+                    def participant = [
                         participantType: "Natürliche Person",
                         firstNames     : txtFields["_BET${index}_NP_VORNAME"]?.text,
                         surname        : txtFields["_BET${index}_NP_NAME"]?.text,
                         birthName      : txtFields["_BET${index}_NP_GNAME"]?.text,
-                        birthDate      : txtFields["_BET${index}_NP_GEBDATUM"]?.text,
                         city           : txtFields["_BET${index}_NP_ORT"]?.text,
-                        inOwnName      : chkFields["_BET${index}INEIGNAME"]?.isSelected(),
-                        proxyRole      : cmbFields["_BET${index}_ROLLE"]?.selectedItem
+                        inOwnName      : chkFields["_BET${index}INEIGNAME"]?.isSelected()
                     ]
+
+                    // birthDate nur hinzufügen, wenn nicht null
+                    if (birthDate) {
+                        participant.birthDate = birthDate
+                    }
+                    if(proxyRole) {
+                        participant.proxyRole = proxyRole
+                    }
+
+                    participants << participant
                 }
                 else if (rdFields["_BET${index}_O"]?.isSelected()) {
-                    participants << [
+                    
+                    String proxyRole=null;
+                    if(!"".equals(cmbFields["_BET${index}_ROLLE"]?.selectedItem)) {
+                        proxyRole=cmbFields["_BET${index}_ROLLE"]?.selectedItem;
+                    }
+                    
+                    // Grunddaten
+                    def participant = [
                         participantType: "Organisation",
                         name           : txtFields["_BET${index}_O_NAME"]?.text,
                         residenceCity  : txtFields["_BET${index}_O_ORT"]?.text,
-                        inOwnName      : chkFields["_BET${index}INEIGNAME"]?.isSelected(),
-                        proxyRole      : cmbFields["_BET${index}_ROLLE"]?.selectedItem
+                        inOwnName      : chkFields["_BET${index}INEIGNAME"]?.isSelected()
                     ]
+
+                    if(proxyRole) {
+                        participant.proxyRole = proxyRole
+                    }
+
+                    participants << participant
                 }
                 else if (rdFields["_BET${index}_F"]?.isSelected()) {
-                    participants << [
+                    String proxyRole=null;
+                    if(!"".equals(cmbFields["_BET${index}_ROLLE"]?.selectedItem)) {
+                        proxyRole=cmbFields["_BET${index}_ROLLE"]?.selectedItem;
+                    }
+                    
+                    // Grunddaten
+                    def participant = [
                         participantType: "Freie Bezeichnung",
                         freeDescription: txtFields["_BET${index}_F_BESCHR"]?.text,
                         number         : spnFields["_BET${index}_F_ANZ"]?.value,
-                        proxyRole      : cmbFields["_BET${index}_ROLLE"]?.selectedItem,
                         inOwnName      : chkFields["_BET${index}INEIGNAME"]?.isSelected()
                     ]
+
+                    if(proxyRole) {
+                        participant.proxyRole = proxyRole
+                    }
+
+                    participants << participant
+                    
                 }
             }
         }
@@ -1640,8 +1706,19 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
         chooser.fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
         chooser.dialogTitle = "Export-Verzeichnis wählen"
 
+        // Basis für Unterverzeichnis aus UI
+        String subDirRaw = txtUvzNummer.text ?: "UVZ_Export"
+
+        // Unzulässige Zeichen durch "_" ersetzen
+        String safeSubDir = subDirRaw.replaceAll(/[\/\\\\:*?"<>|]/, "_")
+
         if (chooser.showSaveDialog(EditorsRegistry.getInstance().getMainWindow()) == JFileChooser.APPROVE_OPTION) {
-            File exportDir = chooser.selectedFile
+            File baseDir = chooser.selectedFile
+            File exportDir = new File(baseDir, safeSubDir)
+
+            if (!exportDir.exists()) {
+                exportDir.mkdirs()
+            }
 
             // JSON-Datei schreiben
             def json = buildJsonExport()
@@ -1650,18 +1727,16 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
 
             // Hauptdokument kopieren (falls vorhanden)
             if (mainDocumentFile && mainDocumentFile.exists()) {
-                Files.copy(mainDocumentFile.toPath(), 
+                Files.copy(mainDocumentFile.toPath(),
                     new File(exportDir, mainDocumentFile.name).toPath(),
                     StandardCopyOption.REPLACE_EXISTING)
             }
 
             // Begleitdokument kopieren (falls vorhanden)
             if (otherDocumentFile && otherDocumentFile.exists()) {
-                
-                    Files.copy(otherDocumentFile.toPath(),
-                        new File(exportDir, otherDocumentFile.name).toPath(),
-                        StandardCopyOption.REPLACE_EXISTING)
-                
+                Files.copy(otherDocumentFile.toPath(),
+                    new File(exportDir, otherDocumentFile.name).toPath(),
+                    StandardCopyOption.REPLACE_EXISTING)
             }
 
             javax.swing.JOptionPane.showMessageDialog(

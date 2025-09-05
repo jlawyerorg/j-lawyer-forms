@@ -1562,12 +1562,14 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
             videoCommunication          : chkVideoCommunication.isSelected(),
             withDraft                   : chkWithDraft.isSelected(),
             participantEntities         : buildParticipants(),
-            remarks : [
-                [ text: taBemerkung.text ]
-            ],
             mainDocumentMetaData : buildMainDocument(),
             otherDocumentMetaData: buildOtherDocuments()
         ]
+        
+        // remarks nur anhängen, wenn nicht leer
+        if (taBemerkung.text?.trim()) {
+            operationData.remarks = [[ text: taBemerkung.text.trim() ]]
+        }
 
         // deedDate nur hinzufügen, wenn nicht null
         if (deedDate) {

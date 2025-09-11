@@ -1326,6 +1326,34 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                                 tr {
                                                     td (colfill:true) {
                                     
+                                                        label(text: 'gekündigt zum:')
+                                    
+                                    
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtGekuendigtZum=textField(id: 'sGekuendigtZum', name: "_KZUM", clientPropertyJlawyerdescription: "gekündigt zum / Beendigungsdatum laut Kündigung", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtGekuendigtZum, true);
+                                                                            })
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true) {
+                                    
                                                         label(text: 'Art des Zugangs:')
                                     
                                     

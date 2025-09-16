@@ -685,6 +685,7 @@ import java.awt.Component
 import java.awt.Container
 import com.jdimension.jlawyer.client.settings.ClientSettings;
 import com.jdimension.jlawyer.client.utils.ThreadUtils;
+import com.jdimension.jlawyer.client.utils.FileUtils;
 import com.jdimension.jlawyer.persistence.ArchiveFileBean;
 import com.jdimension.jlawyer.persistence.CalendarSetup;
 import com.jdimension.jlawyer.persistence.ArchiveFileReviewsBean;
@@ -764,6 +765,20 @@ public class StorageLib {
             
         } catch (Exception ex) {
             ThreadUtils.showErrorDialog(EditorsRegistry.getInstance().getMainWindow(), "Fehler beim Speichern des Dokuments: " + ex.getMessage(), "Fehler");
+        }
+    }
+    
+    public static String getDocumentAsTempFile(ArchiveFileDocumentsBean document) {
+        ClientSettings settings = ClientSettings.getInstance();
+        try {
+            JLawyerServiceLocator locator = JLawyerServiceLocator.getInstance(settings.getLookupProperties());
+            ArchiveFileServiceRemote afs = locator.lookupArchiveFileServiceRemote();
+            byte[] content=afs.getDocumentContent(document.getId());
+            return FileUtils.createTempFile(document.getName(), content);
+            
+            
+        } catch (Exception ex) {
+            ThreadUtils.showErrorDialog(EditorsRegistry.getInstance().getMainWindow(), "Fehler beim Erstellen der temporären Datei: " + ex.getMessage(), "Fehler");
         }
     }
     

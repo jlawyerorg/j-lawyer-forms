@@ -1562,9 +1562,13 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
             videoCommunication          : chkVideoCommunication.isSelected(),
             withDraft                   : chkWithDraft.isSelected(),
             participantEntities         : buildParticipants(),
-            mainDocumentMetaData : buildMainDocument(),
             otherDocumentMetaData: buildOtherDocuments()
         ]
+        
+        // Optional-Felder nur bei Bedarf hinzufügen
+        if (mainDocumentFile) {
+            operationData.mainDocumentMetaData = buildMainDocument()
+        }
         
         // remarks nur anhängen, wenn nicht leer
         if (taBemerkung.text?.trim()) {
@@ -1586,7 +1590,7 @@ public class notariat02_ui implements com.jdimension.jlawyer.client.plugins.form
                 counter: uvzCounter,
                 mark   : cmbUvzMark.selectedItem ?: ""
             ],
-            originOfficialActivityId : "127",
+            originOfficialActivityId : "",
             operationData     : operationData
         ]
 

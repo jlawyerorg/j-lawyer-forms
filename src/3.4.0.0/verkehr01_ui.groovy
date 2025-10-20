@@ -3385,10 +3385,15 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     private void populateNutzungsausfallTagessatz(String ausfallGruppe, String fahrzeugTyp) {
         
         float perDay=0f;
-        if("PKW".equalsIgnoreCase(fahrzeugTyp)) {
-            perDay=ausfallTabellePkw.get(ausfallGruppe);
-        } else if("Motorrad".equalsIgnoreCase(fahrzeugTyp)) {
-            perDay=ausfallTabelleKrad.get(ausfallGruppe);
+        try {
+            if("PKW".equalsIgnoreCase(fahrzeugTyp)) {
+                perDay=ausfallTabellePkw.get(ausfallGruppe);
+            } else if("Motorrad".equalsIgnoreCase(fahrzeugTyp)) {
+                perDay=ausfallTabelleKrad.get(ausfallGruppe);
+            }
+        } catch (Throwable t) {
+            System.out.println("Ungültiger Wert für Fahrzeugtyp " + fahrzeugTyp + " oder Nutzungsausfallgruppe " + ausfallGruppe);
+            t.printStackTrace();
         }
         txtNutzungsausfallTagessatz.setText("" + betragFormat.format(perDay));
         

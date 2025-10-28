@@ -711,6 +711,13 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
     DefaultTableModel commLogTableModel = null;
     JTextField txtCommLogData = null; // Verstecktes Feld für JSON-Daten
 
+    // Fortschrittsanzeige
+    JProgressBar progressBar = null;
+    JLabel lblProgress = null;
+
+    // Liste aller Status-Comboboxen
+    def statusComboBoxes = [];
+
     public rechtspsy01_ui() {
         super();
     }
@@ -852,11 +859,34 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                    .replace("\n", "<br>");
     }
 
+    // Aktualisiert die Fortschrittsanzeige basierend auf Status-Comboboxen
+    private void updateProgress() {
+        if (progressBar == null || lblProgress == null || statusComboBoxes.isEmpty()) return;
+
+        int total = statusComboBoxes.size();
+        int completed = 0;
+
+        statusComboBoxes.each { cmb ->
+            def selectedValue = cmb.getSelectedItem()?.toString()
+            if ("abgeschlossen".equals(selectedValue)) {
+                completed++;
+            }
+        }
+
+        int percentage = total > 0 ? (int) Math.round((completed * 100.0) / total) : 0;
+
+        progressBar.setValue(percentage);
+        lblProgress.setText("Fortschritt: ${completed} von ${total} Aufgaben abgeschlossen (${percentage}%)");
+    }
+
     public void setPlaceHolderValues(String prefix, Hashtable placeHolderValues) {
         FormsLib.setPlaceHolderValues(prefix, placeHolderValues, this.SCRIPTPANEL);
 
         // Spezialbehandlung für Kommunikationslogbuch-Tabelle
         loadTableFromJson();
+
+        // Fortschritt aktualisieren
+        updateProgress();
     }
 
     public void setCallback(FormPluginCallback callback) {
@@ -874,11 +904,35 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                         panel(name: 'Gutachten') {
                             tableLayout (cellpadding: 5) {
                                 tr {
+                                    td (colspan: 2) {
+                                        panel {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        lblProgress = label(text: 'Fortschritt: 0 von 0 Aufgaben abgeschlossen (0%)')
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        progressBar = progressBar(
+                                                            minimum: 0,
+                                                            maximum: 100,
+                                                            value: 0,
+                                                            stringPainted: true,
+                                                            preferredSize: [600, 25]
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
                                     td (colfill:true) {
-                                    
+
                                         label(text: 'Frist:')
-                                    
-                                    
+
+
                                     }
                                     td {
                                         panel {
@@ -969,9 +1023,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Eingang Gutachtenauftrag",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus010
                                                         cmbStatus010.addActionListener {
                                                             def selected = cmbStatus010.selectedItem
                                                             cmbStatus010.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1040,9 +1096,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Akteneingang",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus020
                                                         cmbStatus020.addActionListener {
                                                             def selected = cmbStatus020.selectedItem
                                                             cmbStatus020.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1080,9 +1138,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Akten scannen",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus030
                                                         cmbStatus030.addActionListener {
                                                             def selected = cmbStatus030.selectedItem
                                                             cmbStatus030.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1120,9 +1180,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Formular 1 Danke Gutachtenauftrag & Akten zurück",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus040
                                                         cmbStatus040.addActionListener {
                                                             def selected = cmbStatus040.selectedItem
                                                             cmbStatus040.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1160,9 +1222,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Formular 2 Benachrichtigung VB",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus050
                                                         cmbStatus050.addActionListener {
                                                             def selected = cmbStatus050.selectedItem
                                                             cmbStatus050.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1200,9 +1264,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Akten zurück",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus060
                                                         cmbStatus060.addActionListener {
                                                             def selected = cmbStatus060.selectedItem
                                                             cmbStatus060.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1240,9 +1306,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Beschluss lesen und Fragestellung klären",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus070
                                                         cmbStatus070.addActionListener {
                                                             def selected = cmbStatus070.selectedItem
                                                             cmbStatus070.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1334,9 +1402,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Aktenanalyse/ Anknüpfungstatsachen",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus080
                                                         cmbStatus080.addActionListener {
                                                             def selected = cmbStatus080.selectedItem
                                                             cmbStatus080.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1374,9 +1444,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Termine/Ladungen Kindesmutter",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus090
                                                         cmbStatus090.addActionListener {
                                                             def selected = cmbStatus090.selectedItem
                                                             cmbStatus090.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1414,9 +1486,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Termine/Ladungen Kindesvater",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus091
                                                         cmbStatus091.addActionListener {
                                                             def selected = cmbStatus091.selectedItem
                                                             cmbStatus091.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1454,9 +1528,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Ladungen Sonstige",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus100
                                                         cmbStatus100.addActionListener {
                                                             def selected = cmbStatus100.selectedItem
                                                             cmbStatus100.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1494,9 +1570,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Kommunikation mit Kindeseltern und Anderen",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus110
                                                         cmbStatus110.addActionListener {
                                                             def selected = cmbStatus110.selectedItem
                                                             cmbStatus110.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1534,9 +1612,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Befunde anfordern",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus120
                                                         cmbStatus120.addActionListener {
                                                             def selected = cmbStatus120.selectedItem
                                                             cmbStatus120.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1574,9 +1654,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Befunde checken",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus130
                                                         cmbStatus130.addActionListener {
                                                             def selected = cmbStatus130.selectedItem
                                                             cmbStatus130.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1614,9 +1696,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Testauswertung Kind",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus140
                                                         cmbStatus140.addActionListener {
                                                             def selected = cmbStatus140.selectedItem
                                                             cmbStatus140.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1654,9 +1738,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Testauswertung Kindesmutter",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus141
                                                         cmbStatus141.addActionListener {
                                                             def selected = cmbStatus141.selectedItem
                                                             cmbStatus141.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1694,9 +1780,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Testauswertung Kindesvater",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus142
                                                         cmbStatus142.addActionListener {
                                                             def selected = cmbStatus142.selectedItem
                                                             cmbStatus142.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1734,9 +1822,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Auswertung IA-B",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus150
                                                         cmbStatus150.addActionListener {
                                                             def selected = cmbStatus150.selectedItem
                                                             cmbStatus150.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1774,9 +1864,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus GA - Gliederungspunkt 1.3 schreiben/fertigstellen",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus160
                                                         cmbStatus160.addActionListener {
                                                             def selected = cmbStatus160.selectedItem
                                                             cmbStatus160.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1814,9 +1906,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Untersuchungsberichte",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus170
                                                         cmbStatus170.addActionListener {
                                                             def selected = cmbStatus170.selectedItem
                                                             cmbStatus170.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1854,9 +1948,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus eingereichte Unterlagen zusammenfügen",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus180
                                                         cmbStatus180.addActionListener {
                                                             def selected = cmbStatus180.selectedItem
                                                             cmbStatus180.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1894,9 +1990,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus GA-Dokumente vorbereiten",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus190
                                                         cmbStatus190.addActionListener {
                                                             def selected = cmbStatus190.selectedItem
                                                             cmbStatus190.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1934,9 +2032,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Befund schreiben",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus200
                                                         cmbStatus200.addActionListener {
                                                             def selected = cmbStatus200.selectedItem
                                                             cmbStatus200.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -1974,9 +2074,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus Rechnung schreiben",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus210
                                                         cmbStatus210.addActionListener {
                                                             def selected = cmbStatus210.selectedItem
                                                             cmbStatus210.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {
@@ -2014,9 +2116,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             clientPropertyJlawyerdescription: "Bearbeitungsstatus GA drucken, verpacken, versenden",
                                                             editable: false
                                                         )
+                                                        statusComboBoxes << cmbStatus220
                                                         cmbStatus220.addActionListener {
                                                             def selected = cmbStatus220.selectedItem
                                                             cmbStatus220.background = colorMap[selected]
+                                                            updateProgress()
                                                         }
                                                     }
                                                     td {

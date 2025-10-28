@@ -545,8 +545,8 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 <https://www.gnu.org/licenses/>.
 */
 
-name = "Gutachten"
-description = "Bearbeitung rechtspsychologischer Gutachten"
-version = "0.2.0";
+name = "Kündigungsschutz"
+description = "Kündigungsschutz"
+version = "3.0.0";
 author = "Jens Kutschke"
-updated = "28.10.2025"
+updated = "25.10.2025"

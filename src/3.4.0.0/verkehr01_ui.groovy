@@ -1953,7 +1953,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                 tableLayout (cellpadding: 0) {
                                                     tr {
                                                         td (align: 'right') {
-                                                            txtGutachtenVom=formattedTextField(id: 'sGutachtenVom', clientPropertyJlawyerdescription: "Gutachten vom (Datum)", name: "_GUTACHTENVOM", format: datumsFormat, columns: 10, text: '', enabled: true, keyReleased: {
+                                                            txtGutachtenVom=formattedTextField(id: 'sGutachtenVom', clientPropertyJlawyerdescription: "Gutachten vom (Datum)", name: "_GUTACHTENVOM", clientPropertyAiPromptKey: "gutachten_vom", clientPropertyAiPromptDescription: "Datum, an welchem das Gutachten erstellt wurde", format: datumsFormat, columns: 10, text: '', enabled: true, keyReleased: {
                                                                     berechnenReparaturDauer();  
                                                                 })
                                                         }

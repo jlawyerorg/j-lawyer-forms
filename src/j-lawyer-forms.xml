@@ -6,7 +6,7 @@
         <setting key="forms.verkehr01.site.extlink" caption="externer Link:" default="https://www" order="1"/>
     </form>
     <!-- breaking changes introduced with 3.4: AI capabilities --> 
-    <form id="verkehr01" type="plugin" depends="formslib" name="Verkehrsunfalldaten" description="Falldatenblatt zur Erfassung von Verkehrsunfalldaten - Schwerpunkt Sachschäden" placeholder="VRKHR" version="3.1.1" for="3.4.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/3.4.0.0" files="verkehr01_meta.groovy,verkehr01_ui.groovy,RvgTablesRange.groovy,RvgTablesRangeList2021.groovy,RvgTablesRangeList2025.groovy">
+    <form id="verkehr01" type="plugin" depends="formslib" name="Verkehrsunfalldaten" description="Falldatenblatt zur Erfassung von Verkehrsunfalldaten - Schwerpunkt Sachschäden" placeholder="VRKHR" version="3.2.0" for="3.4.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/3.4.0.0" files="verkehr01_meta.groovy,verkehr01_ui.groovy,RvgTablesRange.groovy,RvgTablesRangeList2021.groovy,RvgTablesRangeList2025.groovy">
         <setting key="forms.verkehr01.site.extlink" caption="externer Link:" default="https://www" order="1"/>
     </form>
     

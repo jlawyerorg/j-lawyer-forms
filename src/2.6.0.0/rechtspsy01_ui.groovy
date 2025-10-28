@@ -1141,6 +1141,60 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        label (text: 'Antragsteller/in')
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        comboBox(
+                                                            items: ['', 'KV', 'KM', 'JA'],
+                                                            name: "_071ANTRAG",
+                                                            clientPropertyJlawyerdescription: "Antragsteller/in",
+                                                            editable: true,
+                                                            selectedItem: ''
+                                                        )
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        label (text: 'Fragestellung')
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        comboBox(
+                                                            items: ['', 'Erziehungsfähigkeit', 'Umgang', 'Elterliche Sorge', 'Mischform', 'Adoption'],
+                                                            name: "_072FRAGE",
+                                                            clientPropertyJlawyerdescription: "Fragestellung",
+                                                            editable: true,
+                                                            selectedItem: ''
+                                                        )
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        checkBox(text: 'Kostenrahmen', name: "_073KOSTEN", clientPropertyJlawyerdescription: "Kostenrahmen", selected: false)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        textField(name: "_073ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
                                                         cmbStatus080 = comboBox(
                                                             items: colorMap.keySet() as java.util.List,
                                                             name: "_080STATUS",
@@ -1184,7 +1238,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                         cmbStatus090 = comboBox(
                                                             items: colorMap.keySet() as java.util.List,
                                                             name: "_090STATUS",
-                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Termine/ Ladungen Kindeseltern",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Termine/Ladungen Kindesmutter",
                                                             editable: false
                                                         )
                                                         cmbStatus090.addActionListener {
@@ -1193,7 +1247,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                         }
                                                     }
                                                     td {
-                                                        label (text: 'Termine/ Ladungen Kindeseltern')
+                                                        label (text: 'Termine/Ladungen Kindesmutter')
                                                     }
                                                     td {
                                                         panel {
@@ -1217,6 +1271,46 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     }
                                                     td {
                                                         textField(name: "_090ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus091 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_091STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Termine/Ladungen Kindesvater",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus091.addActionListener {
+                                                            def selected = cmbStatus091.selectedItem
+                                                            cmbStatus091.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'Termine/Ladungen Kindesvater')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum091=textField(name: "_091DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum091, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_091ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
                                                     }
                                                 }
                                                 tr {
@@ -1384,7 +1478,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                         cmbStatus140 = comboBox(
                                                             items: colorMap.keySet() as java.util.List,
                                                             name: "_140STATUS",
-                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Testauswertung",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Testauswertung Kind",
                                                             editable: false
                                                         )
                                                         cmbStatus140.addActionListener {
@@ -1393,7 +1487,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                         }
                                                     }
                                                     td {
-                                                        label (text: 'Testauswertung')
+                                                        label (text: 'Testauswertung Kind')
                                                     }
                                                     td {
                                                         panel {
@@ -1417,6 +1511,86 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     }
                                                     td {
                                                         textField(name: "_140ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus141 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_141STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Testauswertung Kindesmutter",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus141.addActionListener {
+                                                            def selected = cmbStatus141.selectedItem
+                                                            cmbStatus141.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'Testauswertung Kindesmutter')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum141=textField(name: "_141DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum141, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_141ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus142 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_142STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Testauswertung Kindesvater",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus142.addActionListener {
+                                                            def selected = cmbStatus142.selectedItem
+                                                            cmbStatus142.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'Testauswertung Kindesvater')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum142=textField(name: "_142DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum142, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_142ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
                                                     }
                                                 }
                                                 tr {

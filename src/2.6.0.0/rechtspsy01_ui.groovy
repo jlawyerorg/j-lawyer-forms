@@ -1991,294 +1991,321 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                         }
                         panel(name: 'Untersuchungsplan') {
                             tableLayout (cellpadding: 5) {
+                                // Zeile 1: Kind 1, Kind 2, Kind 3
                                 tr {
-                                    td {
-                                        label (text: 'Kind 1', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
+                                    td (valign: 'top') {
+                                        panel {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        label (text: 'Kind 1', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'EBF-KJ', name: "_UPK1_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 EBF-KJ", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'CBCL', name: "_UPK1_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 CBCL", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'C-TRF', name: "_UPK1_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 C-TRF", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'SURT', name: "_UPK1_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 SURT", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'SKEI', name: "_UPK1_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 SKEI", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'FIT', name: "_UPK1_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 FIT", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'FRT-KJ', name: "_UPK1_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 FRT-KJ", selected: false)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    td (valign: 'top') {
+                                        panel {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        label (text: 'Kind 2', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'EBF-KJ', name: "_UPK2_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 EBF-KJ", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'CBCL', name: "_UPK2_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 CBCL", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'C-TRF', name: "_UPK2_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 C-TRF", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'SURT', name: "_UPK2_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 SURT", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'SKEI', name: "_UPK2_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 SKEI", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'FIT', name: "_UPK2_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 FIT", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'FRT-KJ', name: "_UPK2_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 FRT-KJ", selected: false)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    td (valign: 'top') {
+                                        panel {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        label (text: 'Kind 3', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'EBF-KJ', name: "_UPK3_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 EBF-KJ", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'CBCL', name: "_UPK3_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 CBCL", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'C-TRF', name: "_UPK3_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 C-TRF", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'SURT', name: "_UPK3_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 SURT", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'SKEI', name: "_UPK3_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 SKEI", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'FIT', name: "_UPK3_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 FIT", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'FRT-KJ', name: "_UPK3_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 FRT-KJ", selected: false)
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
+                                // Zeile 2: Kind 4, Kind 5
                                 tr {
-                                    td {
-                                        checkBox(text: 'EBF-KJ', name: "_UPK1_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 EBF-KJ", selected: false)
+                                    td (valign: 'top') {
+                                        panel {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        label (text: 'Kind 4', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'EBF-KJ', name: "_UPK4_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 EBF-KJ", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'CBCL', name: "_UPK4_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 CBCL", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'C-TRF', name: "_UPK4_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 C-TRF", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'SURT', name: "_UPK4_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 SURT", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'SKEI', name: "_UPK4_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 SKEI", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'FIT', name: "_UPK4_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 FIT", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'FRT-KJ', name: "_UPK4_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 FRT-KJ", selected: false)
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'CBCL', name: "_UPK1_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 CBCL", selected: false)
+                                    td (valign: 'top') {
+                                        panel {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        label (text: 'Kind 5', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'EBF-KJ', name: "_UPK5_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 EBF-KJ", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'CBCL', name: "_UPK5_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 CBCL", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'C-TRF', name: "_UPK5_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 C-TRF", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'SURT', name: "_UPK5_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 SURT", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'SKEI', name: "_UPK5_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 SKEI", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'FIT', name: "_UPK5_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 FIT", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'FRT-KJ', name: "_UPK5_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 FRT-KJ", selected: false)
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'C-TRF', name: "_UPK1_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 C-TRF", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'SURT', name: "_UPK1_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 SURT", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'SKEI', name: "_UPK1_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 SKEI", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'FIT', name: "_UPK1_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 FIT", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'FRT-KJ', name: "_UPK1_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 FRT-KJ", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
+                                    td (valign: 'top') {
                                         label (text: ' ')
                                     }
                                 }
+                                // Zeile 3: Kindesmutter, Kindesvater
                                 tr {
-                                    td {
-                                        label (text: 'Kind 2', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
+                                    td (valign: 'top') {
+                                        panel {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        label (text: 'Kindesmutter', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'EBI', name: "_UPMUTTER_EBI", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter EBI", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'ESF', name: "_UPMUTTER_ESF", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter ESF", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'VEI', name: "_UPMUTTER_VEI", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter VEI", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'EBSK', name: "_UPMUTTER_EBSK", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter EBSK", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'FAF', name: "_UPMUTTER_FAF", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter FAF", selected: false)
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'EBF-KJ', name: "_UPK2_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 EBF-KJ", selected: false)
+                                    td (valign: 'top') {
+                                        panel {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        label (text: 'Kindesvater', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'EBI', name: "_UPVATER_EBI", clientPropertyJlawyerdescription: "Untersuchungsplan Vater EBI", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'ESF', name: "_UPVATER_ESF", clientPropertyJlawyerdescription: "Untersuchungsplan Vater ESF", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'VEI', name: "_UPVATER_VEI", clientPropertyJlawyerdescription: "Untersuchungsplan Vater VEI", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'EBSK', name: "_UPVATER_EBSK", clientPropertyJlawyerdescription: "Untersuchungsplan Vater EBSK", selected: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        checkBox(text: 'FAF', name: "_UPVATER_FAF", clientPropertyJlawyerdescription: "Untersuchungsplan Vater FAF", selected: false)
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'CBCL', name: "_UPK2_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 CBCL", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'C-TRF', name: "_UPK2_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 C-TRF", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'SURT', name: "_UPK2_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 SURT", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'SKEI', name: "_UPK2_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 SKEI", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'FIT', name: "_UPK2_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 FIT", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'FRT-KJ', name: "_UPK2_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 FRT-KJ", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
+                                    td (valign: 'top') {
                                         label (text: ' ')
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        label (text: 'Kind 3', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'EBF-KJ', name: "_UPK3_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 EBF-KJ", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'CBCL', name: "_UPK3_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 CBCL", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'C-TRF', name: "_UPK3_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 C-TRF", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'SURT', name: "_UPK3_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 SURT", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'SKEI', name: "_UPK3_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 SKEI", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'FIT', name: "_UPK3_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 FIT", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'FRT-KJ', name: "_UPK3_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 FRT-KJ", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        label (text: ' ')
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        label (text: 'Kind 4', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'EBF-KJ', name: "_UPK4_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 EBF-KJ", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'CBCL', name: "_UPK4_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 CBCL", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'C-TRF', name: "_UPK4_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 C-TRF", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'SURT', name: "_UPK4_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 SURT", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'SKEI', name: "_UPK4_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 SKEI", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'FIT', name: "_UPK4_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 FIT", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'FRT-KJ', name: "_UPK4_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 FRT-KJ", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        label (text: ' ')
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        label (text: 'Kind 5', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'EBF-KJ', name: "_UPK5_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 EBF-KJ", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'CBCL', name: "_UPK5_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 CBCL", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'C-TRF', name: "_UPK5_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 C-TRF", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'SURT', name: "_UPK5_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 SURT", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'SKEI', name: "_UPK5_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 SKEI", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'FIT', name: "_UPK5_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 FIT", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'FRT-KJ', name: "_UPK5_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 FRT-KJ", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        label (text: ' ')
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        label (text: 'Kindesmutter', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'EBI', name: "_UPMUTTER_EBI", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter EBI", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'ESF', name: "_UPMUTTER_ESF", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter ESF", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'VEI', name: "_UPMUTTER_VEI", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter VEI", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'EBSK', name: "_UPMUTTER_EBSK", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter EBSK", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'FAF', name: "_UPMUTTER_FAF", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter FAF", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        label (text: ' ')
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        label (text: 'Kindesvater', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'EBI', name: "_UPVATER_EBI", clientPropertyJlawyerdescription: "Untersuchungsplan Vater EBI", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'ESF', name: "_UPVATER_ESF", clientPropertyJlawyerdescription: "Untersuchungsplan Vater ESF", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'VEI', name: "_UPVATER_VEI", clientPropertyJlawyerdescription: "Untersuchungsplan Vater VEI", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'EBSK', name: "_UPVATER_EBSK", clientPropertyJlawyerdescription: "Untersuchungsplan Vater EBSK", selected: false)
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        checkBox(text: 'FAF', name: "_UPVATER_FAF", clientPropertyJlawyerdescription: "Untersuchungsplan Vater FAF", selected: false)
                                     }
                                 }
 

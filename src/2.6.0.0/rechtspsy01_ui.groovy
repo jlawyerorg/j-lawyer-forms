@@ -680,6 +680,8 @@ import javax.swing.JTextField
 import javax.swing.ImageIcon
 import java.util.ArrayList
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
+import groovy.json.JsonSlurper
+import groovy.json.JsonBuilder
 
 public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
     
@@ -698,7 +700,12 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
     
     // Formatter für dd.MM.yyyy
     def formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    
+
+    // Kommunikationslogbuch - Tabelle
+    JTable tblCommLog = null;
+    DefaultTableModel commLogTableModel = null;
+    JTextField txtCommLogData = null; // Verstecktes Feld für JSON-Daten
+
     public rechtspsy01_ui() {
         super();
     }
@@ -722,8 +729,54 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
         return placeHolders;
     }
     
+    // Synchronisiert die Tabelle zum versteckten JSON-Feld
+    private void syncTableToJson() {
+        if (commLogTableModel == null || txtCommLogData == null) return;
+
+        def entries = []
+        for (int i = 0; i < commLogTableModel.getRowCount(); i++) {
+            entries << [
+                datum: commLogTableModel.getValueAt(i, 0) ?: '',
+                beteiligte: commLogTableModel.getValueAt(i, 1) ?: '',
+                anmerkung: commLogTableModel.getValueAt(i, 2) ?: ''
+            ]
+        }
+
+        def json = new JsonBuilder(entries)
+        txtCommLogData.setText(json.toString())
+    }
+
+    // Lädt Daten aus dem versteckten JSON-Feld in die Tabelle
+    private void loadTableFromJson() {
+        if (commLogTableModel == null || txtCommLogData == null) return;
+
+        commLogTableModel.setRowCount(0); // Tabelle leeren
+
+        def jsonText = txtCommLogData.getText()
+        if (jsonText != null && jsonText.trim() != '') {
+            try {
+                def slurper = new JsonSlurper()
+                def entries = slurper.parseText(jsonText)
+
+                entries.each { entry ->
+                    commLogTableModel.addRow([
+                        entry.datum ?: '',
+                        entry.beteiligte ?: '',
+                        entry.anmerkung ?: ''
+                    ] as Object[])
+                }
+            } catch (Exception e) {
+                // Bei Fehler ignorieren, leere Tabelle anzeigen
+                e.printStackTrace()
+            }
+        }
+    }
+
     public void setPlaceHolderValues(String prefix, Hashtable placeHolderValues) {
         FormsLib.setPlaceHolderValues(prefix, placeHolderValues, this.SCRIPTPANEL);
+
+        // Spezialbehandlung für Kommunikationslogbuch-Tabelle
+        loadTableFromJson();
     }
 
     public void setCallback(FormPluginCallback callback) {
@@ -1925,6 +1978,9 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                             tableLayout (cellpadding: 5) {
                                 tr {
                                     td {
+                                        label (text: 'Datum:')
+                                    }
+                                    td {
                                         panel {
                                             tableLayout (cellpadding: 0) {
                                                 tr {
@@ -1939,7 +1995,6 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                                 GuiLib.dateSelector(txtCommDate, true);
                                                             })
                                                     }
-                                                                    
                                                 }
                                             }
                                         }
@@ -1947,16 +2002,24 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                 }
                                 tr {
                                     td {
+                                        label (text: 'Beteiligte:')
+                                    }
+                                    td {
                                         cmbCommLogParty=comboBox(items: [
                                                                             '',
                                                                             'Kindesmutter',
-                                                                            'Kindesvater'
+                                                                            'Kindesvater',
+                                                                            'Kind',
+                                                                            'Gericht',
+                                                                            'Jugendamt'
                                             ], editable: true
                                         )
                                     }
                                 }
-                                
                                 tr {
+                                    td {
+                                        label (text: 'Anmerkung:')
+                                    }
                                     td {
                                         scrollPane{
                                             taCommLogEntry=textArea(lineWrap:true,wrapStyleWord:true, columns:50, rows:3,editable:true)
@@ -1965,28 +2028,87 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                 }
                                 tr {
                                     td {
-                                        button(text: 'Eintrag hinzufügen', actionPerformed: {
-                                                                taCommLog.append(txtCommDate.text);
-                                                                taCommLog.append(" ");
-                                                                taCommLog.append(cmbCommLogParty.selectedItem);
-                                                                taCommLog.append(" ");
-                                                                taCommLog.append(taCommLogEntry.text);
-                                                                taCommLog.append(System.lineSeparator());
+                                        label (text: ' ')
+                                    }
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        button(text: 'Eintrag hinzufügen', actionPerformed: {
+                                                                // Neue Zeile zur Tabelle hinzufügen
+                                                                commLogTableModel.addRow([
+                                                                    txtCommDate.text,
+                                                                    cmbCommLogParty.selectedItem?.toString() ?: '',
+                                                                    taCommLogEntry.text
+                                                                ] as Object[]);
+
+                                                                // Felder zurücksetzen
+                                                                txtCommDate.setText("");
                                                                 cmbCommLogParty.setSelectedItem("");
                                                                 taCommLogEntry.setText("");
-                                                                
+
+                                                                // JSON synchronisieren
+                                                                syncTableToJson();
                                                             })
-                                    }
-                                }
-                                tr {
-                                    td {
-                                        scrollPane{
-                                            taCommLog=textArea(name: "_KOMM", clientPropertyJlawyerdescription: "Kommunikationslogbuch", lineWrap:false, columns:50, rows:80,editable:true)
+                                                    }
+                                                    td {
+                                                        button(text: 'Markierte Zeile löschen', actionPerformed: {
+                                                                int selectedRow = tblCommLog.getSelectedRow();
+                                                                if (selectedRow >= 0) {
+                                                                    commLogTableModel.removeRow(selectedRow);
+                                                                    syncTableToJson();
+                                                                } else {
+                                                                    JOptionPane.showMessageDialog(SCRIPTPANEL,
+                                                                        "Bitte wählen Sie eine Zeile aus.",
+                                                                        "Keine Zeile ausgewählt",
+                                                                        JOptionPane.WARNING_MESSAGE);
+                                                                }
+                                                            })
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
-                                
-                                
+                                tr {
+                                    td (colspan: 2) {
+                                        scrollPane{
+                                            // TableModel erstellen
+                                            commLogTableModel = new DefaultTableModel(
+                                                ['Datum', 'Beteiligte', 'Anmerkung'] as Object[],
+                                                0
+                                            ) {
+                                                @Override
+                                                public void setValueAt(Object value, int row, int col) {
+                                                    super.setValueAt(value, row, col);
+                                                    // Bei Änderung synchronisieren
+                                                    syncTableToJson();
+                                                }
+                                            };
+
+                                            tblCommLog = table(model: commLogTableModel)
+
+                                            // Spaltenbreiten nach Erstellung setzen
+                                            tblCommLog.getColumnModel().getColumn(0).setPreferredWidth(100); // Datum
+                                            tblCommLog.getColumnModel().getColumn(1).setPreferredWidth(150); // Beteiligte
+                                            tblCommLog.getColumnModel().getColumn(2).setPreferredWidth(400); // Anmerkung
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td (colspan: 2) {
+                                        // Verstecktes Textfeld für JSON-Daten
+                                        txtCommLogData = textField(
+                                            name: "_KOMM",
+                                            clientPropertyJlawyerdescription: "Kommunikationslogbuch",
+                                            text: '',
+                                            visible: false
+                                        )
+                                    }
+                                }
+
+
                             }
                         }
                         panel(name: 'Untersuchungsplan') {

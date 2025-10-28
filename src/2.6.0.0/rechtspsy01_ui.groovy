@@ -682,6 +682,11 @@ import java.util.ArrayList
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 import groovy.json.JsonSlurper
 import groovy.json.JsonBuilder
+import java.awt.datatransfer.StringSelection
+import java.awt.datatransfer.Clipboard
+import java.awt.datatransfer.Transferable
+import java.awt.datatransfer.DataFlavor
+import java.awt.datatransfer.UnsupportedFlavorException
 
 public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
     
@@ -770,6 +775,81 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                 e.printStackTrace()
             }
         }
+    }
+
+    // Kopiert die Tabelle als HTML in die Zwischenablage
+    private void copyTableToClipboard() {
+        if (commLogTableModel == null) return;
+
+        StringBuilder html = new StringBuilder();
+        html.append("<html><body><table border='1' cellpadding='5' cellspacing='0'>\n");
+
+        // Kopfzeile
+        html.append("<tr>");
+        for (int col = 0; col < commLogTableModel.getColumnCount(); col++) {
+            html.append("<th>").append(escapeHtml(commLogTableModel.getColumnName(col))).append("</th>");
+        }
+        html.append("</tr>\n");
+
+        // Datenzeilen
+        for (int row = 0; row < commLogTableModel.getRowCount(); row++) {
+            html.append("<tr>");
+            for (int col = 0; col < commLogTableModel.getColumnCount(); col++) {
+                Object value = commLogTableModel.getValueAt(row, col);
+                html.append("<td>").append(escapeHtml(value != null ? value.toString() : "")).append("</td>");
+            }
+            html.append("</tr>\n");
+        }
+
+        html.append("</table></body></html>");
+
+        // HTML Transferable erstellen
+        HtmlSelection htmlSelection = new HtmlSelection(html.toString());
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(htmlSelection, null);
+
+        JOptionPane.showMessageDialog(SCRIPTPANEL,
+            "Tabelle wurde in die Zwischenablage kopiert.\nSie können sie nun in Word oder LibreOffice einfügen.",
+            "In Zwischenablage kopiert",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    // Innere Klasse für HTML-Clipboard-Transfer
+    private class HtmlSelection implements Transferable {
+        private static final DataFlavor HTML_FLAVOR = new DataFlavor("text/html;class=java.lang.String", "HTML");
+        private String html;
+
+        public HtmlSelection(String html) {
+            this.html = html;
+        }
+
+        public DataFlavor[] getTransferDataFlavors() {
+            return [HTML_FLAVOR, DataFlavor.stringFlavor] as DataFlavor[];
+        }
+
+        public boolean isDataFlavorSupported(DataFlavor flavor) {
+            return HTML_FLAVOR.equals(flavor) || DataFlavor.stringFlavor.equals(flavor);
+        }
+
+        public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
+            if (HTML_FLAVOR.equals(flavor)) {
+                return html;
+            } else if (DataFlavor.stringFlavor.equals(flavor)) {
+                return html;
+            } else {
+                throw new UnsupportedFlavorException(flavor);
+            }
+        }
+    }
+
+    // Hilfsmethode zum Escapen von HTML-Zeichen
+    private String escapeHtml(String text) {
+        if (text == null) return "";
+        return text.replace("&", "&amp;")
+                   .replace("<", "&lt;")
+                   .replace(">", "&gt;")
+                   .replace("\"", "&quot;")
+                   .replace("\n", "<br>");
     }
 
     public void setPlaceHolderValues(String prefix, Hashtable placeHolderValues) {
@@ -2094,6 +2174,16 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             tblCommLog.getColumnModel().getColumn(1).setPreferredWidth(150); // Beteiligte
                                             tblCommLog.getColumnModel().getColumn(2).setPreferredWidth(400); // Anmerkung
                                         }
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        label (text: ' ')
+                                    }
+                                    td {
+                                        button(text: 'Tabelle in Zwischenablage kopieren', actionPerformed: {
+                                                copyTableToClipboard();
+                                            })
                                     }
                                 }
                                 tr {

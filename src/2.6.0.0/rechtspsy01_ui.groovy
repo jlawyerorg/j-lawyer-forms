@@ -2073,7 +2073,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                 }
                                 tr {
                                     td (colspan: 2) {
-                                        scrollPane{
+                                        scrollPane(preferredSize: [800, 400]){
                                             // TableModel erstellen
                                             commLogTableModel = new DefaultTableModel(
                                                 ['Datum', 'Beteiligte', 'Anmerkung'] as Object[],

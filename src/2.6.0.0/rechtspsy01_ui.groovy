@@ -979,6 +979,766 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                         textField(name: "_030ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
                                                     }
                                                 }
+                                                tr {
+                                                    td {
+                                                        cmbStatus040 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_040STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Formular 1 Danke Gutachtenauftrag & Akten zurück",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus040.addActionListener {
+                                                            def selected = cmbStatus040.selectedItem
+                                                            cmbStatus040.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'Formular 1 "Danke Gutachtenauftrag & Akten zurück"')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum040=textField(name: "_040DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum040, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_040ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus050 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_050STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Formular 2 Benachrichtigung VB",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus050.addActionListener {
+                                                            def selected = cmbStatus050.selectedItem
+                                                            cmbStatus050.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'Formular 2 "Benachrichtigung VB"')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum050=textField(name: "_050DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum050, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_050ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus060 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_060STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Akten zurück",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus060.addActionListener {
+                                                            def selected = cmbStatus060.selectedItem
+                                                            cmbStatus060.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'Akten zurück')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum060=textField(name: "_060DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum060, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_060ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus070 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_070STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Beschluss lesen und Fragestellung klären",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus070.addActionListener {
+                                                            def selected = cmbStatus070.selectedItem
+                                                            cmbStatus070.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'Beschluss lesen und Fragestellung klären')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum070=textField(name: "_070DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum070, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_070ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus080 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_080STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Aktenanalyse/ Anknüpfungstatsachen",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus080.addActionListener {
+                                                            def selected = cmbStatus080.selectedItem
+                                                            cmbStatus080.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'Aktenanalyse/ Anknüpfungstatsachen')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum080=textField(name: "_080DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum080, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_080ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus090 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_090STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Termine/ Ladungen Kindeseltern",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus090.addActionListener {
+                                                            def selected = cmbStatus090.selectedItem
+                                                            cmbStatus090.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'Termine/ Ladungen Kindeseltern')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum090=textField(name: "_090DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum090, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_090ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus100 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_100STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Ladungen Sonstige",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus100.addActionListener {
+                                                            def selected = cmbStatus100.selectedItem
+                                                            cmbStatus100.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'Ladungen Sonstige')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum100=textField(name: "_100DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum100, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_100ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus110 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_110STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Kommunikation mit Kindeseltern und Anderen",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus110.addActionListener {
+                                                            def selected = cmbStatus110.selectedItem
+                                                            cmbStatus110.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'Kommunikation mit Kindeseltern und Anderen')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum110=textField(name: "_110DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum110, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_110ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus120 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_120STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Befunde anfordern",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus120.addActionListener {
+                                                            def selected = cmbStatus120.selectedItem
+                                                            cmbStatus120.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'Befunde anfordern')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum120=textField(name: "_120DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum120, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_120ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus130 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_130STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Befunde checken",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus130.addActionListener {
+                                                            def selected = cmbStatus130.selectedItem
+                                                            cmbStatus130.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'Befunde checken')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum130=textField(name: "_130DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum130, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_130ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus140 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_140STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Testauswertung",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus140.addActionListener {
+                                                            def selected = cmbStatus140.selectedItem
+                                                            cmbStatus140.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'Testauswertung')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum140=textField(name: "_140DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum140, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_140ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus150 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_150STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Auswertung IA-B",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus150.addActionListener {
+                                                            def selected = cmbStatus150.selectedItem
+                                                            cmbStatus150.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'Auswertung IA-B')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum150=textField(name: "_150DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum150, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_150ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus160 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_160STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus GA - Gliederungspunkt 1.3 schreiben/fertigstellen",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus160.addActionListener {
+                                                            def selected = cmbStatus160.selectedItem
+                                                            cmbStatus160.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'GA - Gliederungspunkt 1.3 schreiben/fertigstellen')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum160=textField(name: "_160DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum160, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_160ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus170 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_170STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Untersuchungsberichte",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus170.addActionListener {
+                                                            def selected = cmbStatus170.selectedItem
+                                                            cmbStatus170.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'Untersuchungsberichte')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum170=textField(name: "_170DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum170, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_170ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus180 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_180STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus eingereichte Unterlagen zusammenfügen",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus180.addActionListener {
+                                                            def selected = cmbStatus180.selectedItem
+                                                            cmbStatus180.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'eingereichte Unterlagen zusammenfügen')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum180=textField(name: "_180DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum180, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_180ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus190 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_190STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus GA-Dokumente vorbereiten",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus190.addActionListener {
+                                                            def selected = cmbStatus190.selectedItem
+                                                            cmbStatus190.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'GA-Dokumente vorbereiten')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum190=textField(name: "_190DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum190, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_190ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus200 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_200STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Befund schreiben",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus200.addActionListener {
+                                                            def selected = cmbStatus200.selectedItem
+                                                            cmbStatus200.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'Befund schreiben')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum200=textField(name: "_200DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum200, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_200ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus210 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_210STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Rechnung schreiben",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus210.addActionListener {
+                                                            def selected = cmbStatus210.selectedItem
+                                                            cmbStatus210.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'Rechnung schreiben')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum210=textField(name: "_210DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum210, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_210ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        cmbStatus220 = comboBox(
+                                                            items: colorMap.keySet() as java.util.List,
+                                                            name: "_220STATUS",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus GA drucken, verpacken, versenden",
+                                                            editable: false
+                                                        )
+                                                        cmbStatus220.addActionListener {
+                                                            def selected = cmbStatus220.selectedItem
+                                                            cmbStatus220.background = colorMap[selected]
+                                                        }
+                                                    }
+                                                    td {
+                                                        label (text: 'GA drucken, verpacken, versenden')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum220=textField(name: "_220DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum220, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        textField(name: "_220ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
                                             }
                                         }
                                     }

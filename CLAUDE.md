@@ -107,6 +107,11 @@ updated = "DD.MM.YYYY"
 5. Test locally using the local development workflow
 6. Commit and push - GitHub Actions will automatically deploy
 
+### Updating a Plugin
+
+1. Update version in `<pluginname>_meta.groovy` in appropriate `src/<version>/` directory:
+2. Update version in j-lawyer-forms.xml
+
 ### Version Compatibility
 
 When creating plugins for multiple j-lawyer versions:
@@ -160,6 +165,8 @@ public void setExtractedValues(Map<String,String> attributes) {
 ```
 
 The `FormsLib.setExtractedValues()` helper method recursively traverses all UI components and automatically sets values for components that have the `AiPromptKey` client property matching keys in the attributes map.
+
+Similarly, implement the getExtractionPrompt and isAiEnabled methods from interface FormAiMethods.
 
 #### 3. Add AI Metadata to UI Components
 

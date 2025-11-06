@@ -731,6 +731,14 @@ public class uwg01_ui implements com.jdimension.jlawyer.client.plugins.form.Form
         // TODO: Add plugin-specific post-processing methods here
     }
 
+    public String getExtractionPrompt() {
+        return FormsLib.getExtractionPrompt(this.SCRIPTPANEL);
+    }
+
+    public boolean isAiEnabled() {
+        return false;
+    }
+
     public JPanel getUi() {
 
         SwingBuilder swing=new SwingBuilder()

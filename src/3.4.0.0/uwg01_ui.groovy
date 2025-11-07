@@ -767,7 +767,7 @@ public class uwg01_ui implements com.jdimension.jlawyer.client.plugins.form.Form
                                     }
                                     td (colfill:true, align: 'left') {
                                         // Load items from settings
-                                        def verfahrensartenString = com.jdimension.jlawyer.client.settings.ServerSettings.getInstance().getSetting("forms.uwg01.verfahrensarten", "Abmahnung,Unterlassung,Auskunft,Schadensersatz")
+                                        def verfahrensartenString = com.jdimension.jlawyer.client.settings.ServerSettings.getInstance().getSetting("forms.uwg01.verfahrensarten", "./. VSW,Abm.,andere,e.V.,HK,HK zu,OA,VS")
                                         def verfahrensartenItems = verfahrensartenString.split(",").collect { it.trim() }
                                         verfahrensartenItems.add(0, "")
                                         comboBox(items: verfahrensartenItems, name: "_VERFAHRENSART", clientPropertyJlawyerdescription: "Verfahrensart", editable: true)
@@ -895,7 +895,7 @@ public class uwg01_ui implements com.jdimension.jlawyer.client.plugins.form.Form
                                     }
                                     td (colfill:true, align: 'left') {
                                         // Load items from settings
-                                        def abschlussString = com.jdimension.jlawyer.client.settings.ServerSettings.getInstance().getSetting("forms.uwg01.abschlussarten", "Vergleich,Unterlassungserklärung,Klagerücknahme,Urteil,Einstellung")
+                                        def abschlussString = com.jdimension.jlawyer.client.settings.ServerSettings.getInstance().getSetting("forms.uwg01.abschlussarten", "Abmahnung durch ...,Abmahnung nicht weiterverfolgt da Drittunterwerfung,Abmahnung nicht weiterverfolgt,Abmahnung noch nicht entschieden")
                                         def abschlussItems = abschlussString.split(",").collect { it.trim() }
                                         abschlussItems.add(0, "")
                                         comboBox(items: abschlussItems, name: "_ABSCHLUSS", clientPropertyJlawyerdescription: "Abschluss", editable: true)

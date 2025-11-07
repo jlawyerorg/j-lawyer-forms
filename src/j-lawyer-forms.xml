@@ -69,8 +69,8 @@
 
     <form id="uwg01" type="plugin" depends="formslib" name="UWG-Verfahren" description="Erfassung von UWG-Verfahren" placeholder="UWGV" version="0.2.0" for="3.4.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/3.4.0.0" files="uwg01_meta.groovy,uwg01_ui.groovy">
         <setting key="forms.uwg01.branchen" caption="Branchen (kommagetrennt):" default="Einzelhandel,Gastronomie,Handwerk,Dienstleistung,Online-Handel" order="1"/>
-        <setting key="forms.uwg01.verfahrensarten" caption="Verfahrensarten (kommagetrennt):" default="Abmahnung,Unterlassung,Auskunft,Schadensersatz" order="2"/>
-        <setting key="forms.uwg01.abschlussarten" caption="Abschlussarten (kommagetrennt):" default="Vergleich,Unterlassungserklärung,Klagerücknahme,Urteil,Einstellung" order="3"/>
+        <setting key="forms.uwg01.verfahrensarten" caption="Verfahrensarten (kommagetrennt):" default="./. VSW,Abm.,andere,e.V.,HK,HK zu,OA,VS" order="2"/>
+        <setting key="forms.uwg01.abschlussarten" caption="Abschlussarten (kommagetrennt):" default="Abmahnung durch ...,Abmahnung nicht weiterverfolgt da Drittunterwerfung,Abmahnung nicht weiterverfolgt,Abmahnung noch nicht entschieden" order="3"/>
     </form>
     
     <!-- form id="klugo01" type="plugin" depends="formslib" name="KLUGO-Import" description="Importiert Anfragen aus KLUGO" placeholder="KLUGO" version="0.1.0" for="2.3.0.0,2.3.0.1,2.4.0.2,2.5.0.0,2.6.0.2,2.6.1.0" url="file:///home/jens/.j-lawyer-client/forms-internal" files="klugo01_meta.groovy,klugo01_ui.groovy,KlugoLib.groovy">

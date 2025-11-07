@@ -67,7 +67,7 @@
     
     <form id="qewvuklag03" type="plugin" depends="formslib" name="UKlaG Dokumente" description="Falldatenblatt zur Erfassung von Dokumenten" placeholder="UKDOK" version="1.0.0" for="2.6.1.0,2.7.0.0,3.0.0.1,3.1.0.1,3.1.0.2,3.1.0.3,3.2.0.0,3.3.0.0,3.3.0.1,3.3.0.2,3.4.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.4.0.0" files="qewvuklag03_meta.groovy,qewvuklag03_ui.groovy"/>
 
-    <form id="uwg01" type="plugin" depends="formslib" name="UWG-Verfahren" description="Erfassung von UWG-Verfahren" placeholder="UWGV" version="0.1.0" for="3.4.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/3.4.0.0" files="uwg01_meta.groovy,uwg01_ui.groovy">
+    <form id="uwg01" type="plugin" depends="formslib" name="UWG-Verfahren" description="Erfassung von UWG-Verfahren" placeholder="UWGV" version="0.2.0" for="3.4.0.0" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/3.4.0.0" files="uwg01_meta.groovy,uwg01_ui.groovy">
         <setting key="forms.uwg01.branchen" caption="Branchen (kommagetrennt):" default="Einzelhandel,Gastronomie,Handwerk,Dienstleistung,Online-Handel" order="1"/>
         <setting key="forms.uwg01.verfahrensarten" caption="Verfahrensarten (kommagetrennt):" default="Abmahnung,Unterlassung,Auskunft,Schadensersatz" order="2"/>
         <setting key="forms.uwg01.abschlussarten" caption="Abschlussarten (kommagetrennt):" default="Vergleich,Unterlassungserklärung,Klagerücknahme,Urteil,Einstellung" order="3"/>

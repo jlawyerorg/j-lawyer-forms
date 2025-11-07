@@ -664,7 +664,7 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "UWG-Verfahren"
 description = "Erfassung von UWG-Verfahren"
-version = "0.1.0"
+version = "0.2.0"
 author = "Jens Kutschke"
 updated = "06.11.2025"
 

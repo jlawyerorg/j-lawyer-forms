@@ -731,6 +731,14 @@ public class uwg01_ui implements com.jdimension.jlawyer.client.plugins.form.Form
         // TODO: Add plugin-specific post-processing methods here
     }
 
+    public String getExtractionPrompt() {
+        return FormsLib.getExtractionPrompt(this.SCRIPTPANEL);
+    }
+
+    public boolean isAiEnabled() {
+        return false;
+    }
+
     public JPanel getUi() {
 
         SwingBuilder swing=new SwingBuilder()
@@ -743,7 +751,138 @@ public class uwg01_ui implements com.jdimension.jlawyer.client.plugins.form.Form
                             tableLayout (cellpadding: 5) {
                                 tr {
                                     td (colfill:true, align: 'left') {
-                                        label(text: 'Tab "Verfahren" - Inhalt folgt später')
+                                        label(text: 'Branche')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        // Load items from settings
+                                        def branchenString = com.jdimension.jlawyer.client.settings.ServerSettings.getInstance().getSetting("forms.uwg01.branchen", "Einzelhandel,Gastronomie,Handwerk,Dienstleistung,Online-Handel")
+                                        def branchenItems = branchenString.split(",").collect { it.trim() }
+                                        branchenItems.add(0, "")
+                                        comboBox(items: branchenItems, name: "_BRANCHE", clientPropertyJlawyerdescription: "Branche", editable: true)
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Verfahrensart')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        // Load items from settings
+                                        def verfahrensartenString = com.jdimension.jlawyer.client.settings.ServerSettings.getInstance().getSetting("forms.uwg01.verfahrensarten", "./. VSW,Abm.,andere,e.V.,HK,HK zu,OA,VS")
+                                        def verfahrensartenItems = verfahrensartenString.split(",").collect { it.trim() }
+                                        verfahrensartenItems.add(0, "")
+                                        comboBox(items: verfahrensartenItems, name: "_VERFAHRENSART", clientPropertyJlawyerdescription: "Verfahrensart", editable: true)
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Name')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        textField(name: "_NAME", clientPropertyJlawyerdescription: "Name", text: '', columns: 30)
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Kommentar')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        textArea(name: "_KOMMENTAR", clientPropertyJlawyerdescription: "Kommentar", lineWrap: true, wrapStyleWord: true, columns: 50, rows: 6, editable: true)
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: '')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        checkBox(text: 'Verfahren gegen Mitglied', name: "_GEGENMITGLIED", clientPropertyJlawyerdescription: "Verfahren gegen Mitglied", selected: false)
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'NZeichen')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        textField(name: "_NZEICHEN", clientPropertyJlawyerdescription: "NZeichen", text: '', columns: 20)
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Einleitung')
+                                    }
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        txtEinleitung = textField(name: "_EINLEITUNG", clientPropertyJlawyerdescription: "Einleitung", text: '', columns: 10)
+                                                    }
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                            GuiLib.dateSelector(txtEinleitung, true);
+                                                        })
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Weglegung')
+                                    }
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        txtWeglegung = textField(name: "_WEGLEGUNG", clientPropertyJlawyerdescription: "Weglegung", text: '', columns: 10)
+                                                    }
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                            GuiLib.dateSelector(txtWeglegung, true);
+                                                        })
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Aktenzeichen 1')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        textField(name: "_AZ1", clientPropertyJlawyerdescription: "Aktenzeichen 1", text: '', columns: 30)
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Aktenzeichen 2')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        textField(name: "_AZ2", clientPropertyJlawyerdescription: "Aktenzeichen 2", text: '', columns: 30)
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Aktenzeichen 3')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        textField(name: "_AZ3", clientPropertyJlawyerdescription: "Aktenzeichen 3", text: '', columns: 30)
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Aktenzeichen 4')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        textField(name: "_AZ4", clientPropertyJlawyerdescription: "Aktenzeichen 4", text: '', columns: 30)
                                     }
                                 }
                             }
@@ -752,7 +891,22 @@ public class uwg01_ui implements com.jdimension.jlawyer.client.plugins.form.Form
                             tableLayout (cellpadding: 5) {
                                 tr {
                                     td (colfill:true, align: 'left') {
-                                        label(text: 'Tab "Abschluss" - Inhalt folgt später')
+                                        label(text: 'Abschluss')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        // Load items from settings
+                                        def abschlussString = com.jdimension.jlawyer.client.settings.ServerSettings.getInstance().getSetting("forms.uwg01.abschlussarten", "Abmahnung durch ...,Abmahnung nicht weiterverfolgt da Drittunterwerfung,Abmahnung nicht weiterverfolgt,Abmahnung noch nicht entschieden")
+                                        def abschlussItems = abschlussString.split(",").collect { it.trim() }
+                                        abschlussItems.add(0, "")
+                                        comboBox(items: abschlussItems, name: "_ABSCHLUSS", clientPropertyJlawyerdescription: "Abschluss", editable: true)
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: '')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        checkBox(text: 'VSW', name: "_VSW", clientPropertyJlawyerdescription: "VSW", selected: false)
                                     }
                                 }
                             }
@@ -761,7 +915,18 @@ public class uwg01_ui implements com.jdimension.jlawyer.client.plugins.form.Form
                             tableLayout (cellpadding: 5) {
                                 tr {
                                     td (colfill:true, align: 'left') {
-                                        label(text: 'Tab "Ablage" - Inhalt folgt später')
+                                        label(text: 'laufende Nummer')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        textField(name: "_LFDNR", clientPropertyJlawyerdescription: "laufende Nummer", text: '', columns: 20)
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Hefter')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        textField(name: "_HEFTER", clientPropertyJlawyerdescription: "Hefter", text: '', columns: 30)
                                     }
                                 }
                             }

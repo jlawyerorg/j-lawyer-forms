@@ -2325,10 +2325,10 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                 }
                                 tr {
                                     td {
-                                        label (text: 'Beteiligte:')
+                                        label (text: 'Absender:')
                                     }
                                     td {
-                                        cmbCommLogParty=comboBox(items: [
+                                        cmbCommLogSender=comboBox(items: [
                                                                             '',
                                                                             'Kindesmutter',
                                                                             'Kindesvater',
@@ -2341,7 +2341,37 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                 }
                                 tr {
                                     td {
-                                        label (text: 'Anmerkung:')
+                                        label (text: 'Adressat:')
+                                    }
+                                    td {
+                                        cmbCommLogRecipient=comboBox(items: [
+                                                                            '',
+                                                                            'Kindesmutter',
+                                                                            'Kindesvater',
+                                                                            'Kind',
+                                                                            'Gericht',
+                                                                            'Jugendamt'
+                                            ], editable: true
+                                        )
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        label (text: 'Form:')
+                                    }
+                                    td {
+                                        cmbCommLogForm=comboBox(items: [
+                                                                            '',
+                                                                            'postalisch',
+                                                                            'telefonisch',
+                                                                            'E-Mail'
+                                            ], editable: false
+                                        )
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        label (text: 'Inhalt:')
                                     }
                                     td {
                                         scrollPane{
@@ -2362,13 +2392,17 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                                 // Neue Zeile zur Tabelle hinzufügen
                                                                 commLogTableModel.addRow([
                                                                     txtCommDate.text,
-                                                                    cmbCommLogParty.selectedItem?.toString() ?: '',
+                                                                    cmbCommLogSender.selectedItem?.toString() ?: '',
+                                                                    cmbCommLogRecipient.selectedItem?.toString() ?: '',
+                                                                    cmbCommLogForm.selectedItem?.toString() ?: '',
                                                                     taCommLogEntry.text
                                                                 ] as Object[]);
 
                                                                 // Felder zurücksetzen
                                                                 txtCommDate.setText("");
-                                                                cmbCommLogParty.setSelectedItem("");
+                                                                cmbCommLogSender.setSelectedItem("");
+                                                                cmbCommLogRecipient.setSelectedItem("");
+                                                                cmbCommLogForm.setSelectedItem("");
                                                                 taCommLogEntry.setText("");
 
                                                                 // JSON synchronisieren
@@ -2399,7 +2433,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         scrollPane(preferredSize: [800, 400]){
                                             // TableModel erstellen
                                             commLogTableModel = new DefaultTableModel(
-                                                ['Datum', 'Beteiligte', 'Anmerkung'] as Object[],
+                                                ['Datum', 'Absender', 'Adressat', 'Form', 'Inhalt'] as Object[],
                                                 0
                                             ) {
                                                 @Override
@@ -2414,8 +2448,10 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
 
                                             // Spaltenbreiten nach Erstellung setzen
                                             tblCommLog.getColumnModel().getColumn(0).setPreferredWidth(100); // Datum
-                                            tblCommLog.getColumnModel().getColumn(1).setPreferredWidth(150); // Beteiligte
-                                            tblCommLog.getColumnModel().getColumn(2).setPreferredWidth(400); // Anmerkung
+                                            tblCommLog.getColumnModel().getColumn(1).setPreferredWidth(120); // Absender
+                                            tblCommLog.getColumnModel().getColumn(2).setPreferredWidth(120); // Adressat
+                                            tblCommLog.getColumnModel().getColumn(3).setPreferredWidth(100); // Form
+                                            tblCommLog.getColumnModel().getColumn(4).setPreferredWidth(360); // Inhalt
                                         }
                                     }
                                 }

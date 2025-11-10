@@ -700,7 +700,9 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
     def colorMap = [
     'ausstehend'    : new Color(222, 49, 59),\
     'in Bearbeitung': Color.YELLOW,
-    'abgeschlossen' : new Color(151, 191, 13)
+    'abgeschlossen' : new Color(151, 191, 13),
+    'ruhend'        : Color.GRAY,
+    'abgesagt'      : Color.ORANGE
     ]
     
     // Formatter für dd.MM.yyyy
@@ -949,10 +951,147 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                                 GuiLib.dateSelector(txtFrist, true);
                                                             })
                                                     }
-                                                                    
+
                                                 }
                                             }
                                         }
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true) {
+
+                                        label(text: '')
+
+
+                                    }
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        chkFristverlaengerung=checkBox(text: 'Fristverlängerung', name: "_FRISTVERLJANEIN", clientPropertyJlawyerdescription: "Fristverlängerung", selected: false)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        txtFristverlaengerung=textField(name: "_FRISTVERL", clientPropertyJlawyerdescription: "Fristverlängerung Datum", text: '', columns:10)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                GuiLib.dateSelector(txtFristverlaengerung, true);
+                                                            })
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true) {
+
+                                        label(text: '')
+
+
+                                    }
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        label(text: 'Datum:')
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        txtFristverlaengerungDatumErhalt=textField(name: "_FRISTVERLDATUM", clientPropertyJlawyerdescription: "Fristverlängerung Datum Erhalt", text: '', columns:10)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                GuiLib.dateSelector(txtFristverlaengerungDatumErhalt, true);
+                                                            })
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true) {
+
+                                        label(text: '')
+
+
+                                    }
+                                    td {
+                                        scrollPane {
+                                            txtFristverlaengerungBegruendung=textArea(
+                                                name: "_FRISTVERLGRUND",
+                                                clientPropertyJlawyerdescription: "Fristverlängerung Begründung",
+                                                text: '',
+                                                lineWrap: true,
+                                                wrapStyleWord: true,
+                                                columns: 40,
+                                                rows: 3
+                                            )
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true) {
+
+                                        label(text: '')
+
+
+                                    }
+                                    td {
+                                        chkKeineAktendarstellung=checkBox(text: 'KEINE Darstellung des Akteninhaltes im Gutachten', name: "_KEINEAKTENDARST", clientPropertyJlawyerdescription: "KEINE Darstellung des Akteninhaltes im Gutachten", selected: false)
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true) {
+
+                                        label(text: '')
+
+
+                                    }
+                                    td {
+                                        chkKeineBeweisbeschlussWiedergabe=checkBox(text: 'KEINE Wiedergabe des Beweisbeschlusses im Gutachten', name: "_KEINBEWEISBESCH", clientPropertyJlawyerdescription: "KEINE Wiedergabe des Beweisbeschlusses im Gutachten", selected: false)
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, valign: 'left') {
+                                        label(text: 'Anzahl Ausfertigungen:')
+                                    }
+                                    td {
+                                        cmbAnzahlAusfertigungen = comboBox(
+                                            items: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+                                            name: "_AUSFERTIGUNGEN",
+                                            clientPropertyJlawyerdescription: "Anzahl Ausfertigungen",
+                                            editable: true
+                                        )
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, valign: 'left') {
+                                        label(text: 'Form:')
+                                    }
+                                    td {
+                                        cmbForm = comboBox(
+                                            items: ['digital', 'gedruckt'],
+                                            name: "_FORM",
+                                            clientPropertyJlawyerdescription: "Form",
+                                            editable: false
+                                        )
                                     }
                                 }
                                 tr {
@@ -974,7 +1113,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                 }
                                 tr {
                                     td (colfill:true, valign: 'left') {
-                                        label(text: 'Kontaktdaten:')
+                                        label(text: 'Auftraggeber:')
                                     }
                                     td {
                                         scrollPane{

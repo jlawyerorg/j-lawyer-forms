@@ -719,6 +719,16 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
     DefaultTableModel commLogTableModel = null;
     JTextField txtCommLogData = null; // Verstecktes Feld für JSON-Daten
 
+    // Befundanforderungen - Tabelle
+    JTable tblBefund = null;
+    DefaultTableModel befundTableModel = null;
+    JTextField txtBefundData = null; // Verstecktes Feld für JSON-Daten
+
+    // Schweigepflicht - Tabelle
+    JTable tblSchweigepflicht = null;
+    DefaultTableModel schweigepflichtTableModel = null;
+    JTextField txtSchweigepflichtData = null; // Verstecktes Feld für JSON-Daten
+
     // Fortschrittsanzeige
     JProgressBar progressBar = null;
     JLabel lblProgress = null;
@@ -966,6 +976,166 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                    .replace("\n", "<br>");
     }
 
+    // Befundanforderungen - JSON-Synchronisation
+    private void syncBefundToJson() {
+        if (befundTableModel == null || txtBefundData == null) return;
+
+        def entries = []
+        for (int i = 0; i < befundTableModel.getRowCount(); i++) {
+            entries << [
+                datum: befundTableModel.getValueAt(i, 0) ?: '',
+                institution: befundTableModel.getValueAt(i, 1) ?: '',
+                inhalt: befundTableModel.getValueAt(i, 2) ?: ''
+            ]
+        }
+
+        def json = new JsonBuilder(entries)
+        txtBefundData.setText(json.toString())
+    }
+
+    // Lädt Befundanforderungen aus dem versteckten JSON-Feld in die Tabelle
+    private void loadBefundFromJson() {
+        if (befundTableModel == null || txtBefundData == null) return;
+
+        befundTableModel.setRowCount(0); // Tabelle leeren
+
+        def jsonText = txtBefundData.getText()
+        if (jsonText != null && jsonText.trim() != '') {
+            try {
+                def slurper = new JsonSlurper()
+                def entries = slurper.parseText(jsonText)
+
+                entries.each { entry ->
+                    befundTableModel.addRow([
+                        entry.datum ?: '',
+                        entry.institution ?: '',
+                        entry.inhalt ?: ''
+                    ] as Object[])
+                }
+            } catch (Exception e) {
+                // Bei Fehler ignorieren, leere Tabelle anzeigen
+                e.printStackTrace()
+            }
+        }
+    }
+
+    // Kopiert die Befundanforderungen-Tabelle als HTML in die Zwischenablage
+    private void copyBefundToClipboard() {
+        if (befundTableModel == null) return;
+
+        StringBuilder html = new StringBuilder();
+        html.append("<html><body><table border='1' cellpadding='5' cellspacing='0'>\n");
+
+        // Kopfzeile
+        html.append("<tr>");
+        for (int col = 0; col < befundTableModel.getColumnCount(); col++) {
+            html.append("<th>").append(escapeHtml(befundTableModel.getColumnName(col))).append("</th>");
+        }
+        html.append("</tr>\n");
+
+        // Datenzeilen
+        for (int row = 0; row < befundTableModel.getRowCount(); row++) {
+            html.append("<tr>");
+            for (int col = 0; col < befundTableModel.getColumnCount(); col++) {
+                Object value = befundTableModel.getValueAt(row, col);
+                html.append("<td>").append(escapeHtml(value != null ? value.toString() : "")).append("</td>");
+            }
+            html.append("</tr>\n");
+        }
+
+        html.append("</table></body></html>");
+
+        // HTML Transferable erstellen
+        HtmlSelection htmlSelection = new HtmlSelection(html.toString());
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(htmlSelection, null);
+
+        JOptionPane.showMessageDialog(SCRIPTPANEL,
+            "Tabelle wurde in die Zwischenablage kopiert.\nSie können sie nun in Word oder LibreOffice einfügen.",
+            "In Zwischenablage kopiert",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    // Schweigepflicht - JSON-Synchronisation
+    private void syncSchweigepflichtToJson() {
+        if (schweigepflichtTableModel == null || txtSchweigepflichtData == null) return;
+
+        def entries = []
+        for (int i = 0; i < schweigepflichtTableModel.getRowCount(); i++) {
+            entries << [
+                datum: schweigepflichtTableModel.getValueAt(i, 0) ?: '',
+                beteiligte: schweigepflichtTableModel.getValueAt(i, 1) ?: '',
+                anmerkungen: schweigepflichtTableModel.getValueAt(i, 2) ?: ''
+            ]
+        }
+
+        def json = new JsonBuilder(entries)
+        txtSchweigepflichtData.setText(json.toString())
+    }
+
+    // Lädt Schweigepflicht aus dem versteckten JSON-Feld in die Tabelle
+    private void loadSchweigepflichtFromJson() {
+        if (schweigepflichtTableModel == null || txtSchweigepflichtData == null) return;
+
+        schweigepflichtTableModel.setRowCount(0); // Tabelle leeren
+
+        def jsonText = txtSchweigepflichtData.getText()
+        if (jsonText != null && jsonText.trim() != '') {
+            try {
+                def slurper = new JsonSlurper()
+                def entries = slurper.parseText(jsonText)
+
+                entries.each { entry ->
+                    schweigepflichtTableModel.addRow([
+                        entry.datum ?: '',
+                        entry.beteiligte ?: '',
+                        entry.anmerkungen ?: ''
+                    ] as Object[])
+                }
+            } catch (Exception e) {
+                // Bei Fehler ignorieren, leere Tabelle anzeigen
+                e.printStackTrace()
+            }
+        }
+    }
+
+    // Kopiert die Schweigepflicht-Tabelle als HTML in die Zwischenablage
+    private void copySchweigepflichtToClipboard() {
+        if (schweigepflichtTableModel == null) return;
+
+        StringBuilder html = new StringBuilder();
+        html.append("<html><body><table border='1' cellpadding='5' cellspacing='0'>\n");
+
+        // Kopfzeile
+        html.append("<tr>");
+        for (int col = 0; col < schweigepflichtTableModel.getColumnCount(); col++) {
+            html.append("<th>").append(escapeHtml(schweigepflichtTableModel.getColumnName(col))).append("</th>");
+        }
+        html.append("</tr>\n");
+
+        // Datenzeilen
+        for (int row = 0; row < schweigepflichtTableModel.getRowCount(); row++) {
+            html.append("<tr>");
+            for (int col = 0; col < schweigepflichtTableModel.getColumnCount(); col++) {
+                Object value = schweigepflichtTableModel.getValueAt(row, col);
+                html.append("<td>").append(escapeHtml(value != null ? value.toString() : "")).append("</td>");
+            }
+            html.append("</tr>\n");
+        }
+
+        html.append("</table></body></html>");
+
+        // HTML Transferable erstellen
+        HtmlSelection htmlSelection = new HtmlSelection(html.toString());
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(htmlSelection, null);
+
+        JOptionPane.showMessageDialog(SCRIPTPANEL,
+            "Tabelle wurde in die Zwischenablage kopiert.\nSie können sie nun in Word oder LibreOffice einfügen.",
+            "In Zwischenablage kopiert",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
+
     // Aktualisiert die Fortschrittsanzeige basierend auf Status-Comboboxen
     private void updateProgress() {
         if (progressBar == null || lblProgress == null || statusComboBoxes.isEmpty()) return;
@@ -991,6 +1161,12 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
 
         // Spezialbehandlung für Kommunikationslogbuch-Tabelle
         loadTableFromJson();
+
+        // Spezialbehandlung für Befundanforderungen-Tabelle
+        loadBefundFromJson();
+
+        // Spezialbehandlung für Schweigepflicht-Tabelle
+        loadSchweigepflichtFromJson();
 
         // Sichtbarkeit der Besondere Untersuchungen Datumsfelder setzen
         txtK1BesondereDatum.setVisible(chkK1Besondere.isSelected());
@@ -2579,11 +2755,279 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                         }
                         panel(name: 'Schweigepflicht') {
                             tableLayout (cellpadding: 5) {
+                                tr {
+                                    td {
+                                        label (text: 'Datum:')
+                                    }
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        txtSchweigepflichtDate=textField(text: '', columns:10)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                GuiLib.dateSelector(txtSchweigepflichtDate, true);
+                                                            })
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        label (text: 'Beteiligte/r:')
+                                    }
+                                    td {
+                                        txtSchweigepflichtBeteiligte=textField(text: '', columns:50)
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        label (text: 'Anmerkungen:')
+                                    }
+                                    td {
+                                        scrollPane{
+                                            taSchweigepflichtEntry=textArea(lineWrap:true,wrapStyleWord:true, columns:50, rows:3,editable:true)
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        label (text: ' ')
+                                    }
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        button(text: 'Eintrag hinzufügen', actionPerformed: {
+                                                                // Neue Zeile zur Tabelle hinzufügen
+                                                                schweigepflichtTableModel.addRow([
+                                                                    txtSchweigepflichtDate.text,
+                                                                    txtSchweigepflichtBeteiligte.text,
+                                                                    taSchweigepflichtEntry.text
+                                                                ] as Object[]);
+
+                                                                // Felder zurücksetzen
+                                                                txtSchweigepflichtDate.setText("");
+                                                                txtSchweigepflichtBeteiligte.setText("");
+                                                                taSchweigepflichtEntry.setText("");
+
+                                                                // JSON synchronisieren
+                                                                syncSchweigepflichtToJson();
+                                                            })
+                                                    }
+                                                    td {
+                                                        button(text: 'Markierte Zeile löschen', actionPerformed: {
+                                                                int selectedRow = tblSchweigepflicht.getSelectedRow();
+                                                                if (selectedRow >= 0) {
+                                                                    schweigepflichtTableModel.removeRow(selectedRow);
+                                                                    syncSchweigepflichtToJson();
+                                                                } else {
+                                                                    JOptionPane.showMessageDialog(SCRIPTPANEL,
+                                                                        "Bitte wählen Sie eine Zeile aus.",
+                                                                        "Keine Zeile ausgewählt",
+                                                                        JOptionPane.WARNING_MESSAGE);
+                                                                }
+                                                            })
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td (colspan: 2) {
+                                        scrollPane(preferredSize: [800, 400]){
+                                            // TableModel erstellen
+                                            schweigepflichtTableModel = new DefaultTableModel(
+                                                ['Datum', 'Beteiligte/r', 'Anmerkungen'] as Object[],
+                                                0
+                                            ) {
+                                                @Override
+                                                public void setValueAt(Object value, int row, int col) {
+                                                    super.setValueAt(value, row, col);
+                                                    // Bei Änderung synchronisieren
+                                                    syncSchweigepflichtToJson();
+                                                }
+                                            };
+
+                                            tblSchweigepflicht = table(model: schweigepflichtTableModel)
+
+                                            // Spaltenbreiten nach Erstellung setzen
+                                            tblSchweigepflicht.getColumnModel().getColumn(0).setPreferredWidth(100); // Datum
+                                            tblSchweigepflicht.getColumnModel().getColumn(1).setPreferredWidth(200); // Beteiligte/r
+                                            tblSchweigepflicht.getColumnModel().getColumn(2).setPreferredWidth(500); // Anmerkungen
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        label (text: ' ')
+                                    }
+                                    td {
+                                        button(text: 'Tabelle in Zwischenablage kopieren', actionPerformed: {
+                                                copySchweigepflichtToClipboard();
+                                            })
+                                    }
+                                }
+                                tr {
+                                    td (colspan: 2) {
+                                        // Verstecktes Textfeld für JSON-Daten
+                                        txtSchweigepflichtData = textField(
+                                            name: "_SCHWEIGEPFLICHT",
+                                            clientPropertyJlawyerdescription: "Schweigepflicht",
+                                            text: '',
+                                            visible: false
+                                        )
+                                    }
+                                }
+
 
                             }
                         }
                         panel(name: 'Befundanforderungen') {
                             tableLayout (cellpadding: 5) {
+                                tr {
+                                    td {
+                                        label (text: 'Datum:')
+                                    }
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        txtBefundDate=textField(text: '', columns:10)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                GuiLib.dateSelector(txtBefundDate, true);
+                                                            })
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        label (text: 'Institution:')
+                                    }
+                                    td {
+                                        txtBefundInstitution=textField(text: '', columns:50)
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        label (text: 'Inhalt:')
+                                    }
+                                    td {
+                                        scrollPane{
+                                            taBefundEntry=textArea(lineWrap:true,wrapStyleWord:true, columns:50, rows:3,editable:true)
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        label (text: ' ')
+                                    }
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        button(text: 'Eintrag hinzufügen', actionPerformed: {
+                                                                // Neue Zeile zur Tabelle hinzufügen
+                                                                befundTableModel.addRow([
+                                                                    txtBefundDate.text,
+                                                                    txtBefundInstitution.text,
+                                                                    taBefundEntry.text
+                                                                ] as Object[]);
+
+                                                                // Felder zurücksetzen
+                                                                txtBefundDate.setText("");
+                                                                txtBefundInstitution.setText("");
+                                                                taBefundEntry.setText("");
+
+                                                                // JSON synchronisieren
+                                                                syncBefundToJson();
+                                                            })
+                                                    }
+                                                    td {
+                                                        button(text: 'Markierte Zeile löschen', actionPerformed: {
+                                                                int selectedRow = tblBefund.getSelectedRow();
+                                                                if (selectedRow >= 0) {
+                                                                    befundTableModel.removeRow(selectedRow);
+                                                                    syncBefundToJson();
+                                                                } else {
+                                                                    JOptionPane.showMessageDialog(SCRIPTPANEL,
+                                                                        "Bitte wählen Sie eine Zeile aus.",
+                                                                        "Keine Zeile ausgewählt",
+                                                                        JOptionPane.WARNING_MESSAGE);
+                                                                }
+                                                            })
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td (colspan: 2) {
+                                        scrollPane(preferredSize: [800, 400]){
+                                            // TableModel erstellen
+                                            befundTableModel = new DefaultTableModel(
+                                                ['Datum', 'Institution', 'Inhalt'] as Object[],
+                                                0
+                                            ) {
+                                                @Override
+                                                public void setValueAt(Object value, int row, int col) {
+                                                    super.setValueAt(value, row, col);
+                                                    // Bei Änderung synchronisieren
+                                                    syncBefundToJson();
+                                                }
+                                            };
+
+                                            tblBefund = table(model: befundTableModel)
+
+                                            // Spaltenbreiten nach Erstellung setzen
+                                            tblBefund.getColumnModel().getColumn(0).setPreferredWidth(100); // Datum
+                                            tblBefund.getColumnModel().getColumn(1).setPreferredWidth(200); // Institution
+                                            tblBefund.getColumnModel().getColumn(2).setPreferredWidth(500); // Inhalt
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        label (text: ' ')
+                                    }
+                                    td {
+                                        button(text: 'Tabelle in Zwischenablage kopieren', actionPerformed: {
+                                                copyBefundToClipboard();
+                                            })
+                                    }
+                                }
+                                tr {
+                                    td (colspan: 2) {
+                                        // Verstecktes Textfeld für JSON-Daten
+                                        txtBefundData = textField(
+                                            name: "_BEFUND",
+                                            clientPropertyJlawyerdescription: "Befundanforderungen",
+                                            text: '',
+                                            visible: false
+                                        )
+                                    }
+                                }
+
 
                             }
                         }

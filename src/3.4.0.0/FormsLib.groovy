@@ -727,66 +727,66 @@ public class FormsLib {
     
     public static void setPlaceHolderValues(String prefix, Hashtable placeHolderValues, JPanel rootComponent) {
         setToComponents(prefix, placeHolderValues, rootComponent);
-        
+
     }
-    
+
     private static void setToComponents (String prefix, Hashtable placeHolderValues, Component component) {
-        
+
         if(component==null) {
-            System.out.println("component is null");
             return;
         }
-        
-        String prefixedComponentName=prefix + component.getName();
-        if(component.getName()!=null) {
-            if(component.getName().startsWith("_")) {
-                //println ("" + System.currentTimeMillis() + "  browsing component to set place holder values: " + prefixedComponentName);
-                for(Object key: placeHolderValues.keySet()) {
-                    String keyString=key.toString();
-                    //println ("" + System.currentTimeMillis() + "  checking placeholder key: " + keyString);
-                    String value=placeHolderValues.get(key).toString();
-                    if(prefixedComponentName.equals(keyString)) {
-                        if(component instanceof JTextField) {
-                            ((JTextField)component).setText(value);
-                        } else if(component instanceof JLabel) {
-                            ((JLabel)component).setText(value);
-                        } else if(component instanceof JComboBox) {
-                            ((JComboBox)component).setSelectedItem(value);
-                        } else if (component instanceof JCheckBox) {
-                            ((JCheckBox)component).setSelected(false);
-                            if("1".equals(value) || "ja".equals(value) || "x".equalsIgnoreCase(value)) {
-                                ((JCheckBox)component).setSelected(true);
-                            }
-                        } else if(component instanceof JTextArea) {
-                            //println ("" + System.currentTimeMillis() + "  setting place holder to text area");
-                            ((JTextArea)component).setText(value);
-                            //println ("" + System.currentTimeMillis() + "  setting place holder to text area - text done");
-                            ((JTextArea)component).setToolTipText(value);
-                            //println ("" + System.currentTimeMillis() + "  setting place holder to text area - tooltip done");
-                        } else if(component instanceof JSpinner) {
-                            int intValue=1;
-                            try {
-                                intValue=Integer.parseInt(value);
-                                ((JSpinner)component).setValue(intValue);
-                            } catch (Throwable t) {
-                                
-                            }
-                        } else if(component instanceof JRadioButton) {
-                            ((JRadioButton)component).setSelected(false);
-                            if("1".equals(value) || "ja".equals(value) || "x".equalsIgnoreCase(value)) {
-                                ((JRadioButton)component).setSelected(true);
-                            }
-                        }
-                        //println ("" + System.currentTimeMillis() + "  found component for key - going to next component");
-                        placeHolderValues.remove(key);
-                        break;
+
+        // Early exit if no more placeholders to set
+        if(placeHolderValues.isEmpty()) {
+            return;
+        }
+
+        // Check component name first, before string concatenation
+        String componentName = component.getName();
+        if(componentName != null && componentName.startsWith("_")) {
+            // Direct lookup instead of iterating through all keys
+            String prefixedComponentName = prefix + componentName;
+            Object valueObj = placeHolderValues.get(prefixedComponentName);
+
+            if(valueObj != null) {
+                // Convert value only after match is found
+                String value = valueObj.toString();
+
+                if(component instanceof JTextField) {
+                    ((JTextField)component).setText(value);
+                } else if(component instanceof JLabel) {
+                    ((JLabel)component).setText(value);
+                } else if(component instanceof JComboBox) {
+                    ((JComboBox)component).setSelectedItem(value);
+                } else if (component instanceof JCheckBox) {
+                    boolean selected = "1".equals(value) || "ja".equals(value) || "x".equalsIgnoreCase(value);
+                    ((JCheckBox)component).setSelected(selected);
+                } else if(component instanceof JTextArea) {
+                    JTextArea textArea = (JTextArea)component;
+                    textArea.setText(value);
+                    textArea.setToolTipText(value);
+                } else if(component instanceof JSpinner) {
+                    try {
+                        int intValue = Integer.parseInt(value);
+                        ((JSpinner)component).setValue(intValue);
+                    } catch (Throwable t) {
+                        // Ignore invalid integer values
                     }
+                } else if(component instanceof JRadioButton) {
+                    boolean selected = "1".equals(value) || "ja".equals(value) || "x".equalsIgnoreCase(value);
+                    ((JRadioButton)component).setSelected(selected);
                 }
+
+                // Remove after successful set
+                placeHolderValues.remove(prefixedComponentName);
             }
         }
-        
-        for(Component c: ((Container)component).getComponents()) {
-            setToComponents(prefix, placeHolderValues, c);
+
+        // Recursively process child components
+        if(component instanceof Container) {
+            for(Component c: ((Container)component).getComponents()) {
+                setToComponents(prefix, placeHolderValues, c);
+            }
         }
 
     }
@@ -903,61 +903,62 @@ public class FormsLib {
     
     public static void setExtractedValues(Map<String,String> attributes, JPanel rootComponent) {
         setExtractedValuesToComponents(attributes, rootComponent);
-        
+
     }
-    
+
     private static void setExtractedValuesToComponents (Map<String,String> attributes, Component component) {
-        
-        if(component==null) {
-            System.out.println("component is null");
+
+        if(component == null) {
             return;
         }
-        
-        String aiPromptKey=null;
-        if(component instanceof JComponent)
-            aiPromptKey=((JComponent)component).getClientProperty("AiPromptKey");
-        
-        if(aiPromptKey!=null) {
-            
-                for(String key: attributes.keySet()) {
-                    String value=attributes.get(key);
-                    if(aiPromptKey.equals(key)) {
-                        if(component instanceof JTextField) {
-                            ((JTextField)component).setText(value);
-                        } else if(component instanceof JLabel) {
-                            ((JLabel)component).setText(value);
-                        } else if(component instanceof JComboBox) {
-                            ((JComboBox)component).setSelectedItem(value);
-                        } else if (component instanceof JCheckBox) {
-                            ((JCheckBox)component).setSelected(false);
-                            if("1".equals(value) || "ja".equals(value) || "x".equalsIgnoreCase(value)) {
-                                ((JCheckBox)component).setSelected(true);
-                            }
-                        } else if(component instanceof JTextArea) {
-                            ((JTextArea)component).setText(value);
-                            ((JTextArea)component).setToolTipText(value);
-                        } else if(component instanceof JSpinner) {
-                            int intValue=1;
-                            try {
-                                intValue=Integer.parseInt(value);
-                                ((JSpinner)component).setValue(intValue);
-                            } catch (Throwable t) {
-                                
-                            }
-                        } else if(component instanceof JRadioButton) {
-                            ((JRadioButton)component).setSelected(false);
-                            if("1".equals(value) || "ja".equals(value) || "x".equalsIgnoreCase(value)) {
-                                ((JRadioButton)component).setSelected(true);
-                            }
+
+        // Early exit if no more attributes to set
+        if(attributes.isEmpty()) {
+            return;
+        }
+
+        // Check for AI prompt key and use direct lookup
+        if(component instanceof JComponent) {
+            String aiPromptKey = ((JComponent)component).getClientProperty("AiPromptKey");
+
+            if(aiPromptKey != null) {
+                // Direct lookup instead of iterating through all keys
+                String value = attributes.get(aiPromptKey);
+
+                if(value != null) {
+                    if(component instanceof JTextField) {
+                        ((JTextField)component).setText(value);
+                    } else if(component instanceof JLabel) {
+                        ((JLabel)component).setText(value);
+                    } else if(component instanceof JComboBox) {
+                        ((JComboBox)component).setSelectedItem(value);
+                    } else if (component instanceof JCheckBox) {
+                        boolean selected = "1".equals(value) || "ja".equals(value) || "x".equalsIgnoreCase(value);
+                        ((JCheckBox)component).setSelected(selected);
+                    } else if(component instanceof JTextArea) {
+                        JTextArea textArea = (JTextArea)component;
+                        textArea.setText(value);
+                        textArea.setToolTipText(value);
+                    } else if(component instanceof JSpinner) {
+                        try {
+                            int intValue = Integer.parseInt(value);
+                            ((JSpinner)component).setValue(intValue);
+                        } catch (Throwable t) {
+                            // Ignore invalid integer values
                         }
-                        break;
+                    } else if(component instanceof JRadioButton) {
+                        boolean selected = "1".equals(value) || "ja".equals(value) || "x".equalsIgnoreCase(value);
+                        ((JRadioButton)component).setSelected(selected);
                     }
                 }
-            
+            }
         }
-        
-        for(Component c: ((Container)component).getComponents()) {
-            setExtractedValuesToComponents(attributes, c);
+
+        // Recursively process child components
+        if(component instanceof Container) {
+            for(Component c: ((Container)component).getComponents()) {
+                setExtractedValuesToComponents(attributes, c);
+            }
         }
 
     }

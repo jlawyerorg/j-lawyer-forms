@@ -3557,195 +3557,120 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         panel {
                                             tableLayout (cellpadding: 5) {
                                                 tr {
-                                                    td {
+                                                    td (colspan: 3) {
                                                         label (text: 'Kind 1', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK1EBFKJ=checkBox(text: 'EBF-KJ', name: "_UPK1_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 EBF-KJ", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK1EBFKJ=textField(name: "_UPK1_EBFKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 EBF-KJ Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK1EBFKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK1EBFKJ, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK1EBFKJ=checkBox(text: 'EBF-KJ', name: "_UPK1_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 EBF-KJ", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK1EBFKJ=textField(name: "_UPK1_EBFKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 EBF-KJ Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK1EBFKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK1EBFKJ, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK1CBCL=checkBox(text: 'CBCL', name: "_UPK1_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 CBCL", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK1CBCL=textField(name: "_UPK1_CBCL_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 CBCL Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK1CBCL=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK1CBCL, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK1CBCL=checkBox(text: 'CBCL', name: "_UPK1_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 CBCL", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK1CBCL=textField(name: "_UPK1_CBCL_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 CBCL Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK1CBCL=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK1CBCL, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK1CTRF=checkBox(text: 'C-TRF', name: "_UPK1_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 C-TRF", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK1CTRF=textField(name: "_UPK1_CTRF_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 C-TRF Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK1CTRF=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK1CTRF, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK1CTRF=checkBox(text: 'C-TRF', name: "_UPK1_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 C-TRF", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK1CTRF=textField(name: "_UPK1_CTRF_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 C-TRF Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK1CTRF=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK1CTRF, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK1SURT=checkBox(text: 'SURT', name: "_UPK1_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 SURT", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK1SURT=textField(name: "_UPK1_SURT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 SURT Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK1SURT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK1SURT, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK1SURT=checkBox(text: 'SURT', name: "_UPK1_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 SURT", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK1SURT=textField(name: "_UPK1_SURT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 SURT Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK1SURT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK1SURT, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK1SKEI=checkBox(text: 'SKEI', name: "_UPK1_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 SKEI", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK1SKEI=textField(name: "_UPK1_SKEI_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 SKEI Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK1SKEI=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK1SKEI, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK1SKEI=checkBox(text: 'SKEI', name: "_UPK1_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 SKEI", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK1SKEI=textField(name: "_UPK1_SKEI_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 SKEI Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK1SKEI=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK1SKEI, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK1FIT=checkBox(text: 'FIT', name: "_UPK1_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 FIT", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK1FIT=textField(name: "_UPK1_FIT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 FIT Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK1FIT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK1FIT, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK1FIT=checkBox(text: 'FIT', name: "_UPK1_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 FIT", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK1FIT=textField(name: "_UPK1_FIT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 FIT Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK1FIT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK1FIT, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK1FRTKJ=checkBox(text: 'FRT-KJ', name: "_UPK1_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 FRT-KJ", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK1FRTKJ=textField(name: "_UPK1_FRTKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 FRT-KJ Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK1FRTKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK1FRTKJ, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK1FRTKJ=checkBox(text: 'FRT-KJ', name: "_UPK1_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 FRT-KJ", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK1FRTKJ=textField(name: "_UPK1_FRTKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 FRT-KJ Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK1FRTKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK1FRTKJ, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK1Besondere=checkBox(text: 'Besondere:', name: "_UPK1_BESONDERE", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 Besondere Untersuchungen", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK1Besondere=textField(name: "_UPK1_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 Besondere Untersuchungen Text", text: '', columns:15)
-                                                                    }
-                                                                }
-                                                                tr {
-                                                                    td {
-                                                                        label(text: ' ')
-                                                                    }
-                                                                    td {
-                                                                        panel {
-                                                                            tableLayout (cellpadding: 0) {
-                                                                                tr {
-                                                                                    td {
-                                                                                        txtK1BesondereDatum=textField(name: "_UPK1_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
-                                                                                    }
-                                                                                    td {
-                                                                                        label(text: ' ')
-                                                                                    }
-                                                                                    td {
-                                                                                        btnK1BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                                GuiLib.dateSelector(txtK1BesondereDatum, true);
-                                                                                            })
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK1Besondere=checkBox(text: 'Besondere:', name: "_UPK1_BESONDERE", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 Besondere Untersuchungen", selected: false)
+                                                    }
+                                                    td (colspan: 2) {
+                                                        txtK1Besondere=textField(name: "_UPK1_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 Besondere Untersuchungen Text", text: '', columns:15)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        txtK1BesondereDatum=textField(name: "_UPK1_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK1BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK1BesondereDatum, true);
+                                                            })
                                                     }
                                                 }
                                             }
@@ -3755,195 +3680,120 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         panel {
                                             tableLayout (cellpadding: 5) {
                                                 tr {
-                                                    td {
+                                                    td (colspan: 3) {
                                                         label (text: 'Kind 2', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK2EBFKJ=checkBox(text: 'EBF-KJ', name: "_UPK2_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 EBF-KJ", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK2EBFKJ=textField(name: "_UPK2_EBFKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 EBF-KJ Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK2EBFKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK2EBFKJ, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK2EBFKJ=checkBox(text: 'EBF-KJ', name: "_UPK2_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 EBF-KJ", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK2EBFKJ=textField(name: "_UPK2_EBFKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 EBF-KJ Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK2EBFKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK2EBFKJ, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK2CBCL=checkBox(text: 'CBCL', name: "_UPK2_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 CBCL", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK2CBCL=textField(name: "_UPK2_CBCL_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 CBCL Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK2CBCL=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK2CBCL, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK2CBCL=checkBox(text: 'CBCL', name: "_UPK2_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 CBCL", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK2CBCL=textField(name: "_UPK2_CBCL_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 CBCL Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK2CBCL=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK2CBCL, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK2CTRF=checkBox(text: 'C-TRF', name: "_UPK2_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 C-TRF", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK2CTRF=textField(name: "_UPK2_CTRF_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 C-TRF Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK2CTRF=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK2CTRF, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK2CTRF=checkBox(text: 'C-TRF', name: "_UPK2_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 C-TRF", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK2CTRF=textField(name: "_UPK2_CTRF_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 C-TRF Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK2CTRF=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK2CTRF, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK2SURT=checkBox(text: 'SURT', name: "_UPK2_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 SURT", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK2SURT=textField(name: "_UPK2_SURT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 SURT Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK2SURT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK2SURT, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK2SURT=checkBox(text: 'SURT', name: "_UPK2_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 SURT", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK2SURT=textField(name: "_UPK2_SURT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 SURT Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK2SURT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK2SURT, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK2SKEI=checkBox(text: 'SKEI', name: "_UPK2_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 SKEI", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK2SKEI=textField(name: "_UPK2_SKEI_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 SKEI Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK2SKEI=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK2SKEI, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK2SKEI=checkBox(text: 'SKEI', name: "_UPK2_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 SKEI", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK2SKEI=textField(name: "_UPK2_SKEI_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 SKEI Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK2SKEI=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK2SKEI, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK2FIT=checkBox(text: 'FIT', name: "_UPK2_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 FIT", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK2FIT=textField(name: "_UPK2_FIT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 FIT Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK2FIT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK2FIT, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK2FIT=checkBox(text: 'FIT', name: "_UPK2_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 FIT", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK2FIT=textField(name: "_UPK2_FIT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 FIT Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK2FIT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK2FIT, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK2FRTKJ=checkBox(text: 'FRT-KJ', name: "_UPK2_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 FRT-KJ", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK2FRTKJ=textField(name: "_UPK2_FRTKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 FRT-KJ Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK2FRTKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK2FRTKJ, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK2FRTKJ=checkBox(text: 'FRT-KJ', name: "_UPK2_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 FRT-KJ", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK2FRTKJ=textField(name: "_UPK2_FRTKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 FRT-KJ Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK2FRTKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK2FRTKJ, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK2Besondere=checkBox(text: 'Besondere:', name: "_UPK2_BESONDERE", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 Besondere Untersuchungen", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK2Besondere=textField(name: "_UPK2_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 Besondere Untersuchungen Text", text: '', columns:15)
-                                                                    }
-                                                                }
-                                                                tr {
-                                                                    td {
-                                                                        label(text: ' ')
-                                                                    }
-                                                                    td {
-                                                                        panel {
-                                                                            tableLayout (cellpadding: 0) {
-                                                                                tr {
-                                                                                    td {
-                                                                                        txtK2BesondereDatum=textField(name: "_UPK2_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
-                                                                                    }
-                                                                                    td {
-                                                                                        label(text: ' ')
-                                                                                    }
-                                                                                    td {
-                                                                                        btnK2BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                                GuiLib.dateSelector(txtK2BesondereDatum, true);
-                                                                                            })
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK2Besondere=checkBox(text: 'Besondere:', name: "_UPK2_BESONDERE", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 Besondere Untersuchungen", selected: false)
+                                                    }
+                                                    td (colspan: 2) {
+                                                        txtK2Besondere=textField(name: "_UPK2_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 Besondere Untersuchungen Text", text: '', columns:15)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        txtK2BesondereDatum=textField(name: "_UPK2_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK2BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK2BesondereDatum, true);
+                                                            })
                                                     }
                                                 }
                                             }
@@ -3953,195 +3803,120 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         panel {
                                             tableLayout (cellpadding: 5) {
                                                 tr {
-                                                    td {
+                                                    td (colspan: 3) {
                                                         label (text: 'Kind 3', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK3EBFKJ=checkBox(text: 'EBF-KJ', name: "_UPK3_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 EBF-KJ", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK3EBFKJ=textField(name: "_UPK3_EBFKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 EBF-KJ Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK3EBFKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK3EBFKJ, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK3EBFKJ=checkBox(text: 'EBF-KJ', name: "_UPK3_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 EBF-KJ", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK3EBFKJ=textField(name: "_UPK3_EBFKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 EBF-KJ Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK3EBFKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK3EBFKJ, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK3CBCL=checkBox(text: 'CBCL', name: "_UPK3_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 CBCL", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK3CBCL=textField(name: "_UPK3_CBCL_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 CBCL Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK3CBCL=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK3CBCL, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK3CBCL=checkBox(text: 'CBCL', name: "_UPK3_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 CBCL", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK3CBCL=textField(name: "_UPK3_CBCL_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 CBCL Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK3CBCL=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK3CBCL, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK3CTRF=checkBox(text: 'C-TRF', name: "_UPK3_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 C-TRF", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK3CTRF=textField(name: "_UPK3_CTRF_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 C-TRF Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK3CTRF=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK3CTRF, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK3CTRF=checkBox(text: 'C-TRF', name: "_UPK3_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 C-TRF", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK3CTRF=textField(name: "_UPK3_CTRF_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 C-TRF Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK3CTRF=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK3CTRF, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK3SURT=checkBox(text: 'SURT', name: "_UPK3_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 SURT", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK3SURT=textField(name: "_UPK3_SURT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 SURT Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK3SURT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK3SURT, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK3SURT=checkBox(text: 'SURT', name: "_UPK3_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 SURT", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK3SURT=textField(name: "_UPK3_SURT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 SURT Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK3SURT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK3SURT, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK3SKEI=checkBox(text: 'SKEI', name: "_UPK3_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 SKEI", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK3SKEI=textField(name: "_UPK3_SKEI_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 SKEI Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK3SKEI=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK3SKEI, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK3SKEI=checkBox(text: 'SKEI', name: "_UPK3_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 SKEI", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK3SKEI=textField(name: "_UPK3_SKEI_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 SKEI Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK3SKEI=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK3SKEI, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK3FIT=checkBox(text: 'FIT', name: "_UPK3_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 FIT", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK3FIT=textField(name: "_UPK3_FIT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 FIT Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK3FIT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK3FIT, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK3FIT=checkBox(text: 'FIT', name: "_UPK3_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 FIT", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK3FIT=textField(name: "_UPK3_FIT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 FIT Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK3FIT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK3FIT, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK3FRTKJ=checkBox(text: 'FRT-KJ', name: "_UPK3_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 FRT-KJ", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK3FRTKJ=textField(name: "_UPK3_FRTKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 FRT-KJ Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK3FRTKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK3FRTKJ, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK3FRTKJ=checkBox(text: 'FRT-KJ', name: "_UPK3_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 FRT-KJ", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK3FRTKJ=textField(name: "_UPK3_FRTKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 FRT-KJ Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK3FRTKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK3FRTKJ, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK3Besondere=checkBox(text: 'Besondere:', name: "_UPK3_BESONDERE", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 Besondere Untersuchungen", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK3Besondere=textField(name: "_UPK3_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 Besondere Untersuchungen Text", text: '', columns:15)
-                                                                    }
-                                                                }
-                                                                tr {
-                                                                    td {
-                                                                        label(text: ' ')
-                                                                    }
-                                                                    td {
-                                                                        panel {
-                                                                            tableLayout (cellpadding: 0) {
-                                                                                tr {
-                                                                                    td {
-                                                                                        txtK3BesondereDatum=textField(name: "_UPK3_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
-                                                                                    }
-                                                                                    td {
-                                                                                        label(text: ' ')
-                                                                                    }
-                                                                                    td {
-                                                                                        btnK3BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                                GuiLib.dateSelector(txtK3BesondereDatum, true);
-                                                                                            })
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK3Besondere=checkBox(text: 'Besondere:', name: "_UPK3_BESONDERE", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 Besondere Untersuchungen", selected: false)
+                                                    }
+                                                    td (colspan: 2) {
+                                                        txtK3Besondere=textField(name: "_UPK3_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 Besondere Untersuchungen Text", text: '', columns:15)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        txtK3BesondereDatum=textField(name: "_UPK3_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK3BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK3BesondereDatum, true);
+                                                            })
                                                     }
                                                 }
                                             }
@@ -4154,195 +3929,120 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         panel {
                                             tableLayout (cellpadding: 5) {
                                                 tr {
-                                                    td {
+                                                    td (colspan: 3) {
                                                         label (text: 'Kind 4', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK4EBFKJ=checkBox(text: 'EBF-KJ', name: "_UPK4_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 EBF-KJ", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK4EBFKJ=textField(name: "_UPK4_EBFKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 EBF-KJ Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK4EBFKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK4EBFKJ, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK4EBFKJ=checkBox(text: 'EBF-KJ', name: "_UPK4_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 EBF-KJ", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK4EBFKJ=textField(name: "_UPK4_EBFKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 EBF-KJ Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK4EBFKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK4EBFKJ, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK4CBCL=checkBox(text: 'CBCL', name: "_UPK4_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 CBCL", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK4CBCL=textField(name: "_UPK4_CBCL_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 CBCL Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK4CBCL=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK4CBCL, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK4CBCL=checkBox(text: 'CBCL', name: "_UPK4_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 CBCL", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK4CBCL=textField(name: "_UPK4_CBCL_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 CBCL Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK4CBCL=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK4CBCL, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK4CTRF=checkBox(text: 'C-TRF', name: "_UPK4_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 C-TRF", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK4CTRF=textField(name: "_UPK4_CTRF_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 C-TRF Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK4CTRF=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK4CTRF, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK4CTRF=checkBox(text: 'C-TRF', name: "_UPK4_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 C-TRF", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK4CTRF=textField(name: "_UPK4_CTRF_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 C-TRF Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK4CTRF=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK4CTRF, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK4SURT=checkBox(text: 'SURT', name: "_UPK4_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 SURT", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK4SURT=textField(name: "_UPK4_SURT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 SURT Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK4SURT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK4SURT, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK4SURT=checkBox(text: 'SURT', name: "_UPK4_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 SURT", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK4SURT=textField(name: "_UPK4_SURT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 SURT Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK4SURT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK4SURT, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK4SKEI=checkBox(text: 'SKEI', name: "_UPK4_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 SKEI", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK4SKEI=textField(name: "_UPK4_SKEI_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 SKEI Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK4SKEI=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK4SKEI, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK4SKEI=checkBox(text: 'SKEI', name: "_UPK4_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 SKEI", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK4SKEI=textField(name: "_UPK4_SKEI_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 SKEI Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK4SKEI=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK4SKEI, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK4FIT=checkBox(text: 'FIT', name: "_UPK4_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 FIT", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK4FIT=textField(name: "_UPK4_FIT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 FIT Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK4FIT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK4FIT, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK4FIT=checkBox(text: 'FIT', name: "_UPK4_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 FIT", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK4FIT=textField(name: "_UPK4_FIT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 FIT Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK4FIT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK4FIT, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK4FRTKJ=checkBox(text: 'FRT-KJ', name: "_UPK4_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 FRT-KJ", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK4FRTKJ=textField(name: "_UPK4_FRTKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 FRT-KJ Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK4FRTKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK4FRTKJ, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK4FRTKJ=checkBox(text: 'FRT-KJ', name: "_UPK4_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 FRT-KJ", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK4FRTKJ=textField(name: "_UPK4_FRTKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 FRT-KJ Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK4FRTKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK4FRTKJ, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK4Besondere=checkBox(text: 'Besondere:', name: "_UPK4_BESONDERE", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 Besondere Untersuchungen", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK4Besondere=textField(name: "_UPK4_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 Besondere Untersuchungen Text", text: '', columns:15)
-                                                                    }
-                                                                }
-                                                                tr {
-                                                                    td {
-                                                                        label(text: ' ')
-                                                                    }
-                                                                    td {
-                                                                        panel {
-                                                                            tableLayout (cellpadding: 0) {
-                                                                                tr {
-                                                                                    td {
-                                                                                        txtK4BesondereDatum=textField(name: "_UPK4_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
-                                                                                    }
-                                                                                    td {
-                                                                                        label(text: ' ')
-                                                                                    }
-                                                                                    td {
-                                                                                        btnK4BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                                GuiLib.dateSelector(txtK4BesondereDatum, true);
-                                                                                            })
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK4Besondere=checkBox(text: 'Besondere:', name: "_UPK4_BESONDERE", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 Besondere Untersuchungen", selected: false)
+                                                    }
+                                                    td (colspan: 2) {
+                                                        txtK4Besondere=textField(name: "_UPK4_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 Besondere Untersuchungen Text", text: '', columns:15)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        txtK4BesondereDatum=textField(name: "_UPK4_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK4BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK4BesondereDatum, true);
+                                                            })
                                                     }
                                                 }
                                             }
@@ -4352,195 +4052,120 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         panel {
                                             tableLayout (cellpadding: 5) {
                                                 tr {
-                                                    td {
+                                                    td (colspan: 3) {
                                                         label (text: 'Kind 5', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK5EBFKJ=checkBox(text: 'EBF-KJ', name: "_UPK5_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 EBF-KJ", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK5EBFKJ=textField(name: "_UPK5_EBFKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 EBF-KJ Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK5EBFKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK5EBFKJ, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK5EBFKJ=checkBox(text: 'EBF-KJ', name: "_UPK5_EBFKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 EBF-KJ", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK5EBFKJ=textField(name: "_UPK5_EBFKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 EBF-KJ Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK5EBFKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK5EBFKJ, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK5CBCL=checkBox(text: 'CBCL', name: "_UPK5_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 CBCL", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK5CBCL=textField(name: "_UPK5_CBCL_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 CBCL Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK5CBCL=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK5CBCL, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK5CBCL=checkBox(text: 'CBCL', name: "_UPK5_CBCL", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 CBCL", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK5CBCL=textField(name: "_UPK5_CBCL_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 CBCL Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK5CBCL=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK5CBCL, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK5CTRF=checkBox(text: 'C-TRF', name: "_UPK5_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 C-TRF", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK5CTRF=textField(name: "_UPK5_CTRF_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 C-TRF Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK5CTRF=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK5CTRF, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK5CTRF=checkBox(text: 'C-TRF', name: "_UPK5_CTRF", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 C-TRF", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK5CTRF=textField(name: "_UPK5_CTRF_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 C-TRF Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK5CTRF=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK5CTRF, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK5SURT=checkBox(text: 'SURT', name: "_UPK5_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 SURT", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK5SURT=textField(name: "_UPK5_SURT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 SURT Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK5SURT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK5SURT, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK5SURT=checkBox(text: 'SURT', name: "_UPK5_SURT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 SURT", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK5SURT=textField(name: "_UPK5_SURT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 SURT Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK5SURT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK5SURT, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK5SKEI=checkBox(text: 'SKEI', name: "_UPK5_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 SKEI", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK5SKEI=textField(name: "_UPK5_SKEI_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 SKEI Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK5SKEI=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK5SKEI, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK5SKEI=checkBox(text: 'SKEI', name: "_UPK5_SKEI", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 SKEI", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK5SKEI=textField(name: "_UPK5_SKEI_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 SKEI Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK5SKEI=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK5SKEI, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK5FIT=checkBox(text: 'FIT', name: "_UPK5_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 FIT", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK5FIT=textField(name: "_UPK5_FIT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 FIT Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK5FIT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK5FIT, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK5FIT=checkBox(text: 'FIT', name: "_UPK5_FIT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 FIT", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK5FIT=textField(name: "_UPK5_FIT_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 FIT Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK5FIT=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK5FIT, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK5FRTKJ=checkBox(text: 'FRT-KJ', name: "_UPK5_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 FRT-KJ", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK5FRTKJ=textField(name: "_UPK5_FRTKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 FRT-KJ Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnK5FRTKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK5FRTKJ, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK5FRTKJ=checkBox(text: 'FRT-KJ', name: "_UPK5_FRTKJ", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 FRT-KJ", selected: false)
+                                                    }
+                                                    td {
+                                                        txtK5FRTKJ=textField(name: "_UPK5_FRTKJ_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 FRT-KJ Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK5FRTKJ=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK5FRTKJ, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkK5Besondere=checkBox(text: 'Besondere:', name: "_UPK5_BESONDERE", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 Besondere Untersuchungen", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtK5Besondere=textField(name: "_UPK5_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 Besondere Untersuchungen Text", text: '', columns:15)
-                                                                    }
-                                                                }
-                                                                tr {
-                                                                    td {
-                                                                        label(text: ' ')
-                                                                    }
-                                                                    td {
-                                                                        panel {
-                                                                            tableLayout (cellpadding: 0) {
-                                                                                tr {
-                                                                                    td {
-                                                                                        txtK5BesondereDatum=textField(name: "_UPK5_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
-                                                                                    }
-                                                                                    td {
-                                                                                        label(text: ' ')
-                                                                                    }
-                                                                                    td {
-                                                                                        btnK5BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                                GuiLib.dateSelector(txtK5BesondereDatum, true);
-                                                                                            })
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkK5Besondere=checkBox(text: 'Besondere:', name: "_UPK5_BESONDERE", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 Besondere Untersuchungen", selected: false)
+                                                    }
+                                                    td (colspan: 2) {
+                                                        txtK5Besondere=textField(name: "_UPK5_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 Besondere Untersuchungen Text", text: '', columns:15)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        txtK5BesondereDatum=textField(name: "_UPK5_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnK5BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtK5BesondereDatum, true);
+                                                            })
                                                     }
                                                 }
                                             }
@@ -4556,153 +4181,94 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         panel {
                                             tableLayout (cellpadding: 5) {
                                                 tr {
-                                                    td {
+                                                    td (colspan: 3) {
                                                         label (text: 'Kindesmutter', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkMutterEBI=checkBox(text: 'EBI', name: "_UPMUTTER_EBI", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter EBI", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtMutterEBI=textField(name: "_UPMUTTER_EBI_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter EBI Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnMutterEBI=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtMutterEBI, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkMutterEBI=checkBox(text: 'EBI', name: "_UPMUTTER_EBI", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter EBI", selected: false)
+                                                    }
+                                                    td {
+                                                        txtMutterEBI=textField(name: "_UPMUTTER_EBI_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter EBI Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnMutterEBI=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtMutterEBI, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkMutterESF=checkBox(text: 'ESF', name: "_UPMUTTER_ESF", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter ESF", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtMutterESF=textField(name: "_UPMUTTER_ESF_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter ESF Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnMutterESF=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtMutterESF, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkMutterESF=checkBox(text: 'ESF', name: "_UPMUTTER_ESF", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter ESF", selected: false)
+                                                    }
+                                                    td {
+                                                        txtMutterESF=textField(name: "_UPMUTTER_ESF_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter ESF Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnMutterESF=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtMutterESF, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkMutterVEI=checkBox(text: 'VEI', name: "_UPMUTTER_VEI", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter VEI", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtMutterVEI=textField(name: "_UPMUTTER_VEI_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter VEI Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnMutterVEI=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtMutterVEI, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkMutterVEI=checkBox(text: 'VEI', name: "_UPMUTTER_VEI", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter VEI", selected: false)
+                                                    }
+                                                    td {
+                                                        txtMutterVEI=textField(name: "_UPMUTTER_VEI_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter VEI Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnMutterVEI=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtMutterVEI, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkMutterEBSK=checkBox(text: 'EBSK', name: "_UPMUTTER_EBSK", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter EBSK", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtMutterEBSK=textField(name: "_UPMUTTER_EBSK_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter EBSK Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnMutterEBSK=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtMutterEBSK, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkMutterEBSK=checkBox(text: 'EBSK', name: "_UPMUTTER_EBSK", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter EBSK", selected: false)
+                                                    }
+                                                    td {
+                                                        txtMutterEBSK=textField(name: "_UPMUTTER_EBSK_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter EBSK Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnMutterEBSK=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtMutterEBSK, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkMutterFAF=checkBox(text: 'FAF', name: "_UPMUTTER_FAF", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter FAF", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtMutterFAF=textField(name: "_UPMUTTER_FAF_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter FAF Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnMutterFAF=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtMutterFAF, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkMutterFAF=checkBox(text: 'FAF', name: "_UPMUTTER_FAF", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter FAF", selected: false)
+                                                    }
+                                                    td {
+                                                        txtMutterFAF=textField(name: "_UPMUTTER_FAF_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter FAF Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnMutterFAF=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtMutterFAF, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkMutterBesondere=checkBox(text: 'Besondere:', name: "_UPMUTTER_BESONDERE", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Besondere Untersuchungen", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtMutterBesondere=textField(name: "_UPMUTTER_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Besondere Untersuchungen Text", text: '', columns:15)
-                                                                    }
-                                                                }
-                                                                tr {
-                                                                    td {
-                                                                        label(text: ' ')
-                                                                    }
-                                                                    td {
-                                                                        panel {
-                                                                            tableLayout (cellpadding: 0) {
-                                                                                tr {
-                                                                                    td {
-                                                                                        txtMutterBesondereDatum=textField(name: "_UPMUTTER_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Besondere Auswertungsdatum", text: '', columns:10, visible: false)
-                                                                                    }
-                                                                                    td {
-                                                                                        label(text: ' ')
-                                                                                    }
-                                                                                    td {
-                                                                                        btnMutterBesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                                GuiLib.dateSelector(txtMutterBesondereDatum, true);
-                                                                                            })
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkMutterBesondere=checkBox(text: 'Besondere:', name: "_UPMUTTER_BESONDERE", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Besondere Untersuchungen", selected: false)
+                                                    }
+                                                    td (colspan: 2) {
+                                                        txtMutterBesondere=textField(name: "_UPMUTTER_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Besondere Untersuchungen Text", text: '', columns:15)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        txtMutterBesondereDatum=textField(name: "_UPMUTTER_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnMutterBesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtMutterBesondereDatum, true);
+                                                            })
                                                     }
                                                 }
                                             }
@@ -4712,153 +4278,94 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         panel {
                                             tableLayout (cellpadding: 5) {
                                                 tr {
-                                                    td {
+                                                    td (colspan: 3) {
                                                         label (text: 'Kindesvater', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size))
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkVaterEBI=checkBox(text: 'EBI', name: "_UPVATER_EBI", clientPropertyJlawyerdescription: "Untersuchungsplan Vater EBI", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtVaterEBI=textField(name: "_UPVATER_EBI_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater EBI Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnVaterEBI=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtVaterEBI, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkVaterEBI=checkBox(text: 'EBI', name: "_UPVATER_EBI", clientPropertyJlawyerdescription: "Untersuchungsplan Vater EBI", selected: false)
+                                                    }
+                                                    td {
+                                                        txtVaterEBI=textField(name: "_UPVATER_EBI_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater EBI Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnVaterEBI=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtVaterEBI, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkVaterESF=checkBox(text: 'ESF', name: "_UPVATER_ESF", clientPropertyJlawyerdescription: "Untersuchungsplan Vater ESF", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtVaterESF=textField(name: "_UPVATER_ESF_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater ESF Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnVaterESF=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtVaterESF, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkVaterESF=checkBox(text: 'ESF', name: "_UPVATER_ESF", clientPropertyJlawyerdescription: "Untersuchungsplan Vater ESF", selected: false)
+                                                    }
+                                                    td {
+                                                        txtVaterESF=textField(name: "_UPVATER_ESF_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater ESF Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnVaterESF=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtVaterESF, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkVaterVEI=checkBox(text: 'VEI', name: "_UPVATER_VEI", clientPropertyJlawyerdescription: "Untersuchungsplan Vater VEI", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtVaterVEI=textField(name: "_UPVATER_VEI_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater VEI Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnVaterVEI=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtVaterVEI, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkVaterVEI=checkBox(text: 'VEI', name: "_UPVATER_VEI", clientPropertyJlawyerdescription: "Untersuchungsplan Vater VEI", selected: false)
+                                                    }
+                                                    td {
+                                                        txtVaterVEI=textField(name: "_UPVATER_VEI_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater VEI Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnVaterVEI=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtVaterVEI, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkVaterEBSK=checkBox(text: 'EBSK', name: "_UPVATER_EBSK", clientPropertyJlawyerdescription: "Untersuchungsplan Vater EBSK", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtVaterEBSK=textField(name: "_UPVATER_EBSK_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater EBSK Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnVaterEBSK=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtVaterEBSK, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkVaterEBSK=checkBox(text: 'EBSK', name: "_UPVATER_EBSK", clientPropertyJlawyerdescription: "Untersuchungsplan Vater EBSK", selected: false)
+                                                    }
+                                                    td {
+                                                        txtVaterEBSK=textField(name: "_UPVATER_EBSK_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater EBSK Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnVaterEBSK=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtVaterEBSK, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkVaterFAF=checkBox(text: 'FAF', name: "_UPVATER_FAF", clientPropertyJlawyerdescription: "Untersuchungsplan Vater FAF", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtVaterFAF=textField(name: "_UPVATER_FAF_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater FAF Datum", text: '', columns:10, visible: false)
-                                                                    }
-                                                                    td {
-                                                                        btnVaterFAF=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtVaterFAF, true);
-                                                                            })
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkVaterFAF=checkBox(text: 'FAF', name: "_UPVATER_FAF", clientPropertyJlawyerdescription: "Untersuchungsplan Vater FAF", selected: false)
+                                                    }
+                                                    td {
+                                                        txtVaterFAF=textField(name: "_UPVATER_FAF_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater FAF Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnVaterFAF=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtVaterFAF, true);
+                                                            })
                                                     }
                                                 }
                                                 tr {
                                                     td {
-                                                        panel {
-                                                            tableLayout (cellpadding: 0) {
-                                                                tr {
-                                                                    td {
-                                                                        chkVaterBesondere=checkBox(text: 'Besondere:', name: "_UPVATER_BESONDERE", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Besondere Untersuchungen", selected: false)
-                                                                    }
-                                                                    td {
-                                                                        txtVaterBesondere=textField(name: "_UPVATER_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Besondere Untersuchungen Text", text: '', columns:15)
-                                                                    }
-                                                                }
-                                                                tr {
-                                                                    td {
-                                                                        label(text: ' ')
-                                                                    }
-                                                                    td {
-                                                                        panel {
-                                                                            tableLayout (cellpadding: 0) {
-                                                                                tr {
-                                                                                    td {
-                                                                                        txtVaterBesondereDatum=textField(name: "_UPVATER_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Besondere Auswertungsdatum", text: '', columns:10, visible: false)
-                                                                                    }
-                                                                                    td {
-                                                                                        label(text: ' ')
-                                                                                    }
-                                                                                    td {
-                                                                                        btnVaterBesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                                GuiLib.dateSelector(txtVaterBesondereDatum, true);
-                                                                                            })
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        chkVaterBesondere=checkBox(text: 'Besondere:', name: "_UPVATER_BESONDERE", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Besondere Untersuchungen", selected: false)
+                                                    }
+                                                    td (colspan: 2) {
+                                                        txtVaterBesondere=textField(name: "_UPVATER_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Besondere Untersuchungen Text", text: '', columns:15)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        txtVaterBesondereDatum=textField(name: "_UPVATER_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnVaterBesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtVaterBesondereDatum, true);
+                                                            })
                                                     }
                                                 }
                                             }

@@ -729,6 +729,16 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
     DefaultTableModel schweigepflichtTableModel = null;
     JTextField txtSchweigepflichtData = null; // Verstecktes Feld für JSON-Daten
 
+    // Untersuchungstermine - Tabelle
+    JTable tblUntersuchungstermine = null;
+    DefaultTableModel untersuchungstermineTableModel = null;
+    JTextField txtUntersuchungstermineData = null; // Verstecktes Feld für JSON-Daten
+
+    // Informatorische Befragungen - Tabelle
+    JTable tblInformatBefragungen = null;
+    DefaultTableModel informatBefragungenTableModel = null;
+    JTextField txtInformatBefragungenData = null; // Verstecktes Feld für JSON-Daten
+
     // Fortschrittsanzeige
     JProgressBar progressBar = null;
     JLabel lblProgress = null;
@@ -1136,6 +1146,166 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
             JOptionPane.INFORMATION_MESSAGE);
     }
 
+    // Untersuchungstermine - JSON-Synchronisation
+    private void syncUntersuchungstermineToJson() {
+        if (untersuchungstermineTableModel == null || txtUntersuchungstermineData == null) return;
+
+        def entries = []
+        for (int i = 0; i < untersuchungstermineTableModel.getRowCount(); i++) {
+            entries << [
+                datum: untersuchungstermineTableModel.getValueAt(i, 0) ?: '',
+                beteiligte: untersuchungstermineTableModel.getValueAt(i, 1) ?: '',
+                anmerkungen: untersuchungstermineTableModel.getValueAt(i, 2) ?: ''
+            ]
+        }
+
+        def json = new JsonBuilder(entries)
+        txtUntersuchungstermineData.setText(json.toString())
+    }
+
+    // Lädt Untersuchungstermine aus dem versteckten JSON-Feld in die Tabelle
+    private void loadUntersuchungstermineFromJson() {
+        if (untersuchungstermineTableModel == null || txtUntersuchungstermineData == null) return;
+
+        untersuchungstermineTableModel.setRowCount(0); // Tabelle leeren
+
+        def jsonText = txtUntersuchungstermineData.getText()
+        if (jsonText != null && jsonText.trim() != '') {
+            try {
+                def slurper = new JsonSlurper()
+                def entries = slurper.parseText(jsonText)
+
+                entries.each { entry ->
+                    untersuchungstermineTableModel.addRow([
+                        entry.datum ?: '',
+                        entry.beteiligte ?: '',
+                        entry.anmerkungen ?: ''
+                    ] as Object[])
+                }
+            } catch (Exception e) {
+                // Bei Fehler ignorieren, leere Tabelle anzeigen
+                e.printStackTrace()
+            }
+        }
+    }
+
+    // Kopiert die Untersuchungstermine-Tabelle als HTML in die Zwischenablage
+    private void copyUntersuchungstermineToClipboard() {
+        if (untersuchungstermineTableModel == null) return;
+
+        StringBuilder html = new StringBuilder();
+        html.append("<html><body><table border='1' cellpadding='5' cellspacing='0'>\n");
+
+        // Kopfzeile
+        html.append("<tr>");
+        for (int col = 0; col < untersuchungstermineTableModel.getColumnCount(); col++) {
+            html.append("<th>").append(escapeHtml(untersuchungstermineTableModel.getColumnName(col))).append("</th>");
+        }
+        html.append("</tr>\n");
+
+        // Datenzeilen
+        for (int row = 0; row < untersuchungstermineTableModel.getRowCount(); row++) {
+            html.append("<tr>");
+            for (int col = 0; col < untersuchungstermineTableModel.getColumnCount(); col++) {
+                Object value = untersuchungstermineTableModel.getValueAt(row, col);
+                html.append("<td>").append(escapeHtml(value != null ? value.toString() : "")).append("</td>");
+            }
+            html.append("</tr>\n");
+        }
+
+        html.append("</table></body></html>");
+
+        // HTML Transferable erstellen
+        HtmlSelection htmlSelection = new HtmlSelection(html.toString());
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(htmlSelection, null);
+
+        JOptionPane.showMessageDialog(SCRIPTPANEL,
+            "Tabelle wurde in die Zwischenablage kopiert.\nSie können sie nun in Word oder LibreOffice einfügen.",
+            "In Zwischenablage kopiert",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    // Informatorische Befragungen - JSON-Synchronisation
+    private void syncInformatBefragungenToJson() {
+        if (informatBefragungenTableModel == null || txtInformatBefragungenData == null) return;
+
+        def entries = []
+        for (int i = 0; i < informatBefragungenTableModel.getRowCount(); i++) {
+            entries << [
+                datum: informatBefragungenTableModel.getValueAt(i, 0) ?: '',
+                beteiligte: informatBefragungenTableModel.getValueAt(i, 1) ?: '',
+                anmerkungen: informatBefragungenTableModel.getValueAt(i, 2) ?: ''
+            ]
+        }
+
+        def json = new JsonBuilder(entries)
+        txtInformatBefragungenData.setText(json.toString())
+    }
+
+    // Lädt Informatorische Befragungen aus dem versteckten JSON-Feld in die Tabelle
+    private void loadInformatBefragungenFromJson() {
+        if (informatBefragungenTableModel == null || txtInformatBefragungenData == null) return;
+
+        informatBefragungenTableModel.setRowCount(0); // Tabelle leeren
+
+        def jsonText = txtInformatBefragungenData.getText()
+        if (jsonText != null && jsonText.trim() != '') {
+            try {
+                def slurper = new JsonSlurper()
+                def entries = slurper.parseText(jsonText)
+
+                entries.each { entry ->
+                    informatBefragungenTableModel.addRow([
+                        entry.datum ?: '',
+                        entry.beteiligte ?: '',
+                        entry.anmerkungen ?: ''
+                    ] as Object[])
+                }
+            } catch (Exception e) {
+                // Bei Fehler ignorieren, leere Tabelle anzeigen
+                e.printStackTrace()
+            }
+        }
+    }
+
+    // Kopiert die Informatorische Befragungen-Tabelle als HTML in die Zwischenablage
+    private void copyInformatBefragungenToClipboard() {
+        if (informatBefragungenTableModel == null) return;
+
+        StringBuilder html = new StringBuilder();
+        html.append("<html><body><table border='1' cellpadding='5' cellspacing='0'>\n");
+
+        // Kopfzeile
+        html.append("<tr>");
+        for (int col = 0; col < informatBefragungenTableModel.getColumnCount(); col++) {
+            html.append("<th>").append(escapeHtml(informatBefragungenTableModel.getColumnName(col))).append("</th>");
+        }
+        html.append("</tr>\n");
+
+        // Datenzeilen
+        for (int row = 0; row < informatBefragungenTableModel.getRowCount(); row++) {
+            html.append("<tr>");
+            for (int col = 0; col < informatBefragungenTableModel.getColumnCount(); col++) {
+                Object value = informatBefragungenTableModel.getValueAt(row, col);
+                html.append("<td>").append(escapeHtml(value != null ? value.toString() : "")).append("</td>");
+            }
+            html.append("</tr>\n");
+        }
+
+        html.append("</table></body></html>");
+
+        // HTML Transferable erstellen
+        HtmlSelection htmlSelection = new HtmlSelection(html.toString());
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(htmlSelection, null);
+
+        JOptionPane.showMessageDialog(SCRIPTPANEL,
+            "Tabelle wurde in die Zwischenablage kopiert.\nSie können sie nun in Word oder LibreOffice einfügen.",
+            "In Zwischenablage kopiert",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
+
     // Aktualisiert die Fortschrittsanzeige basierend auf Status-Comboboxen
     private void updateProgress() {
         if (progressBar == null || lblProgress == null || statusComboBoxes.isEmpty()) return;
@@ -1167,6 +1337,12 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
 
         // Spezialbehandlung für Schweigepflicht-Tabelle
         loadSchweigepflichtFromJson();
+
+        // Spezialbehandlung für Untersuchungstermine-Tabelle
+        loadUntersuchungstermineFromJson();
+
+        // Spezialbehandlung für Informatorische Befragungen-Tabelle
+        loadInformatBefragungenFromJson();
 
         // Sichtbarkeit der Besondere Untersuchungen Datumsfelder setzen
         txtK1BesondereDatum.setVisible(chkK1Besondere.isSelected());
@@ -2750,6 +2926,313 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                         }
                         panel(name: 'Termine') {
                             tableLayout (cellpadding: 5) {
+                                // Untersuchungstermine
+                                tr {
+                                    td {
+                                        label (text: 'Untersuchungstermine', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size + 2))
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        label (text: 'Datum:')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtUntersuchungsterminDate=textField(text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtUntersuchungsterminDate, true);
+                                                                            })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label (text: 'Beteiligte/r:')
+                                                    }
+                                                    td {
+                                                        txtUntersuchungsterminBeteiligte=textField(text: '', columns:50)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label (text: 'Anmerkungen:')
+                                                    }
+                                                    td {
+                                                        scrollPane{
+                                                            taUntersuchungsterminEntry=textArea(lineWrap:true,wrapStyleWord:true, columns:50, rows:3,editable:true)
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 5) {
+                                                                tr {
+                                                                    td {
+                                                                        button(text: 'Eintrag hinzufügen', actionPerformed: {
+                                                                                // Neue Zeile zur Tabelle hinzufügen
+                                                                                untersuchungstermineTableModel.addRow([
+                                                                                    txtUntersuchungsterminDate.text,
+                                                                                    txtUntersuchungsterminBeteiligte.text,
+                                                                                    taUntersuchungsterminEntry.text
+                                                                                ] as Object[]);
+
+                                                                                // Felder zurücksetzen
+                                                                                txtUntersuchungsterminDate.setText("");
+                                                                                txtUntersuchungsterminBeteiligte.setText("");
+                                                                                taUntersuchungsterminEntry.setText("");
+
+                                                                                // JSON synchronisieren
+                                                                                syncUntersuchungstermineToJson();
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        button(text: 'Markierte Zeile löschen', actionPerformed: {
+                                                                                int selectedRow = tblUntersuchungstermine.getSelectedRow();
+                                                                                if (selectedRow >= 0) {
+                                                                                    untersuchungstermineTableModel.removeRow(selectedRow);
+                                                                                    syncUntersuchungstermineToJson();
+                                                                                } else {
+                                                                                    JOptionPane.showMessageDialog(SCRIPTPANEL,
+                                                                                        "Bitte wählen Sie eine Zeile aus.",
+                                                                                        "Keine Zeile ausgewählt",
+                                                                                        JOptionPane.WARNING_MESSAGE);
+                                                                                }
+                                                                            })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        scrollPane(preferredSize: [800, 250]){
+                                                            // TableModel erstellen
+                                                            untersuchungstermineTableModel = new DefaultTableModel(
+                                                                ['Datum', 'Beteiligte/r', 'Anmerkungen'] as Object[],
+                                                                0
+                                                            ) {
+                                                                @Override
+                                                                public void setValueAt(Object value, int row, int col) {
+                                                                    super.setValueAt(value, row, col);
+                                                                    // Bei Änderung synchronisieren
+                                                                    syncUntersuchungstermineToJson();
+                                                                }
+                                                            };
+
+                                                            tblUntersuchungstermine = table(model: untersuchungstermineTableModel)
+
+                                                            // Spaltenbreiten nach Erstellung setzen
+                                                            tblUntersuchungstermine.getColumnModel().getColumn(0).setPreferredWidth(100); // Datum
+                                                            tblUntersuchungstermine.getColumnModel().getColumn(1).setPreferredWidth(200); // Beteiligte/r
+                                                            tblUntersuchungstermine.getColumnModel().getColumn(2).setPreferredWidth(500); // Anmerkungen
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: 'Tabelle in Zwischenablage kopieren', actionPerformed: {
+                                                                copyUntersuchungstermineToClipboard();
+                                                            })
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        // Verstecktes Textfeld für JSON-Daten
+                                                        txtUntersuchungstermineData = textField(
+                                                            name: "_UNTERSTERMINE",
+                                                            clientPropertyJlawyerdescription: "Untersuchungstermine",
+                                                            text: '',
+                                                            visible: false
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // Abstand zwischen den beiden Journals
+                                tr {
+                                    td {
+                                        label (text: ' ')
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        label (text: ' ')
+                                    }
+                                }
+
+                                // Informatorische Befragungen
+                                tr {
+                                    td {
+                                        label (text: 'Informatorische Befragungen', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size + 2))
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        label (text: 'Datum:')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtInformatBefragungDate=textField(text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtInformatBefragungDate, true);
+                                                                            })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label (text: 'Beteiligte/r:')
+                                                    }
+                                                    td {
+                                                        txtInformatBefragungBeteiligte=textField(text: '', columns:50)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label (text: 'Anmerkungen:')
+                                                    }
+                                                    td {
+                                                        scrollPane{
+                                                            taInformatBefragungEntry=textArea(lineWrap:true,wrapStyleWord:true, columns:50, rows:3,editable:true)
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 5) {
+                                                                tr {
+                                                                    td {
+                                                                        button(text: 'Eintrag hinzufügen', actionPerformed: {
+                                                                                // Neue Zeile zur Tabelle hinzufügen
+                                                                                informatBefragungenTableModel.addRow([
+                                                                                    txtInformatBefragungDate.text,
+                                                                                    txtInformatBefragungBeteiligte.text,
+                                                                                    taInformatBefragungEntry.text
+                                                                                ] as Object[]);
+
+                                                                                // Felder zurücksetzen
+                                                                                txtInformatBefragungDate.setText("");
+                                                                                txtInformatBefragungBeteiligte.setText("");
+                                                                                taInformatBefragungEntry.setText("");
+
+                                                                                // JSON synchronisieren
+                                                                                syncInformatBefragungenToJson();
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        button(text: 'Markierte Zeile löschen', actionPerformed: {
+                                                                                int selectedRow = tblInformatBefragungen.getSelectedRow();
+                                                                                if (selectedRow >= 0) {
+                                                                                    informatBefragungenTableModel.removeRow(selectedRow);
+                                                                                    syncInformatBefragungenToJson();
+                                                                                } else {
+                                                                                    JOptionPane.showMessageDialog(SCRIPTPANEL,
+                                                                                        "Bitte wählen Sie eine Zeile aus.",
+                                                                                        "Keine Zeile ausgewählt",
+                                                                                        JOptionPane.WARNING_MESSAGE);
+                                                                                }
+                                                                            })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        scrollPane(preferredSize: [800, 250]){
+                                                            // TableModel erstellen
+                                                            informatBefragungenTableModel = new DefaultTableModel(
+                                                                ['Datum', 'Beteiligte/r', 'Anmerkungen'] as Object[],
+                                                                0
+                                                            ) {
+                                                                @Override
+                                                                public void setValueAt(Object value, int row, int col) {
+                                                                    super.setValueAt(value, row, col);
+                                                                    // Bei Änderung synchronisieren
+                                                                    syncInformatBefragungenToJson();
+                                                                }
+                                                            };
+
+                                                            tblInformatBefragungen = table(model: informatBefragungenTableModel)
+
+                                                            // Spaltenbreiten nach Erstellung setzen
+                                                            tblInformatBefragungen.getColumnModel().getColumn(0).setPreferredWidth(100); // Datum
+                                                            tblInformatBefragungen.getColumnModel().getColumn(1).setPreferredWidth(200); // Beteiligte/r
+                                                            tblInformatBefragungen.getColumnModel().getColumn(2).setPreferredWidth(500); // Anmerkungen
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: 'Tabelle in Zwischenablage kopieren', actionPerformed: {
+                                                                copyInformatBefragungenToClipboard();
+                                                            })
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        // Verstecktes Textfeld für JSON-Daten
+                                                        txtInformatBefragungenData = textField(
+                                                            name: "_INFORMATBEFRAG",
+                                                            clientPropertyJlawyerdescription: "Informatorische Befragungen",
+                                                            text: '',
+                                                            visible: false
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
 
                             }
                         }

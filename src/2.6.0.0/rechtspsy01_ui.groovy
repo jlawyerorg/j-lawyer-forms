@@ -1410,6 +1410,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                         panel(name: 'Gutachten') {
                             tableLayout (cellpadding: 5) {
                                 tr {
+                                    td {
+                                        label (text: 'Gutachten', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size + 2))
+                                    }
+                                }
+                                tr {
                                     td (colspan: 2) {
                                         panel {
                                             tableLayout (cellpadding: 5) {
@@ -1640,6 +1645,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                         }
                         panel(name: 'Bearbeitung') {
                             tableLayout (cellpadding: 5) {
+                                tr {
+                                    td {
+                                        label (text: 'Bearbeitungsstatus', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size + 2))
+                                    }
+                                }
                                 tr {
                                     td {
                                         panel {
@@ -2745,6 +2755,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                             tableLayout (cellpadding: 5) {
                                 tr {
                                     td {
+                                        label (text: 'Kommunikation', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size + 2))
+                                    }
+                                }
+                                tr {
+                                    td {
                                         label (text: 'Datum:')
                                     }
                                     td {
@@ -2926,6 +2941,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                         }
                         panel(name: 'Termine') {
                             tableLayout (cellpadding: 5) {
+                                tr {
+                                    td {
+                                        label (text: 'Untersuchungstermine / informat. Befragungen', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size + 2))
+                                    }
+                                }
                                 // Untersuchungstermine
                                 tr {
                                     td {
@@ -3240,6 +3260,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                             tableLayout (cellpadding: 5) {
                                 tr {
                                     td {
+                                        label (text: 'Schweigepflichtentbindungen', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size + 2))
+                                    }
+                                }
+                                tr {
+                                    td {
                                         label (text: 'Datum:')
                                     }
                                     td {
@@ -3379,6 +3404,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                             tableLayout (cellpadding: 5) {
                                 tr {
                                     td {
+                                        label (text: 'Befundanforderungen', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size + 2))
+                                    }
+                                }
+                                tr {
+                                    td {
                                         label (text: 'Datum:')
                                     }
                                     td {
@@ -3516,6 +3546,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                         }
                         panel(name: 'Untersuchungsplan') {
                             tableLayout (cellpadding: 5) {
+                                tr {
+                                    td {
+                                        label (text: 'Untersuchungsplan', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size + 2))
+                                    }
+                                }
                                 // Zeile 1: Kind 1, Kind 2, Kind 3
                                 tr {
                                     td (valign: 'top') {

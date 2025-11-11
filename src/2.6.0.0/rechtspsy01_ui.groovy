@@ -3719,13 +3719,29 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                                     td {
                                                                         txtK1Besondere=textField(name: "_UPK1_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 Besondere Untersuchungen Text", text: '', columns:15)
                                                                     }
+                                                                }
+                                                                tr {
                                                                     td {
-                                                                        txtK1BesondereDatum=textField(name: "_UPK1_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                                        label(text: ' ')
                                                                     }
                                                                     td {
-                                                                        btnK1BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK1BesondereDatum, true);
-                                                                            })
+                                                                        panel {
+                                                                            tableLayout (cellpadding: 0) {
+                                                                                tr {
+                                                                                    td {
+                                                                                        txtK1BesondereDatum=textField(name: "_UPK1_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 1 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                                                    }
+                                                                                    td {
+                                                                                        label(text: ' ')
+                                                                                    }
+                                                                                    td {
+                                                                                        btnK1BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                                                GuiLib.dateSelector(txtK1BesondereDatum, true);
+                                                                                            })
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
                                                                     }
                                                                 }
                                                             }
@@ -3901,13 +3917,29 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                                     td {
                                                                         txtK2Besondere=textField(name: "_UPK2_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 Besondere Untersuchungen Text", text: '', columns:15)
                                                                     }
+                                                                }
+                                                                tr {
                                                                     td {
-                                                                        txtK2BesondereDatum=textField(name: "_UPK2_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                                        label(text: ' ')
                                                                     }
                                                                     td {
-                                                                        btnK2BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK2BesondereDatum, true);
-                                                                            })
+                                                                        panel {
+                                                                            tableLayout (cellpadding: 0) {
+                                                                                tr {
+                                                                                    td {
+                                                                                        txtK2BesondereDatum=textField(name: "_UPK2_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 2 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                                                    }
+                                                                                    td {
+                                                                                        label(text: ' ')
+                                                                                    }
+                                                                                    td {
+                                                                                        btnK2BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                                                GuiLib.dateSelector(txtK2BesondereDatum, true);
+                                                                                            })
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
                                                                     }
                                                                 }
                                                             }
@@ -4083,13 +4115,29 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                                     td {
                                                                         txtK3Besondere=textField(name: "_UPK3_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 Besondere Untersuchungen Text", text: '', columns:15)
                                                                     }
+                                                                }
+                                                                tr {
                                                                     td {
-                                                                        txtK3BesondereDatum=textField(name: "_UPK3_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                                        label(text: ' ')
                                                                     }
                                                                     td {
-                                                                        btnK3BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK3BesondereDatum, true);
-                                                                            })
+                                                                        panel {
+                                                                            tableLayout (cellpadding: 0) {
+                                                                                tr {
+                                                                                    td {
+                                                                                        txtK3BesondereDatum=textField(name: "_UPK3_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 3 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                                                    }
+                                                                                    td {
+                                                                                        label(text: ' ')
+                                                                                    }
+                                                                                    td {
+                                                                                        btnK3BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                                                GuiLib.dateSelector(txtK3BesondereDatum, true);
+                                                                                            })
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
                                                                     }
                                                                 }
                                                             }
@@ -4268,13 +4316,29 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                                     td {
                                                                         txtK4Besondere=textField(name: "_UPK4_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 Besondere Untersuchungen Text", text: '', columns:15)
                                                                     }
+                                                                }
+                                                                tr {
                                                                     td {
-                                                                        txtK4BesondereDatum=textField(name: "_UPK4_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                                        label(text: ' ')
                                                                     }
                                                                     td {
-                                                                        btnK4BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK4BesondereDatum, true);
-                                                                            })
+                                                                        panel {
+                                                                            tableLayout (cellpadding: 0) {
+                                                                                tr {
+                                                                                    td {
+                                                                                        txtK4BesondereDatum=textField(name: "_UPK4_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 4 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                                                    }
+                                                                                    td {
+                                                                                        label(text: ' ')
+                                                                                    }
+                                                                                    td {
+                                                                                        btnK4BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                                                GuiLib.dateSelector(txtK4BesondereDatum, true);
+                                                                                            })
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
                                                                     }
                                                                 }
                                                             }
@@ -4450,13 +4514,29 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                                     td {
                                                                         txtK5Besondere=textField(name: "_UPK5_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 Besondere Untersuchungen Text", text: '', columns:15)
                                                                     }
+                                                                }
+                                                                tr {
                                                                     td {
-                                                                        txtK5BesondereDatum=textField(name: "_UPK5_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                                        label(text: ' ')
                                                                     }
                                                                     td {
-                                                                        btnK5BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtK5BesondereDatum, true);
-                                                                            })
+                                                                        panel {
+                                                                            tableLayout (cellpadding: 0) {
+                                                                                tr {
+                                                                                    td {
+                                                                                        txtK5BesondereDatum=textField(name: "_UPK5_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Kind 5 Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                                                    }
+                                                                                    td {
+                                                                                        label(text: ' ')
+                                                                                    }
+                                                                                    td {
+                                                                                        btnK5BesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                                                GuiLib.dateSelector(txtK5BesondereDatum, true);
+                                                                                            })
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
                                                                     }
                                                                 }
                                                             }
@@ -4596,13 +4676,29 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                                     td {
                                                                         txtMutterBesondere=textField(name: "_UPMUTTER_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Besondere Untersuchungen Text", text: '', columns:15)
                                                                     }
+                                                                }
+                                                                tr {
                                                                     td {
-                                                                        txtMutterBesondereDatum=textField(name: "_UPMUTTER_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                                        label(text: ' ')
                                                                     }
                                                                     td {
-                                                                        btnMutterBesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtMutterBesondereDatum, true);
-                                                                            })
+                                                                        panel {
+                                                                            tableLayout (cellpadding: 0) {
+                                                                                tr {
+                                                                                    td {
+                                                                                        txtMutterBesondereDatum=textField(name: "_UPMUTTER_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                                                    }
+                                                                                    td {
+                                                                                        label(text: ' ')
+                                                                                    }
+                                                                                    td {
+                                                                                        btnMutterBesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                                                GuiLib.dateSelector(txtMutterBesondereDatum, true);
+                                                                                            })
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
                                                                     }
                                                                 }
                                                             }
@@ -4736,13 +4832,29 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                                     td {
                                                                         txtVaterBesondere=textField(name: "_UPVATER_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Besondere Untersuchungen Text", text: '', columns:15)
                                                                     }
+                                                                }
+                                                                tr {
                                                                     td {
-                                                                        txtVaterBesondereDatum=textField(name: "_UPVATER_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                                        label(text: ' ')
                                                                     }
                                                                     td {
-                                                                        btnVaterBesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
-                                                                                GuiLib.dateSelector(txtVaterBesondereDatum, true);
-                                                                            })
+                                                                        panel {
+                                                                            tableLayout (cellpadding: 0) {
+                                                                                tr {
+                                                                                    td {
+                                                                                        txtVaterBesondereDatum=textField(name: "_UPVATER_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                                                    }
+                                                                                    td {
+                                                                                        label(text: ' ')
+                                                                                    }
+                                                                                    td {
+                                                                                        btnVaterBesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                                                GuiLib.dateSelector(txtVaterBesondereDatum, true);
+                                                                                            })
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
                                                                     }
                                                                 }
                                                             }

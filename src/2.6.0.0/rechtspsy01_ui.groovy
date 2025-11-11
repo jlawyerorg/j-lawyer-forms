@@ -1686,6 +1686,20 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                         label (text: ' ')
                                                     }
                                                     td {
+                                                        checkBox(text: 'Lösungsorientiert', name: "_073LOESUNG", clientPropertyJlawyerdescription: "Lösungsorientiert", selected: false)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
                                                         checkBox(text: 'Kostenrahmen', name: "_073KOSTEN", clientPropertyJlawyerdescription: "Kostenrahmen", selected: false)
                                                     }
                                                     td {
@@ -2259,6 +2273,70 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     }
                                                     td {
                                                         textField(name: "_210ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        checkBox(text: 'MIT besonderen Leistungen', name: "_211MITBES", clientPropertyJlawyerdescription: "MIT besonderen Leistungen", selected: false)
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum211=textField(name: "_211DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum211, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        def txtRechnungsnummer211 = textField(name: "_211RECHNR", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                        txtRechnungsnummer211.putClientProperty("JTextField.placeholderText", "Rechnungsnummer")
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        checkBox(text: 'OHNE besondere Leistungen', name: "_212OHNBES", clientPropertyJlawyerdescription: "OHNE besondere Leistungen", selected: false)
+                                                    }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatum212=textField(name: "_212DATUM", clientPropertyJlawyerdescription: "", text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtDatum212, true);
+                                                                            })
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    td {
+                                                        def txtRechnungsnummer212 = textField(name: "_212RECHNR", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                        txtRechnungsnummer212.putClientProperty("JTextField.placeholderText", "Rechnungsnummer")
                                                     }
                                                 }
                                                 tr {

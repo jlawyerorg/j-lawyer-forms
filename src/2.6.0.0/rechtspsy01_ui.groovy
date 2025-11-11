@@ -797,10 +797,20 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
     JTextField txtMutterEBI, txtMutterESF, txtMutterVEI, txtMutterEBSK, txtMutterFAF = null;
     JButton btnMutterEBI, btnMutterESF, btnMutterVEI, btnMutterEBSK, btnMutterFAF = null;
 
+    JCheckBox chkMutterBesondere = null;
+    JTextField txtMutterBesondere = null;
+    JTextField txtMutterBesondereDatum = null;
+    JButton btnMutterBesondereDatum = null;
+
     // Vater Tests
     JCheckBox chkVaterEBI, chkVaterESF, chkVaterVEI, chkVaterEBSK, chkVaterFAF = null;
     JTextField txtVaterEBI, txtVaterESF, txtVaterVEI, txtVaterEBSK, txtVaterFAF = null;
     JButton btnVaterEBI, btnVaterESF, btnVaterVEI, btnVaterEBSK, btnVaterFAF = null;
+
+    JCheckBox chkVaterBesondere = null;
+    JTextField txtVaterBesondere = null;
+    JTextField txtVaterBesondereDatum = null;
+    JButton btnVaterBesondereDatum = null;
 
     // Liste aller Status-Comboboxen
     def statusComboBoxes = [];
@@ -983,6 +993,10 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
         btnK4BesondereDatum.setVisible(chkK4Besondere.isSelected());
         txtK5BesondereDatum.setVisible(chkK5Besondere.isSelected());
         btnK5BesondereDatum.setVisible(chkK5Besondere.isSelected());
+        txtMutterBesondereDatum.setVisible(chkMutterBesondere.isSelected());
+        btnMutterBesondereDatum.setVisible(chkMutterBesondere.isSelected());
+        txtVaterBesondereDatum.setVisible(chkVaterBesondere.isSelected());
+        btnVaterBesondereDatum.setVisible(chkVaterBesondere.isSelected());
 
         // Sichtbarkeit der Kind 1 Test-Datumsfelder setzen
         txtK1EBFKJ.setVisible(chkK1EBFKJ.isSelected());
@@ -3644,6 +3658,30 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                         }
                                                     }
                                                 }
+                                                tr {
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        chkMutterBesondere=checkBox(text: 'Besondere:', name: "_UPMUTTER_BESONDERE", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Besondere Untersuchungen", selected: false)
+                                                                    }
+                                                                    td {
+                                                                        txtMutterBesondere=textField(name: "_UPMUTTER_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Besondere Untersuchungen Text", text: '', columns:15)
+                                                                    }
+                                                                    td {
+                                                                        txtMutterBesondereDatum=textField(name: "_UPMUTTER_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                                    }
+                                                                    td {
+                                                                        btnMutterBesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                                GuiLib.dateSelector(txtMutterBesondereDatum, true);
+                                                                            })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -3760,6 +3798,30 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                         }
                                                     }
                                                 }
+                                                tr {
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        chkVaterBesondere=checkBox(text: 'Besondere:', name: "_UPVATER_BESONDERE", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Besondere Untersuchungen", selected: false)
+                                                                    }
+                                                                    td {
+                                                                        txtVaterBesondere=textField(name: "_UPVATER_BESONDERE_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Besondere Untersuchungen Text", text: '', columns:15)
+                                                                    }
+                                                                    td {
+                                                                        txtVaterBesondereDatum=textField(name: "_UPVATER_BESONDERE_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Besondere Auswertungsdatum", text: '', columns:10, visible: false)
+                                                                    }
+                                                                    td {
+                                                                        btnVaterBesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                                GuiLib.dateSelector(txtVaterBesondereDatum, true);
+                                                                            })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -3811,6 +3873,20 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
         chkK5Besondere.addActionListener {
             txtK5BesondereDatum.setVisible(chkK5Besondere.isSelected());
             btnK5BesondereDatum.setVisible(chkK5Besondere.isSelected());
+            SCRIPTPANEL.revalidate();
+            SCRIPTPANEL.repaint();
+        }
+
+        chkMutterBesondere.addActionListener {
+            txtMutterBesondereDatum.setVisible(chkMutterBesondere.isSelected());
+            btnMutterBesondereDatum.setVisible(chkMutterBesondere.isSelected());
+            SCRIPTPANEL.revalidate();
+            SCRIPTPANEL.repaint();
+        }
+
+        chkVaterBesondere.addActionListener {
+            txtVaterBesondereDatum.setVisible(chkVaterBesondere.isSelected());
+            btnVaterBesondereDatum.setVisible(chkVaterBesondere.isSelected());
             SCRIPTPANEL.revalidate();
             SCRIPTPANEL.repaint();
         }

@@ -2572,6 +2572,21 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
 
                             }
                         }
+                        panel(name: 'Termine') {
+                            tableLayout (cellpadding: 5) {
+
+                            }
+                        }
+                        panel(name: 'Schweigepflicht') {
+                            tableLayout (cellpadding: 5) {
+
+                            }
+                        }
+                        panel(name: 'Befundanforderungen') {
+                            tableLayout (cellpadding: 5) {
+
+                            }
+                        }
                         panel(name: 'Untersuchungsplan') {
                             tableLayout (cellpadding: 5) {
                                 // Zeile 1: Kind 1, Kind 2, Kind 3

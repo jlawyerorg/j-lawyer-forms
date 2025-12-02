@@ -119,6 +119,6 @@
     
     <form id="rechtspsy01" type="plugin" depends="formslib" name="psych. Gutachten" description="Bearbeitung rechtspsychologischer Gutachten" placeholder="RPSY" version="1.1.0" for="3.3.0.2,3.4.0.0,3.4.0.1,3.4.0.2,3.4.0.3" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.6.0.0" files="rechtspsy01_meta.groovy,rechtspsy01_ui.groovy"/>
     
-    <form id="gewschutzrecht01" type="plugin" depends="formslib" name="gew. Schutzrecht" description="gewerbliches Schutzrecht" placeholder="GSR" version="0.1.0" for="3.3.0.2,3.4.0.0,3.4.0.1,3.4.0.2,3.4.0.3" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.6.0.0" files="gewschutzrecht01_meta.groovy,gewschutzrecht01_ui.groovy"/>
+    <form id="gewschutzrecht01" type="plugin" depends="formslib" name="gew. Schutzrecht" description="gewerbliches Schutzrecht" placeholder="GSR" version="0.2.0" for="3.3.0.2,3.4.0.0,3.4.0.1,3.4.0.2,3.4.0.3" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/2.6.0.0" files="gewschutzrecht01_meta.groovy,gewschutzrecht01_ui.groovy"/>
     
 </forms>

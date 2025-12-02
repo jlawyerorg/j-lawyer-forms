@@ -719,6 +719,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
     DefaultTableModel commLogTableModel = null;
     JTextField txtCommLogData = null; // Verstecktes Feld für JSON-Daten
 
+    // Fristverlängerungen - Tabelle
+    JTable tblFristverlaengerungen = null;
+    DefaultTableModel fristverlaengerungenTableModel = null;
+    JTextField txtFristverlaengerungenData = null; // Verstecktes Feld für JSON-Daten
+
     // Befundanforderungen - Tabelle
     JTable tblBefund = null;
     DefaultTableModel befundTableModel = null;
@@ -929,6 +934,84 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                 e.printStackTrace()
             }
         }
+    }
+
+    // Fristverlängerungen - JSON-Synchronisation
+    private void syncFristverlaengerungenToJson() {
+        if (fristverlaengerungenTableModel == null || txtFristverlaengerungenData == null) return;
+
+        def entries = []
+        for (int i = 0; i < fristverlaengerungenTableModel.getRowCount(); i++) {
+            entries << [
+                datum: fristverlaengerungenTableModel.getValueAt(i, 0) ?: '',
+                anmerkung: fristverlaengerungenTableModel.getValueAt(i, 1) ?: ''
+            ]
+        }
+
+        def json = new JsonBuilder(entries)
+        txtFristverlaengerungenData.setText(json.toString())
+    }
+
+    // Lädt Fristverlängerungen aus dem versteckten JSON-Feld in die Tabelle
+    private void loadFristverlaengerungenFromJson() {
+        if (fristverlaengerungenTableModel == null || txtFristverlaengerungenData == null) return;
+
+        fristverlaengerungenTableModel.setRowCount(0); // Tabelle leeren
+
+        def jsonText = txtFristverlaengerungenData.getText()
+        if (jsonText != null && jsonText.trim() != '') {
+            try {
+                def slurper = new JsonSlurper()
+                def entries = slurper.parseText(jsonText)
+
+                entries.each { entry ->
+                    fristverlaengerungenTableModel.addRow([
+                        entry.datum ?: '',
+                        entry.anmerkung ?: ''
+                    ] as Object[])
+                }
+            } catch (Exception e) {
+                // Bei Fehler ignorieren, leere Tabelle anzeigen
+                e.printStackTrace()
+            }
+        }
+    }
+
+    // Kopiert die Fristverlängerungen-Tabelle als HTML in die Zwischenablage
+    private void copyFristverlaengerungenToClipboard() {
+        if (fristverlaengerungenTableModel == null) return;
+
+        StringBuilder html = new StringBuilder();
+        html.append("<html><body><table border='1' cellpadding='5' cellspacing='0'>\n");
+
+        // Kopfzeile
+        html.append("<tr>");
+        for (int col = 0; col < fristverlaengerungenTableModel.getColumnCount(); col++) {
+            html.append("<th>").append(escapeHtml(fristverlaengerungenTableModel.getColumnName(col))).append("</th>");
+        }
+        html.append("</tr>\n");
+
+        // Datenzeilen
+        for (int row = 0; row < fristverlaengerungenTableModel.getRowCount(); row++) {
+            html.append("<tr>");
+            for (int col = 0; col < fristverlaengerungenTableModel.getColumnCount(); col++) {
+                Object value = fristverlaengerungenTableModel.getValueAt(row, col);
+                html.append("<td>").append(escapeHtml(value != null ? value.toString() : "")).append("</td>");
+            }
+            html.append("</tr>\n");
+        }
+
+        html.append("</table></body></html>");
+
+        // HTML Transferable erstellen
+        HtmlSelection htmlSelection = new HtmlSelection(html.toString());
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(htmlSelection, null);
+
+        JOptionPane.showMessageDialog(SCRIPTPANEL,
+            "Tabelle wurde in die Zwischenablage kopiert.\nSie können sie nun in Word oder LibreOffice einfügen.",
+            "Kopiert",
+            JOptionPane.INFORMATION_MESSAGE);
     }
 
     // Kopiert die Tabelle als HTML in die Zwischenablage
@@ -1372,6 +1455,9 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
         // Spezialbehandlung für Informatorische Befragungen-Tabelle
         loadInformatBefragungenFromJson();
 
+        // Spezialbehandlung für Fristverlängerungen-Tabelle
+        loadFristverlaengerungenFromJson();
+
         // Sichtbarkeit der Besondere Untersuchungen Datumsfelder setzen
         txtK1BesondereDatum.setVisible(chkK1Besondere.isSelected());
         btnK1BesondereDatum.setVisible(chkK1Besondere.isSelected());
@@ -1503,34 +1589,131 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                     }
                                 }
                                 tr {
-                                    td (colfill:true) {
-
-                                        label(text: '')
-
-
+                                    td (colfill:true, valign: 'top') {
+                                        label(text: 'Fristverlängerungen:')
                                     }
                                     td {
                                         panel {
-                                            tableLayout (cellpadding: 0) {
+                                            tableLayout (cellpadding: 5) {
                                                 tr {
                                                     td {
-                                                        chkFristverlaengerung=checkBox(text: 'Fristverlängerung', name: "_FRISTVERLJANEIN", clientPropertyJlawyerdescription: "Fristverlängerung", selected: false)
+                                                        label (text: 'Datum:')
                                                     }
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtFristverlaengerungDate=textField(text: '', columns:10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                GuiLib.dateSelector(txtFristverlaengerungDate, true);
+                                                                            })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label (text: 'Anmerkung:')
+                                                    }
+                                                    td {
+                                                        txtFristverlaengerungAnmerkung=textField(text: '', columns:40)
+                                                    }
+                                                }
+                                                tr {
                                                     td {
                                                         label (text: ' ')
                                                     }
                                                     td {
-                                                        txtFristverlaengerung=textField(name: "_FRISTVERL", clientPropertyJlawyerdescription: "Fristverlängerung Datum", text: '', columns:10)
+                                                        panel {
+                                                            tableLayout (cellpadding: 5) {
+                                                                tr {
+                                                                    td {
+                                                                        button(text: 'Eintrag hinzufügen', actionPerformed: {
+                                                                                // Neue Zeile zur Tabelle hinzufügen
+                                                                                fristverlaengerungenTableModel.addRow([
+                                                                                    txtFristverlaengerungDate.text,
+                                                                                    txtFristverlaengerungAnmerkung.text
+                                                                                ] as Object[]);
+
+                                                                                // Felder zurücksetzen
+                                                                                txtFristverlaengerungDate.setText("");
+                                                                                txtFristverlaengerungAnmerkung.setText("");
+
+                                                                                // JSON synchronisieren
+                                                                                syncFristverlaengerungenToJson();
+                                                                            })
+                                                                    }
+                                                                    td {
+                                                                        button(text: 'Markierte Zeile löschen', actionPerformed: {
+                                                                                int selectedRow = tblFristverlaengerungen.getSelectedRow();
+                                                                                if (selectedRow >= 0) {
+                                                                                    fristverlaengerungenTableModel.removeRow(selectedRow);
+                                                                                    syncFristverlaengerungenToJson();
+                                                                                } else {
+                                                                                    JOptionPane.showMessageDialog(SCRIPTPANEL,
+                                                                                        "Bitte wählen Sie eine Zeile aus.",
+                                                                                        "Keine Zeile ausgewählt",
+                                                                                        JOptionPane.WARNING_MESSAGE);
+                                                                                }
+                                                                            })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
                                                     }
+                                                }
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        scrollPane(preferredSize: [500, 150]){
+                                                            // TableModel erstellen
+                                                            fristverlaengerungenTableModel = new DefaultTableModel(
+                                                                ['Datum', 'Anmerkung'] as Object[],
+                                                                0
+                                                            ) {
+                                                                @Override
+                                                                public void setValueAt(Object value, int row, int col) {
+                                                                    super.setValueAt(value, row, col);
+                                                                    // Bei Änderung synchronisieren
+                                                                    syncFristverlaengerungenToJson();
+                                                                }
+                                                            };
+
+                                                            tblFristverlaengerungen = table(model: fristverlaengerungenTableModel)
+
+                                                            // Spaltenbreiten nach Erstellung setzen
+                                                            tblFristverlaengerungen.getColumnModel().getColumn(0).setPreferredWidth(100); // Datum
+                                                            tblFristverlaengerungen.getColumnModel().getColumn(1).setPreferredWidth(400); // Anmerkung
+                                                        }
+                                                    }
+                                                }
+                                                tr {
                                                     td {
                                                         label (text: ' ')
                                                     }
                                                     td {
-                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
-                                                                GuiLib.dateSelector(txtFristverlaengerung, true);
+                                                        button(text: 'Tabelle in Zwischenablage kopieren', actionPerformed: {
+                                                                copyFristverlaengerungenToClipboard();
                                                             })
                                                     }
-
+                                                }
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        // Verstecktes Textfeld für JSON-Daten
+                                                        txtFristverlaengerungenData = textField(
+                                                            name: "_FRISTVERLAENGERUNGEN",
+                                                            clientPropertyJlawyerdescription: "Fristverlängerungen",
+                                                            text: '',
+                                                            visible: false
+                                                        )
+                                                    }
                                                 }
                                             }
                                         }
@@ -1539,62 +1722,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                 tr {
                                     td (colfill:true) {
 
-                                        label(text: '')
-
-
-                                    }
-                                    td {
-                                        panel {
-                                            tableLayout (cellpadding: 0) {
-                                                tr {
-                                                    td {
-                                                        label(text: 'Datum:')
-                                                    }
-                                                    td {
-                                                        label (text: ' ')
-                                                    }
-                                                    td {
-                                                        txtFristverlaengerungDatumErhalt=textField(name: "_FRISTVERLDATUM", clientPropertyJlawyerdescription: "Fristverlängerung Datum Erhalt", text: '', columns:10)
-                                                    }
-                                                    td {
-                                                        label (text: ' ')
-                                                    }
-                                                    td {
-                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
-                                                                GuiLib.dateSelector(txtFristverlaengerungDatumErhalt, true);
-                                                            })
-                                                    }
-
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                tr {
-                                    td (colfill:true) {
-
-                                        label(text: '')
-
-
-                                    }
-                                    td {
-                                        scrollPane {
-                                            txtFristverlaengerungBegruendung=textArea(
-                                                name: "_FRISTVERLGRUND",
-                                                clientPropertyJlawyerdescription: "Fristverlängerung Begründung",
-                                                text: '',
-                                                lineWrap: true,
-                                                wrapStyleWord: true,
-                                                columns: 40,
-                                                rows: 3
-                                            )
-                                        }
-                                    }
-                                }
-                                tr {
-                                    td (colfill:true) {
-
-                                        label(text: '')
+                                        label(text: 'Inhalt:')
 
 
                                     }

@@ -1506,569 +1506,604 @@ public class grav01_ui implements com.jdimension.jlawyer.client.plugins.form.For
     }
     
     private void loadSites() {
-        
-        ArrayList<GravitySite> sites=GravityLib.getSites();
-        println "found " + sites.size() + " sites"
-        for(GravitySite s: sites) {
-            cmbSites.addItem(s);
-        }
+        def callback = this;
+        def worker = new javax.swing.SwingWorker<ArrayList<GravitySite>, Void>() {
+            protected ArrayList<GravitySite> doInBackground() {
+                return GravityLib.getSites();
+            }
+            protected void done() {
+                try {
+                    ArrayList<GravitySite> sites = get();
+                    println "found " + sites.size() + " sites"
+                    for(GravitySite s: sites) {
+                        cmbSites.addItem(s);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        worker.execute();
     }
     
     private void loadFormTypes() {
-        
+
         GravitySite site=(GravitySite)cmbSites.getSelectedItem();
         if(site==null) {
             return;
         }
-        
+
         lblEntryPreview.setText("");
         cmbFormTypes.removeAllItems();
-        
-        try {
 
-            def req1=new URL(site.getFormsEndpoint()).openConnection();
-            String authHeader= site.getAuthHeader();
+        def worker = new javax.swing.SwingWorker<ArrayList, Void>() {
+            protected ArrayList doInBackground() {
+                ArrayList results = new ArrayList();
+                try {
+                    def req1=new URL(site.getFormsEndpoint()).openConnection();
+                    req1.setConnectTimeout(10000);
+                    req1.setReadTimeout(10000);
+                    String authHeader= site.getAuthHeader();
 
-            req1.setRequestProperty("Authorization", "Basic " + authHeader);
-            req1.setRequestProperty( 'Accept', 'application/json');
-            def responseCode=req1.responseCode;
-            String responseString=req1.inputStream.text;
-            println "all forms:"
-            println responseCode + ": " + responseString;
+                    req1.setRequestProperty("Authorization", "Basic " + authHeader);
+                    req1.setRequestProperty( 'Accept', 'application/json');
+                    def responseCode=req1.responseCode;
+                    String responseString=req1.inputStream.text;
+                    println "all forms:"
+                    println responseCode + ": " + responseString;
 
-            def slurper = new groovy.json.JsonSlurper()
-            def result = slurper.parseText(responseString)
-        
-            result.each {
-                // println it.key
-            
-                cmbFormTypes.addItem(it.value.get("id") + " - " + it.value.get("title") + " (" + it.value.get("entries") + " Einträge)");
-	
+                    def slurper = new groovy.json.JsonSlurper()
+                    def result = slurper.parseText(responseString)
+
+                    result.each {
+                        results.add(it.value.get("id") + " - " + it.value.get("title") + " (" + it.value.get("entries") + " Einträge)");
+                    }
+                } catch (Throwable t) {
+                    System.out.println(t.getMessage());
+                    t.printStackTrace();
+                }
+                return results;
             }
-
-
-
-
-
-        } catch (Throwable t) {
-            System.out.println(t.getMessage());
-            t.printStackTrace();
-        }
+            protected void done() {
+                try {
+                    ArrayList items = get();
+                    for(Object item: items) {
+                        cmbFormTypes.addItem(item);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        worker.execute();
     }
     
     private void loadFormEntries() {
-        
+
         GravitySite site=(GravitySite)cmbSites.getSelectedItem();
         if(site==null) {
             return;
         }
-    
+
         lblEntryPreview.setText("");
-    
+
         if(cmbFormTypes.getSelectedIndex()<0)
-        return;
-    
-        try {
-        
-            cmbFormEntries.removeAllItems();
+            return;
 
-            String selectedType=cmbFormTypes.getSelectedItem();
-            String formTypeId=selectedType.split(" ")[0];
-        
-            def req1=new URL(site.getEntriesEndpoint(formTypeId)).openConnection();
-            String authHeader= site.getAuthHeader();
-        
-            req1.setRequestProperty("Authorization", "Basic " + authHeader);
-            req1.setRequestProperty( 'Accept', 'application/json');
-            def responseCode=req1.responseCode;
-            String responseString=req1.inputStream.text;
-        
-            println "all entries for form " + formTypeId + ":"
-            println responseCode + ": " + responseString;
+        cmbFormEntries.removeAllItems();
 
-            def slurper = new groovy.json.JsonSlurper()
-            def result = slurper.parseText(responseString)
-        
-            result.entries.each {
-            
-                cmbFormEntries.addItem("" + it.id + " - " + it.date_created);
-            
-                println(it);
-	
+        String selectedType=cmbFormTypes.getSelectedItem();
+        String formTypeId=selectedType.split(" ")[0];
+
+        def worker = new javax.swing.SwingWorker<ArrayList, Void>() {
+            protected ArrayList doInBackground() {
+                ArrayList results = new ArrayList();
+                try {
+                    def req1=new URL(site.getEntriesEndpoint(formTypeId)).openConnection();
+                    req1.setConnectTimeout(10000);
+                    req1.setReadTimeout(10000);
+                    String authHeader= site.getAuthHeader();
+
+                    req1.setRequestProperty("Authorization", "Basic " + authHeader);
+                    req1.setRequestProperty( 'Accept', 'application/json');
+                    def responseCode=req1.responseCode;
+                    String responseString=req1.inputStream.text;
+
+                    println "all entries for form " + formTypeId + ":"
+                    println responseCode + ": " + responseString;
+
+                    def slurper = new groovy.json.JsonSlurper()
+                    def result = slurper.parseText(responseString)
+
+                    result.entries.each {
+                        results.add("" + it.id + " - " + it.date_created);
+                        println(it);
+                    }
+                } catch (Throwable t) {
+                    System.out.println(t.getMessage());
+                    t.printStackTrace();
+                }
+                return results;
             }
-
-
-
-
-
-        } catch (Throwable t) {
-            System.out.println(t.getMessage());
-            t.printStackTrace();
-        }
+            protected void done() {
+                try {
+                    ArrayList items = get();
+                    for(Object item: items) {
+                        cmbFormEntries.addItem(item);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        worker.execute();
     }
     
     private void loadFormEntryPreview() {
-    
+
         GravitySite site=(GravitySite)cmbSites.getSelectedItem();
         if(site==null) {
             return;
         }
-        
+
         if(cmbFormTypes.getSelectedIndex()<0 || cmbFormEntries.getSelectedIndex()<0)
-        return;
-    
-        try {
-        
-            String selectedType=cmbFormTypes.getSelectedItem();
-            String formTypeId=selectedType.split(" ")[0];
-        
-            String selectedEntry=cmbFormEntries.getSelectedItem();
-            String entryId=selectedEntry.split(" ")[0];
-        
-        
-            // load form structure so we can use proper labels for the preview
-            def req0=new URL(site.getFormStructureEndpoint(formTypeId)).openConnection();
-            String authHeader= site.getAuthHeader();
-        
-            req0.setRequestProperty("Authorization", "Basic " + authHeader);
-            req0.setRequestProperty( 'Accept', 'application/json');
-            def responseCode=req0.responseCode;
-            String responseString=req0.inputStream.text;
-            println "form structure for form " + formTypeId + ":"
-            println responseCode + ": " + responseString;
-        
-            def slurper = new groovy.json.JsonSlurper()
-            def structResult=slurper.parseText(responseString);
-        
-            HashMap fieldLabels=new HashMap();
-        
-            structResult.fields.each {
-                if(it.inputs==null) {
-                    String sId=it.id;
-                    String sLabel=it.label;
-                    fieldLabels.put(sId, sLabel);
-                } else {
-                    for (input in it.inputs) {
-                        String sId=input.id;
-                        String sLabel=input.label;
-                        fieldLabels.put(sId, sLabel);
+            return;
+
+        String selectedType=cmbFormTypes.getSelectedItem();
+        String formTypeId=selectedType.split(" ")[0];
+
+        String selectedEntry=cmbFormEntries.getSelectedItem();
+        String entryId=selectedEntry.split(" ")[0];
+
+        def worker = new javax.swing.SwingWorker<String, Void>() {
+            protected String doInBackground() {
+                try {
+                    // load form structure so we can use proper labels for the preview
+                    def req0=new URL(site.getFormStructureEndpoint(formTypeId)).openConnection();
+                    req0.setConnectTimeout(10000);
+                    req0.setReadTimeout(10000);
+                    String authHeader= site.getAuthHeader();
+
+                    req0.setRequestProperty("Authorization", "Basic " + authHeader);
+                    req0.setRequestProperty( 'Accept', 'application/json');
+                    def responseCode=req0.responseCode;
+                    String responseString=req0.inputStream.text;
+                    println "form structure for form " + formTypeId + ":"
+                    println responseCode + ": " + responseString;
+
+                    def slurper = new groovy.json.JsonSlurper()
+                    def structResult=slurper.parseText(responseString);
+
+                    HashMap fieldLabels=new HashMap();
+
+                    structResult.fields.each {
+                        if(it.inputs==null) {
+                            String sId=it.id;
+                            String sLabel=it.label;
+                            fieldLabels.put(sId, sLabel);
+                        } else {
+                            for (input in it.inputs) {
+                                String sId=input.id;
+                                String sLabel=input.label;
+                                fieldLabels.put(sId, sLabel);
+                            }
+                        }
                     }
+
+                    // load entries and provide a preview
+                    def req1=new URL(site.getEntryEndpoint(entryId)).openConnection();
+                    req1.setConnectTimeout(10000);
+                    req1.setReadTimeout(10000);
+
+                    req1.setRequestProperty("Authorization", "Basic " + authHeader);
+                    req1.setRequestProperty( 'Accept', 'application/json');
+                    responseCode=req1.responseCode;
+                    responseString=req1.inputStream.text;
+                    println "entry " + entryId + ":"
+                    println responseCode + ": " + responseString;
+
+                    def result = slurper.parseText(responseString)
+
+                    StringBuilder previewBuffer=new StringBuilder();
+                    previewBuffer.append("<html><table>");
+                    result.each {
+                        if(it.getValue()!=null && !("".equals(it.getValue()))) {
+                            previewBuffer.append("<tr><td>");
+                            if(fieldLabels.containsKey(it.getKey())) {
+                                previewBuffer.append("" + fieldLabels.get(it.getKey()));
+                            } else {
+                                previewBuffer.append(it.getKey());
+                            }
+                            previewBuffer.append("</td><td>");
+                            String prevValue=it.getValue().toString();
+                            if(prevValue.length()>150) {
+                                prevValue=prevValue.substring(0,149) + " ... (" + it.getValue().toString().length() + " Zeichen)";
+                            }
+                            previewBuffer.append(prevValue);
+                            previewBuffer.append("</td></tr>");
+                        }
+                    }
+                    previewBuffer.append("</table></html>");
+                    return previewBuffer.toString();
+
+                } catch (Throwable t) {
+                    System.out.println(t.getMessage());
+                    t.printStackTrace();
+                    return "";
                 }
-                println "";
             }
-        
-        
-            // load entries and provide a preview
-        
-            def req1=new URL(site.getEntryEndpoint(entryId)).openConnection();
-        
-            req1.setRequestProperty("Authorization", "Basic " + authHeader);
-            req1.setRequestProperty( 'Accept', 'application/json');
-            responseCode=req1.responseCode;
-            responseString=req1.inputStream.text;
-            println "entry " + entryId + ":"
-            println responseCode + ": " + responseString;
-
-        
-            def result = slurper.parseText(responseString)
-        
-            StringBuilder previewBuffer=new StringBuilder();
-            previewBuffer.append("<html><table>");
-            result.each {
-            
-                if(it.getValue()!=null && !("".equals(it.getValue()))) {
-            
-                    previewBuffer.append("<tr><td>");
-                    if(fieldLabels.containsKey(it.getKey())) {
-                        previewBuffer.append("" + fieldLabels.get(it.getKey()));
-                    } else {
-                        previewBuffer.append(it.getKey());
-                    }
-                    previewBuffer.append("</td><td>");
-                    String prevValue=it.getValue().toString();
-                    if(prevValue.length()>150) {
-                        prevValue=prevValue.substring(0,149) + " ... (" + it.getValue().toString().length() + " Zeichen)";
-                    }
-                    previewBuffer.append(prevValue);
-                    previewBuffer.append("</td></tr>");
+            protected void done() {
+                try {
+                    String previewText = get();
+                    lblEntryPreview.setText(previewText);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-	
             }
-            previewBuffer.append("</table></html>");
-            lblEntryPreview.setText(previewBuffer.toString());
-
-
-
-        } catch (Throwable t) {
-            System.out.println(t.getMessage());
-            t.printStackTrace();
-        }
+        };
+        worker.execute();
     }
     
     private void executeImport() {
-    
+
         if(cmbFormTypes.getSelectedIndex()<0 || cmbFormEntries.getSelectedIndex()<0)
-        return;
-    
+            return;
+
         GravitySite site=(GravitySite)cmbSites.getSelectedItem();
         if(site==null) {
             return;
         }
-        
-        try {
-        
-            dynamicPanel.removeAll();
-        
-            String selectedType=cmbFormTypes.getSelectedItem();
-            String formTypeId=selectedType.split(" ")[0];
-        
-            String selectedEntry=cmbFormEntries.getSelectedItem();
-            String entryId=selectedEntry.split(" ")[0];
-        
-        
-            // load form structure so we can use proper labels for the preview
-        
-            def req0=new URL(site.getFormStructureEndpoint(formTypeId)).openConnection();
-            String authHeader= site.getAuthHeader();
 
-            req0.setRequestProperty("Authorization", "Basic " + authHeader);
-            req0.setRequestProperty( 'Accept', 'application/json');
-            def responseCode=req0.responseCode;
-            String responseString=req0.inputStream.text;
-            println "form structure for form " + formTypeId + ":"
-            println responseCode + ": " + responseString;
-        
-            taFormStructure.setText(responseString);
-        
-            def slurper = new groovy.json.JsonSlurper()
-            def structResult=slurper.parseText(responseString);
-        
-            HashMap fieldData=new HashMap();
-            ArrayList sortedFieldIds=new ArrayList();
-            structResult.fields.each {
-                if("html".equals(it.type)) {
-            
-                } else if("time".equals(it.type)) {
-                    // time has separate inputs for hour and minute, but we want to display as one
-                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
-                    sortedFieldIds.add("" + it.id);
-                    GravityField f=new GravityField();
-                    f.id="" + it.id;
-                    f.label=it.label;
-                    f.adminLabel=it.adminLabel;
-                    f.type=it.type;
-                    fieldData.put("" + it.id, f);
-                } else if(it.inputs==null && it.choices==null) {
-                    if(it.displayOnly) {
-                        sortedFieldIds.add("" + it.id);
-                        GravityField fGroup=new GravityField();
-                        fGroup.id="" + it.id;
-                        fGroup.label=it.label;
-                        fGroup.groupLabel=it.label;
-                        fGroup.adminLabel=it.adminLabel;
-                        fGroup.type=it.type;
-                        if("section".equalsIgnoreCase(it.type) || "page".equalsIgnoreCase(it.type)) {
-                            fGroup.label="";
-                        }
-                        fieldData.put("" + it.id, fGroup);
-                    } else {
-                        println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
-                        sortedFieldIds.add("" + it.id);
-                        GravityField f=new GravityField();
-                        f.id="" + it.id;
-                        f.label=it.label;
-                        f.adminLabel=it.adminLabel;
-                        f.type=it.type;
-                        fieldData.put("" + it.id, f);
-                    }
-                } else if(it.inputs!=null) {
-                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
-                    sortedFieldIds.add("" + it.id);
-                    GravityField fGroup=new GravityField();
-                    fGroup.id="" + it.id;
-                    fGroup.label=it.label;
-                    fGroup.adminLabel=it.adminLabel;
-                    fGroup.groupLabel=it.label;
-                    fGroup.type=it.type;
-                    fieldData.put("" + it.id, fGroup);
-            
-                    for (input in it.inputs) {
-                        // e.g. group of checkboxes
-                        sortedFieldIds.add("" + input.id);
-                        println ("" + System.currentTimeMillis() + " id " + input.id + " has label " + input.label);
-                        GravityField f=new GravityField();
-                        f.id="" + input.id;
-                        f.label=input.label;
-                        f.adminLabel=input.adminLabel;
-                        if(input.type==null) {
+        dynamicPanel.removeAll();
+
+        String selectedType=cmbFormTypes.getSelectedItem();
+        String formTypeId=selectedType.split(" ")[0];
+
+        String selectedEntry=cmbFormEntries.getSelectedItem();
+        String entryId=selectedEntry.split(" ")[0];
+
+        def worker = new javax.swing.SwingWorker<HashMap, Void>() {
+            protected HashMap doInBackground() {
+                HashMap resultData = new HashMap();
+                try {
+                    // load form structure so we can use proper labels for the preview
+                    def req0=new URL(site.getFormStructureEndpoint(formTypeId)).openConnection();
+                    req0.setConnectTimeout(10000);
+                    req0.setReadTimeout(10000);
+                    String authHeader= site.getAuthHeader();
+
+                    req0.setRequestProperty("Authorization", "Basic " + authHeader);
+                    req0.setRequestProperty( 'Accept', 'application/json');
+                    def responseCode=req0.responseCode;
+                    String responseString=req0.inputStream.text;
+                    println "form structure for form " + formTypeId + ":"
+                    println responseCode + ": " + responseString;
+
+                    resultData.put("formStructure", responseString);
+
+                    def slurper = new groovy.json.JsonSlurper()
+                    def structResult=slurper.parseText(responseString);
+
+                    HashMap fieldData=new HashMap();
+                    ArrayList sortedFieldIds=new ArrayList();
+                    structResult.fields.each {
+                        if("html".equals(it.type)) {
+
+                        } else if("time".equals(it.type)) {
+                            sortedFieldIds.add("" + it.id);
+                            GravityField f=new GravityField();
+                            f.id="" + it.id;
+                            f.label=it.label;
+                            f.adminLabel=it.adminLabel;
                             f.type=it.type;
-                        } else {
-                            f.type=input.type;
-                        }
-                        fieldData.put("" + input.id, f);
-                    }
-                } else if(it.choices!=null) {
-                    // e.g. dropdown
-                    println ("" + System.currentTimeMillis() + " id " + it.id + " has label " + it.label);
-                    sortedFieldIds.add("" + it.id);
-                    GravityField fGroup=new GravityField();
-                    fGroup.id="" + it.id;
-                    fGroup.label=it.label;
-                    fGroup.adminLabel=it.adminLabel;
-                    fGroup.type=it.type;
-                    fieldData.put("" + it.id, fGroup);
-            
-                    for (choice in it.choices) {
-                        fGroup.addValue(choice.value);
-                    }
-                }
-            }
-        
-            // load entries and provide a preview
-        
-            def req1=new URL(site.getEntryEndpoint(entryId)).openConnection();
-        
-            req1.setRequestProperty("Authorization", "Basic " + authHeader);
-            req1.setRequestProperty( 'Accept', 'application/json');
-            responseCode=req1.responseCode;
-            responseString=req1.inputStream.text;
-            println "" + System.currentTimeMillis() + " entry " + entryId + ":"
-            println responseCode + ": " + responseString;
+                            fieldData.put("" + it.id, f);
+                        } else if(it.inputs==null && it.choices==null) {
+                            if(it.displayOnly) {
+                                sortedFieldIds.add("" + it.id);
+                                GravityField fGroup=new GravityField();
+                                fGroup.id="" + it.id;
+                                fGroup.label=it.label;
+                                fGroup.groupLabel=it.label;
+                                fGroup.adminLabel=it.adminLabel;
+                                fGroup.type=it.type;
+                                if("section".equalsIgnoreCase(it.type) || "page".equalsIgnoreCase(it.type)) {
+                                    fGroup.label="";
+                                }
+                                fieldData.put("" + it.id, fGroup);
+                            } else {
+                                sortedFieldIds.add("" + it.id);
+                                GravityField f=new GravityField();
+                                f.id="" + it.id;
+                                f.label=it.label;
+                                f.adminLabel=it.adminLabel;
+                                f.type=it.type;
+                                fieldData.put("" + it.id, f);
+                            }
+                        } else if(it.inputs!=null) {
+                            sortedFieldIds.add("" + it.id);
+                            GravityField fGroup=new GravityField();
+                            fGroup.id="" + it.id;
+                            fGroup.label=it.label;
+                            fGroup.adminLabel=it.adminLabel;
+                            fGroup.groupLabel=it.label;
+                            fGroup.type=it.type;
+                            fieldData.put("" + it.id, fGroup);
 
-        
-            def result = slurper.parseText(responseString)
-        
-            result.each {
-                GravityField f=fieldData.get("" + it.getKey());
-                if(f!=null) {
-                    if("fileupload".equals(f.type)) {
-                        if(it.getValue() instanceof String) {
-                            System.out.println("" + System.currentTimeMillis() + " fileupload " + it.getKey() + " has single value");
-                            f.addValue(it.getValue());
-                            //f.setValue(it.getValue());
-                        } else {
-                            System.out.println("" + System.currentTimeMillis() + " fileupload " + it.getKey() + " has multiple values");
-                            ArrayList valueList=(ArrayList)it.getValue();
-                            for(Object v: valueList) {
-                                f.addValue(v.toString());
+                            for (input in it.inputs) {
+                                sortedFieldIds.add("" + input.id);
+                                GravityField f=new GravityField();
+                                f.id="" + input.id;
+                                f.label=input.label;
+                                f.adminLabel=input.adminLabel;
+                                if(input.type==null) {
+                                    f.type=it.type;
+                                } else {
+                                    f.type=input.type;
+                                }
+                                fieldData.put("" + input.id, f);
                             }
-                            //f.addValue(it.getValue().toString());
-                            //f.setValue(it.getValue().toString());
-                        }
-                    
-                    } else {
-                        f.value=it.getValue();
-                    }
-                } else {
-                    println("" + System.currentTimeMillis() + " " + it.getKey() + " has no definition, cannot set value");
-                }
-            }
-        
-            dynamicPanel.setLayout(new GridBagLayout());
-            GridBagConstraints con = new GridBagConstraints();
-            con.fill = GridBagConstraints.HORIZONTAL;
-            con.weightx = 1.0;
-    
-            int row=0;
-            for(String id: sortedFieldIds) {
-                println("" + System.currentTimeMillis() + " rendering field " + id);
-                row = row +1;
-                GravityField f=fieldData.get(id);
-                if(f!=null) {
-                    if(f.groupLabel!=null) {
-                        // open new section with the relevant group caption
-                        println("" + System.currentTimeMillis() + "   group label is " + f.groupLabel);
-                        con.gridx = 0
-                        con.gridy = row - 1
-                        dynamicPanel.add(new JLabel("<html><b>" + f.groupLabel + "</b></html>"), con);
-                    } else {
-                        String inset="";
-                        if(f.id.contains(".")) {
-                            inset="     ";
-                        }
-                        if("html".equals(f.type)) {
-                            // ignored
-                        } else if("section".equals(f.type) || "page".equals(f.type)) {
-                            // displayed without caption
-                            con.gridx = 0
-                            con.gridy = row - 1
-                            dynamicPanel.add(new JLabel(), con);
-                        } else {
-                            con.gridx = 0
-                            con.gridy = row - 1
-                            dynamicPanel.add(new JLabel(inset + f.label), con);
-                        }
-                    }
-                
-                    if(f.groupLabel!=null) { 
-                        con.gridx = 1
-                        con.gridy = row - 1
-                        dynamicPanel.add(new JLabel(""), con);
-                    } else {
-                        if("checkbox".equalsIgnoreCase(f.type)) {
-                            println("" + System.currentTimeMillis() + " rendering checkbox");
-                            JPanel checkboxPanel=new JPanel();
-                            checkboxPanel.setLayout(new BorderLayout());
-                            JCheckBox cb=new JCheckBox();
-                            cb.setName(f.getPlaceHolderName() + "_CHECKBOX");
-                            cb.putClientProperty("Jlawyerdescription", f.label);
-                            if(f.getValue()!=null && f.getValue().length()>0)
-                            cb.setSelected(true);
-                            else
-                            cb.setSelected(false);
-                            checkboxPanel.add(cb, BorderLayout.LINE_START);
-                            JTextField tf=new JTextField(f.getValue(), TEXTFIELD_MAXCOLUMNS);
-                            tf.setName(f.getPlaceHolderName());
-                            tf.setEnabled(false);
-                            tf.putClientProperty("Jlawyerdescription", f.label);
-                            checkboxPanel.add(tf, BorderLayout.CENTER);
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(checkboxPanel, con);
-                        } else if("select".equalsIgnoreCase(f.type)) {
-                            println("" + System.currentTimeMillis() + " rendering select");
-                            println("cb1");
-                            JComboBox cb=new JComboBox();
-                            println("cb2");
-                            for(String valueEntry: f.getValueList()) {
-                                println("cb3");
-                                cb.addItem(valueEntry);
-                            }
-                            println("cb4");
-                            cb.setSelectedItem(f.getValue());
-                            println("cb5");
-                            cb.setName(f.getPlaceHolderName());
-                            println("cb6");
-                            cb.putClientProperty("Jlawyerdescription", f.label);
-                            println("cb7");
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(cb, con);
-                        } else if("textarea".equalsIgnoreCase(f.type)) {
-                            println("" + System.currentTimeMillis() + " rendering textarea");
-                            JTextArea ta=new JTextArea();
-                            ta.setText(f.getValue());
-                            ta.setToolTipText(f.getValue());
-                            ta.setRows(5);
-                            ta.setLineWrap(true);
-                            ta.setWrapStyleWord(true);
-                            ta.setName(f.getPlaceHolderName());
-                            ta.putClientProperty("Jlawyerdescription", f.label);
-                            JScrollPane scrollpane = new JScrollPane(ta); 
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(scrollpane, con);
-                        } else if("section".equalsIgnoreCase(f.type) || "page".equalsIgnoreCase(f.type)) {
-                            JSeparator sep=new JSeparator();
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(sep, con);
-                        } else if("html".equalsIgnoreCase(f.type)) {
-                            // ignore, those are display only contents
-                        } else if("fileupload".equalsIgnoreCase(f.type)) {
-                            
-                            JPanel uploadsPanel=new JPanel();
-                            uploadsPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-                            JTextArea ta=new JTextArea();
-                            ta.setText(f.getValueList().toString());
-                            ta.setToolTipText(f.getValueList().toString());
-                            ta.setRows(1);
-                            ta.setColumns(50);
-                            ta.setLineWrap(true);
-                            //ta.setWrapStyleWord(true);
-                            ta.setName(f.getPlaceHolderName());
-                            ta.putClientProperty("Jlawyerdescription", f.label);
-                            JScrollPane scrollpane = new JScrollPane(ta);    
-                            uploadsPanel.add(scrollpane);
-                            
-                            JButton downloadButton=new JButton();
-                            downloadButton.setText("Download");
-                            downloadButton.addActionListener(new java.awt.event.ActionListener() {
-                                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                        this.callback.downloadFilesToCase(ta.getText());
-                                    }
-                                });
-                            uploadsPanel.add(downloadButton);
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(uploadsPanel, con);
-                            
-                        } else if("signature".equalsIgnoreCase(f.type)) {
-                            
-                            JPanel uploadsPanel=new JPanel();
-                            uploadsPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-                            
-                            JTextField tf=new JTextField(site.getSignatureImageUrl(f.getValue()), TEXTFIELD_MAXCOLUMNS);
-                            tf.setName(f.getPlaceHolderName());
-                            tf.setEnabled(false);
-                            tf.putClientProperty("Jlawyerdescription", f.label);
-                            tf.setColumns(30);
-                            uploadsPanel.add(tf);
-                            
-                            JButton downloadButton=new JButton();
-                            downloadButton.setText("Download");
-                            downloadButton.addActionListener(new java.awt.event.ActionListener() {
-                                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                        String caseId=callback.getCaseId();
-                                        StorageLib.addDocument(caseId, "Unterschrift.png", download(tf.getText(), false));
-                                        GuiLib.showInformation("Unterschrift speichern", "Unterschrift wurde zur Akte gespeichert.");
-                                    }
-                                });
-                            uploadsPanel.add(downloadButton);
-                            
-                            JButton viewButton=new JButton();
-                            viewButton.setText("Anzeigen");
-                            viewButton.addActionListener(new java.awt.event.ActionListener() {
-                                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                        byte[] image=download(tf.getText(), false);
-                                        javax.swing.ImageIcon imageIcon=new javax.swing.ImageIcon(image);
-                                        if(image!=null) {
-                                            showSignature(imageIcon);
-                                        }
-                                    }
-                                });
-                            uploadsPanel.add(viewButton);
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(uploadsPanel, con);
-                            
-                        } else if("date".equalsIgnoreCase(f.type)) {
-                            String dateValue=f.getValue();
-                            try {
-                                java.util.Date dval=new java.text.SimpleDateFormat("yyyy-MM-dd").parse(dateValue);
-                                dateValue=new java.text.SimpleDateFormat("dd.MM.yyyy").format(dval);
-                            } catch (Throwable t) {
-                            
-                            }
-                            JTextField tf=new JTextField(dateValue, TEXTFIELD_MAXCOLUMNS);
-                            tf.setName(f.getPlaceHolderName());
-                            tf.putClientProperty("Jlawyerdescription", f.label);
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(tf, con);
-                        } else {
-                            println("" + System.currentTimeMillis() + " rendering anything else");
-                            JTextField tf=new JTextField(f.getValue(), TEXTFIELD_MAXCOLUMNS);
-                            tf.setName(f.getPlaceHolderName());
-                            tf.putClientProperty("Jlawyerdescription", f.label);
-                            con.gridx = 1
-                            con.gridy = row - 1
-                            dynamicPanel.add(tf, con);
-                        }
-                    }
-                
-                } else {
-                    println("" + System.currentTimeMillis() + " " + id + " has no definition, cannot render");
-                }
-            
-            
-            }
-            println("" + System.currentTimeMillis() + " finished rendering fields");
+                        } else if(it.choices!=null) {
+                            sortedFieldIds.add("" + it.id);
+                            GravityField fGroup=new GravityField();
+                            fGroup.id="" + it.id;
+                            fGroup.label=it.label;
+                            fGroup.adminLabel=it.adminLabel;
+                            fGroup.type=it.type;
+                            fieldData.put("" + it.id, fGroup);
 
-        } catch (Throwable t) {
-            System.out.println(t.getMessage());
-            t.printStackTrace();
-        }
+                            for (choice in it.choices) {
+                                fGroup.addValue(choice.value);
+                            }
+                        }
+                    }
+
+                    // load entries and provide a preview
+                    def req1=new URL(site.getEntryEndpoint(entryId)).openConnection();
+                    req1.setConnectTimeout(10000);
+                    req1.setReadTimeout(10000);
+
+                    req1.setRequestProperty("Authorization", "Basic " + authHeader);
+                    req1.setRequestProperty( 'Accept', 'application/json');
+                    responseCode=req1.responseCode;
+                    responseString=req1.inputStream.text;
+                    println "" + System.currentTimeMillis() + " entry " + entryId + ":"
+                    println responseCode + ": " + responseString;
+
+                    def result = slurper.parseText(responseString)
+
+                    result.each {
+                        GravityField f=fieldData.get("" + it.getKey());
+                        if(f!=null) {
+                            if("fileupload".equals(f.type)) {
+                                if(it.getValue() instanceof String) {
+                                    f.addValue(it.getValue());
+                                } else {
+                                    ArrayList valueList=(ArrayList)it.getValue();
+                                    for(Object v: valueList) {
+                                        f.addValue(v.toString());
+                                    }
+                                }
+                            } else {
+                                f.value=it.getValue();
+                            }
+                        }
+                    }
+
+                    resultData.put("fieldData", fieldData);
+                    resultData.put("sortedFieldIds", sortedFieldIds);
+
+                } catch (Throwable t) {
+                    System.out.println(t.getMessage());
+                    t.printStackTrace();
+                }
+                return resultData;
+            }
+            protected void done() {
+                try {
+                    HashMap resultData = get();
+                    if(resultData.isEmpty()) {
+                        return;
+                    }
+
+                    String formStructure = resultData.get("formStructure");
+                    HashMap fieldData = resultData.get("fieldData");
+                    ArrayList sortedFieldIds = resultData.get("sortedFieldIds");
+
+                    if(formStructure != null) {
+                        taFormStructure.setText(formStructure);
+                    }
+
+                    if(fieldData == null || sortedFieldIds == null) {
+                        return;
+                    }
+
+                    dynamicPanel.setLayout(new GridBagLayout());
+                    GridBagConstraints con = new GridBagConstraints();
+                    con.fill = GridBagConstraints.HORIZONTAL;
+                    con.weightx = 1.0;
+
+                    int row=0;
+                    for(String id: sortedFieldIds) {
+                        row = row +1;
+                        GravityField f=fieldData.get(id);
+                        if(f!=null) {
+                            if(f.groupLabel!=null) {
+                                con.gridx = 0
+                                con.gridy = row - 1
+                                dynamicPanel.add(new JLabel("<html><b>" + f.groupLabel + "</b></html>"), con);
+                            } else {
+                                String inset="";
+                                if(f.id.contains(".")) {
+                                    inset="     ";
+                                }
+                                if("html".equals(f.type)) {
+                                    // ignored
+                                } else if("section".equals(f.type) || "page".equals(f.type)) {
+                                    con.gridx = 0
+                                    con.gridy = row - 1
+                                    dynamicPanel.add(new JLabel(), con);
+                                } else {
+                                    con.gridx = 0
+                                    con.gridy = row - 1
+                                    dynamicPanel.add(new JLabel(inset + f.label), con);
+                                }
+                            }
+
+                            if(f.groupLabel!=null) {
+                                con.gridx = 1
+                                con.gridy = row - 1
+                                dynamicPanel.add(new JLabel(""), con);
+                            } else {
+                                if("checkbox".equalsIgnoreCase(f.type)) {
+                                    JPanel checkboxPanel=new JPanel();
+                                    checkboxPanel.setLayout(new BorderLayout());
+                                    JCheckBox cb=new JCheckBox();
+                                    cb.setName(f.getPlaceHolderName() + "_CHECKBOX");
+                                    cb.putClientProperty("Jlawyerdescription", f.label);
+                                    if(f.getValue()!=null && f.getValue().length()>0)
+                                        cb.setSelected(true);
+                                    else
+                                        cb.setSelected(false);
+                                    checkboxPanel.add(cb, BorderLayout.LINE_START);
+                                    JTextField tf=new JTextField(f.getValue(), TEXTFIELD_MAXCOLUMNS);
+                                    tf.setName(f.getPlaceHolderName());
+                                    tf.setEnabled(false);
+                                    tf.putClientProperty("Jlawyerdescription", f.label);
+                                    checkboxPanel.add(tf, BorderLayout.CENTER);
+                                    con.gridx = 1
+                                    con.gridy = row - 1
+                                    dynamicPanel.add(checkboxPanel, con);
+                                } else if("select".equalsIgnoreCase(f.type)) {
+                                    JComboBox cb=new JComboBox();
+                                    for(String valueEntry: f.getValueList()) {
+                                        cb.addItem(valueEntry);
+                                    }
+                                    cb.setSelectedItem(f.getValue());
+                                    cb.setName(f.getPlaceHolderName());
+                                    cb.putClientProperty("Jlawyerdescription", f.label);
+                                    con.gridx = 1
+                                    con.gridy = row - 1
+                                    dynamicPanel.add(cb, con);
+                                } else if("textarea".equalsIgnoreCase(f.type)) {
+                                    JTextArea ta=new JTextArea();
+                                    ta.setText(f.getValue());
+                                    ta.setToolTipText(f.getValue());
+                                    ta.setRows(5);
+                                    ta.setLineWrap(true);
+                                    ta.setWrapStyleWord(true);
+                                    ta.setName(f.getPlaceHolderName());
+                                    ta.putClientProperty("Jlawyerdescription", f.label);
+                                    JScrollPane scrollpane = new JScrollPane(ta);
+                                    con.gridx = 1
+                                    con.gridy = row - 1
+                                    dynamicPanel.add(scrollpane, con);
+                                } else if("section".equalsIgnoreCase(f.type) || "page".equalsIgnoreCase(f.type)) {
+                                    JSeparator sep=new JSeparator();
+                                    con.gridx = 1
+                                    con.gridy = row - 1
+                                    dynamicPanel.add(sep, con);
+                                } else if("html".equalsIgnoreCase(f.type)) {
+                                    // ignore, those are display only contents
+                                } else if("fileupload".equalsIgnoreCase(f.type)) {
+
+                                    JPanel uploadsPanel=new JPanel();
+                                    uploadsPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+                                    JTextArea ta=new JTextArea();
+                                    ta.setText(f.getValueList().toString());
+                                    ta.setToolTipText(f.getValueList().toString());
+                                    ta.setRows(1);
+                                    ta.setColumns(50);
+                                    ta.setLineWrap(true);
+                                    ta.setName(f.getPlaceHolderName());
+                                    ta.putClientProperty("Jlawyerdescription", f.label);
+                                    JScrollPane scrollpane = new JScrollPane(ta);
+                                    uploadsPanel.add(scrollpane);
+
+                                    JButton downloadButton=new JButton();
+                                    downloadButton.setText("Download");
+                                    downloadButton.addActionListener(new java.awt.event.ActionListener() {
+                                            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                                this.callback.downloadFilesToCase(ta.getText());
+                                            }
+                                        });
+                                    uploadsPanel.add(downloadButton);
+                                    con.gridx = 1
+                                    con.gridy = row - 1
+                                    dynamicPanel.add(uploadsPanel, con);
+
+                                } else if("signature".equalsIgnoreCase(f.type)) {
+
+                                    JPanel uploadsPanel=new JPanel();
+                                    uploadsPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+
+                                    JTextField tf=new JTextField(site.getSignatureImageUrl(f.getValue()), TEXTFIELD_MAXCOLUMNS);
+                                    tf.setName(f.getPlaceHolderName());
+                                    tf.setEnabled(false);
+                                    tf.putClientProperty("Jlawyerdescription", f.label);
+                                    tf.setColumns(30);
+                                    uploadsPanel.add(tf);
+
+                                    JButton downloadButton=new JButton();
+                                    downloadButton.setText("Download");
+                                    downloadButton.addActionListener(new java.awt.event.ActionListener() {
+                                            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                                String caseId=callback.getCaseId();
+                                                StorageLib.addDocument(caseId, "Unterschrift.png", download(tf.getText(), false));
+                                                GuiLib.showInformation("Unterschrift speichern", "Unterschrift wurde zur Akte gespeichert.");
+                                            }
+                                        });
+                                    uploadsPanel.add(downloadButton);
+
+                                    JButton viewButton=new JButton();
+                                    viewButton.setText("Anzeigen");
+                                    viewButton.addActionListener(new java.awt.event.ActionListener() {
+                                            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                                byte[] image=download(tf.getText(), false);
+                                                javax.swing.ImageIcon imageIcon=new javax.swing.ImageIcon(image);
+                                                if(image!=null) {
+                                                    showSignature(imageIcon);
+                                                }
+                                            }
+                                        });
+                                    uploadsPanel.add(viewButton);
+                                    con.gridx = 1
+                                    con.gridy = row - 1
+                                    dynamicPanel.add(uploadsPanel, con);
+
+                                } else if("date".equalsIgnoreCase(f.type)) {
+                                    String dateValue=f.getValue();
+                                    try {
+                                        java.util.Date dval=new java.text.SimpleDateFormat("yyyy-MM-dd").parse(dateValue);
+                                        dateValue=new java.text.SimpleDateFormat("dd.MM.yyyy").format(dval);
+                                    } catch (Throwable t) {
+
+                                    }
+                                    JTextField tf=new JTextField(dateValue, TEXTFIELD_MAXCOLUMNS);
+                                    tf.setName(f.getPlaceHolderName());
+                                    tf.putClientProperty("Jlawyerdescription", f.label);
+                                    con.gridx = 1
+                                    con.gridy = row - 1
+                                    dynamicPanel.add(tf, con);
+                                } else {
+                                    JTextField tf=new JTextField(f.getValue(), TEXTFIELD_MAXCOLUMNS);
+                                    tf.setName(f.getPlaceHolderName());
+                                    tf.putClientProperty("Jlawyerdescription", f.label);
+                                    con.gridx = 1
+                                    con.gridy = row - 1
+                                    dynamicPanel.add(tf, con);
+                                }
+                            }
+                        }
+                    }
+                    dynamicPanel.revalidate();
+                    dynamicPanel.repaint();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        worker.execute();
     }
     
     

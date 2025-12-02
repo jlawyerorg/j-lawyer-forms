@@ -819,24 +819,44 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
     JButton btnK5EBFKJ, btnK5CBCL, btnK5CTRF, btnK5SURT, btnK5SKEI, btnK5FIT, btnK5FRTKJ = null;
 
     // Mutter Tests
-    JCheckBox chkMutterEBI, chkMutterESF, chkMutterVEI, chkMutterEBSK, chkMutterFAF = null;
-    JTextField txtMutterEBI, txtMutterESF, txtMutterVEI, txtMutterEBSK, txtMutterFAF = null;
-    JButton btnMutterEBI, btnMutterESF, btnMutterVEI, btnMutterEBSK, btnMutterFAF = null;
+    JCheckBox chkMutterEBI, chkMutterESF, chkMutterVEI, chkMutterEBSK, chkMutterFAF, chkMutterNCSDM = null;
+    JTextField txtMutterEBI, txtMutterESF, txtMutterVEI, txtMutterEBSK, txtMutterFAF, txtMutterNCSDM = null;
+    JButton btnMutterEBI, btnMutterESF, btnMutterVEI, btnMutterEBSK, btnMutterFAF, btnMutterNCSDM = null;
 
     JCheckBox chkMutterBesondere = null;
     JTextField txtMutterBesondere = null;
     JTextField txtMutterBesondereDatum = null;
     JButton btnMutterBesondereDatum = null;
 
+    JCheckBox chkMutterWeitere1 = null;
+    JTextField txtMutterWeitere1 = null;
+    JTextField txtMutterWeitere1Datum = null;
+    JButton btnMutterWeitere1Datum = null;
+
+    JCheckBox chkMutterWeitere2 = null;
+    JTextField txtMutterWeitere2 = null;
+    JTextField txtMutterWeitere2Datum = null;
+    JButton btnMutterWeitere2Datum = null;
+
     // Vater Tests
-    JCheckBox chkVaterEBI, chkVaterESF, chkVaterVEI, chkVaterEBSK, chkVaterFAF = null;
-    JTextField txtVaterEBI, txtVaterESF, txtVaterVEI, txtVaterEBSK, txtVaterFAF = null;
-    JButton btnVaterEBI, btnVaterESF, btnVaterVEI, btnVaterEBSK, btnVaterFAF = null;
+    JCheckBox chkVaterEBI, chkVaterESF, chkVaterVEI, chkVaterEBSK, chkVaterFAF, chkVaterNCSDM = null;
+    JTextField txtVaterEBI, txtVaterESF, txtVaterVEI, txtVaterEBSK, txtVaterFAF, txtVaterNCSDM = null;
+    JButton btnVaterEBI, btnVaterESF, btnVaterVEI, btnVaterEBSK, btnVaterFAF, btnVaterNCSDM = null;
 
     JCheckBox chkVaterBesondere = null;
     JTextField txtVaterBesondere = null;
     JTextField txtVaterBesondereDatum = null;
     JButton btnVaterBesondereDatum = null;
+
+    JCheckBox chkVaterWeitere1 = null;
+    JTextField txtVaterWeitere1 = null;
+    JTextField txtVaterWeitere1Datum = null;
+    JButton btnVaterWeitere1Datum = null;
+
+    JCheckBox chkVaterWeitere2 = null;
+    JTextField txtVaterWeitere2 = null;
+    JTextField txtVaterWeitere2Datum = null;
+    JButton btnVaterWeitere2Datum = null;
 
     // Liste aller Status-Comboboxen
     def statusComboBoxes = [];
@@ -995,7 +1015,9 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
             entries << [
                 datum: befundTableModel.getValueAt(i, 0) ?: '',
                 institution: befundTableModel.getValueAt(i, 1) ?: '',
-                inhalt: befundTableModel.getValueAt(i, 2) ?: ''
+                inhalt: befundTableModel.getValueAt(i, 2) ?: '',
+                eingangsdatum: befundTableModel.getValueAt(i, 3) ?: '',
+                erledigt: befundTableModel.getValueAt(i, 4) ?: ''
             ]
         }
 
@@ -1019,7 +1041,9 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                     befundTableModel.addRow([
                         entry.datum ?: '',
                         entry.institution ?: '',
-                        entry.inhalt ?: ''
+                        entry.inhalt ?: '',
+                        entry.eingangsdatum ?: '',
+                        entry.erledigt ?: ''
                     ] as Object[])
                 }
             } catch (Exception e) {
@@ -1154,8 +1178,9 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
         for (int i = 0; i < untersuchungstermineTableModel.getRowCount(); i++) {
             entries << [
                 datum: untersuchungstermineTableModel.getValueAt(i, 0) ?: '',
-                beteiligte: untersuchungstermineTableModel.getValueAt(i, 1) ?: '',
-                anmerkungen: untersuchungstermineTableModel.getValueAt(i, 2) ?: ''
+                uhrzeit: untersuchungstermineTableModel.getValueAt(i, 1) ?: '',
+                beteiligte: untersuchungstermineTableModel.getValueAt(i, 2) ?: '',
+                anmerkungen: untersuchungstermineTableModel.getValueAt(i, 3) ?: ''
             ]
         }
 
@@ -1178,6 +1203,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                 entries.each { entry ->
                     untersuchungstermineTableModel.addRow([
                         entry.datum ?: '',
+                        entry.uhrzeit ?: '',
                         entry.beteiligte ?: '',
                         entry.anmerkungen ?: ''
                     ] as Object[])
@@ -1234,8 +1260,9 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
         for (int i = 0; i < informatBefragungenTableModel.getRowCount(); i++) {
             entries << [
                 datum: informatBefragungenTableModel.getValueAt(i, 0) ?: '',
-                beteiligte: informatBefragungenTableModel.getValueAt(i, 1) ?: '',
-                anmerkungen: informatBefragungenTableModel.getValueAt(i, 2) ?: ''
+                uhrzeit: informatBefragungenTableModel.getValueAt(i, 1) ?: '',
+                beteiligte: informatBefragungenTableModel.getValueAt(i, 2) ?: '',
+                anmerkungen: informatBefragungenTableModel.getValueAt(i, 3) ?: ''
             ]
         }
 
@@ -1258,6 +1285,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                 entries.each { entry ->
                     informatBefragungenTableModel.addRow([
                         entry.datum ?: '',
+                        entry.uhrzeit ?: '',
                         entry.beteiligte ?: '',
                         entry.anmerkungen ?: ''
                     ] as Object[])
@@ -1357,8 +1385,16 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
         btnK5BesondereDatum.setVisible(chkK5Besondere.isSelected());
         txtMutterBesondereDatum.setVisible(chkMutterBesondere.isSelected());
         btnMutterBesondereDatum.setVisible(chkMutterBesondere.isSelected());
+        txtMutterWeitere1Datum.setVisible(chkMutterWeitere1.isSelected());
+        btnMutterWeitere1Datum.setVisible(chkMutterWeitere1.isSelected());
+        txtMutterWeitere2Datum.setVisible(chkMutterWeitere2.isSelected());
+        btnMutterWeitere2Datum.setVisible(chkMutterWeitere2.isSelected());
         txtVaterBesondereDatum.setVisible(chkVaterBesondere.isSelected());
         btnVaterBesondereDatum.setVisible(chkVaterBesondere.isSelected());
+        txtVaterWeitere1Datum.setVisible(chkVaterWeitere1.isSelected());
+        btnVaterWeitere1Datum.setVisible(chkVaterWeitere1.isSelected());
+        txtVaterWeitere2Datum.setVisible(chkVaterWeitere2.isSelected());
+        btnVaterWeitere2Datum.setVisible(chkVaterWeitere2.isSelected());
 
         // Sichtbarkeit der Kind 1 Test-Datumsfelder setzen
         txtK1EBFKJ.setVisible(chkK1EBFKJ.isSelected());
@@ -1381,8 +1417,8 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
          [chkK3EBFKJ, txtK3EBFKJ, btnK3EBFKJ], [chkK3CBCL, txtK3CBCL, btnK3CBCL], [chkK3CTRF, txtK3CTRF, btnK3CTRF], [chkK3SURT, txtK3SURT, btnK3SURT], [chkK3SKEI, txtK3SKEI, btnK3SKEI], [chkK3FIT, txtK3FIT, btnK3FIT], [chkK3FRTKJ, txtK3FRTKJ, btnK3FRTKJ],
          [chkK4EBFKJ, txtK4EBFKJ, btnK4EBFKJ], [chkK4CBCL, txtK4CBCL, btnK4CBCL], [chkK4CTRF, txtK4CTRF, btnK4CTRF], [chkK4SURT, txtK4SURT, btnK4SURT], [chkK4SKEI, txtK4SKEI, btnK4SKEI], [chkK4FIT, txtK4FIT, btnK4FIT], [chkK4FRTKJ, txtK4FRTKJ, btnK4FRTKJ],
          [chkK5EBFKJ, txtK5EBFKJ, btnK5EBFKJ], [chkK5CBCL, txtK5CBCL, btnK5CBCL], [chkK5CTRF, txtK5CTRF, btnK5CTRF], [chkK5SURT, txtK5SURT, btnK5SURT], [chkK5SKEI, txtK5SKEI, btnK5SKEI], [chkK5FIT, txtK5FIT, btnK5FIT], [chkK5FRTKJ, txtK5FRTKJ, btnK5FRTKJ],
-         [chkMutterEBI, txtMutterEBI, btnMutterEBI], [chkMutterESF, txtMutterESF, btnMutterESF], [chkMutterVEI, txtMutterVEI, btnMutterVEI], [chkMutterEBSK, txtMutterEBSK, btnMutterEBSK], [chkMutterFAF, txtMutterFAF, btnMutterFAF],
-         [chkVaterEBI, txtVaterEBI, btnVaterEBI], [chkVaterESF, txtVaterESF, btnVaterESF], [chkVaterVEI, txtVaterVEI, btnVaterVEI], [chkVaterEBSK, txtVaterEBSK, btnVaterEBSK], [chkVaterFAF, txtVaterFAF, btnVaterFAF]
+         [chkMutterEBI, txtMutterEBI, btnMutterEBI], [chkMutterESF, txtMutterESF, btnMutterESF], [chkMutterVEI, txtMutterVEI, btnMutterVEI], [chkMutterEBSK, txtMutterEBSK, btnMutterEBSK], [chkMutterFAF, txtMutterFAF, btnMutterFAF], [chkMutterNCSDM, txtMutterNCSDM, btnMutterNCSDM],
+         [chkVaterEBI, txtVaterEBI, btnVaterEBI], [chkVaterESF, txtVaterESF, btnVaterESF], [chkVaterVEI, txtVaterVEI, btnVaterVEI], [chkVaterEBSK, txtVaterEBSK, btnVaterEBSK], [chkVaterFAF, txtVaterFAF, btnVaterFAF], [chkVaterNCSDM, txtVaterNCSDM, btnVaterNCSDM]
         ].each { components ->
             def chk = components[0]
             def txt = components[1]
@@ -1626,7 +1662,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                     }
                                     td {
                                         scrollPane{
-                                            textArea(name: "_KONTAKT", clientPropertyJlawyerdescription: "Kontaktdaten", lineWrap:true,wrapStyleWord:true, columns:50, rows:5,editable:true)
+                                            textArea(name: "_KONTAKT", clientPropertyJlawyerdescription: "Auftraggeber", lineWrap:true,wrapStyleWord:true, columns:50, rows:5,editable:true)
                                         }
                                     }
                                 } 
@@ -2015,7 +2051,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     }
                                                     td {
                                                         comboBox(
-                                                            items: ['', 'KV', 'KM', 'JA'],
+                                                            items: ['', 'KV', 'KM', 'JA', 'AG'],
                                                             name: "_071ANTRAG",
                                                             clientPropertyJlawyerdescription: "Antragsteller/in",
                                                             editable: true,
@@ -2035,7 +2071,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     }
                                                     td {
                                                         comboBox(
-                                                            items: ['', 'Erziehungsfähigkeit', 'Umgang', 'Elterliche Sorge', 'Mischform', 'Adoption'],
+                                                            items: ['', 'Erziehungsfähigkeit', 'Umgang', 'Elterliche Sorge', 'Mischform', 'Adoption', 'Rückführung'],
                                                             name: "_072FRAGE",
                                                             clientPropertyJlawyerdescription: "Fragestellung",
                                                             editable: true,
@@ -2982,6 +3018,14 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {
+                                                        label (text: 'Uhrzeit:')
+                                                    }
+                                                    td {
+                                                        txtUntersuchungsterminUhrzeit=textField(text: '', columns:10)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
                                                         label (text: 'Beteiligte/r:')
                                                     }
                                                     td {
@@ -3011,12 +3055,14 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                                                 // Neue Zeile zur Tabelle hinzufügen
                                                                                 untersuchungstermineTableModel.addRow([
                                                                                     txtUntersuchungsterminDate.text,
+                                                                                    txtUntersuchungsterminUhrzeit.text,
                                                                                     txtUntersuchungsterminBeteiligte.text,
                                                                                     taUntersuchungsterminEntry.text
                                                                                 ] as Object[]);
 
                                                                                 // Felder zurücksetzen
                                                                                 txtUntersuchungsterminDate.setText("");
+                                                                                txtUntersuchungsterminUhrzeit.setText("");
                                                                                 txtUntersuchungsterminBeteiligte.setText("");
                                                                                 taUntersuchungsterminEntry.setText("");
 
@@ -3048,7 +3094,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                         scrollPane(preferredSize: [800, 250]){
                                                             // TableModel erstellen
                                                             untersuchungstermineTableModel = new DefaultTableModel(
-                                                                ['Datum', 'Beteiligte/r', 'Anmerkungen'] as Object[],
+                                                                ['Datum', 'Uhrzeit', 'Beteiligte/r', 'Anmerkungen'] as Object[],
                                                                 0
                                                             ) {
                                                                 @Override
@@ -3063,8 +3109,9 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
 
                                                             // Spaltenbreiten nach Erstellung setzen
                                                             tblUntersuchungstermine.getColumnModel().getColumn(0).setPreferredWidth(100); // Datum
-                                                            tblUntersuchungstermine.getColumnModel().getColumn(1).setPreferredWidth(200); // Beteiligte/r
-                                                            tblUntersuchungstermine.getColumnModel().getColumn(2).setPreferredWidth(500); // Anmerkungen
+                                                            tblUntersuchungstermine.getColumnModel().getColumn(1).setPreferredWidth(80);  // Uhrzeit
+                                                            tblUntersuchungstermine.getColumnModel().getColumn(2).setPreferredWidth(200); // Beteiligte/r
+                                                            tblUntersuchungstermine.getColumnModel().getColumn(3).setPreferredWidth(500); // Anmerkungen
                                                         }
                                                     }
                                                 }
@@ -3142,6 +3189,14 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {
+                                                        label (text: 'Uhrzeit:')
+                                                    }
+                                                    td {
+                                                        txtInformatBefragungUhrzeit=textField(text: '', columns:10)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
                                                         label (text: 'Beteiligte/r:')
                                                     }
                                                     td {
@@ -3171,12 +3226,14 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                                                 // Neue Zeile zur Tabelle hinzufügen
                                                                                 informatBefragungenTableModel.addRow([
                                                                                     txtInformatBefragungDate.text,
+                                                                                    txtInformatBefragungUhrzeit.text,
                                                                                     txtInformatBefragungBeteiligte.text,
                                                                                     taInformatBefragungEntry.text
                                                                                 ] as Object[]);
 
                                                                                 // Felder zurücksetzen
                                                                                 txtInformatBefragungDate.setText("");
+                                                                                txtInformatBefragungUhrzeit.setText("");
                                                                                 txtInformatBefragungBeteiligte.setText("");
                                                                                 taInformatBefragungEntry.setText("");
 
@@ -3208,7 +3265,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                         scrollPane(preferredSize: [800, 250]){
                                                             // TableModel erstellen
                                                             informatBefragungenTableModel = new DefaultTableModel(
-                                                                ['Datum', 'Beteiligte/r', 'Anmerkungen'] as Object[],
+                                                                ['Datum', 'Uhrzeit', 'Beteiligte/r', 'Anmerkungen'] as Object[],
                                                                 0
                                                             ) {
                                                                 @Override
@@ -3223,8 +3280,9 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
 
                                                             // Spaltenbreiten nach Erstellung setzen
                                                             tblInformatBefragungen.getColumnModel().getColumn(0).setPreferredWidth(100); // Datum
-                                                            tblInformatBefragungen.getColumnModel().getColumn(1).setPreferredWidth(200); // Beteiligte/r
-                                                            tblInformatBefragungen.getColumnModel().getColumn(2).setPreferredWidth(500); // Anmerkungen
+                                                            tblInformatBefragungen.getColumnModel().getColumn(1).setPreferredWidth(80);  // Uhrzeit
+                                                            tblInformatBefragungen.getColumnModel().getColumn(2).setPreferredWidth(200); // Beteiligte/r
+                                                            tblInformatBefragungen.getColumnModel().getColumn(3).setPreferredWidth(500); // Anmerkungen
                                                         }
                                                     }
                                                 }
@@ -3451,6 +3509,38 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                 }
                                 tr {
                                     td {
+                                        label (text: 'Eingangsdatum:')
+                                    }
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        txtBefundEingangsdatum=textField(text: '', columns:10)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                GuiLib.dateSelector(txtBefundEingangsdatum, true);
+                                                            })
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        label (text: ' ')
+                                    }
+                                    td {
+                                        chkBefundErledigt=checkBox(text: 'Erledigt', selected: false)
+                                    }
+                                }
+                                tr {
+                                    td {
                                         label (text: ' ')
                                     }
                                     td {
@@ -3458,21 +3548,56 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             tableLayout (cellpadding: 5) {
                                                 tr {
                                                     td {
-                                                        button(text: 'Eintrag hinzufügen', actionPerformed: {
+                                                        btnBefundHinzufuegen=button(text: 'Eintrag hinzufügen', actionPerformed: {
                                                                 // Neue Zeile zur Tabelle hinzufügen
                                                                 befundTableModel.addRow([
                                                                     txtBefundDate.text,
                                                                     txtBefundInstitution.text,
-                                                                    taBefundEntry.text
+                                                                    taBefundEntry.text,
+                                                                    txtBefundEingangsdatum.text,
+                                                                    chkBefundErledigt.isSelected() ? "Ja" : "Nein"
                                                                 ] as Object[]);
 
                                                                 // Felder zurücksetzen
                                                                 txtBefundDate.setText("");
                                                                 txtBefundInstitution.setText("");
                                                                 taBefundEntry.setText("");
+                                                                txtBefundEingangsdatum.setText("");
+                                                                chkBefundErledigt.setSelected(false);
 
                                                                 // JSON synchronisieren
                                                                 syncBefundToJson();
+                                                            })
+                                                    }
+                                                    td {
+                                                        btnBefundAktualisieren=button(text: 'Auswahl aktualisieren', actionPerformed: {
+                                                                int selectedRow = tblBefund.getSelectedRow();
+                                                                if (selectedRow >= 0) {
+                                                                    // Ausgewählte Zeile mit den Werten aus den Eingabefeldern aktualisieren
+                                                                    befundTableModel.setValueAt(txtBefundDate.text, selectedRow, 0);
+                                                                    befundTableModel.setValueAt(txtBefundInstitution.text, selectedRow, 1);
+                                                                    befundTableModel.setValueAt(taBefundEntry.text, selectedRow, 2);
+                                                                    befundTableModel.setValueAt(txtBefundEingangsdatum.text, selectedRow, 3);
+                                                                    befundTableModel.setValueAt(chkBefundErledigt.isSelected() ? "Ja" : "Nein", selectedRow, 4);
+
+                                                                    // Felder zurücksetzen
+                                                                    txtBefundDate.setText("");
+                                                                    txtBefundInstitution.setText("");
+                                                                    taBefundEntry.setText("");
+                                                                    txtBefundEingangsdatum.setText("");
+                                                                    chkBefundErledigt.setSelected(false);
+
+                                                                    // Selektion aufheben
+                                                                    tblBefund.clearSelection();
+
+                                                                    // JSON synchronisieren
+                                                                    syncBefundToJson();
+                                                                } else {
+                                                                    JOptionPane.showMessageDialog(SCRIPTPANEL,
+                                                                        "Bitte wählen Sie eine Zeile aus.",
+                                                                        "Keine Zeile ausgewählt",
+                                                                        JOptionPane.WARNING_MESSAGE);
+                                                                }
                                                             })
                                                     }
                                                     td {
@@ -3480,6 +3605,12 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                                 int selectedRow = tblBefund.getSelectedRow();
                                                                 if (selectedRow >= 0) {
                                                                     befundTableModel.removeRow(selectedRow);
+                                                                    // Felder zurücksetzen
+                                                                    txtBefundDate.setText("");
+                                                                    txtBefundInstitution.setText("");
+                                                                    taBefundEntry.setText("");
+                                                                    txtBefundEingangsdatum.setText("");
+                                                                    chkBefundErledigt.setSelected(false);
                                                                     syncBefundToJson();
                                                                 } else {
                                                                     JOptionPane.showMessageDialog(SCRIPTPANEL,
@@ -3499,7 +3630,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         scrollPane(preferredSize: [800, 400]){
                                             // TableModel erstellen
                                             befundTableModel = new DefaultTableModel(
-                                                ['Datum', 'Institution', 'Inhalt'] as Object[],
+                                                ['Datum', 'Institution', 'Inhalt', 'Eingangsdatum', 'Erledigt'] as Object[],
                                                 0
                                             ) {
                                                 @Override
@@ -3515,7 +3646,25 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             // Spaltenbreiten nach Erstellung setzen
                                             tblBefund.getColumnModel().getColumn(0).setPreferredWidth(100); // Datum
                                             tblBefund.getColumnModel().getColumn(1).setPreferredWidth(200); // Institution
-                                            tblBefund.getColumnModel().getColumn(2).setPreferredWidth(500); // Inhalt
+                                            tblBefund.getColumnModel().getColumn(2).setPreferredWidth(350); // Inhalt
+                                            tblBefund.getColumnModel().getColumn(3).setPreferredWidth(100); // Eingangsdatum
+                                            tblBefund.getColumnModel().getColumn(4).setPreferredWidth(70);  // Erledigt
+
+                                            // SelectionListener für Tabelle hinzufügen
+                                            tblBefund.getSelectionModel().addListSelectionListener({ e ->
+                                                if (!e.getValueIsAdjusting()) {
+                                                    int selectedRow = tblBefund.getSelectedRow();
+                                                    if (selectedRow >= 0) {
+                                                        // Werte der ausgewählten Zeile in die Eingabefelder laden
+                                                        txtBefundDate.setText(befundTableModel.getValueAt(selectedRow, 0)?.toString() ?: "");
+                                                        txtBefundInstitution.setText(befundTableModel.getValueAt(selectedRow, 1)?.toString() ?: "");
+                                                        taBefundEntry.setText(befundTableModel.getValueAt(selectedRow, 2)?.toString() ?: "");
+                                                        txtBefundEingangsdatum.setText(befundTableModel.getValueAt(selectedRow, 3)?.toString() ?: "");
+                                                        String erledigt = befundTableModel.getValueAt(selectedRow, 4)?.toString() ?: "";
+                                                        chkBefundErledigt.setSelected("Ja".equalsIgnoreCase(erledigt));
+                                                    }
+                                                }
+                                            } as javax.swing.event.ListSelectionListener)
                                         }
                                     }
                                 }
@@ -4252,6 +4401,19 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {
+                                                        chkMutterNCSDM=checkBox(text: 'North Carolina SDM', name: "_UPMUTTER_NCSDM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter North Carolina SDM", selected: false)
+                                                    }
+                                                    td {
+                                                        txtMutterNCSDM=textField(name: "_UPMUTTER_NCSDM_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter North Carolina SDM Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnMutterNCSDM=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtMutterNCSDM, true);
+                                                            })
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
                                                         chkMutterBesondere=checkBox(text: 'Besondere:', name: "_UPMUTTER_BESONDERE", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Besondere Untersuchungen", selected: false)
                                                     }
                                                     td (colspan: 2) {
@@ -4268,6 +4430,48 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     td {
                                                         btnMutterBesondereDatum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
                                                                 GuiLib.dateSelector(txtMutterBesondereDatum, true);
+                                                            })
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        chkMutterWeitere1=checkBox(text: 'Weitere (1):', name: "_UPMUTTER_WEITERE1", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Weitere Untersuchungen 1", selected: false)
+                                                    }
+                                                    td (colspan: 2) {
+                                                        txtMutterWeitere1=textField(name: "_UPMUTTER_WEITERE1_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Weitere Untersuchungen 1 Text", text: '', columns:15)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        txtMutterWeitere1Datum=textField(name: "_UPMUTTER_WEITERE1_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Weitere 1 Auswertungsdatum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnMutterWeitere1Datum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtMutterWeitere1Datum, true);
+                                                            })
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        chkMutterWeitere2=checkBox(text: 'Weitere (2):', name: "_UPMUTTER_WEITERE2", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Weitere Untersuchungen 2", selected: false)
+                                                    }
+                                                    td (colspan: 2) {
+                                                        txtMutterWeitere2=textField(name: "_UPMUTTER_WEITERE2_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Weitere Untersuchungen 2 Text", text: '', columns:15)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        txtMutterWeitere2Datum=textField(name: "_UPMUTTER_WEITERE2_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Mutter Weitere 2 Auswertungsdatum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnMutterWeitere2Datum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtMutterWeitere2Datum, true);
                                                             })
                                                     }
                                                 }
@@ -4349,6 +4553,19 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td {
+                                                        chkVaterNCSDM=checkBox(text: 'North Carolina SDM', name: "_UPVATER_NCSDM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater North Carolina SDM", selected: false)
+                                                    }
+                                                    td {
+                                                        txtVaterNCSDM=textField(name: "_UPVATER_NCSDM_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater North Carolina SDM Datum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnVaterNCSDM=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtVaterNCSDM, true);
+                                                            })
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
                                                         chkVaterBesondere=checkBox(text: 'Besondere:', name: "_UPVATER_BESONDERE", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Besondere Untersuchungen", selected: false)
                                                     }
                                                     td (colspan: 2) {
@@ -4368,6 +4585,48 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             })
                                                     }
                                                 }
+                                                tr {
+                                                    td {
+                                                        chkVaterWeitere1=checkBox(text: 'Weitere (1):', name: "_UPVATER_WEITERE1", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Weitere Untersuchungen 1", selected: false)
+                                                    }
+                                                    td (colspan: 2) {
+                                                        txtVaterWeitere1=textField(name: "_UPVATER_WEITERE1_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Weitere Untersuchungen 1 Text", text: '', columns:15)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        txtVaterWeitere1Datum=textField(name: "_UPVATER_WEITERE1_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Weitere 1 Auswertungsdatum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnVaterWeitere1Datum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtVaterWeitere1Datum, true);
+                                                            })
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        chkVaterWeitere2=checkBox(text: 'Weitere (2):', name: "_UPVATER_WEITERE2", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Weitere Untersuchungen 2", selected: false)
+                                                    }
+                                                    td (colspan: 2) {
+                                                        txtVaterWeitere2=textField(name: "_UPVATER_WEITERE2_TXT", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Weitere Untersuchungen 2 Text", text: '', columns:15)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        txtVaterWeitere2Datum=textField(name: "_UPVATER_WEITERE2_DATUM", clientPropertyJlawyerdescription: "Untersuchungsplan Vater Weitere 2 Auswertungsdatum", text: '', columns:10, visible: false)
+                                                    }
+                                                    td {
+                                                        btnVaterWeitere2Datum=button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), visible: false, actionPerformed: {
+                                                                GuiLib.dateSelector(txtVaterWeitere2Datum, true);
+                                                            })
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -4378,12 +4637,12 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
 
                             }
                         }
-                        
-                        
-                        
+
+
+
                     }
                 }
-                
+
             }
         }
 
@@ -4433,6 +4692,34 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
         chkVaterBesondere.addActionListener {
             txtVaterBesondereDatum.setVisible(chkVaterBesondere.isSelected());
             btnVaterBesondereDatum.setVisible(chkVaterBesondere.isSelected());
+            SCRIPTPANEL.revalidate();
+            SCRIPTPANEL.repaint();
+        }
+
+        chkMutterWeitere1.addActionListener {
+            txtMutterWeitere1Datum.setVisible(chkMutterWeitere1.isSelected());
+            btnMutterWeitere1Datum.setVisible(chkMutterWeitere1.isSelected());
+            SCRIPTPANEL.revalidate();
+            SCRIPTPANEL.repaint();
+        }
+
+        chkMutterWeitere2.addActionListener {
+            txtMutterWeitere2Datum.setVisible(chkMutterWeitere2.isSelected());
+            btnMutterWeitere2Datum.setVisible(chkMutterWeitere2.isSelected());
+            SCRIPTPANEL.revalidate();
+            SCRIPTPANEL.repaint();
+        }
+
+        chkVaterWeitere1.addActionListener {
+            txtVaterWeitere1Datum.setVisible(chkVaterWeitere1.isSelected());
+            btnVaterWeitere1Datum.setVisible(chkVaterWeitere1.isSelected());
+            SCRIPTPANEL.revalidate();
+            SCRIPTPANEL.repaint();
+        }
+
+        chkVaterWeitere2.addActionListener {
+            txtVaterWeitere2Datum.setVisible(chkVaterWeitere2.isSelected());
+            btnVaterWeitere2Datum.setVisible(chkVaterWeitere2.isSelected());
             SCRIPTPANEL.revalidate();
             SCRIPTPANEL.repaint();
         }
@@ -4492,8 +4779,8 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
          [chkK3EBFKJ, txtK3EBFKJ, btnK3EBFKJ], [chkK3CBCL, txtK3CBCL, btnK3CBCL], [chkK3CTRF, txtK3CTRF, btnK3CTRF], [chkK3SURT, txtK3SURT, btnK3SURT], [chkK3SKEI, txtK3SKEI, btnK3SKEI], [chkK3FIT, txtK3FIT, btnK3FIT], [chkK3FRTKJ, txtK3FRTKJ, btnK3FRTKJ],
          [chkK4EBFKJ, txtK4EBFKJ, btnK4EBFKJ], [chkK4CBCL, txtK4CBCL, btnK4CBCL], [chkK4CTRF, txtK4CTRF, btnK4CTRF], [chkK4SURT, txtK4SURT, btnK4SURT], [chkK4SKEI, txtK4SKEI, btnK4SKEI], [chkK4FIT, txtK4FIT, btnK4FIT], [chkK4FRTKJ, txtK4FRTKJ, btnK4FRTKJ],
          [chkK5EBFKJ, txtK5EBFKJ, btnK5EBFKJ], [chkK5CBCL, txtK5CBCL, btnK5CBCL], [chkK5CTRF, txtK5CTRF, btnK5CTRF], [chkK5SURT, txtK5SURT, btnK5SURT], [chkK5SKEI, txtK5SKEI, btnK5SKEI], [chkK5FIT, txtK5FIT, btnK5FIT], [chkK5FRTKJ, txtK5FRTKJ, btnK5FRTKJ],
-         [chkMutterEBI, txtMutterEBI, btnMutterEBI], [chkMutterESF, txtMutterESF, btnMutterESF], [chkMutterVEI, txtMutterVEI, btnMutterVEI], [chkMutterEBSK, txtMutterEBSK, btnMutterEBSK], [chkMutterFAF, txtMutterFAF, btnMutterFAF],
-         [chkVaterEBI, txtVaterEBI, btnVaterEBI], [chkVaterESF, txtVaterESF, btnVaterESF], [chkVaterVEI, txtVaterVEI, btnVaterVEI], [chkVaterEBSK, txtVaterEBSK, btnVaterEBSK], [chkVaterFAF, txtVaterFAF, btnVaterFAF]
+         [chkMutterEBI, txtMutterEBI, btnMutterEBI], [chkMutterESF, txtMutterESF, btnMutterESF], [chkMutterVEI, txtMutterVEI, btnMutterVEI], [chkMutterEBSK, txtMutterEBSK, btnMutterEBSK], [chkMutterFAF, txtMutterFAF, btnMutterFAF], [chkMutterNCSDM, txtMutterNCSDM, btnMutterNCSDM],
+         [chkVaterEBI, txtVaterEBI, btnVaterEBI], [chkVaterESF, txtVaterESF, btnVaterESF], [chkVaterVEI, txtVaterVEI, btnVaterVEI], [chkVaterEBSK, txtVaterEBSK, btnVaterEBSK], [chkVaterFAF, txtVaterFAF, btnVaterFAF], [chkVaterNCSDM, txtVaterNCSDM, btnVaterNCSDM]
         ].each { components ->
             def chk = components[0]
             def txt = components[1]

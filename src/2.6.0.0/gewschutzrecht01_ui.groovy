@@ -677,24 +677,93 @@ import javax.swing.JPanel
 import javax.swing.JTabbedPane
 import javax.swing.JTable
 import javax.swing.JTextField
+import javax.swing.JTextArea
+import javax.swing.JComboBox
+import javax.swing.JLabel
+import javax.swing.JScrollPane
+import javax.swing.JSpinner
+import javax.swing.SpinnerNumberModel
 import javax.swing.ImageIcon
+import javax.swing.JFileChooser
+import javax.swing.JOptionPane
+import javax.swing.filechooser.FileNameExtensionFilter
+import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
+import java.util.Base64
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 import java.util.ArrayList
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 
 public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
-    
+
     JPanel SCRIPTPANEL=null;
     FormPluginCallback callback=null;
-    
+
     SimpleDateFormat datumsFormat = new SimpleDateFormat("dd.MM.yyyy");
-    
+
     // Formatter für dd.MM.yyyy
     def formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    
+
+    // UI-Komponenten
+    JTextField txtGrafikBase64 = null;
+    JLabel lblGrafikPreview = null;
+    JComboBox cmbSchutzrechtsart = null;
+    JComboBox cmbLand = null;
+    JTextField txtAmtlAz = null;
+    JTextField txtAnmeldetag = null;
+    JTextField txtTitel = null;
+    JTextArea txtAnmelder = null;
+    JComboBox cmbPrioLand = null;
+    JTextField txtPrioAz = null;
+    JTextField txtPrioTag = null;
+    JTextField txtVeroeffNr = null;
+    JTextField txtVeroeffTag = null;
+    JTextField txtSchutzrechtsNr = null;
+    JTextField txtErteilungstag = null;
+    JTextArea txtKlassen = null;
+    JComboBox cmbVerfahrensart = null;
+    JTextField txtVerfahrensAz = null;
+    JTextField txtMaxSchutzdauer = null;
+    JComboBox cmbAktenstatus = null;
+    JTextArea txtNotiz = null;
+
+    // Schutzartenspezifische Panels
+    JPanel pnlPatent = null;
+    JPanel pnlMarke = null;
+    JPanel pnlDesign = null;
+
+    // Patent-spezifische Felder
+    JTextField txtAnzahlAnsprueche = null;
+    JComboBox cmbLizenzbereitschaft = null;
+    JComboBox cmbSmallEntity = null;
+    JComboBox cmbMicroEntity = null;
+    JTextField txtDatumPruefungsantrag = null;
+    JTextField txtPatentTermAdjustment = null;
+    JTextField txtBenanntelaenderPatent = null;
+
+    // Marken-spezifische Felder
+    JComboBox cmbLandBasismarke = null;
+    JTextField txtBenanntelaenderMarke = null;
+    JComboBox cmbMarkenart = null;
+
+    // Design-spezifische Felder
+    JSpinner spnAnzahlModelle = null;
+
+    // Länderlisten
+    def basisLaender = ['', 'AD', 'AE', 'AF', 'AG', 'AL', 'AM', 'AO', 'AR', 'AT', 'AU', 'AZ', 'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BN', 'BO', 'BR', 'BS', 'BT', 'BW', 'BY', 'BZ', 'CA', 'CD', 'CF', 'CG', 'CH', 'CI', 'CL', 'CM', 'CN', 'CO', 'CR', 'CU', 'CV', 'CY', 'CZ', 'DE', 'DJ', 'DK', 'DM', 'DO', 'DZ', 'EC', 'EE', 'EG', 'ER', 'ES', 'ET', 'FI', 'FJ', 'FR', 'GA', 'GB', 'GD', 'GE', 'GH', 'GM', 'GN', 'GQ', 'GR', 'GT', 'GW', 'GY', 'HN', 'HR', 'HT', 'HU', 'ID', 'IE', 'IL', 'IN', 'IQ', 'IR', 'IS', 'IT', 'JM', 'JO', 'JP', 'KE', 'KG', 'KH', 'KI', 'KM', 'KN', 'KP', 'KR', 'KW', 'KZ', 'LA', 'LB', 'LC', 'LI', 'LK', 'LR', 'LS', 'LT', 'LU', 'LV', 'LY', 'MA', 'MC', 'MD', 'ME', 'MG', 'MK', 'ML', 'MM', 'MN', 'MR', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ', 'NA', 'NE', 'NG', 'NI', 'NL', 'NO', 'NP', 'NR', 'NZ', 'OM', 'PA', 'PE', 'PG', 'PH', 'PK', 'PL', 'PT', 'PY', 'QA', 'RO', 'RS', 'RU', 'RW', 'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SI', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SY', 'SZ', 'TD', 'TG', 'TH', 'TJ', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV', 'TZ', 'UA', 'UG', 'US', 'UY', 'UZ', 'VA', 'VC', 'VE', 'VN', 'VU', 'WS', 'YE', 'ZA', 'ZM', 'ZW']
+    def patentZusatz = ['AP', 'EA', 'EP', 'OA', 'WO']
+    def markeZusatz = ['BX', 'EM', 'WO']
+    def designZusatz = ['EM', 'WO']
+    def gebrauchsmusterZusatz = ['WO']
+    def spcZusatz = ['EP']
+
     public gewschutzrecht01_ui() {
         super();
     }
-    
+
     public String getAsHtml() {
         return GuiLib.getAsHtml(this.SCRIPTPANEL);
     }
@@ -703,62 +772,736 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
         ArrayList<String> placeHolders=FormsLib.getPlaceHolders(prefix, this.SCRIPTPANEL);
         return placeHolders;
     }
-    
+
     public Hashtable getPlaceHolderValues(String prefix) {
         Hashtable placeHolders=FormsLib.getPlaceHolderValues(prefix, this.SCRIPTPANEL);
         return placeHolders;
     }
-    
+
     public Hashtable getPlaceHolderDescriptions(String prefix) {
         Hashtable placeHolders=FormsLib.getPlaceHolderDescriptions(prefix, this.SCRIPTPANEL);
         return placeHolders;
     }
-    
+
     public void setPlaceHolderValues(String prefix, Hashtable placeHolderValues) {
         FormsLib.setPlaceHolderValues(prefix, placeHolderValues, this.SCRIPTPANEL);
+        // Bild-Vorschau wiederherstellen nach dem Laden
+        restoreImagePreview();
+        // Länderliste aktualisieren
+        updateLaenderListe();
+        // Schutzartenspezifische Panels anzeigen/ausblenden
+        toggleSchutzartPanels();
     }
 
     public void setCallback(FormPluginCallback callback) {
         this.callback=callback;
     }
-    
+
+    // Bild auf 300px Breite skalieren (Seitenverhältnis beibehalten)
+    private ImageIcon scaleImageToWidth(BufferedImage img, int targetWidth) {
+        int originalWidth = img.getWidth();
+        int originalHeight = img.getHeight();
+        int targetHeight = (int) ((double) originalHeight / originalWidth * targetWidth);
+        Image scaledImage = img.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
+        return new ImageIcon(scaledImage);
+    }
+
+    // Base64 zu ImageIcon
+    private ImageIcon base64ToImageIcon(String base64) {
+        if (base64 == null || base64.isEmpty()) return null;
+        try {
+            byte[] imageBytes = Base64.getDecoder().decode(base64);
+            ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+            BufferedImage img = ImageIO.read(bis);
+            if (img != null) {
+                return scaleImageToWidth(img, 300);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // Bild-Upload Handler
+    private void uploadImage() {
+        try {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileFilter(new FileNameExtensionFilter("Bilder (JPG, PNG)", "jpg", "jpeg", "png"));
+            if (chooser.showOpenDialog(SCRIPTPANEL) == JFileChooser.APPROVE_OPTION) {
+                File file = chooser.getSelectedFile();
+                BufferedImage img = ImageIO.read(file);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                String format = file.getName().toLowerCase().endsWith(".png") ? "png" : "jpg";
+                ImageIO.write(img, format, baos);
+                String base64 = Base64.getEncoder().encodeToString(baos.toByteArray());
+                txtGrafikBase64.setText(base64);
+                lblGrafikPreview.setIcon(scaleImageToWidth(img, 300));
+                lblGrafikPreview.setText("");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(SCRIPTPANEL, "Fehler beim Laden der Grafik: " + e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Bild-Download Handler
+    private void downloadImage() {
+        String base64 = txtGrafikBase64.getText();
+        if (base64 == null || base64.isEmpty()) {
+            JOptionPane.showMessageDialog(SCRIPTPANEL, "Keine Grafik vorhanden.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        try {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setSelectedFile(new File("schutzrecht_grafik.png"));
+            if (chooser.showSaveDialog(SCRIPTPANEL) == JFileChooser.APPROVE_OPTION) {
+                File file = chooser.getSelectedFile();
+                byte[] imageBytes = Base64.getDecoder().decode(base64);
+                FileOutputStream fos = new FileOutputStream(file);
+                fos.write(imageBytes);
+                fos.close();
+                JOptionPane.showMessageDialog(SCRIPTPANEL, "Grafik gespeichert.", "Erfolg", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(SCRIPTPANEL, "Fehler beim Speichern: " + e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Bild löschen
+    private void deleteImage() {
+        txtGrafikBase64.setText("");
+        lblGrafikPreview.setIcon(null);
+        lblGrafikPreview.setText("(keine Grafik)");
+    }
+
+    // Bild beim Laden wiederherstellen
+    private void restoreImagePreview() {
+        if (txtGrafikBase64 == null || lblGrafikPreview == null) return;
+        String base64 = txtGrafikBase64.getText();
+        if (base64 != null && !base64.isEmpty()) {
+            ImageIcon icon = base64ToImageIcon(base64);
+            if (icon != null) {
+                lblGrafikPreview.setIcon(icon);
+                lblGrafikPreview.setText("");
+            }
+        }
+    }
+
+    // Länderliste aktualisieren basierend auf Schutzrechtsart
+    private void updateLaenderListe() {
+        if (cmbSchutzrechtsart == null || cmbLand == null || cmbPrioLand == null) return;
+
+        def schutzrecht = cmbSchutzrechtsart.getSelectedItem()?.toString() ?: ''
+        def laender = new ArrayList(basisLaender)
+
+        switch(schutzrecht) {
+            case 'Patent': laender.addAll(patentZusatz); break
+            case 'Marke': laender.addAll(markeZusatz); break
+            case 'Design': laender.addAll(designZusatz); break
+            case 'Gebrauchsmuster': laender.addAll(gebrauchsmusterZusatz); break
+            case 'SPC': laender.addAll(spcZusatz); break
+        }
+        laender.sort()
+
+        // Aktuellen Wert merken
+        def currentLand = cmbLand.getSelectedItem()
+        def currentPrioLand = cmbPrioLand.getSelectedItem()
+
+        // ComboBoxen aktualisieren
+        cmbLand.removeAllItems()
+        cmbPrioLand.removeAllItems()
+        laender.each {
+            cmbLand.addItem(it)
+            cmbPrioLand.addItem(it)
+        }
+
+        // Wert wiederherstellen falls noch vorhanden
+        if (currentLand != null) {
+            if (laender.contains(currentLand)) {
+                cmbLand.setSelectedItem(currentLand)
+            } else {
+                cmbLand.setSelectedItem(currentLand)  // editierbar, also auch unbekannte Werte erlauben
+            }
+        }
+        if (currentPrioLand != null) {
+            if (laender.contains(currentPrioLand)) {
+                cmbPrioLand.setSelectedItem(currentPrioLand)
+            } else {
+                cmbPrioLand.setSelectedItem(currentPrioLand)
+            }
+        }
+
+        // Auch Land Basismarke aktualisieren (nur Marken-Liste)
+        if (cmbLandBasismarke != null) {
+            def currentBasismarke = cmbLandBasismarke.getSelectedItem()
+            def markeLaender = new ArrayList(basisLaender)
+            markeLaender.addAll(markeZusatz)
+            markeLaender.sort()
+
+            cmbLandBasismarke.removeAllItems()
+            markeLaender.each { cmbLandBasismarke.addItem(it) }
+
+            if (currentBasismarke != null) {
+                cmbLandBasismarke.setSelectedItem(currentBasismarke)
+            }
+        }
+    }
+
+    // Sichtbarkeit der schutzartenspezifischen Panels umschalten
+    private void toggleSchutzartPanels() {
+        if (pnlPatent == null || pnlMarke == null || pnlDesign == null) return;
+
+        def schutzrecht = cmbSchutzrechtsart?.getSelectedItem()?.toString() ?: ''
+
+        pnlPatent.setVisible(schutzrecht == 'Patent')
+        pnlMarke.setVisible(schutzrecht == 'Marke')
+        pnlDesign.setVisible(schutzrecht == 'Design')
+
+        // Panel neu layouten
+        SCRIPTPANEL?.revalidate()
+        SCRIPTPANEL?.repaint()
+    }
+
     public JPanel getUi() {
 
         SwingBuilder swing=new SwingBuilder()
         swing.edt {
             SCRIPTPANEL=panel(size: [300, 300]) {
-                
+
                 vbox {
                     tabPaneMain = tabbedPane(id: 'tabs', tabPlacement: JTabbedPane.LEFT) {
                         panel(name: 'Stammdaten') {
                             tableLayout (cellpadding: 5) {
+
+                                // Grafik-Upload
                                 tr {
+                                    td (colfill:true, align: 'left', valign: 'top') {
+                                        label(text: 'Grafik:')
+                                    }
                                     td (colfill:true, align: 'left') {
-                                        label(text: 'Tital')
-                                    }        
-                                    td (colfill:true, align: 'left') {
-                                        textField(name: "_TITEL", clientPropertyJlawyerdescription: "Titel", text: '', columns:30)
+                                        panel {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td {
+                                                        // Verstecktes Feld für Base64
+                                                        txtGrafikBase64 = textField(name: "_GRAFIKBASE64", clientPropertyJlawyerdescription: "Grafik (Base64)", text: '', columns: 1, visible: false)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        lblGrafikPreview = label(text: '(keine Grafik)', preferredSize: [300, 200])
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        panel {
+                                                            tableLayout (cellpadding: 3) {
+                                                                tr {
+                                                                    td {
+                                                                        button(text: 'Hochladen...', actionPerformed: { uploadImage(); })
+                                                                    }
+                                                                    td {
+                                                                        button(text: 'Herunterladen...', actionPerformed: { downloadImage(); })
+                                                                    }
+                                                                    td {
+                                                                        button(text: 'Löschen', actionPerformed: { deleteImage(); })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
-                                
+
+                                // Schutzrechtsart
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Schutzrechtsart:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        cmbSchutzrechtsart = comboBox(items: ['', 'Patent', 'Marke', 'Gebrauchsmuster', 'Design', 'SPC'], name: "_SCHUTZRECHTSART", clientPropertyJlawyerdescription: "Schutzrechtsart", editable: true, actionPerformed: { updateLaenderListe(); toggleSchutzartPanels(); })
+                                    }
+                                }
+
+                                // Land
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Land:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        cmbLand = comboBox(items: basisLaender, name: "_LAND", clientPropertyJlawyerdescription: "Land (WIPO-Code)", editable: true)
+                                    }
+                                }
+
+                                // Amtliches Aktenzeichen
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Amtl. Aktenzeichen:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        txtAmtlAz = textField(name: "_AMTLAZ", clientPropertyJlawyerdescription: "Amtliches Aktenzeichen", text: '', columns: 20)
+                                    }
+                                }
+
+                                // Anmeldetag
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Anmeldetag:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        txtAnmeldetag = textField(name: "_ANMELDETAG", clientPropertyJlawyerdescription: "Anmeldetag", text: '', columns: 10)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                            GuiLib.dateSelector(txtAnmeldetag, true);
+                                                        })
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // Titel
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Titel:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        txtTitel = textField(name: "_TITEL", clientPropertyJlawyerdescription: "Titel", text: '', columns: 40)
+                                    }
+                                }
+
+                                // Anmelder
+                                tr {
+                                    td (colfill:true, align: 'left', valign: 'top') {
+                                        label(text: 'Anmelder:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        scrollPane {
+                                            txtAnmelder = textArea(name: "_ANMELDER", clientPropertyJlawyerdescription: "Anmelder", text: '', columns: 40, rows: 3, lineWrap: true, wrapStyleWord: true)
+                                        }
+                                    }
+                                }
+
+                                // ============================================
+                                // PATENT-SPEZIFISCHE FELDER
+                                // ============================================
+                                tr {
+                                    td (colspan: 2) {
+                                        pnlPatent = panel(visible: false) {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        separator()
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        label(text: 'Patent-spezifisch:', font: new Font('Dialog', Font.BOLD, 12))
+                                                    }
+                                                }
+                                                // Anzahl Ansprüche
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label(text: 'Anzahl Ansprüche:')
+                                                    }
+                                                    td (colfill:true, align: 'left') {
+                                                        txtAnzahlAnsprueche = textField(name: "_ANZAHLANSPRUECHE", clientPropertyJlawyerdescription: "Anzahl Ansprüche", text: '', columns: 10)
+                                                    }
+                                                }
+                                                // Lizenzbereitschaft
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label(text: 'Lizenzbereitschaft:')
+                                                    }
+                                                    td (colfill:true, align: 'left') {
+                                                        cmbLizenzbereitschaft = comboBox(items: ['', 'Ja', 'Nein'], name: "_LIZENZBEREITSCHAFT", clientPropertyJlawyerdescription: "Lizenzbereitschaft", editable: false)
+                                                    }
+                                                }
+                                                // Small Entity
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label(text: 'Small Entity:')
+                                                    }
+                                                    td (colfill:true, align: 'left') {
+                                                        cmbSmallEntity = comboBox(items: ['', 'Ja', 'Nein'], name: "_SMALLENTITY", clientPropertyJlawyerdescription: "Small Entity", editable: false)
+                                                    }
+                                                }
+                                                // Micro Entity
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label(text: 'Micro Entity:')
+                                                    }
+                                                    td (colfill:true, align: 'left') {
+                                                        cmbMicroEntity = comboBox(items: ['', 'Ja', 'Nein'], name: "_MICROENTITY", clientPropertyJlawyerdescription: "Micro Entity", editable: false)
+                                                    }
+                                                }
+                                                // Datum Prüfungsantrag
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label(text: 'Datum Prüfungsantrag:')
+                                                    }
+                                                    td (colfill:true, align: 'left') {
+                                                        panel {
+                                                            tableLayout (cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtDatumPruefungsantrag = textField(name: "_DATUMPRUEFUNGSANTRAG", clientPropertyJlawyerdescription: "Datum Prüfungsantrag", text: '', columns: 10)
+                                                                    }
+                                                                    td {
+                                                                        label (text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                            GuiLib.dateSelector(txtDatumPruefungsantrag, true);
+                                                                        })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                // Patent Term Adjustment
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label(text: 'Patent Term Adjustment (Tage):')
+                                                    }
+                                                    td (colfill:true, align: 'left') {
+                                                        txtPatentTermAdjustment = textField(name: "_PATENTTERMADJUSTMENT", clientPropertyJlawyerdescription: "Patent Term Adjustment (Tage)", text: '', columns: 10)
+                                                    }
+                                                }
+                                                // Benannte Länder (Patent)
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label(text: 'Benannte Länder:')
+                                                    }
+                                                    td (colfill:true, align: 'left') {
+                                                        txtBenanntelaenderPatent = textField(name: "_BENANNTELAENDERPATENT", clientPropertyJlawyerdescription: "Benannte Länder (EP, PCT, etc.)", text: '', columns: 40)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // ============================================
+                                // MARKEN-SPEZIFISCHE FELDER
+                                // ============================================
+                                tr {
+                                    td (colspan: 2) {
+                                        pnlMarke = panel(visible: false) {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        separator()
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        label(text: 'Marken-spezifisch:', font: new Font('Dialog', Font.BOLD, 12))
+                                                    }
+                                                }
+                                                // Markenart
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label(text: 'Markenart:')
+                                                    }
+                                                    td (colfill:true, align: 'left') {
+                                                        cmbMarkenart = comboBox(items: ['', 'Wortmarke', 'Wort-/Bildmarke', 'Bildmarke', 'Klangmarke', 'Farbmarke', 'Positionsmarke', 'Sonstige'], name: "_MARKENART", clientPropertyJlawyerdescription: "Markenart", editable: true)
+                                                    }
+                                                }
+                                                // Land Basismarke (für IR Marke)
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label(text: 'Land Basismarke (IR):')
+                                                    }
+                                                    td (colfill:true, align: 'left') {
+                                                        def markeLaender = new ArrayList(basisLaender)
+                                                        markeLaender.addAll(markeZusatz)
+                                                        markeLaender.sort()
+                                                        cmbLandBasismarke = comboBox(items: markeLaender, name: "_LANDBASISMARKE", clientPropertyJlawyerdescription: "Land Basismarke (für IR Marke)", editable: true)
+                                                    }
+                                                }
+                                                // Benannte Länder (IR Marke)
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label(text: 'Benannte Länder (IR):')
+                                                    }
+                                                    td (colfill:true, align: 'left') {
+                                                        txtBenanntelaenderMarke = textField(name: "_BENANNTELAENDERMARKE", clientPropertyJlawyerdescription: "Benannte Länder (IR Marke)", text: '', columns: 40)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // ============================================
+                                // DESIGN-SPEZIFISCHE FELDER
+                                // ============================================
+                                tr {
+                                    td (colspan: 2) {
+                                        pnlDesign = panel(visible: false) {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        separator()
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        label(text: 'Design-spezifisch:', font: new Font('Dialog', Font.BOLD, 12))
+                                                    }
+                                                }
+                                                // Anzahl Modelle
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label(text: 'Anzahl Modelle:')
+                                                    }
+                                                    td (colfill:true, align: 'left') {
+                                                        spnAnzahlModelle = spinner(name: "_ANZAHLMODELLE", clientPropertyJlawyerdescription: "Anzahl Modelle", model: spinnerNumberModel(minimum: 0, maximum: 100, value: 1, stepSize: 1))
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // Trennlinie Priorität
+                                tr {
+                                    td (colspan: 2) {
+                                        separator()
+                                    }
+                                }
+
+                                // Prio-Land
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Prio-Land:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        cmbPrioLand = comboBox(items: basisLaender, name: "_PRIOLAND", clientPropertyJlawyerdescription: "Prioritäts-Land", editable: true)
+                                    }
+                                }
+
+                                // Prio-Aktenzeichen
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Prio-Aktenzeichen:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        txtPrioAz = textField(name: "_PRIOAZ", clientPropertyJlawyerdescription: "Prioritäts-Aktenzeichen", text: '', columns: 20)
+                                    }
+                                }
+
+                                // Prio-Tag
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Prio-Tag:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        txtPrioTag = textField(name: "_PRIOTAG", clientPropertyJlawyerdescription: "Prioritätstag", text: '', columns: 10)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                            GuiLib.dateSelector(txtPrioTag, true);
+                                                        })
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // Trennlinie Veröffentlichung
+                                tr {
+                                    td (colspan: 2) {
+                                        separator()
+                                    }
+                                }
+
+                                // Veröffentlichungsnr.
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Veröffentlichungsnr.:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        txtVeroeffNr = textField(name: "_VEROEFFNR", clientPropertyJlawyerdescription: "Veröffentlichungsnummer", text: '', columns: 20)
+                                    }
+                                }
+
+                                // Veröffentlichungstag
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Veröffentlichungstag:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        txtVeroeffTag = textField(name: "_VEROEFFTAG", clientPropertyJlawyerdescription: "Veröffentlichungstag", text: '', columns: 10)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                            GuiLib.dateSelector(txtVeroeffTag, true);
+                                                        })
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // Schutzrechtsnummer
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Schutzrechtsnummer:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        txtSchutzrechtsNr = textField(name: "_SCHUTZRECHTSNR", clientPropertyJlawyerdescription: "Schutzrechtsnummer", text: '', columns: 20)
+                                    }
+                                }
+
+                                // Eintragungs-/Erteilungstag
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Eintragungs-/Erteilungstag:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        txtErteilungstag = textField(name: "_ERTEILUNGSTAG", clientPropertyJlawyerdescription: "Eintragungs-/Erteilungstag (veröffentlicht)", text: '', columns: 10)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                            GuiLib.dateSelector(txtErteilungstag, true);
+                                                        })
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // Trennlinie Klassifizierung
+                                tr {
+                                    td (colspan: 2) {
+                                        separator()
+                                    }
+                                }
+
+                                // Klassen
+                                tr {
+                                    td (colfill:true, align: 'left', valign: 'top') {
+                                        label(text: 'Klassen:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        scrollPane {
+                                            txtKlassen = textArea(name: "_KLASSEN", clientPropertyJlawyerdescription: "Klassen", text: '', columns: 40, rows: 3, lineWrap: true, wrapStyleWord: true)
+                                        }
+                                    }
+                                }
+
+                                // Verfahrensart
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Verfahrensart:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        cmbVerfahrensart = comboBox(items: ['', 'Anmeldeverfahren', 'Einspruch/Widerspruch', 'Erinnerung', 'Beschwerde'], name: "_VERFAHRENSART", clientPropertyJlawyerdescription: "Verfahrensart", editable: true)
+                                    }
+                                }
+
+                                // Verfahrensaktenzeichen
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Verfahrensaktenzeichen:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        txtVerfahrensAz = textField(name: "_VERFAHRENSAZ", clientPropertyJlawyerdescription: "Verfahrensaktenzeichen", text: '', columns: 20)
+                                    }
+                                }
+
+                                // Trennlinie Sonstige
+                                tr {
+                                    td (colspan: 2) {
+                                        separator()
+                                    }
+                                }
+
+                                // Max. Schutzdauer
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Max. Schutzdauer:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        txtMaxSchutzdauer = textField(name: "_MAXSCHUTZDAUER", clientPropertyJlawyerdescription: "Maximale Schutzdauer", text: '', columns: 20)
+                                    }
+                                }
+
+                                // Aktenstatus
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Aktenstatus:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        cmbAktenstatus = comboBox(items: ['', 'lebend', 'tot'], name: "_AKTENSTATUS", clientPropertyJlawyerdescription: "Aktenstatus", editable: false)
+                                    }
+                                }
+
+                                // Notiz
+                                tr {
+                                    td (colfill:true, align: 'left', valign: 'top') {
+                                        label(text: 'Notiz:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        scrollPane {
+                                            txtNotiz = textArea(name: "_NOTIZ", clientPropertyJlawyerdescription: "Notiz", text: '', columns: 40, rows: 5, lineWrap: true, wrapStyleWord: true)
+                                        }
+                                    }
+                                }
+
                             }
                         }
-                        
-                        
-                        
-                        
+
                     }
                 }
-                
+
             }
         }
+
+        // Initiale Länderliste setzen
+        updateLaenderListe();
 
         return SCRIPTPANEL;
 
     }
-    
+
 }
-                                    
-                         
-                                    
 

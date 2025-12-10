@@ -670,6 +670,7 @@ import java.time.LocalDate
 import java.time.Period
 import javax.swing.SwingConstants
 import javax.swing.table.DefaultTableModel
+import javax.swing.table.TableRowSorter
 import java.awt.*
 import javax.swing.*
 
@@ -869,7 +870,25 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
     public rechtspsy01_ui() {
         super();
     }
-    
+
+    // Comparator für Datumssortierung im Format dd.MM.yyyy
+    private Comparator<String> createDateComparator() {
+        return new Comparator<String>() {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy")
+            int compare(String s1, String s2) {
+                if (s1 == null || s1.trim().isEmpty()) return (s2 == null || s2.trim().isEmpty()) ? 0 : 1
+                if (s2 == null || s2.trim().isEmpty()) return -1
+                try {
+                    Date d1 = sdf.parse(s1)
+                    Date d2 = sdf.parse(s2)
+                    return d1.compareTo(d2)
+                } catch (Exception e) {
+                    return s1.compareTo(s2)
+                }
+            }
+        }
+    }
+
     public String getAsHtml() {
         return GuiLib.getAsHtml(this.SCRIPTPANEL);
     }
@@ -1653,9 +1672,10 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                                     }
                                                                     td {
                                                                         button(text: 'Markierte Zeile löschen', actionPerformed: {
-                                                                                int selectedRow = tblFristverlaengerungen.getSelectedRow();
-                                                                                if (selectedRow >= 0) {
-                                                                                    fristverlaengerungenTableModel.removeRow(selectedRow);
+                                                                                int viewRow = tblFristverlaengerungen.getSelectedRow();
+                                                                                if (viewRow >= 0) {
+                                                                                    int modelRow = tblFristverlaengerungen.convertRowIndexToModel(viewRow);
+                                                                                    fristverlaengerungenTableModel.removeRow(modelRow);
                                                                                     syncFristverlaengerungenToJson();
                                                                                 } else {
                                                                                     JOptionPane.showMessageDialog(SCRIPTPANEL,
@@ -1691,6 +1711,12 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             // Spaltenbreiten nach Erstellung setzen
                                                             tblFristverlaengerungen.getColumnModel().getColumn(0).setPreferredWidth(100); // Datum
                                                             tblFristverlaengerungen.getColumnModel().getColumn(1).setPreferredWidth(400); // Anmerkung
+
+                                                            // Datumssortierung aktivieren
+                                                            def fristverlaengerungenSorter = new TableRowSorter(fristverlaengerungenTableModel)
+                                                            fristverlaengerungenSorter.setComparator(0, createDateComparator())
+                                                            tblFristverlaengerungen.setRowSorter(fristverlaengerungenSorter)
+                                                            fristverlaengerungenSorter.setSortKeys([new RowSorter.SortKey(0, SortOrder.DESCENDING)])
                                                         }
                                                     }
                                                 }
@@ -3034,9 +3060,10 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     }
                                                     td {
                                                         button(text: 'Markierte Zeile löschen', actionPerformed: {
-                                                                int selectedRow = tblCommLog.getSelectedRow();
-                                                                if (selectedRow >= 0) {
-                                                                    commLogTableModel.removeRow(selectedRow);
+                                                                int viewRow = tblCommLog.getSelectedRow();
+                                                                if (viewRow >= 0) {
+                                                                    int modelRow = tblCommLog.convertRowIndexToModel(viewRow);
+                                                                    commLogTableModel.removeRow(modelRow);
                                                                     syncTableToJson();
                                                                 } else {
                                                                     JOptionPane.showMessageDialog(SCRIPTPANEL,
@@ -3075,6 +3102,12 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             tblCommLog.getColumnModel().getColumn(2).setPreferredWidth(120); // Adressat
                                             tblCommLog.getColumnModel().getColumn(3).setPreferredWidth(100); // Form
                                             tblCommLog.getColumnModel().getColumn(4).setPreferredWidth(360); // Inhalt
+
+                                            // Datumssortierung aktivieren
+                                            def commLogSorter = new TableRowSorter(commLogTableModel)
+                                            commLogSorter.setComparator(0, createDateComparator())
+                                            tblCommLog.setRowSorter(commLogSorter)
+                                            commLogSorter.setSortKeys([new RowSorter.SortKey(0, SortOrder.DESCENDING)])
                                         }
                                     }
                                 }
@@ -3200,9 +3233,10 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                                     }
                                                                     td {
                                                                         button(text: 'Markierte Zeile löschen', actionPerformed: {
-                                                                                int selectedRow = tblUntersuchungstermine.getSelectedRow();
-                                                                                if (selectedRow >= 0) {
-                                                                                    untersuchungstermineTableModel.removeRow(selectedRow);
+                                                                                int viewRow = tblUntersuchungstermine.getSelectedRow();
+                                                                                if (viewRow >= 0) {
+                                                                                    int modelRow = tblUntersuchungstermine.convertRowIndexToModel(viewRow);
+                                                                                    untersuchungstermineTableModel.removeRow(modelRow);
                                                                                     syncUntersuchungstermineToJson();
                                                                                 } else {
                                                                                     JOptionPane.showMessageDialog(SCRIPTPANEL,
@@ -3240,6 +3274,12 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             tblUntersuchungstermine.getColumnModel().getColumn(1).setPreferredWidth(80);  // Uhrzeit
                                                             tblUntersuchungstermine.getColumnModel().getColumn(2).setPreferredWidth(200); // Beteiligte/r
                                                             tblUntersuchungstermine.getColumnModel().getColumn(3).setPreferredWidth(500); // Anmerkungen
+
+                                                            // Datumssortierung aktivieren
+                                                            def untersuchungsTermineSorter = new TableRowSorter(untersuchungstermineTableModel)
+                                                            untersuchungsTermineSorter.setComparator(0, createDateComparator())
+                                                            tblUntersuchungstermine.setRowSorter(untersuchungsTermineSorter)
+                                                            untersuchungsTermineSorter.setSortKeys([new RowSorter.SortKey(0, SortOrder.DESCENDING)])
                                                         }
                                                     }
                                                 }
@@ -3371,9 +3411,10 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                                     }
                                                                     td {
                                                                         button(text: 'Markierte Zeile löschen', actionPerformed: {
-                                                                                int selectedRow = tblInformatBefragungen.getSelectedRow();
-                                                                                if (selectedRow >= 0) {
-                                                                                    informatBefragungenTableModel.removeRow(selectedRow);
+                                                                                int viewRow = tblInformatBefragungen.getSelectedRow();
+                                                                                if (viewRow >= 0) {
+                                                                                    int modelRow = tblInformatBefragungen.convertRowIndexToModel(viewRow);
+                                                                                    informatBefragungenTableModel.removeRow(modelRow);
                                                                                     syncInformatBefragungenToJson();
                                                                                 } else {
                                                                                     JOptionPane.showMessageDialog(SCRIPTPANEL,
@@ -3411,6 +3452,12 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                             tblInformatBefragungen.getColumnModel().getColumn(1).setPreferredWidth(80);  // Uhrzeit
                                                             tblInformatBefragungen.getColumnModel().getColumn(2).setPreferredWidth(200); // Beteiligte/r
                                                             tblInformatBefragungen.getColumnModel().getColumn(3).setPreferredWidth(500); // Anmerkungen
+
+                                                            // Datumssortierung aktivieren
+                                                            def informatBefragungenSorter = new TableRowSorter(informatBefragungenTableModel)
+                                                            informatBefragungenSorter.setComparator(0, createDateComparator())
+                                                            tblInformatBefragungen.setRowSorter(informatBefragungenSorter)
+                                                            informatBefragungenSorter.setSortKeys([new RowSorter.SortKey(0, SortOrder.DESCENDING)])
                                                         }
                                                     }
                                                 }
@@ -3519,9 +3566,10 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     }
                                                     td {
                                                         button(text: 'Markierte Zeile löschen', actionPerformed: {
-                                                                int selectedRow = tblSchweigepflicht.getSelectedRow();
-                                                                if (selectedRow >= 0) {
-                                                                    schweigepflichtTableModel.removeRow(selectedRow);
+                                                                int viewRow = tblSchweigepflicht.getSelectedRow();
+                                                                if (viewRow >= 0) {
+                                                                    int modelRow = tblSchweigepflicht.convertRowIndexToModel(viewRow);
+                                                                    schweigepflichtTableModel.removeRow(modelRow);
                                                                     syncSchweigepflichtToJson();
                                                                 } else {
                                                                     JOptionPane.showMessageDialog(SCRIPTPANEL,
@@ -3558,6 +3606,12 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             tblSchweigepflicht.getColumnModel().getColumn(0).setPreferredWidth(100); // Datum
                                             tblSchweigepflicht.getColumnModel().getColumn(1).setPreferredWidth(200); // Beteiligte/r
                                             tblSchweigepflicht.getColumnModel().getColumn(2).setPreferredWidth(500); // Anmerkungen
+
+                                            // Datumssortierung aktivieren
+                                            def schweigepflichtSorter = new TableRowSorter(schweigepflichtTableModel)
+                                            schweigepflichtSorter.setComparator(0, createDateComparator())
+                                            tblSchweigepflicht.setRowSorter(schweigepflichtSorter)
+                                            schweigepflichtSorter.setSortKeys([new RowSorter.SortKey(0, SortOrder.DESCENDING)])
                                         }
                                     }
                                 }
@@ -3699,8 +3753,9 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     }
                                                     td {
                                                         btnBefundAktualisieren=button(text: 'Auswahl aktualisieren', actionPerformed: {
-                                                                int selectedRow = tblBefund.getSelectedRow();
-                                                                if (selectedRow >= 0) {
+                                                                int viewRow = tblBefund.getSelectedRow();
+                                                                if (viewRow >= 0) {
+                                                                    int selectedRow = tblBefund.convertRowIndexToModel(viewRow);
                                                                     // Ausgewählte Zeile mit den Werten aus den Eingabefeldern aktualisieren
                                                                     befundTableModel.setValueAt(txtBefundDate.text, selectedRow, 0);
                                                                     befundTableModel.setValueAt(txtBefundInstitution.text, selectedRow, 1);
@@ -3730,8 +3785,9 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     }
                                                     td {
                                                         button(text: 'Markierte Zeile löschen', actionPerformed: {
-                                                                int selectedRow = tblBefund.getSelectedRow();
-                                                                if (selectedRow >= 0) {
+                                                                int viewRow = tblBefund.getSelectedRow();
+                                                                if (viewRow >= 0) {
+                                                                    int selectedRow = tblBefund.convertRowIndexToModel(viewRow);
                                                                     befundTableModel.removeRow(selectedRow);
                                                                     // Felder zurücksetzen
                                                                     txtBefundDate.setText("");
@@ -3778,11 +3834,19 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             tblBefund.getColumnModel().getColumn(3).setPreferredWidth(100); // Eingangsdatum
                                             tblBefund.getColumnModel().getColumn(4).setPreferredWidth(70);  // Erledigt
 
+                                            // Datumssortierung aktivieren (Spalte 0: Datum, Spalte 3: Eingangsdatum)
+                                            def befundSorter = new TableRowSorter(befundTableModel)
+                                            befundSorter.setComparator(0, createDateComparator())
+                                            befundSorter.setComparator(3, createDateComparator())
+                                            tblBefund.setRowSorter(befundSorter)
+                                            befundSorter.setSortKeys([new RowSorter.SortKey(0, SortOrder.DESCENDING)])
+
                                             // SelectionListener für Tabelle hinzufügen
                                             tblBefund.getSelectionModel().addListSelectionListener({ e ->
                                                 if (!e.getValueIsAdjusting()) {
-                                                    int selectedRow = tblBefund.getSelectedRow();
-                                                    if (selectedRow >= 0) {
+                                                    int viewRow = tblBefund.getSelectedRow();
+                                                    if (viewRow >= 0) {
+                                                        int selectedRow = tblBefund.convertRowIndexToModel(viewRow);
                                                         // Werte der ausgewählten Zeile in die Eingabefelder laden
                                                         txtBefundDate.setText(befundTableModel.getValueAt(selectedRow, 0)?.toString() ?: "");
                                                         txtBefundInstitution.setText(befundTableModel.getValueAt(selectedRow, 1)?.toString() ?: "");

@@ -691,6 +691,21 @@ public class uwg01_ui implements com.jdimension.jlawyer.client.plugins.form.Form
     // Formatter für dd.MM.yyyy
     def formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
+    JComboBox cmbVerfahrensart = null;
+    JComboBox cmbAbschluss = null;
+
+    // Mapping: Verfahrensart -> Abschlussarten
+    def abschlussMapping = [
+        './. VSW': ['', 'Sonstiges'],
+        'Abm.': ['', 'Abmahnung durch Unterlassungserklärung erledigt', 'Abmahnung nicht weiterverfolgt', 'Abmahnung nicht weiterverfolgt, da Drittunterwerfung', 'Abmahnung noch nicht entschieden', 'Sonstiges'],
+        'andere': ['', 'noch nicht entschieden'],
+        'e.V.': ['', 'auf die Rechte aus der e. V. verzichtet, da Unterlassungserklärung', 'e. V. erlassen', 'e. V. erlassen, anschließend Unterwerfung', 'e. V. in der Hauptsache für erledigt erklärt', 'e. V. noch nicht entschieden', 'e. V. zurückgenommen', 'e. V. zurückgewiesen'],
+        'HK': ['', 'HK abgewiesen', 'HK durch Vergleich erledigt', 'HK nach Unterwerfung in der Hauptsache für erledigt erklärt', 'HK noch nicht entschieden', 'HK stattgegeben', 'HK zurückgenommen'],
+        'HK zu': ['', 'HK nach Unterwerfung in der Hauptsache für erledigt erklärt', 'HK noch nicht entschieden', 'HK stattgegeben', 'HK zurückgenommen', 'HK_zu nach Unterwerfung in der Hauptsache für erledigt erklärt', 'HK_zu noch nicht entschieden', 'HK_zu stattgegeben'],
+        'OA': ['', 'OA noch nicht entschieden', 'OA stattgegeben'],
+        'VS': ['', 'Klage in der Hauptsache für erledigt erklärt', 'Klage nach Vergleich zurückgenommen', 'Klage stattgegeben', 'VS außergerichtlich entschieden', 'VS nicht weiterverfolgt', 'VS noch nicht entschieden']
+    ]
+
     public uwg01_ui() {
         super();
     }
@@ -739,6 +754,20 @@ public class uwg01_ui implements com.jdimension.jlawyer.client.plugins.form.Form
         return false;
     }
 
+    public void updateAbschluss() {
+        if (cmbAbschluss == null || cmbVerfahrensart == null) {
+            return;
+        }
+
+        def selectedVerfahrensart = cmbVerfahrensart.getSelectedItem()?.toString() ?: ''
+        def abschlussItems = abschlussMapping[selectedVerfahrensart] ?: ['']
+
+        cmbAbschluss.removeAllItems()
+        abschlussItems.each { item ->
+            cmbAbschluss.addItem(item)
+        }
+    }
+
     public JPanel getUi() {
 
         SwingBuilder swing=new SwingBuilder()
@@ -755,7 +784,7 @@ public class uwg01_ui implements com.jdimension.jlawyer.client.plugins.form.Form
                                     }
                                     td (colfill:true, align: 'left') {
                                         // Load items from settings
-                                        def branchenString = com.jdimension.jlawyer.client.settings.ServerSettings.getInstance().getSetting("forms.uwg01.branchen", "Einzelhandel,Gastronomie,Handwerk,Dienstleistung,Online-Handel")
+                                        def branchenString = com.jdimension.jlawyer.client.settings.ServerSettings.getInstance().getSetting("forms.uwg01.branchen", "Apotheken,Arzneimittel,Arzte,Baby- und Kinderbedarf,Bau- und Heimwerkerbedarf,Bauunternehmungen/Bauplanungen,Bekleidung,Bettwaren/Heimtextilien,Bild- und Fotodrucke,Buchhandel,Chemische Erzeugnisse,Elektro-/Elektronikartikel,Ernährungsberatung,Erotikartikel,Finanzdienstleistungen/Immobilien,Finanzierungen u. Versicherungen,Gastronomie,Gesundheitsartikel,Gesundheitswesen,Heilpraktiker,Immobilien,Innungen,Kapitalanlagen,Kfz,Kliniken,Kosmetika,Kurklinik,Lebensmittelfilialbetrieb,Medizinprodukte,Möbel,Nahrungsergänzungsmittel/Diätetica,Naturheilmittel,Rechtsberatung,Reise/Erholung,Software/EDV,sonstige Lebensmittel,Sonstige,Spedition/Logistik,Spirituosen und Weine,Sportartikel,Sportartikelhersteller,Telekommunikations-/Mediendienste,Teppiche/Bodenbeläge,Tierbedarf,Uhren- und Schmuckhandel,Umwelttechnik,Unternehmensberatung/Marketing,Verbände/Kammern,Verlag,Waren aller Art,Warenvermittlung/Kaufscheinhandel,Werbeagenturen")
                                         def branchenItems = branchenString.split(",").collect { it.trim() }
                                         branchenItems.add(0, "")
                                         comboBox(items: branchenItems, name: "_BRANCHE", clientPropertyJlawyerdescription: "Branche", editable: true)
@@ -766,11 +795,9 @@ public class uwg01_ui implements com.jdimension.jlawyer.client.plugins.form.Form
                                         label(text: 'Verfahrensart')
                                     }
                                     td (colfill:true, align: 'left') {
-                                        // Load items from settings
-                                        def verfahrensartenString = com.jdimension.jlawyer.client.settings.ServerSettings.getInstance().getSetting("forms.uwg01.verfahrensarten", "./. VSW,Abm.,andere,e.V.,HK,HK zu,OA,VS")
-                                        def verfahrensartenItems = verfahrensartenString.split(",").collect { it.trim() }
-                                        verfahrensartenItems.add(0, "")
-                                        comboBox(items: verfahrensartenItems, name: "_VERFAHRENSART", clientPropertyJlawyerdescription: "Verfahrensart", editable: true)
+                                        cmbVerfahrensart = comboBox(items: ['', './. VSW', 'Abm.', 'andere', 'e.V.', 'HK', 'HK zu', 'OA', 'VS'], name: "_VERFAHRENSART", clientPropertyJlawyerdescription: "Verfahrensart", editable: true, actionPerformed: {
+                                            updateAbschluss()
+                                        })
                                     }
                                 }
                                 tr {
@@ -894,11 +921,7 @@ public class uwg01_ui implements com.jdimension.jlawyer.client.plugins.form.Form
                                         label(text: 'Abschluss')
                                     }
                                     td (colfill:true, align: 'left') {
-                                        // Load items from settings
-                                        def abschlussString = com.jdimension.jlawyer.client.settings.ServerSettings.getInstance().getSetting("forms.uwg01.abschlussarten", "Abmahnung durch ...,Abmahnung nicht weiterverfolgt da Drittunterwerfung,Abmahnung nicht weiterverfolgt,Abmahnung noch nicht entschieden")
-                                        def abschlussItems = abschlussString.split(",").collect { it.trim() }
-                                        abschlussItems.add(0, "")
-                                        comboBox(items: abschlussItems, name: "_ABSCHLUSS", clientPropertyJlawyerdescription: "Abschluss", editable: true)
+                                        cmbAbschluss = comboBox(items: [''], name: "_ABSCHLUSS", clientPropertyJlawyerdescription: "Abschluss", editable: true)
                                     }
                                 }
                                 tr {

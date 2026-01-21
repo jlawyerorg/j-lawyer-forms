@@ -1,0 +1,5 @@
+name = "frei konfigurierbare Falldaten"
+description = "Einfaches, frei konfigurierbares Falldatenblatt mit verschiedenen Oberflächenelementen"
+version = "0.1.0"
+author = "Jens Kutschke"
+updated = "21.01.2026"

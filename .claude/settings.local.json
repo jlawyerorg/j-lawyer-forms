@@ -3,7 +3,8 @@
     "allow": [
       "WebFetch(domain:www.gesetze-im-internet.de)",
       "WebSearch",
-      "WebFetch(domain:www.lexikon-betreuungsrecht.de)"
+      "WebFetch(domain:www.lexikon-betreuungsrecht.de)",
+      "Bash(wc:*)"
     ]
   }
 }

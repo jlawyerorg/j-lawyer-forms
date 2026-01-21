@@ -71,9 +71,7 @@
     <form id="uwg01" type="plugin" depends="formslib" name="UWG-Verfahren" description="Erfassung von UWG-Verfahren" placeholder="UWGV" version="0.4.0" for="3.4.0.0,3.4.0.1,3.4.0.2,3.4.0.3,3.4.0.4" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/3.4.0.0" files="uwg01_meta.groovy,uwg01_ui.groovy"/>
     <form id="uwg02" type="plugin" depends="formslib,storagelib" name="UWG-Auswertung" description="Auswertungen zu UWG-Verfahren" placeholder="UWGA" version="0.2.0" for="3.4.0.0,3.4.0.1,3.4.0.2,3.4.0.3,3.4.0.4" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/3.4.0.0" files="uwg02_meta.groovy,uwg02_ui.groovy"/>
 
-    <form id="freeform01" type="plugin" depends="formslib" name="frei konfigurierbare Falldaten" description="Einfaches, frei konfigurierbares Falldatenblatt mit verschiedenen Oberflächenelementen" placeholder="FREEFORM" version="0.1.0" for="3.4.0.4" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/3.4.0.0" files="freeform01_meta.groovy,freeform01_ui.groovy">
-        <setting key="forms.freeform01.uidefinition" caption="Oberflächendefinition" default="" order="10"/>
-    </form>
+    <form id="freeform01" type="plugin" depends="formslib" name="Allg. Falldaten" description="Einfaches, frei konfigurierbares Falldatenblatt mit verschiedenen Oberflächenelementen" placeholder="FREEFORM" version="0.2.0" for="3.4.0.4" url="https://www.j-lawyer.org/downloads/j-lawyer-plugins/forms/3.4.0.0" files="freeform01_meta.groovy,freeform01_ui.groovy,FreeformField.groovy"/>
 
     <!-- form id="klugo01" type="plugin" depends="formslib" name="KLUGO-Import" description="Importiert Anfragen aus KLUGO" placeholder="KLUGO" version="0.1.0" for="2.3.0.0,2.3.0.1,2.4.0.2,2.5.0.0,2.6.0.2,2.6.1.0" url="file:///home/jens/.j-lawyer-client/forms-internal" files="klugo01_meta.groovy,klugo01_ui.groovy,KlugoLib.groovy">
         <setting key="forms.klugo01.site1.endpoint" caption="API-Endpunkt:" default="https://thirdparty.preview.klugo.de/api/v1/kanzleiname/" order="1"/>

@@ -714,8 +714,13 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
     JComboBox cmbLand = null;
     JTextField txtAmtlAz = null;
     JTextField txtAnmeldetag = null;
+    JComboBox cmbAnmeldeart = null;
+    JPanel pnlAbzweigung = null;
+    JTextField txtAmtlAzStammanmeldung = null;
+    JTextField txtInternAzStammanmeldung = null;
     JTextField txtTitel = null;
     JTextArea txtAnmelder = null;
+    JComboBox cmbKorrespondenzsprache = null;
     JComboBox cmbPrioLand = null;
     JTextField txtPrioAz = null;
     JTextField txtPrioTag = null;
@@ -728,6 +733,7 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
     JTextField txtVerfahrensAz = null;
     JTextField txtMaxSchutzdauer = null;
     JComboBox cmbAktenstatus = null;
+    JTextField txtGetoetetAm = null;
     JTextArea txtNotiz = null;
 
     // Schutzartenspezifische Panels
@@ -791,6 +797,8 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
         updateLaenderListe();
         // Schutzartenspezifische Panels anzeigen/ausblenden
         toggleSchutzartPanels();
+        // Abzweigung-Felder anzeigen/ausblenden
+        toggleAbzweigungPanel();
     }
 
     public void setCallback(FormPluginCallback callback) {
@@ -961,6 +969,18 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
         SCRIPTPANEL?.repaint()
     }
 
+    // Sichtbarkeit der Abzweigung-Felder umschalten
+    private void toggleAbzweigungPanel() {
+        if (pnlAbzweigung == null) return;
+
+        def anmeldeart = cmbAnmeldeart?.getSelectedItem()?.toString() ?: ''
+        pnlAbzweigung.setVisible(anmeldeart == 'Abzweigung')
+
+        // Panel neu layouten
+        SCRIPTPANEL?.revalidate()
+        SCRIPTPANEL?.repaint()
+    }
+
     public JPanel getUi() {
 
         SwingBuilder swing=new SwingBuilder()
@@ -1071,13 +1091,57 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
                                     }
                                 }
 
+                                // Anmeldeart
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: '')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        cmbAnmeldeart = comboBox(items: ['', 'Erstanmeldung', 'Nachanmeldung', 'Abzweigung'], name: "_ANMELDEART", clientPropertyJlawyerdescription: "Anmeldeart", editable: true, actionPerformed: { toggleAbzweigungPanel(); })
+                                    }
+                                }
+
+                                // Abzweigung-spezifische Felder
+                                tr {
+                                    td (colspan: 2) {
+                                        pnlAbzweigung = panel(visible: false) {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label(text: 'Amtl. Az. Stammanmeldung:')
+                                                    }
+                                                    td (colfill:true, align: 'left') {
+                                                        txtAmtlAzStammanmeldung = textField(name: "_STAMMANM_AZAMT", clientPropertyJlawyerdescription: "Amtliches Aktenzeichen Stammanmeldung", text: '', columns: 20)
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colfill:true, align: 'left') {
+                                                        label(text: 'Internes Az. Stammanmeldung:')
+                                                    }
+                                                    td (colfill:true, align: 'left') {
+                                                        txtInternAzStammanmeldung = textField(name: "_STAMMANM_AZINT", clientPropertyJlawyerdescription: "Internes Aktenzeichen Stammanmeldung", text: '', columns: 20)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
                                 // Titel
                                 tr {
                                     td (colfill:true, align: 'left') {
-                                        label(text: 'Titel:')
+                                        label(text: 'Titel (deutsch):')
                                     }
                                     td (colfill:true, align: 'left') {
-                                        txtTitel = textField(name: "_TITEL", clientPropertyJlawyerdescription: "Titel", text: '', columns: 40)
+                                        txtTitel = textField(name: "_TITELDE", clientPropertyJlawyerdescription: "Titel (deutsch)", text: '', columns: 40)
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Titel (englisch):')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        txtTitel = textField(name: "_TITELEN", clientPropertyJlawyerdescription: "Titel (englisch)", text: '', columns: 40)
                                     }
                                 }
 
@@ -1090,6 +1154,16 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
                                         scrollPane {
                                             txtAnmelder = textArea(name: "_ANMELDER", clientPropertyJlawyerdescription: "Anmelder", text: '', columns: 40, rows: 3, lineWrap: true, wrapStyleWord: true)
                                         }
+                                    }
+                                }
+
+                                // Korrespondenzsprache Mandant
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Korrespondenzsprache Mandant:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        cmbKorrespondenzsprache = comboBox(items: ['Englisch', 'Deutsch'], name: "_KORRESPONDENZSPRACHE", clientPropertyJlawyerdescription: "Korrespondenzsprache Mandant", editable: false)
                                     }
                                 }
 
@@ -1434,7 +1508,7 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
                                         label(text: 'Verfahrensart:')
                                     }
                                     td (colfill:true, align: 'left') {
-                                        cmbVerfahrensart = comboBox(items: ['', 'Anmeldeverfahren', 'Einspruch/Widerspruch', 'Erinnerung', 'Beschwerde'], name: "_VERFAHRENSART", clientPropertyJlawyerdescription: "Verfahrensart", editable: true)
+                                        cmbVerfahrensart = comboBox(items: ['Anmeldeverfahren', 'Einspruch/Widerspruch', 'Erinnerung', 'Beschwerde'], name: "_VERFAHRENSART", clientPropertyJlawyerdescription: "Verfahrensart", editable: true)
                                     }
                                 }
 
@@ -1472,6 +1546,32 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
                                     }
                                     td (colfill:true, align: 'left') {
                                         cmbAktenstatus = comboBox(items: ['', 'lebend', 'tot'], name: "_AKTENSTATUS", clientPropertyJlawyerdescription: "Aktenstatus", editable: false)
+                                    }
+                                }
+
+                                // Getötet am
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Getötet am:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        txtGetoetetAm = textField(name: "_AKTEGETOETETAM", clientPropertyJlawyerdescription: "Getötet am", text: '', columns: 10)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                            GuiLib.dateSelector(txtGetoetetAm, true);
+                                                        })
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
 

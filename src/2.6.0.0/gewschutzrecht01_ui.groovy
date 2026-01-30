@@ -744,6 +744,7 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
     JPanel pnlPriofrist = null;
     JPanel pnlPruefungsantragsfrist = null;
     JPanel pnlEinspruchsfrist = null;
+    JPanel pnlEinspruchsfristEP = null;
 
     // Patent-spezifische Felder
     JTextField txtAnzahlAnsprueche = null;
@@ -761,6 +762,18 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
 
     // Design-spezifische Felder
     JSpinner spnAnzahlModelle = null;
+
+    // Gebrauchsmuster-spezifische Panels
+    JPanel pnlGebrauchsmuster = null;
+    JPanel pnlAbzweigungGM = null;
+    JPanel pnlPriofristGM = null;
+    JPanel pnlRenewalGM = null;
+
+    // Gebrauchsmuster-spezifische Felder
+    JTextField txtAmtlAzStammanmeldungGM = null;
+    JTextField txtInternAzStammanmeldungGM = null;
+    JTextField txtPriotagStammanmeldungGM = null;
+    JTextField txtAnmeldetagStammanmeldungGM = null;
 
     // Länderlisten
     def basisLaender = ['', 'AD', 'AE', 'AF', 'AG', 'AL', 'AM', 'AO', 'AR', 'AT', 'AU', 'AZ', 'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BN', 'BO', 'BR', 'BS', 'BT', 'BW', 'BY', 'BZ', 'CA', 'CD', 'CF', 'CG', 'CH', 'CI', 'CL', 'CM', 'CN', 'CO', 'CR', 'CU', 'CV', 'CY', 'CZ', 'DE', 'DJ', 'DK', 'DM', 'DO', 'DZ', 'EC', 'EE', 'EG', 'ER', 'ES', 'ET', 'FI', 'FJ', 'FR', 'GA', 'GB', 'GD', 'GE', 'GH', 'GM', 'GN', 'GQ', 'GR', 'GT', 'GW', 'GY', 'HN', 'HR', 'HT', 'HU', 'ID', 'IE', 'IL', 'IN', 'IQ', 'IR', 'IS', 'IT', 'JM', 'JO', 'JP', 'KE', 'KG', 'KH', 'KI', 'KM', 'KN', 'KP', 'KR', 'KW', 'KZ', 'LA', 'LB', 'LC', 'LI', 'LK', 'LR', 'LS', 'LT', 'LU', 'LV', 'LY', 'MA', 'MC', 'MD', 'ME', 'MG', 'MK', 'ML', 'MM', 'MN', 'MR', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ', 'NA', 'NE', 'NG', 'NI', 'NL', 'NO', 'NP', 'NR', 'NZ', 'OM', 'PA', 'PE', 'PG', 'PH', 'PK', 'PL', 'PT', 'PY', 'QA', 'RO', 'RS', 'RU', 'RW', 'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SI', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SY', 'SZ', 'TD', 'TG', 'TH', 'TJ', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV', 'TZ', 'UA', 'UG', 'US', 'UY', 'UZ', 'VA', 'VC', 'VE', 'VN', 'VU', 'WS', 'YE', 'ZA', 'ZM', 'ZW']
@@ -809,6 +822,14 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
         togglePruefungsantragsfristPanel();
         // Einspruchsfrist anzeigen/ausblenden
         toggleEinspruchsfristPanel();
+        // Einspruchsfrist EP anzeigen/ausblenden
+        toggleEinspruchsfristEPPanel();
+        // Gebrauchsmuster-Abzweigung anzeigen/ausblenden
+        toggleGebrauchsmusterAbzweigungPanel();
+        // Gebrauchsmuster-Priofrist anzeigen/ausblenden
+        togglePriofristGMPanel();
+        // Gebrauchsmuster-Verlängerungsfristen anzeigen/ausblenden
+        toggleRenewalGMPanel();
     }
 
     public void setCallback(FormPluginCallback callback) {
@@ -982,13 +1003,14 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
 
     // Sichtbarkeit der schutzartenspezifischen Panels umschalten
     private void toggleSchutzartPanels() {
-        if (pnlPatent == null || pnlMarke == null || pnlDesign == null) return;
+        if (pnlPatent == null || pnlMarke == null || pnlDesign == null || pnlGebrauchsmuster == null) return;
 
         def schutzrecht = cmbSchutzrechtsart?.getSelectedItem()?.toString() ?: ''
 
         pnlPatent.setVisible(schutzrecht == 'Patent')
         pnlMarke.setVisible(schutzrecht == 'Marke')
         pnlDesign.setVisible(schutzrecht == 'Design')
+        pnlGebrauchsmuster.setVisible(schutzrecht == 'Gebrauchsmuster')
 
         updateBtnMaxSchutzdauer()
 
@@ -1030,6 +1052,17 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
         SCRIPTPANEL?.repaint()
     }
 
+    // Sichtbarkeit der Einspruchsfrist EP-Zeile umschalten (nur Patent + EP)
+    private void toggleEinspruchsfristEPPanel() {
+        if (pnlEinspruchsfristEP == null) return;
+
+        def land = cmbLand?.getSelectedItem()?.toString() ?: ''
+        pnlEinspruchsfristEP.setVisible(land == 'EP')
+
+        SCRIPTPANEL?.revalidate()
+        SCRIPTPANEL?.repaint()
+    }
+
     // Sichtbarkeit der Abzweigung-Felder umschalten
     private void toggleAbzweigungPanel() {
         if (pnlAbzweigung == null) return;
@@ -1038,6 +1071,39 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
         pnlAbzweigung.setVisible(anmeldeart == 'Abzweigung')
 
         // Panel neu layouten
+        SCRIPTPANEL?.revalidate()
+        SCRIPTPANEL?.repaint()
+    }
+
+    // Sichtbarkeit der Gebrauchsmuster-Abzweigung-Felder umschalten
+    private void toggleGebrauchsmusterAbzweigungPanel() {
+        if (pnlAbzweigungGM == null) return;
+
+        def anmeldeart = cmbAnmeldeart?.getSelectedItem()?.toString() ?: ''
+        pnlAbzweigungGM.setVisible(anmeldeart == 'Abzweigung')
+
+        SCRIPTPANEL?.revalidate()
+        SCRIPTPANEL?.repaint()
+    }
+
+    // Sichtbarkeit der Gebrauchsmuster-Priofrist umschalten (nur Erstanmeldung)
+    private void togglePriofristGMPanel() {
+        if (pnlPriofristGM == null) return;
+
+        def anmeldeart = cmbAnmeldeart?.getSelectedItem()?.toString() ?: ''
+        pnlPriofristGM.setVisible(anmeldeart == 'Erstanmeldung')
+
+        SCRIPTPANEL?.revalidate()
+        SCRIPTPANEL?.repaint()
+    }
+
+    // Sichtbarkeit der Gebrauchsmuster-Verlängerungsfristen umschalten (nur DE)
+    private void toggleRenewalGMPanel() {
+        if (pnlRenewalGM == null) return;
+
+        def land = cmbLand?.getSelectedItem()?.toString() ?: ''
+        pnlRenewalGM.setVisible(land == 'DE')
+
         SCRIPTPANEL?.revalidate()
         SCRIPTPANEL?.repaint()
     }
@@ -1112,7 +1178,7 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
                                         label(text: 'Land:')
                                     }
                                     td (colfill:true, align: 'left') {
-                                        cmbLand = comboBox(items: basisLaender, name: "_LAND", clientPropertyJlawyerdescription: "Land (WIPO-Code)", editable: true, actionPerformed: { togglePruefungsantragsfristPanel(); toggleEinspruchsfristPanel(); })
+                                        cmbLand = comboBox(items: basisLaender, name: "_LAND", clientPropertyJlawyerdescription: "Land (WIPO-Code)", editable: true, actionPerformed: { togglePruefungsantragsfristPanel(); toggleEinspruchsfristPanel(); toggleEinspruchsfristEPPanel(); toggleRenewalGMPanel(); })
                                     }
                                 }
 
@@ -1158,7 +1224,7 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
                                         label(text: '')
                                     }
                                     td (colfill:true, align: 'left') {
-                                        cmbAnmeldeart = comboBox(items: ['', 'Erstanmeldung', 'Nachanmeldung', 'Abzweigung'], name: "_ANMELDEART", clientPropertyJlawyerdescription: "Anmeldeart", editable: true, actionPerformed: { toggleAbzweigungPanel(); togglePriofristPanel(); })
+                                        cmbAnmeldeart = comboBox(items: ['', 'Erstanmeldung', 'Nachanmeldung', 'Abzweigung'], name: "_ANMELDEART", clientPropertyJlawyerdescription: "Anmeldeart", editable: true, actionPerformed: { toggleAbzweigungPanel(); togglePriofristPanel(); toggleGebrauchsmusterAbzweigungPanel(); togglePriofristGMPanel(); })
                                     }
                                 }
 
@@ -1406,6 +1472,238 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
                                                                                     cal.setTime(datumsFormat.parse(txtErteilungstag.text.trim()));
                                                                                     cal.add(java.util.Calendar.MONTH, 9);
                                                                                     StorageLib.addRespite(caseId, "Ablauf Einspruchsfrist", null, cal.getTime());
+                                                                                } catch (Throwable t) {
+                                                                                    t.printStackTrace();
+                                                                                }
+                                                                            }
+                                                                        })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                // Einspruchsfrist (nur bei Land=EP)
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        pnlEinspruchsfristEP = panel(visible: false) {
+                                                            tableLayout (cellpadding: 5) {
+                                                                tr {
+                                                                    td {
+                                                                        button(text: 'Einspruchsfrist eintragen: Erteilungstag + 9 Monate', actionPerformed: {
+                                                                            String caseId = callback.getCaseId();
+                                                                            if (txtErteilungstag.text == null || txtErteilungstag.text.trim().isEmpty()) {
+                                                                                javax.swing.JOptionPane.showMessageDialog(SCRIPTPANEL, "Bitte zuerst einen Eintragungs-/Erteilungstag eintragen.", "Erteilungstag fehlt", javax.swing.JOptionPane.WARNING_MESSAGE);
+                                                                                return;
+                                                                            }
+                                                                            int response = GuiLib.askYesNo("Einspruchsfrist eintragen?", "Soll eine Einspruchsfrist (Erteilungstag + 9 Monate) erstellt werden?");
+                                                                            if (response == javax.swing.JOptionPane.YES_OPTION) {
+                                                                                try {
+                                                                                    java.util.Calendar cal = java.util.Calendar.getInstance();
+                                                                                    cal.setTime(datumsFormat.parse(txtErteilungstag.text.trim()));
+                                                                                    cal.add(java.util.Calendar.MONTH, 9);
+                                                                                    StorageLib.addRespite(caseId, "Ablauf Einspruchsfrist (EP)", null, cal.getTime());
+                                                                                } catch (Throwable t) {
+                                                                                    t.printStackTrace();
+                                                                                }
+                                                                            }
+                                                                        })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // ============================================
+                                // GEBRAUCHSMUSTER-SPEZIFISCHE FELDER
+                                // ============================================
+                                tr {
+                                    td (colspan: 2) {
+                                        pnlGebrauchsmuster = panel(visible: false) {
+                                            tableLayout (cellpadding: 5) {
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        separator()
+                                                    }
+                                                }
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        label(text: 'Gebrauchsmuster-spezifisch:', font: new Font('Dialog', Font.BOLD, 12))
+                                                    }
+                                                }
+                                                // Abzweigung-spezifische Felder (Gebrauchsmuster)
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        pnlAbzweigungGM = panel(visible: false) {
+                                                            tableLayout (cellpadding: 5) {
+                                                                tr {
+                                                                    td (colfill:true, align: 'left') {
+                                                                        label(text: 'Amtl. Az. Stammanmeldung:')
+                                                                    }
+                                                                    td (colfill:true, align: 'left') {
+                                                                        txtAmtlAzStammanmeldungGM = textField(name: "_GM_STAMMANM_AZAMT", clientPropertyJlawyerdescription: "Amtliches Aktenzeichen Stammanmeldung (GebrM)", text: '', columns: 20)
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td (colfill:true, align: 'left') {
+                                                                        label(text: 'Internes Az. Stammanmeldung:')
+                                                                    }
+                                                                    td (colfill:true, align: 'left') {
+                                                                        txtInternAzStammanmeldungGM = textField(name: "_GM_STAMMANM_AZINT", clientPropertyJlawyerdescription: "Internes Aktenzeichen Stammanmeldung (GebrM)", text: '', columns: 20)
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td (colfill:true, align: 'left') {
+                                                                        label(text: 'Priotag Stammanmeldung:')
+                                                                    }
+                                                                    td (colfill:true, align: 'left') {
+                                                                        panel {
+                                                                            tableLayout (cellpadding: 0) {
+                                                                                tr {
+                                                                                    td {
+                                                                                        txtPriotagStammanmeldungGM = textField(name: "_GM_STAMMANM_PRIOTAG", clientPropertyJlawyerdescription: "Priotag Stammanmeldung (GebrM)", text: '', columns: 10)
+                                                                                    }
+                                                                                    td {
+                                                                                        label (text: ' ')
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                            GuiLib.dateSelector(txtPriotagStammanmeldungGM, true);
+                                                                                        })
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td (colfill:true, align: 'left') {
+                                                                        label(text: 'Anmeldetag Stammanmeldung:')
+                                                                    }
+                                                                    td (colfill:true, align: 'left') {
+                                                                        panel {
+                                                                            tableLayout (cellpadding: 0) {
+                                                                                tr {
+                                                                                    td {
+                                                                                        txtAnmeldetagStammanmeldungGM = textField(name: "_GM_STAMMANM_ANMELDETAG", clientPropertyJlawyerdescription: "Anmeldetag Stammanmeldung (GebrM)", text: '', columns: 10)
+                                                                                    }
+                                                                                    td {
+                                                                                        label (text: ' ')
+                                                                                    }
+                                                                                    td {
+                                                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                                            GuiLib.dateSelector(txtAnmeldetagStammanmeldungGM, true);
+                                                                                        })
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                // Priofrist (nur bei Erstanmeldung, Gebrauchsmuster)
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        pnlPriofristGM = panel(visible: false) {
+                                                            tableLayout (cellpadding: 5) {
+                                                                tr {
+                                                                    td {
+                                                                        button(text: 'Priofrist eintragen: Anmeldetag + 12 Monate', actionPerformed: {
+                                                                            String caseId = callback.getCaseId();
+                                                                            if (txtAnmeldetag.text == null || txtAnmeldetag.text.trim().isEmpty()) {
+                                                                                javax.swing.JOptionPane.showMessageDialog(SCRIPTPANEL, "Bitte zuerst einen Anmeldetag eintragen.", "Anmeldetag fehlt", javax.swing.JOptionPane.WARNING_MESSAGE);
+                                                                                return;
+                                                                            }
+                                                                            int response = GuiLib.askYesNo("Priofrist eintragen?", "Soll eine Priofrist (Anmeldetag + 12 Monate) erstellt werden?");
+                                                                            if (response == javax.swing.JOptionPane.YES_OPTION) {
+                                                                                try {
+                                                                                    java.util.Calendar cal = java.util.Calendar.getInstance();
+                                                                                    cal.setTime(datumsFormat.parse(txtAnmeldetag.text.trim()));
+                                                                                    cal.add(java.util.Calendar.MONTH, 12);
+                                                                                    StorageLib.addRespite(caseId, "Ablauf Prioritätsfrist (GebrM)", null, cal.getTime());
+                                                                                } catch (Throwable t) {
+                                                                                    t.printStackTrace();
+                                                                                }
+                                                                            }
+                                                                        })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                // Verlängerungsfristen (nur bei Land=DE, Gebrauchsmuster)
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        pnlRenewalGM = panel(visible: false) {
+                                                            tableLayout (cellpadding: 5) {
+                                                                tr {
+                                                                    td {
+                                                                        button(text: '1. Verlängerungsfrist eintragen: Anmeldetag + 3 Jahre', actionPerformed: {
+                                                                            String caseId = callback.getCaseId();
+                                                                            if (txtAnmeldetag.text == null || txtAnmeldetag.text.trim().isEmpty()) {
+                                                                                javax.swing.JOptionPane.showMessageDialog(SCRIPTPANEL, "Bitte zuerst einen Anmeldetag eintragen.", "Anmeldetag fehlt", javax.swing.JOptionPane.WARNING_MESSAGE);
+                                                                                return;
+                                                                            }
+                                                                            int response = GuiLib.askYesNo("1. Verlängerungsfrist eintragen?", "Soll die 1. Verlängerungsfrist (Anmeldetag + 3 Jahre) erstellt werden?");
+                                                                            if (response == javax.swing.JOptionPane.YES_OPTION) {
+                                                                                try {
+                                                                                    java.util.Calendar cal = java.util.Calendar.getInstance();
+                                                                                    cal.setTime(datumsFormat.parse(txtAnmeldetag.text.trim()));
+                                                                                    cal.add(java.util.Calendar.YEAR, 3);
+                                                                                    StorageLib.addRespite(caseId, "1. Renewal-Frist-GebrM-DE", null, cal.getTime());
+                                                                                } catch (Throwable t) {
+                                                                                    t.printStackTrace();
+                                                                                }
+                                                                            }
+                                                                        })
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td {
+                                                                        button(text: '2. Verlängerungsfrist eintragen: Anmeldetag + 6 Jahre', actionPerformed: {
+                                                                            String caseId = callback.getCaseId();
+                                                                            if (txtAnmeldetag.text == null || txtAnmeldetag.text.trim().isEmpty()) {
+                                                                                javax.swing.JOptionPane.showMessageDialog(SCRIPTPANEL, "Bitte zuerst einen Anmeldetag eintragen.", "Anmeldetag fehlt", javax.swing.JOptionPane.WARNING_MESSAGE);
+                                                                                return;
+                                                                            }
+                                                                            int response = GuiLib.askYesNo("2. Verlängerungsfrist eintragen?", "Soll die 2. Verlängerungsfrist (Anmeldetag + 6 Jahre) erstellt werden?");
+                                                                            if (response == javax.swing.JOptionPane.YES_OPTION) {
+                                                                                try {
+                                                                                    java.util.Calendar cal = java.util.Calendar.getInstance();
+                                                                                    cal.setTime(datumsFormat.parse(txtAnmeldetag.text.trim()));
+                                                                                    cal.add(java.util.Calendar.YEAR, 6);
+                                                                                    StorageLib.addRespite(caseId, "2. Renewal-Frist-GebrM-DE", null, cal.getTime());
+                                                                                } catch (Throwable t) {
+                                                                                    t.printStackTrace();
+                                                                                }
+                                                                            }
+                                                                        })
+                                                                    }
+                                                                }
+                                                                tr {
+                                                                    td {
+                                                                        button(text: '3. Verlängerungsfrist eintragen: Anmeldetag + 8 Jahre', actionPerformed: {
+                                                                            String caseId = callback.getCaseId();
+                                                                            if (txtAnmeldetag.text == null || txtAnmeldetag.text.trim().isEmpty()) {
+                                                                                javax.swing.JOptionPane.showMessageDialog(SCRIPTPANEL, "Bitte zuerst einen Anmeldetag eintragen.", "Anmeldetag fehlt", javax.swing.JOptionPane.WARNING_MESSAGE);
+                                                                                return;
+                                                                            }
+                                                                            int response = GuiLib.askYesNo("3. Verlängerungsfrist eintragen?", "Soll die 3. Verlängerungsfrist (Anmeldetag + 8 Jahre) erstellt werden?");
+                                                                            if (response == javax.swing.JOptionPane.YES_OPTION) {
+                                                                                try {
+                                                                                    java.util.Calendar cal = java.util.Calendar.getInstance();
+                                                                                    cal.setTime(datumsFormat.parse(txtAnmeldetag.text.trim()));
+                                                                                    cal.add(java.util.Calendar.YEAR, 8);
+                                                                                    StorageLib.addRespite(caseId, "3. Renewal-Frist-GebrM-DE", null, cal.getTime());
                                                                                 } catch (Throwable t) {
                                                                                     t.printStackTrace();
                                                                                 }

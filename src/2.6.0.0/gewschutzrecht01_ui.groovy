@@ -732,6 +732,7 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
     JComboBox cmbVerfahrensart = null;
     JTextField txtVerfahrensAz = null;
     JTextField txtMaxSchutzdauer = null;
+    JButton btnMaxSchutzdauer = null;
     JComboBox cmbAktenstatus = null;
     JTextField txtGetoetetAm = null;
     JTextArea txtNotiz = null;
@@ -740,6 +741,9 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
     JPanel pnlPatent = null;
     JPanel pnlMarke = null;
     JPanel pnlDesign = null;
+    JPanel pnlPriofrist = null;
+    JPanel pnlPruefungsantragsfrist = null;
+    JPanel pnlEinspruchsfrist = null;
 
     // Patent-spezifische Felder
     JTextField txtAnzahlAnsprueche = null;
@@ -799,6 +803,12 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
         toggleSchutzartPanels();
         // Abzweigung-Felder anzeigen/ausblenden
         toggleAbzweigungPanel();
+        // Priofrist anzeigen/ausblenden
+        togglePriofristPanel();
+        // Prüfungsantragsfrist anzeigen/ausblenden
+        togglePruefungsantragsfristPanel();
+        // Einspruchsfrist anzeigen/ausblenden
+        toggleEinspruchsfristPanel();
     }
 
     public void setCallback(FormPluginCallback callback) {
@@ -954,6 +964,22 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
         }
     }
 
+    // Button-Text für maximale Schutzdauer aktualisieren
+    private void updateBtnMaxSchutzdauer() {
+        if (btnMaxSchutzdauer == null) return;
+
+        def schutzrecht = cmbSchutzrechtsart?.getSelectedItem()?.toString() ?: ''
+        if (schutzrecht == 'Patent') {
+            btnMaxSchutzdauer.text = 'Anmeldetag + 20a'
+            btnMaxSchutzdauer.setVisible(true)
+        } else if (schutzrecht == 'Gebrauchsmuster') {
+            btnMaxSchutzdauer.text = 'Anmeldetag + 10a'
+            btnMaxSchutzdauer.setVisible(true)
+        } else {
+            btnMaxSchutzdauer.setVisible(false)
+        }
+    }
+
     // Sichtbarkeit der schutzartenspezifischen Panels umschalten
     private void toggleSchutzartPanels() {
         if (pnlPatent == null || pnlMarke == null || pnlDesign == null) return;
@@ -964,7 +990,42 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
         pnlMarke.setVisible(schutzrecht == 'Marke')
         pnlDesign.setVisible(schutzrecht == 'Design')
 
+        updateBtnMaxSchutzdauer()
+
         // Panel neu layouten
+        SCRIPTPANEL?.revalidate()
+        SCRIPTPANEL?.repaint()
+    }
+
+    // Sichtbarkeit der Priofrist-Zeile umschalten
+    private void togglePriofristPanel() {
+        if (pnlPriofrist == null) return;
+
+        def anmeldeart = cmbAnmeldeart?.getSelectedItem()?.toString() ?: ''
+        pnlPriofrist.setVisible(anmeldeart == 'Erstanmeldung')
+
+        SCRIPTPANEL?.revalidate()
+        SCRIPTPANEL?.repaint()
+    }
+
+    // Sichtbarkeit der Prüfungsantragsfrist-Zeile umschalten (nur Patent + DE)
+    private void togglePruefungsantragsfristPanel() {
+        if (pnlPruefungsantragsfrist == null) return;
+
+        def land = cmbLand?.getSelectedItem()?.toString() ?: ''
+        pnlPruefungsantragsfrist.setVisible(land == 'DE')
+
+        SCRIPTPANEL?.revalidate()
+        SCRIPTPANEL?.repaint()
+    }
+
+    // Sichtbarkeit der Einspruchsfrist-Zeile umschalten (nur Patent + DE)
+    private void toggleEinspruchsfristPanel() {
+        if (pnlEinspruchsfrist == null) return;
+
+        def land = cmbLand?.getSelectedItem()?.toString() ?: ''
+        pnlEinspruchsfrist.setVisible(land == 'DE')
+
         SCRIPTPANEL?.revalidate()
         SCRIPTPANEL?.repaint()
     }
@@ -1051,7 +1112,7 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
                                         label(text: 'Land:')
                                     }
                                     td (colfill:true, align: 'left') {
-                                        cmbLand = comboBox(items: basisLaender, name: "_LAND", clientPropertyJlawyerdescription: "Land (WIPO-Code)", editable: true)
+                                        cmbLand = comboBox(items: basisLaender, name: "_LAND", clientPropertyJlawyerdescription: "Land (WIPO-Code)", editable: true, actionPerformed: { togglePruefungsantragsfristPanel(); toggleEinspruchsfristPanel(); })
                                     }
                                 }
 
@@ -1097,7 +1158,7 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
                                         label(text: '')
                                     }
                                     td (colfill:true, align: 'left') {
-                                        cmbAnmeldeart = comboBox(items: ['', 'Erstanmeldung', 'Nachanmeldung', 'Abzweigung'], name: "_ANMELDEART", clientPropertyJlawyerdescription: "Anmeldeart", editable: true, actionPerformed: { toggleAbzweigungPanel(); })
+                                        cmbAnmeldeart = comboBox(items: ['', 'Erstanmeldung', 'Nachanmeldung', 'Abzweigung'], name: "_ANMELDEART", clientPropertyJlawyerdescription: "Anmeldeart", editable: true, actionPerformed: { toggleAbzweigungPanel(); togglePriofristPanel(); })
                                     }
                                 }
 
@@ -1261,6 +1322,99 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
                                                     }
                                                     td (colfill:true, align: 'left') {
                                                         txtBenanntelaenderPatent = textField(name: "_BENANNTELAENDERPATENT", clientPropertyJlawyerdescription: "Benannte Länder (EP, PCT, etc.)", text: '', columns: 40)
+                                                    }
+                                                }
+                                                // Priofrist (nur bei Erstanmeldung)
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        pnlPriofrist = panel(visible: false) {
+                                                            tableLayout (cellpadding: 5) {
+                                                                tr {
+                                                                    td {
+                                                                        button(text: 'Priofrist eintragen: Anmeldetag + 12 Monate', actionPerformed: {
+                                                                            String caseId = callback.getCaseId();
+                                                                            if (txtAnmeldetag.text == null || txtAnmeldetag.text.trim().isEmpty()) {
+                                                                                javax.swing.JOptionPane.showMessageDialog(SCRIPTPANEL, "Bitte zuerst einen Anmeldetag eintragen.", "Anmeldetag fehlt", javax.swing.JOptionPane.WARNING_MESSAGE);
+                                                                                return;
+                                                                            }
+                                                                            int response = GuiLib.askYesNo("Priofrist eintragen?", "Soll eine Priofrist (Anmeldetag + 12 Monate) erstellt werden?");
+                                                                            if (response == javax.swing.JOptionPane.YES_OPTION) {
+                                                                                try {
+                                                                                    java.util.Calendar cal = java.util.Calendar.getInstance();
+                                                                                    cal.setTime(datumsFormat.parse(txtAnmeldetag.text.trim()));
+                                                                                    cal.add(java.util.Calendar.MONTH, 12);
+                                                                                    StorageLib.addRespite(caseId, "Ablauf Prioritätsfrist", null, cal.getTime());
+                                                                                } catch (Throwable t) {
+                                                                                    t.printStackTrace();
+                                                                                }
+                                                                            }
+                                                                        })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                // Prüfungsantragsfrist (nur bei Land=DE)
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        pnlPruefungsantragsfrist = panel(visible: false) {
+                                                            tableLayout (cellpadding: 5) {
+                                                                tr {
+                                                                    td {
+                                                                        button(text: 'Prüfungsantragsfrist eintragen: Anmeldetag + 7 Jahre', actionPerformed: {
+                                                                            String caseId = callback.getCaseId();
+                                                                            if (txtAnmeldetag.text == null || txtAnmeldetag.text.trim().isEmpty()) {
+                                                                                javax.swing.JOptionPane.showMessageDialog(SCRIPTPANEL, "Bitte zuerst einen Anmeldetag eintragen.", "Anmeldetag fehlt", javax.swing.JOptionPane.WARNING_MESSAGE);
+                                                                                return;
+                                                                            }
+                                                                            int response = GuiLib.askYesNo("Prüfungsantragsfrist eintragen?", "Soll eine Prüfungsantragsfrist (Anmeldetag + 7 Jahre) erstellt werden?");
+                                                                            if (response == javax.swing.JOptionPane.YES_OPTION) {
+                                                                                try {
+                                                                                    java.util.Calendar cal = java.util.Calendar.getInstance();
+                                                                                    cal.setTime(datumsFormat.parse(txtAnmeldetag.text.trim()));
+                                                                                    cal.add(java.util.Calendar.YEAR, 7);
+                                                                                    StorageLib.addRespite(caseId, "Ablauf Prüfungsantragsfrist", null, cal.getTime());
+                                                                                } catch (Throwable t) {
+                                                                                    t.printStackTrace();
+                                                                                }
+                                                                            }
+                                                                        })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                // Einspruchsfrist (nur bei Land=DE)
+                                                tr {
+                                                    td (colspan: 2) {
+                                                        pnlEinspruchsfrist = panel(visible: false) {
+                                                            tableLayout (cellpadding: 5) {
+                                                                tr {
+                                                                    td {
+                                                                        button(text: 'Einspruchsfrist eintragen: Erteilungstag + 9 Monate', actionPerformed: {
+                                                                            String caseId = callback.getCaseId();
+                                                                            if (txtErteilungstag.text == null || txtErteilungstag.text.trim().isEmpty()) {
+                                                                                javax.swing.JOptionPane.showMessageDialog(SCRIPTPANEL, "Bitte zuerst einen Eintragungs-/Erteilungstag eintragen.", "Erteilungstag fehlt", javax.swing.JOptionPane.WARNING_MESSAGE);
+                                                                                return;
+                                                                            }
+                                                                            int response = GuiLib.askYesNo("Einspruchsfrist eintragen?", "Soll eine Einspruchsfrist (Erteilungstag + 9 Monate) erstellt werden?");
+                                                                            if (response == javax.swing.JOptionPane.YES_OPTION) {
+                                                                                try {
+                                                                                    java.util.Calendar cal = java.util.Calendar.getInstance();
+                                                                                    cal.setTime(datumsFormat.parse(txtErteilungstag.text.trim()));
+                                                                                    cal.add(java.util.Calendar.MONTH, 9);
+                                                                                    StorageLib.addRespite(caseId, "Ablauf Einspruchsfrist", null, cal.getTime());
+                                                                                } catch (Throwable t) {
+                                                                                    t.printStackTrace();
+                                                                                }
+                                                                            }
+                                                                        })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
@@ -1535,7 +1689,42 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
                                         label(text: 'Max. Schutzdauer:')
                                     }
                                     td (colfill:true, align: 'left') {
-                                        txtMaxSchutzdauer = textField(name: "_MAXSCHUTZDAUER", clientPropertyJlawyerdescription: "Maximale Schutzdauer", text: '', columns: 20)
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        txtMaxSchutzdauer = textField(name: "_MAXSCHUTZDAUER", clientPropertyJlawyerdescription: "Maximale Schutzdauer", text: '', columns: 10)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        btnMaxSchutzdauer = button(text: '', actionPerformed: {
+                                                            if (txtAnmeldetag.text == null || txtAnmeldetag.text.trim().isEmpty()) {
+                                                                javax.swing.JOptionPane.showMessageDialog(SCRIPTPANEL, "Bitte zuerst einen Anmeldetag eintragen.", "Anmeldetag fehlt", javax.swing.JOptionPane.WARNING_MESSAGE);
+                                                                return;
+                                                            }
+                                                            def schutzrecht = cmbSchutzrechtsart?.getSelectedItem()?.toString() ?: ''
+                                                            int jahre = 0;
+                                                            if (schutzrecht == 'Patent') {
+                                                                jahre = 20;
+                                                            } else if (schutzrecht == 'Gebrauchsmuster') {
+                                                                jahre = 10;
+                                                            }
+                                                            if (jahre == 0) return;
+                                                            try {
+                                                                java.util.Calendar cal = java.util.Calendar.getInstance();
+                                                                cal.setTime(datumsFormat.parse(txtAnmeldetag.text.trim()));
+                                                                cal.add(java.util.Calendar.YEAR, jahre);
+                                                                txtMaxSchutzdauer.text = datumsFormat.format(cal.getTime());
+                                                            } catch (Throwable t) {
+                                                                t.printStackTrace();
+                                                            }
+                                                        })
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
 

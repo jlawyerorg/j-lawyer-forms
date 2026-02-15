@@ -772,11 +772,16 @@ public class betreuung02_ui implements com.jdimension.jlawyer.client.plugins.for
                                     }
                                     tr {
                                         td  {
-                                            label(text: 'Zuletzt berechnet für Zeitraum:')      
+                                            label(text: 'Zuletzt berechnet für Zeitraum:')
                                         }
                                         td  {
                                             lblLastRunQuarter = label(text: '-', name: "_ZULETZTBERECHNET_QRT", clientPropertyJlawyerdescription: "Zuletzt berechnet für Zeitraum");
-                                            
+
+                                        }
+                                    }
+                                    tr {
+                                        td (colspan: 2) {
+                                            label(text: 'Abrechnung über dieses Falldatenblatt kann nur erfolgen, wenn alle Abrechnungsmonate komplett im Jahr 2026 oder danach liegen', foreground: java.awt.Color.RED)
                                         }
                                     }
                                 }

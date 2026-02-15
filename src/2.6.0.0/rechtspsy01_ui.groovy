@@ -719,6 +719,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
     JTable tblCommLog = null;
     DefaultTableModel commLogTableModel = null;
     JTextField txtCommLogData = null; // Verstecktes Feld für JSON-Daten
+    JTextField txtCommTime = null; // Zeiteingabefeld
 
     // Fristverlängerungen - Tabelle
     JTable tblFristverlaengerungen = null;
@@ -889,6 +890,17 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
         }
     }
 
+    // Comparator für Zeitsortierung im Format HH:mm
+    private Comparator<String> createTimeComparator() {
+        return new Comparator<String>() {
+            int compare(String s1, String s2) {
+                if (s1 == null || s1.trim().isEmpty()) return (s2 == null || s2.trim().isEmpty()) ? 0 : 1
+                if (s2 == null || s2.trim().isEmpty()) return -1
+                return s1.trim().compareTo(s2.trim())
+            }
+        }
+    }
+
     public String getAsHtml() {
         return GuiLib.getAsHtml(this.SCRIPTPANEL);
     }
@@ -916,10 +928,11 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
         for (int i = 0; i < commLogTableModel.getRowCount(); i++) {
             entries << [
                 datum: commLogTableModel.getValueAt(i, 0) ?: '',
-                absender: commLogTableModel.getValueAt(i, 1) ?: '',
-                adressat: commLogTableModel.getValueAt(i, 2) ?: '',
-                form: commLogTableModel.getValueAt(i, 3) ?: '',
-                inhalt: commLogTableModel.getValueAt(i, 4) ?: ''
+                zeit: commLogTableModel.getValueAt(i, 1) ?: '',
+                absender: commLogTableModel.getValueAt(i, 2) ?: '',
+                adressat: commLogTableModel.getValueAt(i, 3) ?: '',
+                form: commLogTableModel.getValueAt(i, 4) ?: '',
+                inhalt: commLogTableModel.getValueAt(i, 5) ?: ''
             ]
         }
 
@@ -942,6 +955,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                 entries.each { entry ->
                     commLogTableModel.addRow([
                         entry.datum ?: '',
+                        entry.zeit ?: '12:00',
                         entry.absender ?: '',
                         entry.adressat ?: '',
                         entry.form ?: '',
@@ -2974,6 +2988,14 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                 }
                                 tr {
                                     td {
+                                        label (text: 'Zeit:')
+                                    }
+                                    td {
+                                        txtCommTime=textField(text: '12:00', columns:5)
+                                    }
+                                }
+                                tr {
+                                    td {
                                         label (text: 'Absender:')
                                     }
                                     td {
@@ -3038,9 +3060,20 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 tr {
                                                     td {
                                                         button(text: 'Eintrag hinzufügen', actionPerformed: {
+                                                                // Zeitformat validieren (HH:mm)
+                                                                def timeText = txtCommTime.text?.trim() ?: ''
+                                                                if (!timeText.matches(/^([01]\d|2[0-3]):[0-5]\d$/)) {
+                                                                    JOptionPane.showMessageDialog(SCRIPTPANEL,
+                                                                        "Bitte geben Sie eine gültige Uhrzeit im Format HH:mm ein (z.B. 09:30, 14:15).",
+                                                                        "Ungültige Uhrzeit",
+                                                                        JOptionPane.WARNING_MESSAGE);
+                                                                    return;
+                                                                }
+
                                                                 // Neue Zeile zur Tabelle hinzufügen
                                                                 commLogTableModel.addRow([
                                                                     txtCommDate.text,
+                                                                    txtCommTime.text,
                                                                     cmbCommLogSender.selectedItem?.toString() ?: '',
                                                                     cmbCommLogRecipient.selectedItem?.toString() ?: '',
                                                                     cmbCommLogForm.selectedItem?.toString() ?: '',
@@ -3049,6 +3082,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
 
                                                                 // Felder zurücksetzen
                                                                 txtCommDate.setText("");
+                                                                txtCommTime.setText("12:00");
                                                                 cmbCommLogSender.setSelectedItem("");
                                                                 cmbCommLogRecipient.setSelectedItem("");
                                                                 cmbCommLogForm.setSelectedItem("");
@@ -3083,7 +3117,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                         scrollPane(preferredSize: [800, 400]){
                                             // TableModel erstellen
                                             commLogTableModel = new DefaultTableModel(
-                                                ['Datum', 'Absender', 'Adressat', 'Form', 'Inhalt'] as Object[],
+                                                ['Datum', 'Zeit', 'Absender', 'Adressat', 'Form', 'Inhalt'] as Object[],
                                                 0
                                             ) {
                                                 @Override
@@ -3098,16 +3132,37 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
 
                                             // Spaltenbreiten nach Erstellung setzen
                                             tblCommLog.getColumnModel().getColumn(0).setPreferredWidth(100); // Datum
-                                            tblCommLog.getColumnModel().getColumn(1).setPreferredWidth(120); // Absender
-                                            tblCommLog.getColumnModel().getColumn(2).setPreferredWidth(120); // Adressat
-                                            tblCommLog.getColumnModel().getColumn(3).setPreferredWidth(100); // Form
-                                            tblCommLog.getColumnModel().getColumn(4).setPreferredWidth(360); // Inhalt
+                                            tblCommLog.getColumnModel().getColumn(1).setPreferredWidth(60);  // Zeit
+                                            tblCommLog.getColumnModel().getColumn(2).setPreferredWidth(120); // Absender
+                                            tblCommLog.getColumnModel().getColumn(3).setPreferredWidth(120); // Adressat
+                                            tblCommLog.getColumnModel().getColumn(4).setPreferredWidth(100); // Form
+                                            tblCommLog.getColumnModel().getColumn(5).setPreferredWidth(300); // Inhalt
 
-                                            // Datumssortierung aktivieren
-                                            def commLogSorter = new TableRowSorter(commLogTableModel)
+                                            // Datums- und Zeitsortierung aktivieren
+                                            def commLogSorter = new TableRowSorter(commLogTableModel) {
+                                                @Override
+                                                public void toggleSortOrder(int column) {
+                                                    super.toggleSortOrder(column);
+                                                    if (column == 0) {
+                                                        // Zeit-Spalte immer in gleicher Richtung wie Datum sortieren
+                                                        def keys = getSortKeys()
+                                                        if (keys != null && keys.size() > 0) {
+                                                            def direction = keys.get(0).getSortOrder()
+                                                            setSortKeys([
+                                                                new RowSorter.SortKey(0, direction),
+                                                                new RowSorter.SortKey(1, direction)
+                                                            ])
+                                                        }
+                                                    }
+                                                }
+                                            }
                                             commLogSorter.setComparator(0, createDateComparator())
+                                            commLogSorter.setComparator(1, createTimeComparator())
                                             tblCommLog.setRowSorter(commLogSorter)
-                                            commLogSorter.setSortKeys([new RowSorter.SortKey(0, SortOrder.DESCENDING)])
+                                            commLogSorter.setSortKeys([
+                                                new RowSorter.SortKey(0, SortOrder.DESCENDING),
+                                                new RowSorter.SortKey(1, SortOrder.DESCENDING)
+                                            ])
                                         }
                                     }
                                 }

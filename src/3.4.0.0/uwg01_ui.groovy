@@ -854,6 +854,54 @@ public class uwg01_ui implements com.jdimension.jlawyer.client.plugins.form.Form
                                 }
                                 tr {
                                     td (colfill:true, align: 'left') {
+                                        label(text: 'EV (optional)')
+                                    }
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        txtEV = textField(name: "_EV", clientPropertyJlawyerdescription: "EV (optional)", text: '', columns: 10)
+                                                    }
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                            GuiLib.dateSelector(txtEV, true);
+                                                        })
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Klage (optional)')
+                                    }
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        txtKlage = textField(name: "_KLAGE", clientPropertyJlawyerdescription: "Klage (optional)", text: '', columns: 10)
+                                                    }
+                                                    td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                            GuiLib.dateSelector(txtKlage, true);
+                                                        })
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td (colfill:true, align: 'left') {
                                         label(text: 'Weglegung')
                                     }
                                     td {

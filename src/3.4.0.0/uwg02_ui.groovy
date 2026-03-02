@@ -61,9 +61,8 @@ public class uwg02_ui implements com.jdimension.jlawyer.client.plugins.form.Form
         SwingBuilder swing=new SwingBuilder()
         swing.edt {
             SCRIPTPANEL=panel(size: [300, 300]) {
-
-                vbox {
-                    tabPaneMain = tabbedPane(id: 'tabs', tabPlacement: JTabbedPane.LEFT) {
+                borderLayout()
+                    tabPaneMain = tabbedPane(id: 'tabs', tabPlacement: JTabbedPane.LEFT, constraints: BorderLayout.CENTER) {
                         panel(name: 'Einstellungen') {
                             tableLayout (cellpadding: 5) {
                                 tr {
@@ -93,8 +92,57 @@ public class uwg02_ui implements com.jdimension.jlawyer.client.plugins.form.Form
                                 )
                             }
                         }
+                        panel(name: 'Hilfe') {
+                            borderLayout()
+                            scrollPane(constraints: BorderLayout.CENTER) {
+                                editorPane(
+                                    contentType: 'text/html',
+                                    editable: false,
+                                    text: '''<html><body style="font-family: Arial, sans-serif; padding: 10px;">
+<h2 style="color: #1e3c72;">UWG-Auswertung</h2>
+<p>Diese Auswertung erstellt einen Geschaeftsbericht ueber alle erfassten UWG-Verfahren (Formular "UWG-Verfahren") eines Berichtsjahres.</p>
+
+<h3 style="color: #1e3c72;">Berichtsjahr und Datumsermittlung</h3>
+<p>Im Tab <b>Einstellungen</b> waehlen Sie das Berichtsjahr aus. Fuer die Zuordnung eines Verfahrens zum Berichtsjahr wird das erste verfuegbare Datum in folgender Reihenfolge herangezogen:</p>
+<ol>
+<li><b>Klage</b> (falls vorhanden)</li>
+<li><b>EV</b> (falls kein Klagedatum vorhanden)</li>
+<li><b>Einleitung</b> (falls weder Klage- noch EV-Datum vorhanden)</li>
+</ol>
+<p>Verfahren ohne gueltiges Datum in einem dieser Felder werden nicht beruecksichtigt.</p>
+
+<h3 style="color: #1e3c72;">Aufbau des Reports</h3>
+<p>Der Report gliedert die Verfahren nach <b>Verfahrensart</b> und <b>Abschlussart</b> und zeigt die jeweilige Anzahl. Er besteht aus drei Abschnitten:</p>
+
+<table border="0" cellpadding="6" cellspacing="0" width="100%">
+<tr bgcolor="#f0f4f8">
+<td style="border-bottom: 1px solid #d0d7e2;"><b>Abschnitt</b></td>
+<td style="border-bottom: 1px solid #d0d7e2;"><b>Inhalt</b></td>
+</tr>
+<tr>
+<td style="border-bottom: 1px solid #e8ecf1;"><b>Geschaeftsbericht</b></td>
+<td style="border-bottom: 1px solid #e8ecf1;">Alle Verfahren des Berichtsjahres, bei denen die Checkbox <i>VSW</i> <u>nicht</u> gesetzt ist.</td>
+</tr>
+<tr>
+<td style="border-bottom: 1px solid #e8ecf1;"><b>Geschaeftsbericht (eigene Mitglieder)</b></td>
+<td style="border-bottom: 1px solid #e8ecf1;">Teilmenge des Geschaeftsberichts: nur Verfahren, bei denen zusaetzlich die Checkbox <i>Verfahren gegen Mitglied</i> gesetzt ist.</td>
+</tr>
+<tr>
+<td style="border-bottom: 1px solid #e8ecf1;"><b>Geschaeftsbericht (VSW)</b></td>
+<td style="border-bottom: 1px solid #e8ecf1;">Alle Verfahren, bei denen die Checkbox <i>VSW</i> gesetzt ist. Diese Verfahren erscheinen <u>nicht</u> im allgemeinen Geschaeftsbericht.</td>
+</tr>
+</table>
+
+<h3 style="color: #1e3c72;">Report erstellen und speichern</h3>
+<ul>
+<li>Klicken Sie im Tab <b>Report</b> auf <b>Aktualisieren</b>, um den Bericht zu erzeugen bzw. mit aktuellen Daten neu zu laden.</li>
+<li>Mit <b>In Akte speichern</b> wird der Report als HTML-Dokument in der aktuellen Akte abgelegt.</li>
+</ul>
+</body></html>'''
+                                )
+                            }
+                        }
                     }
-                }
             }
         }
 
@@ -123,40 +171,34 @@ public class uwg02_ui implements com.jdimension.jlawyer.client.plugins.form.Form
                     entryMap[entry.entryKey] = entry.stringValue
                 }
 
-                // Filter: check if Einleitung is in selected year
-                // Find keys ending with the field names (prefix-independent)
-                def einleitungStr = findValueBySuffix(entryMap, "_EINLEITUNG")
-                if (einleitungStr) {
-                    try {
-                        def einleitungDate = dateFormat.parse(einleitungStr)
-                        def cal = Calendar.getInstance()
-                        cal.setTime(einleitungDate)
-                        int formYear = cal.get(Calendar.YEAR)
-                        if (formYear == selectedYear) {
-                            // Group by Verfahrensart -> Abschlussart
-                            def verfahrensart = findValueBySuffix(entryMap, "_VERFAHRENSART") ?: "(leer)"
-                            def abschluss = findValueBySuffix(entryMap, "_ABSCHLUSS") ?: "(leer)"
+                // Filter: use first valid date from _KLAGE -> _EV -> _EINLEITUNG
+                def relevantDate = findRelevantDate(entryMap, dateFormat)
+                if (relevantDate) {
+                    def cal = Calendar.getInstance()
+                    cal.setTime(relevantDate)
+                    int formYear = cal.get(Calendar.YEAR)
+                    if (formYear == selectedYear) {
+                        // Group by Verfahrensart -> Abschlussart
+                        def verfahrensart = findValueBySuffix(entryMap, "_VERFAHRENSART") ?: "(leer)"
+                        def abschluss = findValueBySuffix(entryMap, "_ABSCHLUSS") ?: "(leer)"
 
-                            // Add to groupedAll (all forms)
+                        def vsw = findValueBySuffix(entryMap, "_VSW")
+                        if (isCheckboxSelected(vsw)) {
+                            // VSW-Verfahren nur in groupedVsw zählen
+                            if (!groupedVsw[verfahrensart]) groupedVsw[verfahrensart] = new LinkedHashMap()
+                            groupedVsw[verfahrensart][abschluss] = (groupedVsw[verfahrensart][abschluss] ?: 0) + 1
+                        } else {
+                            // Nicht-VSW in groupedAll
                             if (!groupedAll[verfahrensart]) groupedAll[verfahrensart] = new LinkedHashMap()
                             groupedAll[verfahrensart][abschluss] = (groupedAll[verfahrensart][abschluss] ?: 0) + 1
 
-                            // Add to groupedMitglied if checkbox is checked
+                            // Zusätzlich in groupedMitglied wenn Checkbox gesetzt
                             def gegenMitglied = findValueBySuffix(entryMap, "_GEGENMITGLIED")
                             if (isCheckboxSelected(gegenMitglied)) {
                                 if (!groupedMitglied[verfahrensart]) groupedMitglied[verfahrensart] = new LinkedHashMap()
                                 groupedMitglied[verfahrensart][abschluss] = (groupedMitglied[verfahrensart][abschluss] ?: 0) + 1
                             }
-
-                            // Add to groupedVsw if checkbox is checked
-                            def vsw = findValueBySuffix(entryMap, "_VSW")
-                            if (isCheckboxSelected(vsw)) {
-                                if (!groupedVsw[verfahrensart]) groupedVsw[verfahrensart] = new LinkedHashMap()
-                                groupedVsw[verfahrensart][abschluss] = (groupedVsw[verfahrensart][abschluss] ?: 0) + 1
-                            }
                         }
-                    } catch (Exception e) {
-                        // Skip forms with invalid date
                     }
                 }
             }
@@ -195,6 +237,8 @@ public class uwg02_ui implements com.jdimension.jlawyer.client.plugins.form.Form
             lastGeneratedHtml = html.toString()
             reportPane.setText(lastGeneratedHtml)
             reportPane.setCaretPosition(0) // Scroll to top
+            reportPane.revalidate()
+            reportPane.repaint()
 
         } catch (Exception e) {
             lastGeneratedHtml = null
@@ -231,6 +275,20 @@ public class uwg02_ui implements com.jdimension.jlawyer.client.plugins.form.Form
                    .replace("<", "&lt;")
                    .replace(">", "&gt;")
                    .replace("\"", "&quot;");
+    }
+
+    private Date findRelevantDate(Map entryMap, SimpleDateFormat dateFormat) {
+        for (suffix in ["_KLAGE", "_EV", "_EINLEITUNG"]) {
+            def val = findValueBySuffix(entryMap, suffix)
+            if (val) {
+                try {
+                    return dateFormat.parse(val)
+                } catch (Exception e) {
+                    // invalid date, try next field
+                }
+            }
+        }
+        return null
     }
 
     private String findValueBySuffix(Map entryMap, String suffix) {

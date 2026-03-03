@@ -3035,7 +3035,8 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                                             '',
                                                                             'postalisch',
                                                                             'telefonisch',
-                                                                            'E-Mail'
+                                                                            'E-Mail',
+                                                                            'eBO'
                                             ], editable: false
                                         )
                                     }

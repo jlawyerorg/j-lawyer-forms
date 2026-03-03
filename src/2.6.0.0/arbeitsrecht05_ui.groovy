@@ -547,6 +547,8 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 import groovy.swing.SwingBuilder
 import java.text.SimpleDateFormat
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.time.format.DateTimeFormatter
 import java.time.LocalDate
 import java.time.Period
@@ -557,6 +559,7 @@ import javax.swing.*
 import javax.swing.JPanel
 import javax.swing.JTabbedPane
 import javax.swing.JTextField
+import javax.swing.JFormattedTextField
 import javax.swing.ImageIcon
 import java.util.ArrayList
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
@@ -602,6 +605,8 @@ public class arbeitsrecht05_ui implements com.jdimension.jlawyer.client.plugins.
 
     public JPanel getUi() {
 
+        NumberFormat betragFormat = new DecimalFormat("0.00")
+
         SwingBuilder swing=new SwingBuilder()
         swing.edt {
             SCRIPTPANEL=panel(size: [300, 300]) {
@@ -614,7 +619,7 @@ public class arbeitsrecht05_ui implements com.jdimension.jlawyer.client.plugins.
                             tableLayout (cellpadding: 5) {
                                 tr {
                                     td (colfill:true, align: 'left') {
-                                        label(text: 'Datum Unterschrift Arbeitsvertrag')
+                                        label(text: 'Unterschrift Arbeitsvertrag')
                                     }
                                     td (colfill:true, align: 'left') {
                                         panel {
@@ -638,7 +643,7 @@ public class arbeitsrecht05_ui implements com.jdimension.jlawyer.client.plugins.
                                 }
                                 tr {
                                     td (colfill:true, align: 'left') {
-                                        label(text: 'Datum Beginn Arbeitsverhältnis')
+                                        label(text: 'Beginn des Arbeitsverhältnisses')
                                     }
                                     td (colfill:true, align: 'left') {
                                         panel {
@@ -793,7 +798,7 @@ public class arbeitsrecht05_ui implements com.jdimension.jlawyer.client.plugins.
                                         label(text: '')
                                     }
                                     td (colfill:true, align: 'left') {
-                                        checkBox(text: 'Wird ein Tarifvertrag in Bezug genommen', name: "_AVTARIFVERTRAG", clientPropertyJlawyerdescription: "Wird ein Tarifvertrag in Bezug genommen", selected: false)
+                                        checkBox(text: 'es wird ein Tarifvertrag in Bezug genommen', name: "_AVTARIFVERTRAG", clientPropertyJlawyerdescription: "Wird ein Tarifvertrag in Bezug genommen?", selected: false)
                                     }
                                 }
                                 tr {
@@ -809,7 +814,7 @@ public class arbeitsrecht05_ui implements com.jdimension.jlawyer.client.plugins.
                                         label(text: 'Bruttomonatsgehalt inkl. Zulagen (EUR)')
                                     }
                                     td (colfill:true, align: 'left') {
-                                        textField(name: "_AVBRUTTOGEHALT", clientPropertyJlawyerdescription: "Bruttomonatsgehalt inkl. monatliche Zulagen in Euro", text: '', columns:10)
+                                        formattedTextField(name: "_AVBRUTTOGEHALT", clientPropertyJlawyerdescription: "Bruttomonatsgehalt inkl. monatliche Zulagen in Euro", text: '', columns:10, format: betragFormat)
                                     }
                                 }
                                 tr {
@@ -817,7 +822,7 @@ public class arbeitsrecht05_ui implements com.jdimension.jlawyer.client.plugins.
                                         label(text: '13. Gehalt/Weihnachtsgeld (EUR)')
                                     }
                                     td (colfill:true, align: 'left') {
-                                        textField(name: "_AV13GEHALT", clientPropertyJlawyerdescription: "13. Gehalt/Weihnachtsgeld in Euro", text: '', columns:10)
+                                        formattedTextField(name: "_AV13GEHALT", clientPropertyJlawyerdescription: "13. Gehalt/Weihnachtsgeld in Euro", text: '', columns:10, format: betragFormat)
                                     }
                                 }
                                 tr {
@@ -825,7 +830,7 @@ public class arbeitsrecht05_ui implements com.jdimension.jlawyer.client.plugins.
                                         label(text: 'Urlaubsgeld (EUR)')
                                     }
                                     td (colfill:true, align: 'left') {
-                                        textField(name: "_AVURLAUBSGELD", clientPropertyJlawyerdescription: "Urlaubsgeld in Euro", text: '', columns:10)
+                                        formattedTextField(name: "_AVURLAUBSGELD", clientPropertyJlawyerdescription: "Urlaubsgeld in Euro", text: '', columns:10, format: betragFormat)
                                     }
                                 }
                                 tr {
@@ -833,7 +838,7 @@ public class arbeitsrecht05_ui implements com.jdimension.jlawyer.client.plugins.
                                         label(text: 'Jährlicher Bonus brutto (EUR)')
                                     }
                                     td (colfill:true, align: 'left') {
-                                        textField(name: "_AVBONUS", clientPropertyJlawyerdescription: "Jährlicher Bonus brutto in Euro", text: '', columns:10)
+                                        formattedTextField(name: "_AVBONUS", clientPropertyJlawyerdescription: "Jährlicher Bonus brutto in Euro", text: '', columns:10, format: betragFormat)
                                     }
                                 }
                                 tr {
@@ -841,7 +846,7 @@ public class arbeitsrecht05_ui implements com.jdimension.jlawyer.client.plugins.
                                         label(text: 'Jährliche Tantieme brutto (EUR)')
                                     }
                                     td (colfill:true, align: 'left') {
-                                        textField(name: "_AVTANTIEME", clientPropertyJlawyerdescription: "Jährliche Tantieme brutto in Euro", text: '', columns:10)
+                                        formattedTextField(name: "_AVTANTIEME", clientPropertyJlawyerdescription: "Jährliche Tantieme brutto in Euro", text: '', columns:10, format: betragFormat)
                                     }
                                 }
                                 tr {
@@ -857,7 +862,7 @@ public class arbeitsrecht05_ui implements com.jdimension.jlawyer.client.plugins.
                                         label(text: 'Dienstwagen monatl. zu versteuern (EUR)')
                                     }
                                     td (colfill:true, align: 'left') {
-                                        textField(name: "_AVDIENSTWAGENBETRAG", clientPropertyJlawyerdescription: "Wenn Dienstwagen, monatlicher zu versteuernder Betrag in Euro", text: '', columns:10)
+                                        formattedTextField(name: "_AVDIENSTWAGENBETRAG", clientPropertyJlawyerdescription: "Wenn Dienstwagen, monatlicher zu versteuernder Betrag in Euro", text: '', columns:10, format: betragFormat)
                                     }
                                 }
                                 tr {
@@ -1176,7 +1181,7 @@ public class arbeitsrecht05_ui implements com.jdimension.jlawyer.client.plugins.
                                 }
                                 tr {
                                     td (colfill:true, align: 'left') {
-                                        label(text: 'Datum Antrag Teilzeit in Elternzeit')
+                                        label(text: 'Antrag Teilzeit in Elternzeit')
                                     }
                                     td (colfill:true, align: 'left') {
                                         panel {
@@ -1200,7 +1205,7 @@ public class arbeitsrecht05_ui implements com.jdimension.jlawyer.client.plugins.
                                 }
                                 tr {
                                     td (colfill:true, align: 'left') {
-                                        label(text: 'Datum Zugang Antrag beim Arbeitgeber')
+                                        label(text: 'Zugang Antrag beim Arbeitgeber')
                                     }
                                     td (colfill:true, align: 'left') {
                                         panel {

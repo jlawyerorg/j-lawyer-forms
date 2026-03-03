@@ -547,6 +547,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "Teilzeit in Elternzeit"
 description = "Teilzeit in Elternzeit"
-version = "0.1.0";
+version = "0.2.0";
 author = "Jens Kutschke"
 updated = "03.03.2026"

@@ -5,7 +5,10 @@
       "WebSearch",
       "WebFetch(domain:www.lexikon-betreuungsrecht.de)",
       "Bash(wc:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(ls -lh /home/jens/dev/j-lawyer-forms/src/*/arbeitsrecht* | head -20)",
+      "Bash(find /home/jens/dev/j-lawyer-forms/src -name \"ZeitstrahlPanel.groovy\" -exec wc -l {} \\\\;)",
+      "Bash(ls -d /home/jens/dev/j-lawyer-forms/src/*/)"
     ]
   }
 }

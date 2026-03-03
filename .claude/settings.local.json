@@ -8,7 +8,9 @@
       "Bash(grep:*)",
       "Bash(ls -lh /home/jens/dev/j-lawyer-forms/src/*/arbeitsrecht* | head -20)",
       "Bash(find /home/jens/dev/j-lawyer-forms/src -name \"ZeitstrahlPanel.groovy\" -exec wc -l {} \\\\;)",
-      "Bash(ls -d /home/jens/dev/j-lawyer-forms/src/*/)"
+      "Bash(ls -d /home/jens/dev/j-lawyer-forms/src/*/)",
+      "Bash(xmllint --noout /home/jens/dev/j-lawyer-forms/src/j-lawyer-forms.xml 2>&1)",
+      "Bash(ls -la /home/jens/dev/j-lawyer-forms/src/2.6.0.0/arbeitsrecht05_*)"
     ]
   }
 }

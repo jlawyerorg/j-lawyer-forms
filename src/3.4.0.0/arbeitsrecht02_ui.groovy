@@ -1220,6 +1220,15 @@ public class arbeitsrecht02_ui implements com.jdimension.jlawyer.client.plugins.
                                                 }
                                                 tr {
                                                     td {
+                                                        label(text: ' ')        
+                                                    }
+                                                    td {
+                                                        checkBox(text: 'Pflegezeit', name: "_SK_PFLEGEZEIT", clientPropertyJlawyerdescription: "Befindet sich der Mandant in Pflegezeit?", selected: false)
+                                                    }
+                                        
+                                                }
+                                                tr {
+                                                    td {
                                                         label(text: ' ')
                                                     }
                                                     td {

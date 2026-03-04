@@ -547,6 +547,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "Kündigungsschutz"
 description = "Kündigungsschutz"
-version = "3.0.0";
+version = "3.1.0";
 author = "Jens Kutschke"
-updated = "25.10.2025"
+updated = "04.03.2026"

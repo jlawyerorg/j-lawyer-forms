@@ -547,6 +547,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "gew. Schutzrecht"
 description = "gewerbliches Schutzrecht"
-version = "0.3.0";
+version = "0.4.0";
 author = "Jens Kutschke"
-updated = "30.01.2026"
+updated = "18.03.2026"

@@ -696,6 +696,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.util.ArrayList
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
+import com.jdimension.jlawyer.client.utils.DesktopUtils
 
 public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
 
@@ -736,6 +737,7 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
     JComboBox cmbAktenstatus = null;
     JTextField txtGetoetetAm = null;
     JTextArea txtNotiz = null;
+    JTextField txtExternalLink = null;
 
     // Schutzartenspezifische Panels
     JPanel pnlPatent = null;
@@ -1280,6 +1282,29 @@ public class gewschutzrecht01_ui implements com.jdimension.jlawyer.client.plugin
                                     }
                                     td (colfill:true, align: 'left') {
                                         txtAmtlAz = textField(name: "_AMTLAZ", clientPropertyJlawyerdescription: "Amtliches Aktenzeichen", text: '', columns: 20)
+                                    }
+                                }
+
+                                // Link
+                                tr {
+                                    td (colfill:true, align: 'left') {
+                                        label(text: 'Link:')
+                                    }
+                                    td (colfill:true, align: 'left') {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        txtExternalLink = textField(id: 'sExternalLink', name: "_EXTLINK", clientPropertyJlawyerdescription: "externer Link", text: '', columns: 50)
+                                                    }
+                                                    td {
+                                                        button(text: 'Öffnen', actionPerformed: {
+                                                            DesktopUtils.openBrowser(txtExternalLink.getText());
+                                                        })
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
 

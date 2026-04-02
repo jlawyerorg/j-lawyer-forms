@@ -679,6 +679,8 @@ import javax.swing.JLabel
 import javax.swing.JTabbedPane
 import javax.swing.ImageIcon
 import javax.swing.JScrollPane
+import java.awt.Toolkit
+import java.awt.datatransfer.StringSelection
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
 
 public class verkehr02_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods, com.jdimension.jlawyer.client.plugins.form.FormAiMethods {
@@ -687,9 +689,7 @@ public class verkehr02_ui implements com.jdimension.jlawyer.client.plugins.form.
     FormPluginCallback callback = null;
 
     // Tab Status
-    JCheckBox chkAnhoerungZeuge;
-    JCheckBox chkAnhoerungBetroffener;
-    JCheckBox chkBussgeldBescheid;
+    JComboBox cmbVerfahrensstatus;
     JTextField txtVom;
     JTextField txtZeichen;
     JTextField txtZustellung;
@@ -748,10 +748,20 @@ public class verkehr02_ui implements com.jdimension.jlawyer.client.plugins.form.
 
     // Tab Fahreignungsregister
     JTextField txtEintrag1;
+    JTextField txtVorgangsnr1;
+    JTextField txtLoeschfrist1;
     JTextField txtEintrag2;
+    JTextField txtVorgangsnr2;
+    JTextField txtLoeschfrist2;
     JTextField txtEintrag3;
+    JTextField txtVorgangsnr3;
+    JTextField txtLoeschfrist3;
     JTextField txtEintrag4;
+    JTextField txtVorgangsnr4;
+    JTextField txtLoeschfrist4;
     JTextField txtEintrag5;
+    JTextField txtVorgangsnr5;
+    JTextField txtLoeschfrist5;
 
     public verkehr02_ui() {
         super();
@@ -868,37 +878,13 @@ public class verkehr02_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             tableLayout(cellpadding: 5) {
                                                 tr {
                                                     td {
-                                                        chkAnhoerungZeuge = checkBox(
-                                                            text: 'Anhörung als Zeuge',
-                                                            name: "_ANHZEUGE",
-                                                            clientPropertyJlawyerdescription: "Anhörung als Zeuge",
-                                                            clientPropertyAiPromptKey: "owi_anhoerung_zeuge",
-                                                            clientPropertyAiPromptDescription: "Liegt eine Anhörung als Zeuge vor? Zulässige Werte: ja, nein",
-                                                            selected: false
-                                                        )
-                                                    }
-                                                }
-                                                tr {
-                                                    td {
-                                                        chkAnhoerungBetroffener = checkBox(
-                                                            text: 'Anhörung als Betroffener',
-                                                            name: "_ANHBETROFF",
-                                                            clientPropertyJlawyerdescription: "Anhörung als Betroffener",
-                                                            clientPropertyAiPromptKey: "owi_anhoerung_betroffener",
-                                                            clientPropertyAiPromptDescription: "Liegt eine Anhörung als Betroffener vor? Zulässige Werte: ja, nein",
-                                                            selected: false
-                                                        )
-                                                    }
-                                                }
-                                                tr {
-                                                    td {
-                                                        chkBussgeldBescheid = checkBox(
-                                                            text: 'Bußgeldbescheid',
-                                                            name: "_BGBESCHEID",
-                                                            clientPropertyJlawyerdescription: "Bußgeldbescheid",
-                                                            clientPropertyAiPromptKey: "owi_bussgeld_bescheid",
-                                                            clientPropertyAiPromptDescription: "Liegt ein Bußgeldbescheid vor? Zulässige Werte: ja, nein",
-                                                            selected: false
+                                                        cmbVerfahrensstatus = comboBox(
+                                                            items: ['', 'Anhörung als Zeuge', 'Anhörung als Betroffener', 'Bußgeldbescheid'],
+                                                            name: "_VERFSTATUS",
+                                                            clientPropertyJlawyerdescription: "Verfahrensstatus",
+                                                            clientPropertyAiPromptKey: "owi_verfahrensstatus",
+                                                            clientPropertyAiPromptDescription: "Verfahrensstatus der OWi-Sache. Zulässige Werte: Anhörung als Zeuge, Anhörung als Betroffener, Bußgeldbescheid",
+                                                            editable: true
                                                         )
                                                     }
                                                 }
@@ -947,15 +933,32 @@ public class verkehr02_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                         label(text: 'Zeichen:')
                                                     }
                                                     td {
-                                                        txtZeichen = textField(
-                                                            id: 'sZeichen',
-                                                            name: "_ZEICHEN",
-                                                            clientPropertyJlawyerdescription: "Aktenzeichen des Bescheids",
-                                                            clientPropertyAiPromptKey: "owi_aktenzeichen",
-                                                            clientPropertyAiPromptDescription: "Aktenzeichen oder Geschäftszeichen des Bescheids / Anhörungsbogens",
-                                                            text: '',
-                                                            columns: 20
-                                                        )
+                                                        panel {
+                                                            tableLayout(cellpadding: 0) {
+                                                                tr {
+                                                                    td {
+                                                                        txtZeichen = textField(
+                                                                            id: 'sZeichen',
+                                                                            name: "_ZEICHEN",
+                                                                            clientPropertyJlawyerdescription: "Aktenzeichen des Bescheids",
+                                                                            clientPropertyAiPromptKey: "owi_aktenzeichen",
+                                                                            clientPropertyAiPromptDescription: "Aktenzeichen oder Geschäftszeichen des Bescheids / Anhörungsbogens",
+                                                                            text: '',
+                                                                            columns: 20
+                                                                        )
+                                                                    }
+                                                                    td {
+                                                                        label(text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: 'Kopieren', toolTipText: 'Zeichen in Zwischenablage kopieren', actionPerformed: {
+                                                                            def clip = Toolkit.getDefaultToolkit().getSystemClipboard();
+                                                                            clip.setContents(new StringSelection(txtZeichen.text), null);
+                                                                        })
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 }
                                                 tr {
@@ -1015,6 +1018,26 @@ public class verkehr02_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                                     td {
                                                                         button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
                                                                             GuiLib.dateSelector(txtFristende, true);
+                                                                        })
+                                                                    }
+                                                                    td {
+                                                                        label(text: ' ')
+                                                                    }
+                                                                    td {
+                                                                        button(text: 'Frist eintragen', actionPerformed: {
+                                                                            if (txtFristende.text == null || txtFristende.text.trim().isEmpty()) {
+                                                                                javax.swing.JOptionPane.showMessageDialog(SCRIPTPANEL, "Bitte zuerst ein Fristende eintragen.", "Fristende fehlt", javax.swing.JOptionPane.WARNING_MESSAGE);
+                                                                                return;
+                                                                            }
+                                                                            String caseId = callback.getCaseId();
+                                                                            int response = GuiLib.askYesNo("Frist eintragen?", "Soll eine Frist zum Fristende erstellt werden?");
+                                                                            if (response == javax.swing.JOptionPane.YES_OPTION) {
+                                                                                try {
+                                                                                    StorageLib.addRespite(caseId, "Fristende Einspruch OWi", null, new Date().parse("dd.MM.yyyy", txtFristende.text.trim()));
+                                                                                } catch (Throwable t) {
+                                                                                    t.printStackTrace();
+                                                                                }
+                                                                            }
                                                                         })
                                                                     }
                                                                 }
@@ -1204,8 +1227,6 @@ public class verkehr02_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                             id: 'sGeschwDifferenz',
                                                             name: "_GESCHWDIFF",
                                                             clientPropertyJlawyerdescription: "Geschwindigkeitsdifferenz",
-                                                            clientPropertyAiPromptKey: "owi_geschw_differenz",
-                                                            clientPropertyAiPromptDescription: "Differenz zwischen gemessener und zulässiger Geschwindigkeit in km/h",
                                                             text: '',
                                                             columns: 10,
                                                             enabled: false
@@ -1631,6 +1652,20 @@ public class verkehr02_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             tableLayout(cellpadding: 5) {
                                                 tr {
                                                     td {
+                                                        label(text: ' ')
+                                                    }
+                                                    td {
+                                                        label(text: 'Eintragung')
+                                                    }
+                                                    td {
+                                                        label(text: 'Vorgangsnummer')
+                                                    }
+                                                    td(colspan: 2) {
+                                                        label(text: 'Löschfrist')
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
                                                         label(text: '1.')
                                                     }
                                                     td {
@@ -1638,11 +1673,32 @@ public class verkehr02_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                             id: 'sEintrag1',
                                                             name: "_EINTRAG1",
                                                             clientPropertyJlawyerdescription: "Eintragung 1",
-                                                            clientPropertyAiPromptKey: "owi_eintrag1",
-                                                            clientPropertyAiPromptDescription: "Erste Eintragung im Fahreignungsregister",
                                                             text: '',
-                                                            columns: 40
+                                                            columns: 30
                                                         )
+                                                    }
+                                                    td {
+                                                        txtVorgangsnr1 = textField(
+                                                            id: 'sVorgangsnr1',
+                                                            name: "_VORGANGSNR1",
+                                                            clientPropertyJlawyerdescription: "Vorgangsnummer 1",
+                                                            text: '',
+                                                            columns: 15
+                                                        )
+                                                    }
+                                                    td {
+                                                        txtLoeschfrist1 = textField(
+                                                            id: 'sLoeschfrist1',
+                                                            name: "_LOESCHFRIST1",
+                                                            clientPropertyJlawyerdescription: "Löschfrist 1",
+                                                            text: '',
+                                                            columns: 10
+                                                        )
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                            GuiLib.dateSelector(txtLoeschfrist1, true);
+                                                        })
                                                     }
                                                 }
                                                 tr {
@@ -1654,11 +1710,32 @@ public class verkehr02_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                             id: 'sEintrag2',
                                                             name: "_EINTRAG2",
                                                             clientPropertyJlawyerdescription: "Eintragung 2",
-                                                            clientPropertyAiPromptKey: "owi_eintrag2",
-                                                            clientPropertyAiPromptDescription: "Zweite Eintragung im Fahreignungsregister",
                                                             text: '',
-                                                            columns: 40
+                                                            columns: 30
                                                         )
+                                                    }
+                                                    td {
+                                                        txtVorgangsnr2 = textField(
+                                                            id: 'sVorgangsnr2',
+                                                            name: "_VORGANGSNR2",
+                                                            clientPropertyJlawyerdescription: "Vorgangsnummer 2",
+                                                            text: '',
+                                                            columns: 15
+                                                        )
+                                                    }
+                                                    td {
+                                                        txtLoeschfrist2 = textField(
+                                                            id: 'sLoeschfrist2',
+                                                            name: "_LOESCHFRIST2",
+                                                            clientPropertyJlawyerdescription: "Löschfrist 2",
+                                                            text: '',
+                                                            columns: 10
+                                                        )
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                            GuiLib.dateSelector(txtLoeschfrist2, true);
+                                                        })
                                                     }
                                                 }
                                                 tr {
@@ -1670,11 +1747,32 @@ public class verkehr02_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                             id: 'sEintrag3',
                                                             name: "_EINTRAG3",
                                                             clientPropertyJlawyerdescription: "Eintragung 3",
-                                                            clientPropertyAiPromptKey: "owi_eintrag3",
-                                                            clientPropertyAiPromptDescription: "Dritte Eintragung im Fahreignungsregister",
                                                             text: '',
-                                                            columns: 40
+                                                            columns: 30
                                                         )
+                                                    }
+                                                    td {
+                                                        txtVorgangsnr3 = textField(
+                                                            id: 'sVorgangsnr3',
+                                                            name: "_VORGANGSNR3",
+                                                            clientPropertyJlawyerdescription: "Vorgangsnummer 3",
+                                                            text: '',
+                                                            columns: 15
+                                                        )
+                                                    }
+                                                    td {
+                                                        txtLoeschfrist3 = textField(
+                                                            id: 'sLoeschfrist3',
+                                                            name: "_LOESCHFRIST3",
+                                                            clientPropertyJlawyerdescription: "Löschfrist 3",
+                                                            text: '',
+                                                            columns: 10
+                                                        )
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                            GuiLib.dateSelector(txtLoeschfrist3, true);
+                                                        })
                                                     }
                                                 }
                                                 tr {
@@ -1686,11 +1784,32 @@ public class verkehr02_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                             id: 'sEintrag4',
                                                             name: "_EINTRAG4",
                                                             clientPropertyJlawyerdescription: "Eintragung 4",
-                                                            clientPropertyAiPromptKey: "owi_eintrag4",
-                                                            clientPropertyAiPromptDescription: "Vierte Eintragung im Fahreignungsregister",
                                                             text: '',
-                                                            columns: 40
+                                                            columns: 30
                                                         )
+                                                    }
+                                                    td {
+                                                        txtVorgangsnr4 = textField(
+                                                            id: 'sVorgangsnr4',
+                                                            name: "_VORGANGSNR4",
+                                                            clientPropertyJlawyerdescription: "Vorgangsnummer 4",
+                                                            text: '',
+                                                            columns: 15
+                                                        )
+                                                    }
+                                                    td {
+                                                        txtLoeschfrist4 = textField(
+                                                            id: 'sLoeschfrist4',
+                                                            name: "_LOESCHFRIST4",
+                                                            clientPropertyJlawyerdescription: "Löschfrist 4",
+                                                            text: '',
+                                                            columns: 10
+                                                        )
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                            GuiLib.dateSelector(txtLoeschfrist4, true);
+                                                        })
                                                     }
                                                 }
                                                 tr {
@@ -1702,11 +1821,32 @@ public class verkehr02_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                             id: 'sEintrag5',
                                                             name: "_EINTRAG5",
                                                             clientPropertyJlawyerdescription: "Eintragung 5",
-                                                            clientPropertyAiPromptKey: "owi_eintrag5",
-                                                            clientPropertyAiPromptDescription: "Fünfte Eintragung im Fahreignungsregister",
                                                             text: '',
-                                                            columns: 40
+                                                            columns: 30
                                                         )
+                                                    }
+                                                    td {
+                                                        txtVorgangsnr5 = textField(
+                                                            id: 'sVorgangsnr5',
+                                                            name: "_VORGANGSNR5",
+                                                            clientPropertyJlawyerdescription: "Vorgangsnummer 5",
+                                                            text: '',
+                                                            columns: 15
+                                                        )
+                                                    }
+                                                    td {
+                                                        txtLoeschfrist5 = textField(
+                                                            id: 'sLoeschfrist5',
+                                                            name: "_LOESCHFRIST5",
+                                                            clientPropertyJlawyerdescription: "Löschfrist 5",
+                                                            text: '',
+                                                            columns: 10
+                                                        )
+                                                    }
+                                                    td {
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                            GuiLib.dateSelector(txtLoeschfrist5, true);
+                                                        })
                                                     }
                                                 }
                                             }

@@ -664,7 +664,7 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "Verkehrsrecht Owi"
 description = "Erfassung von Daten zu einer Ordnungswidrigkeit"
-version = "0.1.0"
+version = "0.9.0"
 author = "Jens Kutschke"
-updated = "25.03.2026"
+updated = "02.04.2026"
 

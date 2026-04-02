@@ -556,22 +556,22 @@ public class freeform01_ui implements com.jdimension.jlawyer.client.plugins.form
         }
     }
 
-    private void refreshUi() {
-        if (currentUiDefinition != null && !currentUiDefinition.trim().isEmpty()) {
-            rebuildDynamicUi(currentUiDefinition)
-            JOptionPane.showMessageDialog(SCRIPTPANEL, "Oberfläche wurde aktualisiert.", "Erfolg", JOptionPane.INFORMATION_MESSAGE)
-        }
-    }
-
-    private void saveConfiguration() {
+    private void refreshAndSave() {
         if (currentUiDefinition == null || currentUiDefinition.trim().isEmpty()) {
             JOptionPane.showMessageDialog(SCRIPTPANEL, "Keine Konfiguration vorhanden.", "Fehler", JOptionPane.ERROR_MESSAGE)
             return
         }
 
         try {
+            rebuildDynamicUi(currentUiDefinition)
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(SCRIPTPANEL, "Fehler beim Aktualisieren der Oberfläche: " + e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE)
+            return
+        }
+
+        try {
             ServerSettings.getInstance().setSetting("forms.freeform01.uidefinition", currentUiDefinition)
-            JOptionPane.showMessageDialog(SCRIPTPANEL, "Konfiguration wurde gespeichert.", "Erfolg", JOptionPane.INFORMATION_MESSAGE)
+            JOptionPane.showMessageDialog(SCRIPTPANEL, "Oberfläche wurde aktualisiert und Konfiguration gespeichert.", "Erfolg", JOptionPane.INFORMATION_MESSAGE)
         } catch (Exception e) {
             JOptionPane.showMessageDialog(SCRIPTPANEL, "Fehler beim Speichern: " + e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE)
         }
@@ -666,8 +666,7 @@ Die Oberfläche wird über den Tab <b>Einstellungen</b> konfiguriert.</p>
 <li>Wählen Sie einen bestehenden Tab oder erstellen Sie einen neuen</li>
 <li>Füllen Sie die Felder für das neue Element aus</li>
 <li>Klicken Sie auf <b>Hinzufügen/Aktualisieren</b></li>
-<li>Klicken Sie auf <b>Oberfläche aktualisieren</b>, um die Änderungen zu sehen</li>
-<li>Klicken Sie auf <b>Konfiguration speichern</b>, um die Einstellungen dauerhaft zu speichern</li>
+<li>Klicken Sie auf <b>Speichern und Oberfläche aktualisieren</b>, um die Änderungen zu speichern und anzuzeigen</li>
 </ol>
 
 <h2>Elementtypen</h2>
@@ -739,12 +738,11 @@ um die Reihenfolge zu ändern.</p>
 <tr><td><b>Löschen</b></td><td>Entfernt das ausgewählte Element</td></tr>
 <tr><td><b>Nach oben / Nach unten</b></td><td>Ändert die Reihenfolge der Elemente</td></tr>
 <tr><td><b>Formular leeren</b></td><td>Leert alle Eingabefelder im Bearbeitungsformular</td></tr>
-<tr><td><b>Oberfläche aktualisieren</b></td><td>Baut die dynamischen Tabs neu auf (zeigt Änderungen an)</td></tr>
-<tr><td><b>Konfiguration speichern</b></td><td>Speichert die Konfiguration dauerhaft auf dem Server</td></tr>
+<tr><td><b>Speichern und Oberfläche aktualisieren</b></td><td>Speichert die Konfiguration auf dem Server und baut die dynamischen Tabs neu auf</td></tr>
 </table>
 
 <div class="warning">
-<b>Wichtig:</b> Änderungen werden erst nach Klick auf <b>Konfiguration speichern</b> dauerhaft gespeichert.
+<b>Wichtig:</b> Änderungen werden erst nach Klick auf <b>Speichern und Oberfläche aktualisieren</b> dauerhaft gespeichert.
 Ohne Speichern gehen Änderungen beim Schließen verloren!
 </div>
 
@@ -752,7 +750,7 @@ Ohne Speichern gehen Änderungen beim Schließen verloren!
 <ul>
 <li>Strukturieren Sie Ihre Eingabemaske mit <b>Abschnittsüberschriften</b> und <b>Trennlinien</b></li>
 <li>Verwenden Sie sprechende Platzhalter-Namen für einfache Zuordnung in Vorlagen</li>
-<li>Testen Sie die Oberfläche mit <b>Oberfläche aktualisieren</b>, bevor Sie speichern</li>
+<li>Testen Sie Ihre Änderungen mit <b>Speichern und Oberfläche aktualisieren</b></li>
 <li>Nutzen Sie mehrere Tabs, um umfangreiche Formulare übersichtlich zu gliedern</li>
 </ul>
 
@@ -883,9 +881,7 @@ Ohne Speichern gehen Änderungen beim Schließen verloren!
                                     flowLayout(alignment: FlowLayout.LEFT)
                                     button(text: 'Formular leeren', actionPerformed: { clearElementForm() })
                                     hstrut(width: 20)
-                                    button(text: 'Oberfläche aktualisieren', actionPerformed: { refreshUi() })
-                                    hstrut(width: 20)
-                                    button(text: 'Konfiguration speichern', actionPerformed: { saveConfiguration() })
+                                    button(text: 'Speichern und Oberfläche aktualisieren', actionPerformed: { refreshAndSave() })
                                 }
                             }
                         }

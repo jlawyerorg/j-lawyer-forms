@@ -805,7 +805,10 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     JCheckBox chkSonstigeKosten2Diff;
     JCheckBox chkSonstigeKosten3Diff;
     JCheckBox chkSonstigeKosten4Diff;
-    
+
+    JCheckBox chkWeiternutzung;
+    JPanel pnlHaltefrist;
+
     JComboBox cmbNutzAusfallGruppe;
     JComboBox cmbFahrzeugart;
     JTextField txtNutzungsAusfallVon;
@@ -898,6 +901,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         FormsLib.setExtractedValues(attributes, this.SCRIPTPANEL);
         toggleSchadentyp();
         togglePrivatGeschaeft();
+        toggleWeiternutzung();
         
         berechnen(txtReparaturKosten, txtReparaturKostenMwst, txtReparaturKostenReg, txtReparaturKostenDiff);
         berechnen(txtNfa, txtNfaMwst, txtNfaReg, txtNfaDiff, true)
@@ -933,6 +937,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         FormsLib.setPlaceHolderValues(prefix, placeHolderValues, this.SCRIPTPANEL);
         toggleSchadentyp();
         togglePrivatGeschaeft();
+        toggleWeiternutzung();
         
         berechnen(txtReparaturKosten, txtReparaturKostenMwst, txtReparaturKostenReg, txtReparaturKostenDiff);
         berechnen(txtNfa, txtNfaMwst, txtNfaReg, txtNfaDiff, true)
@@ -1063,40 +1068,6 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                     }
                                                 }
                                             }
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                    
-                                            label(text: 'Ende der Haltefrist:')
-                                    
-                                    
-                                        }
-                                        td {
-                                            txtHalteFrist=textField(id: 'sHalteFrist', name: "_HALTEFRIST", clientPropertyJlawyerdescription: "Ablauf der 6-monatigen Haltefrist", text: '', columns: 10, enabled: true)
-                                            
-                                        }
-                                
-                                    }
-                                    tr {
-                                        td (colfill:true) {
-                                    
-                                            label(text: '')
-                                    
-                                    
-                                        }
-                                        td {
-                                            button(text: 'Frist in die Akte übernehmen', actionPerformed: {
-                                                    String caseId=callback.getCaseId();
-                                                    int response=GuiLib.askYesNo("Frist eintragen?", "Soll eine Frist für den Ablauf der 6-monatigen Haltefrist erstellt werden?");
-                                                    if(response==javax.swing.JOptionPane.YES_OPTION) {
-                                                        try {
-                                                            StorageLib.addRespite(caseId, "Ablauf 6 Monate Haltefrist", null, new Date().parse("dd.MM.yyyy", txtHalteFrist.text));
-                                                        } catch (Throwable t) {
-                                                            t.printStackTrace();
-                                                        }
-                                                    }
-                                                })
                                         }
                                     }
                                     tr {
@@ -1374,17 +1345,28 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                 tableLayout (cellpadding: 5) {
                                     tr {
                                         td (colfill:true) {
-                                            grpPrivatGeschaeft = buttonGroup(id:'grpPrivatGeschaeft')
-                                            radioFahrzeugPrivat = radioButton (text: 'Privatfahrzeug', name: "_FHRZGPRIVAT", clientPropertyJlawyerdescription: "Privatfahrzeug", buttonGroup: grpPrivatGeschaeft, selected: true, actionPerformed: {
-                                                    togglePrivatGeschaeft()
-                                                
-                                                })
+                                            label(text: 'vorsteuerabzugsberechtigt:')
                                         }
                                         td (colspan: 2) {
-                                            radioFahrzeugGesch = radioButton (text: 'Betriebsfahrzeug', name: "_FHRZGBETRIEB", clientPropertyJlawyerdescription: "Betriebsfahrzeug", buttonGroup: grpPrivatGeschaeft, selected: false, actionPerformed: {
-                                                    togglePrivatGeschaeft()
-                                                
-                                                })
+                                            panel {
+                                                tableLayout (cellpadding: 0) {
+                                                    tr {
+                                                        td {
+                                                            grpPrivatGeschaeft = buttonGroup(id:'grpPrivatGeschaeft')
+                                                            radioFahrzeugPrivat = radioButton (text: 'nein', name: "_FHRZGPRIVAT", clientPropertyJlawyerdescription: "nicht vorsteuerabzugsberechtigt / Privatfahrzeug", buttonGroup: grpPrivatGeschaeft, selected: true, actionPerformed: {
+                                                                    togglePrivatGeschaeft()
+
+                                                                })
+                                                        }
+                                                        td {
+                                                            radioFahrzeugGesch = radioButton (text: 'ja', name: "_FHRZGBETRIEB", clientPropertyJlawyerdescription: "vorsteuerabzugsberechtigt / Betriebsfahrzeug", buttonGroup: grpPrivatGeschaeft, selected: false, actionPerformed: {
+                                                                    togglePrivatGeschaeft()
+
+                                                                })
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                     
@@ -1936,25 +1918,103 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
 
                     tr {
                         td (colfill:true, align: 'left') {
+                            panel(border: titledBorder(title: 'Weitere Nutzung')) {
+                                tableLayout (cellpadding: 5) {
+                                    tr {
+                                        td {
+                                            label(text: '   ')
+                                        }
+                                        td {
+                                            chkScheckheft = checkBox(text: 'Scheckheftgepflegt', name: "_SCHECKHEFTG", clientPropertyJlawyerdescription: "scheckheftgepflegt", selected: false, actionPerformed: {
+                                                    berechnen()
+
+                                                })
+                                        }
+
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: '   ')
+                                        }
+                                        td (colspan: 3) {
+                                            chkWeiternutzung = checkBox(text: 'Weiternutzung über 6 Monate vorgesehen', name: "_WEITERNUTZUNG6MON", clientPropertyJlawyerdescription: "Weiternutzung über 6 Monate vorgesehen", selected: false, actionPerformed: {
+                                                    toggleWeiternutzung()
+                                                })
+                                        }
+
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: '   ')
+                                        }
+                                        td (colspan: 3) {
+                                            pnlHaltefrist = panel {
+                                                tableLayout (cellpadding: 5) {
+                                                    tr {
+                                                        td (colfill:true) {
+                                                            label(text: 'Ende der Haltefrist:')
+                                                        }
+                                                        td {
+                                                            txtHalteFrist=textField(id: 'sHalteFrist', name: "_HALTEFRIST", clientPropertyJlawyerdescription: "Ablauf der 6-monatigen Haltefrist", text: '', columns: 10, enabled: true)
+                                                        }
+                                                        td {
+                                                            button(text: 'Frist in die Akte übernehmen', actionPerformed: {
+                                                                    String caseId=callback.getCaseId();
+                                                                    int response=GuiLib.askYesNo("Frist eintragen?", "Soll eine Frist für den Ablauf der 6-monatigen Haltefrist erstellt werden?");
+                                                                    if(response==javax.swing.JOptionPane.YES_OPTION) {
+                                                                        try {
+                                                                            StorageLib.addRespite(caseId, "Ablauf 6 Monate Haltefrist", null, new Date().parse("dd.MM.yyyy", txtHalteFrist.text));
+                                                                        } catch (Throwable t) {
+                                                                            t.printStackTrace();
+                                                                        }
+                                                                    }
+                                                                })
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Teil- oder Selbstreparatur vorgesehen:')
+                                        }
+                                        td (colspan: 3) {
+                                            textField(id: 'sTeilSelbstRepa', clientPropertyJlawyerdescription: "Teil- oder Selbstreparatur vorgesehen?", name: "_TEILSELBSTREPA", text: '', columns:20)
+                                        }
+
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+
+                    tr {
+                        td (colfill:true, align: 'left') {
                             panel(border: titledBorder(title: 'Schadeninformationen:')) {
                                 tableLayout (cellpadding: 5) {
                                     tr {
                                         td {
                                             label(text: 'Gutachtennummer:')
                                         }
-                                        td {
+                                        td (colspan: 3) {
                                             textField(id: 'sGutachtennummer', clientPropertyJlawyerdescription: "Gutachtennummer", name: "_GUTACHTENNR", clientPropertyAiPromptKey: "gutachten_nummer", clientPropertyAiPromptDescription: "Gutachtennummer oder Aktenzeichen des Gutachters", text: '', columns:20)
                                         }
+
+                                    }
+                                    tr {
                                         td {
                                             label(text: 'Gutachten vom')
                                         }
-                                        td {
+                                        td (colspan: 3) {
                                             panel {
                                                 tableLayout (cellpadding: 0) {
                                                     tr {
                                                         td (align: 'right') {
                                                             txtGutachtenVom=formattedTextField(id: 'sGutachtenVom', clientPropertyJlawyerdescription: "Gutachten vom (Datum)", name: "_GUTACHTENVOM", clientPropertyAiPromptKey: "gutachten_vom", clientPropertyAiPromptDescription: "Datum, an welchem das Gutachten erstellt wurde", format: datumsFormat, columns: 10, text: '', enabled: true, keyReleased: {
-                                                                    berechnenReparaturDauer();  
+                                                                    berechnenReparaturDauer();
                                                                 })
                                                         }
                                                         td {
@@ -1965,12 +2025,38 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                                                     GuiLib.dateSelector(txtGutachtenVom, true);
                                                                 })
                                                         }
-                                                        
+
                                                     }
                                                 }
                                             }
                                         }
-                                        
+
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: 'Besichtigungstermin:')
+                                        }
+                                        td (colspan: 3) {
+                                            panel {
+                                                tableLayout (cellpadding: 0) {
+                                                    tr {
+                                                        td (align: 'right') {
+                                                            txtBesichtigungstermin=formattedTextField(id: 'sBesichtigungstermin', clientPropertyJlawyerdescription: "Besichtigungstermin (Datum)", name: "_GUTACHTENBES", clientPropertyAiPromptKey: "gutachten_besichtigung", clientPropertyAiPromptDescription: "Datum des Besichtigungstermins des Fahrzeugs durch den Gutachter", format: datumsFormat, columns: 10, text: '', enabled: true)
+                                                        }
+                                                        td {
+                                                            label (text: ' ')
+                                                        }
+                                                        td {
+                                                            button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                    GuiLib.dateSelector(txtBesichtigungstermin, true);
+                                                                })
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                        }
+
                                     }
                                     tr {
                                         td (colspan: 4) {
@@ -2062,10 +2148,10 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Position')
                                         }
                                         td {
-                                            label(text: 'Betrag')
+                                            label(text: 'Betrag (netto)')
                                         }
                                         td {
-                                            label(text: 'zzgl. MwSt.')
+                                            label(text: 'zzgl. USt.')
                                         }
                                         td {
                                             label(text: 'reguliert')
@@ -2232,10 +2318,10 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Position')
                                         }
                                         td {
-                                            label(text: 'Betrag')
+                                            label(text: 'Betrag (netto)')
                                         }
                                         td {
-                                            label(text: 'inkl. MwSt.')
+                                            label(text: 'inkl. USt.')
                                         }
                                         td {
                                             label(text: 'reguliert')
@@ -2317,47 +2403,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: '   ')
                                         }
                                     }
-                                    
-                                    tr {
-                                        td (colspan: 4) {
-                                            label(text: '   ')
-                                        }
-                                
-                                    }
-                                    
-                                    tr {
-                                        td {
-                                            label(text: '   ')
-                                        }
-                                        td {
-                                            chkScheckheft = checkBox(text: 'Scheckheftgepflegt', name: "_SCHECKHEFTG", clientPropertyJlawyerdescription: "scheckheftgepflegt", selected: false, actionPerformed: {
-                                                    berechnen()
-                                                
-                                                })
-                                        }
-                                
-                                    }
-                                    tr {
-                                        td {
-                                            label(text: '   ')
-                                        }
-                                        td (colspan: 3) {
-                                            checkBox(text: 'Weiternutzung über 6 Monate vorgesehen', name: "_WEITERNUTZUNG6MON", clientPropertyJlawyerdescription: "Weiternutzung über 6 Monate vorgesehen", selected: false, actionPerformed: {
-                                                
-                                                })
-                                        }
-                                
-                                    }
-                                    tr {
-                                        td {
-                                            label(text: 'Teil- oder Selbstreparatur vorgesehen:')
-                                        }
-                                        td (colspan: 3) {
-                                            textField(id: 'sTeilSelbstRepa', clientPropertyJlawyerdescription: "Teil- oder Selbstreparatur vorgesehen?", name: "_TEILSELBSTREPA", text: '', columns:20)
-                                        }
-                                        
-                                    }
-                                }   
+                                }
                         
                             }     
                         }
@@ -2372,10 +2418,10 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Position')
                                         }
                                         td {
-                                            label(text: 'Betrag')
+                                            label(text: 'Betrag (netto)')
                                         }
                                         td {
-                                            label(text: 'zzgl. MwSt.')
+                                            label(text: 'zzgl. USt.')
                                         }
                                         td {
                                             label(text: 'reguliert')
@@ -2853,10 +2899,10 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: '')
                                         }
                                         td {
-                                            label(text: 'Betrag')
+                                            label(text: 'Betrag (netto)')
                                         }
                                         td {
-                                            label(text: 'zzgl. MwSt.')
+                                            label(text: 'zzgl. USt.')
                                     
                                         }
                                         td {
@@ -2950,12 +2996,17 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
             txtReparaturBeginn.putClientProperty("JTextField.showClearButton", true)
             txtReparaturEnde.putClientProperty("JTextField.showClearButton", true)
             txtReparaturRechnung.putClientProperty("JTextField.showClearButton", true)
+            toggleWeiternutzung();
         }
 
         return SCRIPTPANEL;
 
     }
     
+    private void toggleWeiternutzung() {
+        pnlHaltefrist.setVisible(chkWeiternutzung.isSelected());
+    }
+
     private void togglePrivatGeschaeft() {
         berechnen(txtReparaturKosten, txtReparaturKostenMwst, txtReparaturKostenReg, txtReparaturKostenDiff);
         berechnen(txtNfa, txtNfaMwst, txtNfaReg, txtNfaDiff, true);

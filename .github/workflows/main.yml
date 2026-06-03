@@ -37,8 +37,8 @@ jobs:
         run:  |
           mkdir /home/runner/.ant
           mkdir /home/runner/.ant/lib
-          wget -O /home/runner/.ant/lib/jsh.jar https://search.maven.org/remotecontent?filepath=com/jcraft/jsch/0.1.55/jsch-0.1.55.jar
-          wget -O /home/runner/.ant/lib/ant-jsh.jar https://search.maven.org/remotecontent?filepath=org/apache/ant/ant-jsch/1.10.6/ant-jsch-1.10.6.jar
+          wget --user-agent="Mozilla/5.0" -O /home/runner/.ant/lib/jsh.jar https://repo1.maven.org/maven2/com/jcraft/jsch/0.1.55/jsch-0.1.55.jar
+          wget --user-agent="Mozilla/5.0" -O /home/runner/.ant/lib/ant-jsh.jar https://repo1.maven.org/maven2/org/apache/ant/ant-jsch/1.10.6/ant-jsch-1.10.6.jar
 
       - name: Upload to server
         run: ant upload

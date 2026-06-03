@@ -1,0 +1,5 @@
+name = "Fluggastrechte"
+description = "Falldatenblatt fuer Fluggastrechtesachen (EU-VO 261/2004, Montrealer Uebereinkommen, Ticketerstattung)"
+version = "1.1.0"
+author = "Sebastian Schwaebe"
+updated = "24.04.2026"

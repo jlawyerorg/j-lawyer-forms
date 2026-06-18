@@ -719,6 +719,7 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
     JTextField txtPflVersich;
     JTextField txtPflSonstAusg;
     JTextField txtPflWohnwert;
+    JCheckBox  chkPflErwerbstaetig;
     JTextField txtPflBerufAufw;
     JTextField txtPflGesamtEink;
     JTextField txtPflGesamtAusg;
@@ -732,6 +733,7 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
     JTextField txtEhegBerufKonkret;
     JTextField txtEhegAusgaben;
     JTextField txtEhegWohnwert;
+    JCheckBox  chkEhegErwerbstaetig;
     JTextField txtEhegBerufAufw;
     JTextField txtEhegBereinigt;
 
@@ -750,6 +752,9 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
     JTextField[] txtKindZahl = new JTextField[ANZ_KINDER];
     JSpinner     spnEinstufungAnpassung;
     JTextField   txtKindGruppe;
+    JTextField   txtKindSelbstbehalt;
+    JTextField   txtKindRest;
+    JTextField   txtKindHinweis;
     JTextField   txtKindSummeBedarf;
     JTextField   txtKindSummeZahl;
     BigDecimal   summeKindZahl = BigDecimal.ZERO;
@@ -761,7 +766,10 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
     JTextField   txtEhegUAnrechPfl;
     JTextField   txtEhegUAnrechEheg;
     JTextField   txtEhegUMethode;
+    JTextField   txtEhegUExistmin;
+    JTextField   txtEhegUSelbstbehalt;
     JTextField   txtEhegUBedarf;
+    JTextField   txtEhegUHinweis;
 
     FormPluginCallback callback = null;
 
@@ -890,6 +898,9 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     td { label(text: 'berücksichtigte berufsbed. Aufwendungen:') }
                                                     td { txtPflBerufAufw = textField(id: 'sPflBerufAufw', name: "_PFLBERUFAUFW", clientPropertyJlawyerdescription: "berücksichtigte berufsbedingte Aufwendungen Pflichtiger", text: '0,00', columns: 12, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
                                                 }
+                                                tr {
+                                                    td(colspan: 2) { chkPflErwerbstaetig = checkBox(id: 'cPflErwerbstaetig', text: 'Unterhaltspflichtige/r ist erwerbstätig (Selbstbehalt 1.450 EUR statt 1.200 EUR)', name: "_PFLERWERBSTAETIG", clientPropertyJlawyerdescription: "Unterhaltspflichtige/r erwerbstätig", selected: true, actionPerformed: { berechnen() }) }
+                                                }
                                             }
                                         }
                                     }
@@ -961,6 +972,9 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     td { label(text: 'berücksichtigte berufsbed. Aufwendungen:') }
                                                     td { txtEhegBerufAufw = textField(id: 'sEhegBerufAufw', name: "_EHEGBERUFAUFW", clientPropertyJlawyerdescription: "berücksichtigte berufsbedingte Aufwendungen Ehegatte", text: '0,00', columns: 12, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
                                                 }
+                                                tr {
+                                                    td(colspan: 2) { chkEhegErwerbstaetig = checkBox(id: 'cEhegErwerbstaetig', text: 'Ehegatte ist erwerbstätig (Existenzminimum 1.450 EUR statt 1.200 EUR)', name: "_EHEGERWERBSTAETIG", clientPropertyJlawyerdescription: "Ehegatte erwerbstätig", selected: false, actionPerformed: { berechnen() }) }
+                                                }
                                             }
                                         }
                                     }
@@ -984,7 +998,18 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     td { spnEinstufungAnpassung = spinner(id: 'nEinstufungAnpassung', name: "_KINDEINSTUFUNGANP", clientPropertyJlawyerdescription: "Anpassung der Einkommensgruppe (Herauf-/Herabstufung)", model: new SpinnerNumberModel(0, -14, 14, 1), stateChanged: { berechnen() }) }
                                                 }
                                                 tr {
-                                                    td(colspan: 2) { label(text: '<html><i>Die Düsseldorfer Tabelle ist auf zwei Unterhaltsberechtigte ausgelegt. Bei mehr/weniger Berechtigten kann eine Herab-/Heraufstufung angezeigt sein.</i></html>') }
+                                                    td { label(text: 'Notwendiger Selbstbehalt Pflichtige/r:') }
+                                                    td { txtKindSelbstbehalt = textField(id: 'sKindSelbstbehalt', name: "_KINDSELBSTBEHALT", clientPropertyJlawyerdescription: "notwendiger Selbstbehalt gegenüber Kindern", text: '0,00', columns: 12, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
+                                                }
+                                                tr {
+                                                    td { label(text: 'verbleibendes Einkommen nach Kindesunterhalt:') }
+                                                    td { txtKindRest = textField(id: 'sKindRest', name: "_KINDREST", clientPropertyJlawyerdescription: "verbleibendes Einkommen nach Kindesunterhalt", text: '0,00', columns: 12, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
+                                                }
+                                                tr {
+                                                    td(colspan: 2) { txtKindHinweis = textField(id: 'sKindHinweis', name: "_KINDHINWEIS", clientPropertyJlawyerdescription: "Hinweis Bedarfskontrolle / Mangelfall Kindesunterhalt", text: '', columns: 60, enabled: false, disabledTextColor: java.awt.Color.RED) }
+                                                }
+                                                tr {
+                                                    td(colspan: 2) { label(text: '<html><i>Die Düsseldorfer Tabelle ist auf zwei Unterhaltsberechtigte ausgelegt. Bei mehr/weniger Berechtigten kann eine Herab-/Heraufstufung angezeigt sein. Bei Unterschreiten des Bedarfskontrollbetrags wird automatisch herabgestuft, bei Unterschreiten des Selbstbehalts erfolgt eine Mangelfallberechnung.</i></html>') }
                                                 }
                                             }
                                         }
@@ -1069,8 +1094,19 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     td { txtEhegUMethode = textField(id: 'sEhegUMethode', name: "_EHEGUMETHODE", clientPropertyJlawyerdescription: "Berechnungsmethode Ehegattenunterhalt", text: '', columns: 40, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
                                                 }
                                                 tr {
+                                                    td { label(text: 'Existenzminimum Berechtigte/r (Mindestbedarf):') }
+                                                    td { txtEhegUExistmin = textField(id: 'sEhegUExistmin', name: "_EHEGUEXISTMIN", clientPropertyJlawyerdescription: "Existenzminimum / Mindestbedarf Berechtigter", text: '0,00', columns: 12, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
+                                                }
+                                                tr {
+                                                    td { label(text: 'angemessener Selbstbehalt Pflichtige/r:') }
+                                                    td { txtEhegUSelbstbehalt = textField(id: 'sEhegUSelbstbehalt', name: "_EHEGUSELBSTBEHALT", clientPropertyJlawyerdescription: "angemessener Selbstbehalt Pflichtiger (Ehegattenunterhalt)", text: '0,00', columns: 12, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
+                                                }
+                                                tr {
                                                     td { label(text: '<html><b>Unterhaltsbedarf (auf volle Euro aufgerundet):</b></html>') }
                                                     td { txtEhegUBedarf = textField(id: 'sEhegUBedarf', name: "_EHEGUBEDARF", clientPropertyJlawyerdescription: "Unterhaltsbedarf Ehegatte", text: '0,00', columns: 12, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
+                                                }
+                                                tr {
+                                                    td(colspan: 2) { txtEhegUHinweis = textField(id: 'sEhegUHinweis', name: "_EHEGUHINWEIS", clientPropertyJlawyerdescription: "Hinweis Mangelfall Ehegattenunterhalt", text: '', columns: 60, enabled: false, disabledTextColor: java.awt.Color.RED) }
                                                 }
                                             }
                                         }
@@ -1218,41 +1254,100 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
     private void berechneKinder(BigDecimal pflBereinigt) {
         if (txtKindGruppe == null) return;   // Tab noch nicht aufgebaut
 
-        def basis = DuesseldorferTabelle2026.gruppeFuer(pflBereinigt);
-        int anpassung = ((Number) spnEinstufungAnpassung.getValue()).intValue();
-        int gruppeNr = basis.nr + anpassung;
-        if (gruppeNr < 1) gruppeNr = 1;
-        if (gruppeNr > DuesseldorferTabelle2026.GRUPPEN.size()) gruppeNr = DuesseldorferTabelle2026.GRUPPEN.size();
-        def gruppe = DuesseldorferTabelle2026.GRUPPEN.get(gruppeNr - 1);
-        txtKindGruppe.setText(gruppe.getBezeichnung());
-
         String[] stufenNamen = ['0-5', '6-11', '12-17', 'ab 18'] as String[];
-        BigDecimal summeBedarf = BigDecimal.ZERO;
-        BigDecimal summeZahl = BigDecimal.ZERO;
 
+        boolean erwerbstaetig = chkPflErwerbstaetig.isSelected();
+        BigDecimal selbstbehalt = DuesseldorferTabelle2026.selbstbehaltKind(erwerbstaetig);
+        txtKindSelbstbehalt.setText(betragFormat.format(selbstbehalt));
+
+        // Aktive Kinder erfassen (Altersstufe, Minderjährigkeit, anrechenbares Kindergeld)
+        boolean[] aktiv = new boolean[ANZ_KINDER];
+        int[] stufe = new int[ANZ_KINDER];
+        boolean[] minderj = new boolean[ANZ_KINDER];
+        BigDecimal[] kindergeld = new BigDecimal[ANZ_KINDER];
         for (int i = 0; i < ANZ_KINDER; i++) {
             String name = txtKindName[i].getText();
             int alter = ((Number) spnKindAlter[i].getValue()).intValue();
-            boolean aktiv = (name != null && !name.trim().isEmpty()) || alter > 0;
+            aktiv[i] = (name != null && !name.trim().isEmpty()) || alter > 0;
+            if (aktiv[i]) {
+                stufe[i] = DuesseldorferTabelle2026.altersstufe(alter);
+                minderj[i] = alter < 18;
+                kindergeld[i] = DuesseldorferTabelle2026.kindergeldAnrechnung(minderj[i]);
+            }
+        }
 
-            if (!aktiv) {
+        // Ausgangs-Einkommensgruppe inkl. manueller Herauf-/Herabstufung
+        def basis = DuesseldorferTabelle2026.gruppeFuer(pflBereinigt);
+        int anpassung = ((Number) spnEinstufungAnpassung.getValue()).intValue();
+        int maxNr = DuesseldorferTabelle2026.GRUPPEN.size();
+        int gruppeNr = basis.nr + anpassung;
+        if (gruppeNr < 1) gruppeNr = 1;
+        if (gruppeNr > maxNr) gruppeNr = maxNr;
+
+        // Bedarfskontrollbetrag-Prüfung: solange herabstufen, bis das nach Abzug
+        // des Kindesunterhalts verbleibende Einkommen den Bedarfskontrollbetrag
+        // (bzw. in Gruppe 1 den notwendigen Selbstbehalt) erreicht.
+        boolean herabgestuft = false;
+        boolean mangelfall = false;
+        def gruppe = DuesseldorferTabelle2026.GRUPPEN.get(gruppeNr - 1);
+        while (true) {
+            gruppe = DuesseldorferTabelle2026.GRUPPEN.get(gruppeNr - 1);
+            BigDecimal zahlSumme = BigDecimal.ZERO;
+            for (int i = 0; i < ANZ_KINDER; i++) {
+                if (!aktiv[i]) continue;
+                BigDecimal z = gruppe.bedarf[stufe[i]].subtract(kindergeld[i]);
+                if (z.compareTo(BigDecimal.ZERO) < 0) z = BigDecimal.ZERO;
+                zahlSumme = zahlSumme.add(z);
+            }
+            BigDecimal rest = pflBereinigt.subtract(zahlSumme);
+            BigDecimal kontrolle = (gruppe.bedarfskontrollbetrag != null) ? gruppe.bedarfskontrollbetrag : selbstbehalt;
+            if (rest.compareTo(kontrolle) >= 0) {
+                break;   // Bedarfskontrollbetrag / Selbstbehalt eingehalten
+            }
+            if (gruppeNr > 1) {
+                gruppeNr--;
+                herabgestuft = true;
+            } else {
+                mangelfall = true;   // Gruppe 1 und Selbstbehalt unterschritten
+                break;
+            }
+        }
+        txtKindGruppe.setText(gruppe.getBezeichnung());
+
+        // Mangelfall: Verteilungsmasse (= Einkommen abzgl. Selbstbehalt) anteilig
+        // nach den Einsatzbeträgen (Zahlbetrag der Gruppe 1) auf die Kinder verteilen.
+        BigDecimal verteilungsmasse = pflBereinigt.subtract(selbstbehalt);
+        if (verteilungsmasse.compareTo(BigDecimal.ZERO) < 0) verteilungsmasse = BigDecimal.ZERO;
+        BigDecimal einsatzSumme = BigDecimal.ZERO;
+        if (mangelfall) {
+            for (int i = 0; i < ANZ_KINDER; i++) {
+                if (!aktiv[i]) continue;
+                BigDecimal z = gruppe.bedarf[stufe[i]].subtract(kindergeld[i]);
+                if (z.compareTo(BigDecimal.ZERO) < 0) z = BigDecimal.ZERO;
+                einsatzSumme = einsatzSumme.add(z);
+            }
+        }
+
+        BigDecimal summeBedarf = BigDecimal.ZERO;
+        BigDecimal summeZahl = BigDecimal.ZERO;
+        for (int i = 0; i < ANZ_KINDER; i++) {
+            if (!aktiv[i]) {
                 lblKindStufe[i].setText('-');
                 txtKindBedarf[i].setText(betragFormat.format(BigDecimal.ZERO));
                 txtKindKindergeld[i].setText(betragFormat.format(BigDecimal.ZERO));
                 txtKindZahl[i].setText(betragFormat.format(BigDecimal.ZERO));
                 continue;
             }
-
-            int stufe = DuesseldorferTabelle2026.altersstufe(alter);
-            boolean minderjaehrig = alter < 18;
-            BigDecimal bedarf = gruppe.bedarf[stufe];
-            BigDecimal kindergeld = DuesseldorferTabelle2026.kindergeldAnrechnung(minderjaehrig);
-            BigDecimal zahl = bedarf.subtract(kindergeld).setScale(2, RoundingMode.HALF_UP);
+            BigDecimal bedarf = gruppe.bedarf[stufe[i]];
+            BigDecimal zahl = bedarf.subtract(kindergeld[i]);
             if (zahl.compareTo(BigDecimal.ZERO) < 0) zahl = BigDecimal.ZERO;
+            if (mangelfall && einsatzSumme.compareTo(BigDecimal.ZERO) > 0) {
+                zahl = verteilungsmasse.multiply(zahl).divide(einsatzSumme, 2, RoundingMode.HALF_UP);
+            }
 
-            lblKindStufe[i].setText(stufenNamen[stufe] + (minderjaehrig ? '' : ' (vollj.)'));
+            lblKindStufe[i].setText(stufenNamen[stufe[i]] + (minderj[i] ? '' : ' (vollj.)'));
             txtKindBedarf[i].setText(betragFormat.format(bedarf));
-            txtKindKindergeld[i].setText(betragFormat.format(kindergeld));
+            txtKindKindergeld[i].setText(betragFormat.format(kindergeld[i]));
             txtKindZahl[i].setText(betragFormat.format(zahl));
 
             summeBedarf = summeBedarf.add(bedarf);
@@ -1262,6 +1357,17 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
         this.summeKindZahl = summeZahl;
         txtKindSummeBedarf.setText(betragFormat.format(summeBedarf));
         txtKindSummeZahl.setText(betragFormat.format(summeZahl));
+
+        BigDecimal restEink = pflBereinigt.subtract(summeZahl);
+        txtKindRest.setText(betragFormat.format(restEink));
+
+        String hinweis = "";
+        if (mangelfall) {
+            hinweis = "Mangelfall: Zahlbeträge anteilig gekürzt; Selbstbehalt " + betragFormat.format(selbstbehalt) + " EUR.";
+        } else if (herabgestuft) {
+            hinweis = "Herabstufung auf " + gruppe.getBezeichnung() + " wegen Bedarfskontrollbetrag.";
+        }
+        txtKindHinweis.setText(hinweis);
     }
 
     /**
@@ -1274,6 +1380,11 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
 
         BigDecimal bonusSatz = DuesseldorferTabelle2026.ERWERBSTAETIGENBONUS;
         boolean mitBonus = chkErwerbsbonus.isSelected();
+
+        BigDecimal existenzmin = DuesseldorferTabelle2026.existenzminimumEhegatte(chkEhegErwerbstaetig.isSelected());
+        BigDecimal selbstbehalt = DuesseldorferTabelle2026.selbstbehaltEhegatte(chkPflErwerbstaetig.isSelected());
+        txtEhegUExistmin.setText(betragFormat.format(existenzmin));
+        txtEhegUSelbstbehalt.setText(betragFormat.format(selbstbehalt));
 
         // --- Unterhaltspflichtige/r ---
         BigDecimal pflErwerb = parse(txtPflNettoErwerb).add(parse(txtPflSonderzuw)).add(parse(txtPflGewinn));
@@ -1312,7 +1423,19 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
         if (bedarf.compareTo(BigDecimal.ZERO) < 0) bedarf = BigDecimal.ZERO;
         // Unterhaltsbedarf auf volle Euro aufgerundet
         BigDecimal bedarfGerundet = bedarf.setScale(0, RoundingMode.CEILING);
+
+        // Leistungsfähigkeit / Mangelfall: dem Pflichtigen muss sein angemessener
+        // Selbstbehalt verbleiben. Andernfalls wird der Unterhalt entsprechend gekürzt.
+        String hinweis = "";
+        BigDecimal leistungsfaehig = anrechPfl.subtract(selbstbehalt);
+        if (leistungsfaehig.compareTo(BigDecimal.ZERO) < 0) leistungsfaehig = BigDecimal.ZERO;
+        leistungsfaehig = leistungsfaehig.setScale(0, RoundingMode.DOWN);
+        if (bedarfGerundet.compareTo(leistungsfaehig) > 0) {
+            bedarfGerundet = leistungsfaehig;
+            hinweis = "Mangelfall: Unterhalt auf die Leistungsfähigkeit begrenzt (Selbstbehalt " + betragFormat.format(selbstbehalt) + " EUR).";
+        }
         txtEhegUBedarf.setText(betragFormat.format(bedarfGerundet));
+        txtEhegUHinweis.setText(hinweis);
     }
 
 }

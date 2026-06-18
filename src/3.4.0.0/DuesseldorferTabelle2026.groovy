@@ -695,8 +695,36 @@ class DuesseldorferTabelle2026 {
 
     // Notwendiger Selbstbehalt des Unterhaltspflichtigen gegenüber minderjährigen
     // bzw. privilegiert volljährigen Kindern (Stand 2026).
-    static final BigDecimal SELBSTBEHALT_ERWERBSTAETIG = new BigDecimal("1650")
-    static final BigDecimal SELBSTBEHALT_NICHTERWERBSTAETIG = new BigDecimal("1450")
+    static final BigDecimal SELBSTBEHALT_KIND_ERWERBSTAETIG = new BigDecimal("1450")
+    static final BigDecimal SELBSTBEHALT_KIND_NICHTERWERBSTAETIG = new BigDecimal("1200")
+
+    // Angemessener Selbstbehalt gegenüber nicht privilegierten volljährigen Kindern.
+    static final BigDecimal SELBSTBEHALT_VOLLJ_KIND = new BigDecimal("1750")
+
+    // Angemessener Eigenbedarf (Selbstbehalt) des Unterhaltspflichtigen gegenüber dem
+    // getrenntlebenden / geschiedenen Ehegatten (Stand 2026).
+    static final BigDecimal SELBSTBEHALT_EHEGATTE_ERWERBSTAETIG = new BigDecimal("1600")
+    static final BigDecimal SELBSTBEHALT_EHEGATTE_NICHTERWERBSTAETIG = new BigDecimal("1475")
+
+    // Existenzminimum / Mindestbedarf des unterhaltsberechtigten Ehegatten
+    // einschließlich trennungsbedingten Mehrbedarfs (Stand 2026).
+    static final BigDecimal EXISTENZMINIMUM_EHEGATTE_ERWERBSTAETIG = new BigDecimal("1450")
+    static final BigDecimal EXISTENZMINIMUM_EHEGATTE_NICHTERWERBSTAETIG = new BigDecimal("1200")
+
+    /** Notwendiger Selbstbehalt gegenüber minderjährigen Kindern. */
+    static BigDecimal selbstbehaltKind(boolean erwerbstaetig) {
+        return erwerbstaetig ? SELBSTBEHALT_KIND_ERWERBSTAETIG : SELBSTBEHALT_KIND_NICHTERWERBSTAETIG
+    }
+
+    /** Angemessener Selbstbehalt gegenüber dem berechtigten Ehegatten. */
+    static BigDecimal selbstbehaltEhegatte(boolean erwerbstaetig) {
+        return erwerbstaetig ? SELBSTBEHALT_EHEGATTE_ERWERBSTAETIG : SELBSTBEHALT_EHEGATTE_NICHTERWERBSTAETIG
+    }
+
+    /** Existenzminimum / Mindestbedarf des berechtigten Ehegatten. */
+    static BigDecimal existenzminimumEhegatte(boolean erwerbstaetig) {
+        return erwerbstaetig ? EXISTENZMINIMUM_EHEGATTE_ERWERBSTAETIG : EXISTENZMINIMUM_EHEGATTE_NICHTERWERBSTAETIG
+    }
 
     /** Eine Einkommensgruppe der Düsseldorfer Tabelle. */
     static class Gruppe {

@@ -664,6 +664,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "Unterhalt"
 description = "Falldatenblatt Unterhalt: Einkommen/Ausgaben, Kindes- und Ehegattenunterhalt"
-version = "0.4.0"
+version = "0.5.0"
 author = "j-lawyer.org"
 updated = "18.06.2026"

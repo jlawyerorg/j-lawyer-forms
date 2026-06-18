@@ -701,6 +701,9 @@ class DuesseldorferTabelle2026 {
     // Angemessener Selbstbehalt gegenüber nicht privilegierten volljährigen Kindern.
     static final BigDecimal SELBSTBEHALT_VOLLJ_KIND = new BigDecimal("1750")
 
+    // Bedarf eines volljährigen Kindes mit eigenem Hausstand (Stand 2026).
+    static final BigDecimal BEDARF_VOLLJ_EIGENER_HAUSHALT = new BigDecimal("990")
+
     // Angemessener Eigenbedarf (Selbstbehalt) des Unterhaltspflichtigen gegenüber dem
     // getrenntlebenden / geschiedenen Ehegatten (Stand 2026).
     static final BigDecimal SELBSTBEHALT_EHEGATTE_ERWERBSTAETIG = new BigDecimal("1600")

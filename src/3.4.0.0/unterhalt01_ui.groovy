@@ -697,7 +697,7 @@ import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
  * Düsseldorfer Tabelle (öffentlich-rechtliche Leitlinie des OLG Düsseldorf)
  * erstellt; Tabellenwerte siehe DuesseldorferTabelle2026.
  */
-public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods, com.jdimension.jlawyer.client.plugins.form.FormAiMethods {
+public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
 
     JPanel SCRIPTPANEL = null;
     JTabbedPane tabPaneMain;
@@ -739,6 +739,30 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
     JTextField txtAnteilPfl;
     JTextField txtAnteilEheg;
 
+    // Kindesunterhalt (bis zu 4 Kinder)
+    static final int ANZ_KINDER = 4;
+    JTextField[] txtKindName = new JTextField[ANZ_KINDER];
+    JSpinner[]   spnKindAlter = new JSpinner[ANZ_KINDER];
+    JCheckBox[]  chkKindPraegend = new JCheckBox[ANZ_KINDER];
+    JLabel[]     lblKindStufe = new JLabel[ANZ_KINDER];
+    JTextField[] txtKindBedarf = new JTextField[ANZ_KINDER];
+    JTextField[] txtKindKindergeld = new JTextField[ANZ_KINDER];
+    JTextField[] txtKindZahl = new JTextField[ANZ_KINDER];
+    JSpinner     spnEinstufungAnpassung;
+    JTextField   txtKindGruppe;
+    JTextField   txtKindSummeBedarf;
+    JTextField   txtKindSummeZahl;
+    BigDecimal   summeKindZahl = BigDecimal.ZERO;
+
+    // Ehegattenunterhalt
+    JCheckBox    chkVorwegabzugKU;
+    JCheckBox    chkErwerbsbonus;
+    JTextField   txtEhegUVorwegabzug;
+    JTextField   txtEhegUAnrechPfl;
+    JTextField   txtEhegUAnrechEheg;
+    JTextField   txtEhegUMethode;
+    JTextField   txtEhegUBedarf;
+
     FormPluginCallback callback = null;
 
     NumberFormat betragFormat = NumberFormat.getInstance(Locale.GERMANY).getNumberInstance();
@@ -765,11 +789,6 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
 
     public Hashtable getPlaceHolderDescriptions(String prefix) {
         return FormsLib.getPlaceHolderDescriptions(prefix, this.SCRIPTPANEL);
-    }
-
-    public void setExtractedValues(Map<String,String> attributes) {
-        FormsLib.setExtractedValues(attributes, this.SCRIPTPANEL);
-        berechnen();
     }
 
     public void setPlaceHolderValues(String prefix, Hashtable placeHolderValues) {
@@ -799,15 +818,15 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             tableLayout(cellpadding: 5) {
                                                 tr {
                                                     td { label(text: 'Name Unterhaltspflichtige/r:') }
-                                                    td { txtNamePfl = textField(id: 'sNamePfl', name: "_NAMEPFL", clientPropertyJlawyerdescription: "Name Unterhaltspflichtige/r", clientPropertyAiPromptKey: "name_pflichtiger", clientPropertyAiPromptDescription: "Name der unterhaltspflichtigen Person", text: '', columns: 30) }
+                                                    td { txtNamePfl = textField(id: 'sNamePfl', name: "_NAMEPFL", clientPropertyJlawyerdescription: "Name Unterhaltspflichtige/r", text: '', columns: 30) }
                                                 }
                                                 tr {
                                                     td { label(text: 'Name Ehegatte:') }
-                                                    td { txtNameEheg = textField(id: 'sNameEheg', name: "_NAMEEHEG", clientPropertyJlawyerdescription: "Name Ehegatte", clientPropertyAiPromptKey: "name_ehegatte", clientPropertyAiPromptDescription: "Name des Ehegatten / der Ehegattin", text: '', columns: 30) }
+                                                    td { txtNameEheg = textField(id: 'sNameEheg', name: "_NAMEEHEG", clientPropertyJlawyerdescription: "Name Ehegatte", text: '', columns: 30) }
                                                 }
                                                 tr {
                                                     td { label(text: 'Stichtag der Berechnung:') }
-                                                    td { txtStichtag = textField(id: 'sStichtag', name: "_STICHTAG", clientPropertyJlawyerdescription: "Stichtag der Berechnung", clientPropertyAiPromptKey: "stichtag", clientPropertyAiPromptDescription: "Stichtag der Unterhaltsberechnung im Format TT.MM.JJJJ", text: '', columns: 10) }
+                                                    td { txtStichtag = textField(id: 'sStichtag', name: "_STICHTAG", clientPropertyJlawyerdescription: "Stichtag der Berechnung", text: '', columns: 10) }
                                                 }
                                                 tr {
                                                     td { label(text: 'Anzahl unterhaltsberechtigter Personen:') }
@@ -834,23 +853,23 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             tableLayout(cellpadding: 5) {
                                                 tr {
                                                     td { label(text: 'Nettoerwerbseinkommen (nichtselbständig):') }
-                                                    td { txtPflNettoErwerb = textField(id: 'sPflNettoErwerb', name: "_PFLNETTOERW", clientPropertyJlawyerdescription: "Nettoerwerbseinkommen Pflichtiger", clientPropertyAiPromptKey: "pfl_netto_erwerb", clientPropertyAiPromptDescription: "monatliches Nettoerwerbseinkommen des Unterhaltspflichtigen aus nichtselbständiger Arbeit in EUR", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
+                                                    td { txtPflNettoErwerb = textField(id: 'sPflNettoErwerb', name: "_PFLNETTOERW", clientPropertyJlawyerdescription: "Nettoerwerbseinkommen Pflichtiger", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
                                                 }
                                                 tr {
                                                     td { label(text: 'Sonderzuwendungen (anteilig/Monat):') }
-                                                    td { txtPflSonderzuw = textField(id: 'sPflSonderzuw', name: "_PFLSONDERZUW", clientPropertyJlawyerdescription: "Sonderzuwendungen Pflichtiger", clientPropertyAiPromptKey: "pfl_sonderzuwendungen", clientPropertyAiPromptDescription: "auf den Monat umgelegte Sonderzuwendungen (z.B. Weihnachts-/Urlaubsgeld) des Unterhaltspflichtigen in EUR", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
+                                                    td { txtPflSonderzuw = textField(id: 'sPflSonderzuw', name: "_PFLSONDERZUW", clientPropertyJlawyerdescription: "Sonderzuwendungen Pflichtiger", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
                                                 }
                                                 tr {
                                                     td { label(text: 'Gewinn (selbständig, Monat):') }
-                                                    td { txtPflGewinn = textField(id: 'sPflGewinn', name: "_PFLGEWINN", clientPropertyJlawyerdescription: "Gewinn selbständig Pflichtiger", clientPropertyAiPromptKey: "pfl_gewinn", clientPropertyAiPromptDescription: "monatlicher Gewinn des Unterhaltspflichtigen aus selbständiger/gewerblicher Tätigkeit in EUR", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
+                                                    td { txtPflGewinn = textField(id: 'sPflGewinn', name: "_PFLGEWINN", clientPropertyJlawyerdescription: "Gewinn selbständig Pflichtiger", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
                                                 }
                                                 tr {
                                                     td { label(text: 'Sonstige Einkünfte (Miete, Kapital, Rente):') }
-                                                    td { txtPflSonstEink = textField(id: 'sPflSonstEink', name: "_PFLSONSTEINK", clientPropertyJlawyerdescription: "Sonstige Einkünfte Pflichtiger", clientPropertyAiPromptKey: "pfl_sonstige_einkuenfte", clientPropertyAiPromptDescription: "monatliche sonstige Einkünfte des Unterhaltspflichtigen (Mieteinnahmen, Kapitalerträge, Renten) in EUR", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
+                                                    td { txtPflSonstEink = textField(id: 'sPflSonstEink', name: "_PFLSONSTEINK", clientPropertyJlawyerdescription: "Sonstige Einkünfte Pflichtiger", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
                                                 }
                                                 tr {
                                                     td { label(text: 'Vorteil mietfreien Wohnens (Wohnwert):') }
-                                                    td { txtPflWohnwert = textField(id: 'sPflWohnwert', name: "_PFLWOHNWERT", clientPropertyJlawyerdescription: "Wohnwertvorteil Pflichtiger", clientPropertyAiPromptKey: "pfl_wohnwert", clientPropertyAiPromptDescription: "monatlicher Wohnvorteil des Unterhaltspflichtigen durch mietfreies Wohnen im eigenen Heim in EUR", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
+                                                    td { txtPflWohnwert = textField(id: 'sPflWohnwert', name: "_PFLWOHNWERT", clientPropertyJlawyerdescription: "Wohnwertvorteil Pflichtiger", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
                                                 }
                                             }
                                         }
@@ -865,7 +884,7 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td { label(text: 'oder konkrete berufsbedingte Aufwendungen:') }
-                                                    td { txtPflBerufKonkret = textField(id: 'sPflBerufKonkret', name: "_PFLBERUFKONKRET", clientPropertyJlawyerdescription: "konkrete berufsbedingte Aufwendungen Pflichtiger", clientPropertyAiPromptKey: "pfl_berufsaufwand", clientPropertyAiPromptDescription: "konkret nachgewiesene berufsbedingte Aufwendungen des Unterhaltspflichtigen pro Monat in EUR", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
+                                                    td { txtPflBerufKonkret = textField(id: 'sPflBerufKonkret', name: "_PFLBERUFKONKRET", clientPropertyJlawyerdescription: "konkrete berufsbedingte Aufwendungen Pflichtiger", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
                                                 }
                                                 tr {
                                                     td { label(text: 'berücksichtigte berufsbed. Aufwendungen:') }
@@ -887,15 +906,15 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             tableLayout(cellpadding: 5) {
                                                 tr {
                                                     td { label(text: 'Berücksichtigungsfähige Schulden:') }
-                                                    td { txtPflSchulden = textField(id: 'sPflSchulden', name: "_PFLSCHULDEN", clientPropertyJlawyerdescription: "berücksichtigungsfähige Schulden Pflichtiger", clientPropertyAiPromptKey: "pfl_schulden", clientPropertyAiPromptDescription: "monatliche berücksichtigungsfähige Schulden/Kreditraten des Unterhaltspflichtigen in EUR", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
+                                                    td { txtPflSchulden = textField(id: 'sPflSchulden', name: "_PFLSCHULDEN", clientPropertyJlawyerdescription: "berücksichtigungsfähige Schulden Pflichtiger", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
                                                 }
                                                 tr {
                                                     td { label(text: 'Berücksichtigungsfähige Versicherungen:') }
-                                                    td { txtPflVersich = textField(id: 'sPflVersich', name: "_PFLVERSICH", clientPropertyJlawyerdescription: "berücksichtigungsfähige Versicherungen Pflichtiger", clientPropertyAiPromptKey: "pfl_versicherungen", clientPropertyAiPromptDescription: "monatliche berücksichtigungsfähige Versicherungsbeiträge des Unterhaltspflichtigen in EUR", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
+                                                    td { txtPflVersich = textField(id: 'sPflVersich', name: "_PFLVERSICH", clientPropertyJlawyerdescription: "berücksichtigungsfähige Versicherungen Pflichtiger", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
                                                 }
                                                 tr {
                                                     td { label(text: 'Sonstige berücksichtigungsfähige Ausgaben:') }
-                                                    td { txtPflSonstAusg = textField(id: 'sPflSonstAusg', name: "_PFLSONSTAUSG", clientPropertyJlawyerdescription: "sonstige berücksichtigungsfähige Ausgaben Pflichtiger", clientPropertyAiPromptKey: "pfl_sonstige_ausgaben", clientPropertyAiPromptDescription: "sonstige monatliche berücksichtigungsfähige Ausgaben des Unterhaltspflichtigen in EUR", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
+                                                    td { txtPflSonstAusg = textField(id: 'sPflSonstAusg', name: "_PFLSONSTAUSG", clientPropertyJlawyerdescription: "sonstige berücksichtigungsfähige Ausgaben Pflichtiger", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
                                                 }
                                                 tr {
                                                     td { label(text: 'Summe aller Belastungen:') }
@@ -917,26 +936,26 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
                                             tableLayout(cellpadding: 5) {
                                                 tr {
                                                     td { label(text: 'Nettoerwerbseinkommen:') }
-                                                    td { txtEhegNettoErwerb = textField(id: 'sEhegNettoErwerb', name: "_EHEGNETTOERW", clientPropertyJlawyerdescription: "Nettoerwerbseinkommen Ehegatte", clientPropertyAiPromptKey: "eheg_netto_erwerb", clientPropertyAiPromptDescription: "monatliches Nettoerwerbseinkommen des Ehegatten in EUR", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
+                                                    td { txtEhegNettoErwerb = textField(id: 'sEhegNettoErwerb', name: "_EHEGNETTOERW", clientPropertyJlawyerdescription: "Nettoerwerbseinkommen Ehegatte", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
                                                 }
                                                 tr {
                                                     td { label(text: 'Sonstige Einkünfte:') }
-                                                    td { txtEhegSonstEink = textField(id: 'sEhegSonstEink', name: "_EHEGSONSTEINK", clientPropertyJlawyerdescription: "sonstige Einkünfte Ehegatte", clientPropertyAiPromptKey: "eheg_sonstige_einkuenfte", clientPropertyAiPromptDescription: "monatliche sonstige Einkünfte des Ehegatten in EUR", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
+                                                    td { txtEhegSonstEink = textField(id: 'sEhegSonstEink', name: "_EHEGSONSTEINK", clientPropertyJlawyerdescription: "sonstige Einkünfte Ehegatte", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
                                                 }
                                                 tr {
                                                     td { label(text: 'Vorteil mietfreien Wohnens (Wohnwert):') }
-                                                    td { txtEhegWohnwert = textField(id: 'sEhegWohnwert', name: "_EHEGWOHNWERT", clientPropertyJlawyerdescription: "Wohnwertvorteil Ehegatte", clientPropertyAiPromptKey: "eheg_wohnwert", clientPropertyAiPromptDescription: "monatlicher Wohnvorteil des Ehegatten durch mietfreies Wohnen in EUR", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
+                                                    td { txtEhegWohnwert = textField(id: 'sEhegWohnwert', name: "_EHEGWOHNWERT", clientPropertyJlawyerdescription: "Wohnwertvorteil Ehegatte", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
                                                 }
                                                 tr {
                                                     td(colspan: 2) { chkEhegPauschale = checkBox(id: 'cEhegPauschale', text: '5%-Pauschale für berufsbedingte Aufwendungen anwenden', name: "_EHEGBERUFPAUSCH", clientPropertyJlawyerdescription: "berufsbedingte Aufwendungen Pauschale Ehegatte", selected: true, actionPerformed: { berechnen() }) }
                                                 }
                                                 tr {
                                                     td { label(text: 'oder konkrete berufsbedingte Aufwendungen:') }
-                                                    td { txtEhegBerufKonkret = textField(id: 'sEhegBerufKonkret', name: "_EHEGBERUFKONKRET", clientPropertyJlawyerdescription: "konkrete berufsbedingte Aufwendungen Ehegatte", clientPropertyAiPromptKey: "eheg_berufsaufwand", clientPropertyAiPromptDescription: "konkret nachgewiesene berufsbedingte Aufwendungen des Ehegatten pro Monat in EUR", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
+                                                    td { txtEhegBerufKonkret = textField(id: 'sEhegBerufKonkret', name: "_EHEGBERUFKONKRET", clientPropertyJlawyerdescription: "konkrete berufsbedingte Aufwendungen Ehegatte", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
                                                 }
                                                 tr {
                                                     td { label(text: 'Berücksichtigungsfähige Ausgaben (gesamt):') }
-                                                    td { txtEhegAusgaben = textField(id: 'sEhegAusgaben', name: "_EHEGAUSGABEN", clientPropertyJlawyerdescription: "berücksichtigungsfähige Ausgaben Ehegatte", clientPropertyAiPromptKey: "eheg_ausgaben", clientPropertyAiPromptDescription: "monatliche berücksichtigungsfähige Ausgaben des Ehegatten (Schulden, Versicherungen, sonstiges) in EUR", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
+                                                    td { txtEhegAusgaben = textField(id: 'sEhegAusgaben', name: "_EHEGAUSGABEN", clientPropertyJlawyerdescription: "berücksichtigungsfähige Ausgaben Ehegatte", text: '0,00', columns: 12, keyReleased: { berechnen() }) }
                                                 }
                                                 tr {
                                                     td { label(text: 'berücksichtigte berufsbed. Aufwendungen:') }
@@ -944,6 +963,122 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                             }
                                         }
+                                    }
+                                }
+                            }
+                        }
+
+                        // ------------------------------------------- Kindesunterhalt
+                        panel(name: 'Kindesunterhalt') {
+                            tableLayout(cellpadding: 5) {
+                                tr {
+                                    td(colfill: true, align: 'left') {
+                                        panel(border: titledBorder(title: 'Einstufung')) {
+                                            tableLayout(cellpadding: 5) {
+                                                tr {
+                                                    td { label(text: 'Einkommensgruppe (aus bereinigtem Einkommen Pflichtige/r):') }
+                                                    td { txtKindGruppe = textField(id: 'sKindGruppe', name: "_KINDGRUPPE", clientPropertyJlawyerdescription: "endgültige Einkommensgruppe Kindesunterhalt", text: '', columns: 28, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
+                                                }
+                                                tr {
+                                                    td { label(text: 'Anpassung der Einstufung (Gruppen +/-):') }
+                                                    td { spnEinstufungAnpassung = spinner(id: 'nEinstufungAnpassung', name: "_KINDEINSTUFUNGANP", clientPropertyJlawyerdescription: "Anpassung der Einkommensgruppe (Herauf-/Herabstufung)", model: new SpinnerNumberModel(0, -14, 14, 1), stateChanged: { berechnen() }) }
+                                                }
+                                                tr {
+                                                    td(colspan: 2) { label(text: '<html><i>Die Düsseldorfer Tabelle ist auf zwei Unterhaltsberechtigte ausgelegt. Bei mehr/weniger Berechtigten kann eine Herab-/Heraufstufung angezeigt sein.</i></html>') }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td(colfill: true, align: 'left') {
+                                        panel(border: titledBorder(title: 'Kinder (Alter < 18 = minderjährig, hälftiges Kindergeld; sonst volles Kindergeld)')) {
+                                            tableLayout(cellpadding: 5) {
+                                                tr {
+                                                    td { label(text: '<html><b>Name</b></html>') }
+                                                    td { label(text: '<html><b>Alter</b></html>') }
+                                                    td { label(text: '<html><b>Altersstufe</b></html>') }
+                                                    td { label(text: '<html><b>prägend</b></html>') }
+                                                    td { label(text: '<html><b>Bedarf lt. Tabelle</b></html>') }
+                                                    td { label(text: '<html><b>anrechenb. Kindergeld</b></html>') }
+                                                    td { label(text: '<html><b>Zahlbetrag</b></html>') }
+                                                }
+                                                (0..(ANZ_KINDER - 1)).each { int i ->
+                                                    int nr = i + 1
+                                                    tr {
+                                                        td { txtKindName[i] = textField(id: 'sKind' + nr + 'Name', name: "_KIND" + nr + "NAME", clientPropertyJlawyerdescription: "Name Kind " + nr, text: '', columns: 16, keyReleased: { berechnen() }) }
+                                                        td { spnKindAlter[i] = spinner(id: 'nKind' + nr + 'Alter', name: "_KIND" + nr + "ALTER", clientPropertyJlawyerdescription: "Alter Kind " + nr, model: new SpinnerNumberModel(0, 0, 30, 1), stateChanged: { berechnen() }) }
+                                                        td { lblKindStufe[i] = label(text: '-') }
+                                                        td { chkKindPraegend[i] = checkBox(id: 'cKind' + nr + 'Praegend', name: "_KIND" + nr + "PRAEGEND", clientPropertyJlawyerdescription: "Kind " + nr + " prägend für Ehegattenunterhalt", selected: true) }
+                                                        td { txtKindBedarf[i] = textField(id: 'sKind' + nr + 'Bedarf', name: "_KIND" + nr + "BEDARF", clientPropertyJlawyerdescription: "Bedarf lt. Tabelle Kind " + nr, text: '0,00', columns: 9, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
+                                                        td { txtKindKindergeld[i] = textField(id: 'sKind' + nr + 'Kindergeld', name: "_KIND" + nr + "KINDERGELD", clientPropertyJlawyerdescription: "anrechenbares Kindergeld Kind " + nr, text: '0,00', columns: 9, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
+                                                        td { txtKindZahl[i] = textField(id: 'sKind' + nr + 'Zahl', name: "_KIND" + nr + "ZAHL", clientPropertyJlawyerdescription: "Zahlbetrag Kind " + nr, text: '0,00', columns: 9, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
+                                                    }
+                                                }
+                                                tr {
+                                                    td { label(text: '<html><b>Summe</b></html>') }
+                                                    td { label(text: '') }
+                                                    td { label(text: '') }
+                                                    td { label(text: '') }
+                                                    td { txtKindSummeBedarf = textField(id: 'sKindSummeBedarf', name: "_KINDSUMMEBEDARF", clientPropertyJlawyerdescription: "Summe Bedarf Kinder", text: '0,00', columns: 9, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
+                                                    td { label(text: '') }
+                                                    td { txtKindSummeZahl = textField(id: 'sKindSummeZahl', name: "_KINDSUMMEZAHL", clientPropertyJlawyerdescription: "Summe Zahlbeträge Kinder", text: '0,00', columns: 9, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // ---------------------------------------- Ehegattenunterhalt
+                        panel(name: 'Ehegattenunterhalt') {
+                            tableLayout(cellpadding: 5) {
+                                tr {
+                                    td(colfill: true, align: 'left') {
+                                        panel(border: titledBorder(title: 'Optionen')) {
+                                            tableLayout(cellpadding: 5) {
+                                                tr {
+                                                    td(colspan: 2) { chkVorwegabzugKU = checkBox(id: 'cVorwegabzugKU', text: 'Vorwegabzug des Kindesunterhalts (Regelfall)', name: "_EHEGUVORWEGABZUGKU", clientPropertyJlawyerdescription: "Vorwegabzug des Kindesunterhalts", selected: true, actionPerformed: { berechnen() }) }
+                                                }
+                                                tr {
+                                                    td(colspan: 2) { chkErwerbsbonus = checkBox(id: 'cErwerbsbonus', text: 'Erwerbstätigenbonus berücksichtigen (1/10 des Erwerbseinkommens)', name: "_EHEGUBONUS", clientPropertyJlawyerdescription: "Erwerbstätigenbonus berücksichtigen", selected: true, actionPerformed: { berechnen() }) }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td(colfill: true, align: 'left') {
+                                        panel(border: titledBorder(title: 'Bedarf des Ehegatten (Trennungs-/nachehelicher Unterhalt)')) {
+                                            tableLayout(cellpadding: 5) {
+                                                tr {
+                                                    td { label(text: 'abzgl. Vorwegabzug Kindesunterhalt:') }
+                                                    td { txtEhegUVorwegabzug = textField(id: 'sEhegUVorwegabzug', name: "_EHEGUVORWEGABZUG", clientPropertyJlawyerdescription: "Vorwegabzug Kindesunterhalt (Betrag)", text: '0,00', columns: 12, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
+                                                }
+                                                tr {
+                                                    td { label(text: 'anrechenbares Einkommen Pflichtige/r:') }
+                                                    td { txtEhegUAnrechPfl = textField(id: 'sEhegUAnrechPfl', name: "_EHEGUANRECHPFL", clientPropertyJlawyerdescription: "anrechenbares Einkommen Pflichtiger (Ehegattenunterhalt)", text: '0,00', columns: 12, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
+                                                }
+                                                tr {
+                                                    td { label(text: 'anrechenbares Einkommen Berechtigte/r:') }
+                                                    td { txtEhegUAnrechEheg = textField(id: 'sEhegUAnrechEheg', name: "_EHEGUANRECHEHEG", clientPropertyJlawyerdescription: "anrechenbares Einkommen Berechtigter (Ehegattenunterhalt)", text: '0,00', columns: 12, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
+                                                }
+                                                tr {
+                                                    td { label(text: 'Berechnungsmethode:') }
+                                                    td { txtEhegUMethode = textField(id: 'sEhegUMethode', name: "_EHEGUMETHODE", clientPropertyJlawyerdescription: "Berechnungsmethode Ehegattenunterhalt", text: '', columns: 40, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
+                                                }
+                                                tr {
+                                                    td { label(text: '<html><b>Unterhaltsbedarf (auf volle Euro aufgerundet):</b></html>') }
+                                                    td { txtEhegUBedarf = textField(id: 'sEhegUBedarf', name: "_EHEGUBEDARF", clientPropertyJlawyerdescription: "Unterhaltsbedarf Ehegatte", text: '0,00', columns: 12, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td(colfill: true, align: 'left') {
+                                        label(text: '<html><i>Halbteilung bei Berechtigtem ohne eigenes anrechenbares Einkommen, sonst Differenzmethode. Erwerbstätigenbonus 1/10.</i></html>')
                                     }
                                 }
                             }
@@ -1039,7 +1174,7 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
             BigDecimal pflBereinigt = pflGesamtEink.subtract(pflBerufAufw).subtract(pflAusg).setScale(2, RoundingMode.HALF_UP);
             txtPflBereinigt.setText(betragFormat.format(pflBereinigt));
 
-            DuesseldorferTabelle2026.Gruppe g = DuesseldorferTabelle2026.gruppeFuer(pflBereinigt);
+            def g = DuesseldorferTabelle2026.gruppeFuer(pflBereinigt);
             txtPflEinkGruppe.setText(g.getBezeichnung());
 
             // --- Ehegatte ---
@@ -1063,40 +1198,121 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
                 txtAnteilPfl.setText(prozentFormat.format(BigDecimal.ZERO));
                 txtAnteilEheg.setText(prozentFormat.format(BigDecimal.ZERO));
             }
+
+            // --- Kindesunterhalt ---
+            berechneKinder(pflBereinigt);
+
+            // --- Ehegattenunterhalt ---
+            berechneEhegattenunterhalt();
         } catch (Throwable t) {
             t.printStackTrace();
         }
     }
 
-    public boolean isAiEnabled() {
-        return true;
+    /**
+     * Kindesunterhalt nach Düsseldorfer Tabelle: Einstufung des bereinigten
+     * Einkommens (mit manueller Herauf-/Herabstufung), Bedarf je Altersstufe,
+     * Anrechnung des Kindergeldes (hälftig bei minderjährigen, voll bei
+     * volljährigen Kindern), Zahlbetrag = Bedarf - anrechenbares Kindergeld.
+     */
+    private void berechneKinder(BigDecimal pflBereinigt) {
+        if (txtKindGruppe == null) return;   // Tab noch nicht aufgebaut
+
+        def basis = DuesseldorferTabelle2026.gruppeFuer(pflBereinigt);
+        int anpassung = ((Number) spnEinstufungAnpassung.getValue()).intValue();
+        int gruppeNr = basis.nr + anpassung;
+        if (gruppeNr < 1) gruppeNr = 1;
+        if (gruppeNr > DuesseldorferTabelle2026.GRUPPEN.size()) gruppeNr = DuesseldorferTabelle2026.GRUPPEN.size();
+        def gruppe = DuesseldorferTabelle2026.GRUPPEN.get(gruppeNr - 1);
+        txtKindGruppe.setText(gruppe.getBezeichnung());
+
+        String[] stufenNamen = ['0-5', '6-11', '12-17', 'ab 18'] as String[];
+        BigDecimal summeBedarf = BigDecimal.ZERO;
+        BigDecimal summeZahl = BigDecimal.ZERO;
+
+        for (int i = 0; i < ANZ_KINDER; i++) {
+            String name = txtKindName[i].getText();
+            int alter = ((Number) spnKindAlter[i].getValue()).intValue();
+            boolean aktiv = (name != null && !name.trim().isEmpty()) || alter > 0;
+
+            if (!aktiv) {
+                lblKindStufe[i].setText('-');
+                txtKindBedarf[i].setText(betragFormat.format(BigDecimal.ZERO));
+                txtKindKindergeld[i].setText(betragFormat.format(BigDecimal.ZERO));
+                txtKindZahl[i].setText(betragFormat.format(BigDecimal.ZERO));
+                continue;
+            }
+
+            int stufe = DuesseldorferTabelle2026.altersstufe(alter);
+            boolean minderjaehrig = alter < 18;
+            BigDecimal bedarf = gruppe.bedarf[stufe];
+            BigDecimal kindergeld = DuesseldorferTabelle2026.kindergeldAnrechnung(minderjaehrig);
+            BigDecimal zahl = bedarf.subtract(kindergeld).setScale(2, RoundingMode.HALF_UP);
+            if (zahl.compareTo(BigDecimal.ZERO) < 0) zahl = BigDecimal.ZERO;
+
+            lblKindStufe[i].setText(stufenNamen[stufe] + (minderjaehrig ? '' : ' (vollj.)'));
+            txtKindBedarf[i].setText(betragFormat.format(bedarf));
+            txtKindKindergeld[i].setText(betragFormat.format(kindergeld));
+            txtKindZahl[i].setText(betragFormat.format(zahl));
+
+            summeBedarf = summeBedarf.add(bedarf);
+            summeZahl = summeZahl.add(zahl);
+        }
+
+        this.summeKindZahl = summeZahl;
+        txtKindSummeBedarf.setText(betragFormat.format(summeBedarf));
+        txtKindSummeZahl.setText(betragFormat.format(summeZahl));
     }
 
-    public String getExtractionPrompt() {
-        Hashtable promptKeys = FormsLib.getPromptKeys(this.SCRIPTPANEL);
+    /**
+     * Ehegattenunterhalt (Trennungs-/nachehelicher Unterhalt): ermittelt den
+     * Unterhaltsbedarf nach dem Halbteilungsgrundsatz bzw. der Differenzmethode.
+     * Optional Vorwegabzug des Kindesunterhalts und Erwerbstätigenbonus (1/10).
+     */
+    private void berechneEhegattenunterhalt() {
+        if (txtEhegUBedarf == null) return;   // Tab noch nicht aufgebaut
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("Extrahiere aus einem Text die folgenden Informationen zur Unterhaltsberechnung (Einkommen und Ausgaben der Beteiligten): \r\n");
-        for (Object key : promptKeys.keys()) {
-            sb.append("- ").append(key.toString()).append(": ").append(promptKeys.get(key).toString()).append("\r\n");
-        }
-        sb.append("\r\n");
-        sb.append("Gib das Ergebnis ausschließlich im JSON-Format aus und verändere die JSON-Attributnamen nicht. Lasse jegliche Kommentare oder Hinweise weg. Hier ist ein Beispieldokument:\r\n\r\n");
-        sb.append("{\r\n");
-        Iterator<String> it = promptKeys.keySet().iterator();
-        while (it.hasNext()) {
-            String key = it.next();
-            sb.append("\"").append(key).append("\": \"...\"");
-            if (it.hasNext()) {
-                sb.append(",\n");
-            } else {
-                sb.append("\n");
-            }
-        }
-        sb.append("}\r\n\r\n");
-        sb.append("Hier der Text: \r\n\r\n");
+        BigDecimal bonusSatz = DuesseldorferTabelle2026.ERWERBSTAETIGENBONUS;
+        boolean mitBonus = chkErwerbsbonus.isSelected();
 
-        return sb.toString();
+        // --- Unterhaltspflichtige/r ---
+        BigDecimal pflErwerb = parse(txtPflNettoErwerb).add(parse(txtPflSonderzuw)).add(parse(txtPflGewinn));
+        BigDecimal pflBerufAufw = chkPflPauschale.isSelected() ? berufsPauschale(pflErwerb) : parse(txtPflBerufKonkret);
+        BigDecimal pflAusg = parse(txtPflSchulden).add(parse(txtPflVersich)).add(parse(txtPflSonstAusg));
+        BigDecimal pflSonst = parse(txtPflSonstEink).add(parse(txtPflWohnwert));
+
+        BigDecimal vorwegabzug = chkVorwegabzugKU.isSelected() ? summeKindZahl : BigDecimal.ZERO;
+        txtEhegUVorwegabzug.setText(betragFormat.format(vorwegabzug));
+
+        BigDecimal pflErwerbBereinigt = pflErwerb.subtract(pflBerufAufw).subtract(pflAusg).subtract(vorwegabzug);
+        if (pflErwerbBereinigt.compareTo(BigDecimal.ZERO) < 0) pflErwerbBereinigt = BigDecimal.ZERO;
+        BigDecimal bonusPfl = mitBonus ? pflErwerbBereinigt.multiply(bonusSatz).setScale(2, RoundingMode.HALF_UP) : BigDecimal.ZERO;
+        BigDecimal anrechPfl = pflErwerbBereinigt.subtract(bonusPfl).add(pflSonst).setScale(2, RoundingMode.HALF_UP);
+        txtEhegUAnrechPfl.setText(betragFormat.format(anrechPfl));
+
+        // --- Berechtigte/r (Ehegatte) ---
+        BigDecimal ehegErwerb = parse(txtEhegNettoErwerb);
+        BigDecimal ehegBerufAufw = chkEhegPauschale.isSelected() ? berufsPauschale(ehegErwerb) : parse(txtEhegBerufKonkret);
+        BigDecimal ehegErwerbBereinigt = ehegErwerb.subtract(ehegBerufAufw).subtract(parse(txtEhegAusgaben));
+        if (ehegErwerbBereinigt.compareTo(BigDecimal.ZERO) < 0) ehegErwerbBereinigt = BigDecimal.ZERO;
+        BigDecimal ehegSonst = parse(txtEhegSonstEink).add(parse(txtEhegWohnwert));
+        BigDecimal bonusEheg = mitBonus ? ehegErwerbBereinigt.multiply(bonusSatz).setScale(2, RoundingMode.HALF_UP) : BigDecimal.ZERO;
+        BigDecimal anrechEheg = ehegErwerbBereinigt.subtract(bonusEheg).add(ehegSonst).setScale(2, RoundingMode.HALF_UP);
+        txtEhegUAnrechEheg.setText(betragFormat.format(anrechEheg));
+
+        // --- Bedarf ---
+        BigDecimal bedarf;
+        if (anrechEheg.compareTo(BigDecimal.ZERO) <= 0) {
+            txtEhegUMethode.setText("Halbteilung (Berechtigte/r ohne anrechenbares Einkommen)");
+            bedarf = anrechPfl.divide(new BigDecimal("2"), 2, RoundingMode.HALF_UP);
+        } else {
+            txtEhegUMethode.setText("Differenzmethode");
+            bedarf = anrechPfl.subtract(anrechEheg).divide(new BigDecimal("2"), 2, RoundingMode.HALF_UP);
+        }
+        if (bedarf.compareTo(BigDecimal.ZERO) < 0) bedarf = BigDecimal.ZERO;
+        // Unterhaltsbedarf auf volle Euro aufgerundet
+        BigDecimal bedarfGerundet = bedarf.setScale(0, RoundingMode.CEILING);
+        txtEhegUBedarf.setText(betragFormat.format(bedarfGerundet));
     }
 
 }

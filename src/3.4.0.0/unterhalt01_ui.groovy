@@ -745,6 +745,7 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
     static final int ANZ_KINDER = 4;
     JTextField[] txtKindName = new JTextField[ANZ_KINDER];
     JSpinner[]   spnKindAlter = new JSpinner[ANZ_KINDER];
+    JComboBox[]  cmbKindStatus = new JComboBox[ANZ_KINDER];
     JCheckBox[]  chkKindPraegend = new JCheckBox[ANZ_KINDER];
     JLabel[]     lblKindStufe = new JLabel[ANZ_KINDER];
     JTextField[] txtKindBedarf = new JTextField[ANZ_KINDER];
@@ -1022,6 +1023,7 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 tr {
                                                     td { label(text: '<html><b>Name</b></html>') }
                                                     td { label(text: '<html><b>Alter</b></html>') }
+                                                    td { label(text: '<html><b>Status (ab 18)</b></html>') }
                                                     td { label(text: '<html><b>Altersstufe</b></html>') }
                                                     td { label(text: '<html><b>prägend</b></html>') }
                                                     td { label(text: '<html><b>Bedarf lt. Tabelle</b></html>') }
@@ -1033,6 +1035,7 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     tr {
                                                         td { txtKindName[i] = textField(id: 'sKind' + nr + 'Name', name: "_KIND" + nr + "NAME", clientPropertyJlawyerdescription: "Name Kind " + nr, text: '', columns: 16, keyReleased: { berechnen() }) }
                                                         td { spnKindAlter[i] = spinner(id: 'nKind' + nr + 'Alter', name: "_KIND" + nr + "ALTER", clientPropertyJlawyerdescription: "Alter Kind " + nr, model: new SpinnerNumberModel(0, 0, 30, 1), stateChanged: { berechnen() }) }
+                                                        td { cmbKindStatus[i] = comboBox(id: 'cmbKind' + nr + 'Status', name: "_KIND" + nr + "STATUS", clientPropertyJlawyerdescription: "Status Kind " + nr + " (ab 18)", items: ['privilegiert (wie minderj.)', 'nicht privilegiert, Haushalt Elternteil', 'nicht privilegiert, eigener Haushalt'], editable: false, actionPerformed: { berechnen() }) }
                                                         td { lblKindStufe[i] = label(text: '-') }
                                                         td { chkKindPraegend[i] = checkBox(id: 'cKind' + nr + 'Praegend', name: "_KIND" + nr + "PRAEGEND", clientPropertyJlawyerdescription: "Kind " + nr + " prägend für Ehegattenunterhalt", selected: true) }
                                                         td { txtKindBedarf[i] = textField(id: 'sKind' + nr + 'Bedarf', name: "_KIND" + nr + "BEDARF", clientPropertyJlawyerdescription: "Bedarf lt. Tabelle Kind " + nr, text: '0,00', columns: 9, enabled: false, disabledTextColor: java.awt.Color.BLACK) }
@@ -1042,6 +1045,7 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                 }
                                                 tr {
                                                     td { label(text: '<html><b>Summe</b></html>') }
+                                                    td { label(text: '') }
                                                     td { label(text: '') }
                                                     td { label(text: '') }
                                                     td { label(text: '') }
@@ -1236,7 +1240,7 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
             }
 
             // --- Kindesunterhalt ---
-            berechneKinder(pflBereinigt);
+            berechneKinder(pflBereinigt, ehegBereinigt);
 
             // --- Ehegattenunterhalt ---
             berechneEhegattenunterhalt();
@@ -1251,7 +1255,7 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
      * Anrechnung des Kindergeldes (hälftig bei minderjährigen, voll bei
      * volljährigen Kindern), Zahlbetrag = Bedarf - anrechenbares Kindergeld.
      */
-    private void berechneKinder(BigDecimal pflBereinigt) {
+    private void berechneKinder(BigDecimal pflBereinigt, BigDecimal ehegBereinigt) {
         if (txtKindGruppe == null) return;   // Tab noch nicht aufgebaut
 
         String[] stufenNamen = ['0-5', '6-11', '12-17', 'ab 18'] as String[];
@@ -1260,11 +1264,22 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
         BigDecimal selbstbehalt = DuesseldorferTabelle2026.selbstbehaltKind(erwerbstaetig);
         txtKindSelbstbehalt.setText(betragFormat.format(selbstbehalt));
 
-        // Aktive Kinder erfassen (Altersstufe, Minderjährigkeit, anrechenbares Kindergeld)
+        // Zusammengerechnetes Einkommen beider Eltern (für nicht privilegierte
+        // volljährige Kinder maßgeblich).
+        BigDecimal kombiEink = pflBereinigt.add(ehegBereinigt);
+
+        // Aktive Kinder erfassen. status: 0 = minderjährig oder privilegiert
+        // (Einstufung nach Einkommen des Pflichtigen), 1 = volljährig nicht
+        // privilegiert im Haushalt eines Elternteils (Einstufung nach Gesamt-
+        // einkommen beider Eltern), 2 = volljährig nicht privilegiert mit eigenem
+        // Hausstand (Festbedarf 990 EUR). katA = Einstufung nach Pflichtigen-Einkommen.
         boolean[] aktiv = new boolean[ANZ_KINDER];
         int[] stufe = new int[ANZ_KINDER];
         boolean[] minderj = new boolean[ANZ_KINDER];
+        int[] status = new int[ANZ_KINDER];
+        boolean[] katA = new boolean[ANZ_KINDER];
         BigDecimal[] kindergeld = new BigDecimal[ANZ_KINDER];
+        boolean hatKatB = false;
         for (int i = 0; i < ANZ_KINDER; i++) {
             String name = txtKindName[i].getText();
             int alter = ((Number) spnKindAlter[i].getValue()).intValue();
@@ -1273,20 +1288,30 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
                 stufe[i] = DuesseldorferTabelle2026.altersstufe(alter);
                 minderj[i] = alter < 18;
                 kindergeld[i] = DuesseldorferTabelle2026.kindergeldAnrechnung(minderj[i]);
+                int sel = cmbKindStatus[i].getSelectedIndex();
+                if (sel < 0) sel = 0;
+                status[i] = minderj[i] ? 0 : sel;
+                katA[i] = (status[i] == 0);
+                if (!katA[i]) hatKatB = true;
             }
         }
 
-        // Ausgangs-Einkommensgruppe inkl. manueller Herauf-/Herabstufung
-        def basis = DuesseldorferTabelle2026.gruppeFuer(pflBereinigt);
-        int anpassung = ((Number) spnEinstufungAnpassung.getValue()).intValue();
         int maxNr = DuesseldorferTabelle2026.GRUPPEN.size();
-        int gruppeNr = basis.nr + anpassung;
+        int anpassung = ((Number) spnEinstufungAnpassung.getValue()).intValue();
+
+        // Einstufung der nicht privilegierten volljährigen Kinder nach dem
+        // zusammengerechneten Einkommen beider Eltern.
+        int bNr = DuesseldorferTabelle2026.gruppeFuer(kombiEink).nr + anpassung;
+        if (bNr < 1) bNr = 1;
+        if (bNr > maxNr) bNr = maxNr;
+        def bGruppe = DuesseldorferTabelle2026.GRUPPEN.get(bNr - 1);
+
+        // Einstufung der minderjährigen / privilegierten Kinder nach dem Einkommen
+        // des Pflichtigen, inkl. Bedarfskontrollbetrag-Herabstufung.
+        int gruppeNr = DuesseldorferTabelle2026.gruppeFuer(pflBereinigt).nr + anpassung;
         if (gruppeNr < 1) gruppeNr = 1;
         if (gruppeNr > maxNr) gruppeNr = maxNr;
 
-        // Bedarfskontrollbetrag-Prüfung: solange herabstufen, bis das nach Abzug
-        // des Kindesunterhalts verbleibende Einkommen den Bedarfskontrollbetrag
-        // (bzw. in Gruppe 1 den notwendigen Selbstbehalt) erreicht.
         boolean herabgestuft = false;
         boolean mangelfall = false;
         def gruppe = DuesseldorferTabelle2026.GRUPPEN.get(gruppeNr - 1);
@@ -1294,7 +1319,7 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
             gruppe = DuesseldorferTabelle2026.GRUPPEN.get(gruppeNr - 1);
             BigDecimal zahlSumme = BigDecimal.ZERO;
             for (int i = 0; i < ANZ_KINDER; i++) {
-                if (!aktiv[i]) continue;
+                if (!aktiv[i] || !katA[i]) continue;
                 BigDecimal z = gruppe.bedarf[stufe[i]].subtract(kindergeld[i]);
                 if (z.compareTo(BigDecimal.ZERO) < 0) z = BigDecimal.ZERO;
                 zahlSumme = zahlSumme.add(z);
@@ -1312,16 +1337,19 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
                 break;
             }
         }
-        txtKindGruppe.setText(gruppe.getBezeichnung());
 
-        // Mangelfall: Verteilungsmasse (= Einkommen abzgl. Selbstbehalt) anteilig
-        // nach den Einsatzbeträgen (Zahlbetrag der Gruppe 1) auf die Kinder verteilen.
+        String gruppeText = gruppe.getBezeichnung();
+        if (hatKatB) gruppeText = gruppeText + "  |  volljährig (Gesamteink.): " + bGruppe.getBezeichnung();
+        txtKindGruppe.setText(gruppeText);
+
+        // Mangelfall (nur minderjährige / privilegierte Kinder): Verteilungsmasse
+        // (= Pflichtigen-Einkommen abzgl. Selbstbehalt) anteilig nach Einsatzbeträgen.
         BigDecimal verteilungsmasse = pflBereinigt.subtract(selbstbehalt);
         if (verteilungsmasse.compareTo(BigDecimal.ZERO) < 0) verteilungsmasse = BigDecimal.ZERO;
         BigDecimal einsatzSumme = BigDecimal.ZERO;
         if (mangelfall) {
             for (int i = 0; i < ANZ_KINDER; i++) {
-                if (!aktiv[i]) continue;
+                if (!aktiv[i] || !katA[i]) continue;
                 BigDecimal z = gruppe.bedarf[stufe[i]].subtract(kindergeld[i]);
                 if (z.compareTo(BigDecimal.ZERO) < 0) z = BigDecimal.ZERO;
                 einsatzSumme = einsatzSumme.add(z);
@@ -1330,6 +1358,7 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
 
         BigDecimal summeBedarf = BigDecimal.ZERO;
         BigDecimal summeZahl = BigDecimal.ZERO;
+        BigDecimal summeZahlKatA = BigDecimal.ZERO;
         for (int i = 0; i < ANZ_KINDER; i++) {
             if (!aktiv[i]) {
                 lblKindStufe[i].setText('-');
@@ -1338,34 +1367,55 @@ public class unterhalt01_ui implements com.jdimension.jlawyer.client.plugins.for
                 txtKindZahl[i].setText(betragFormat.format(BigDecimal.ZERO));
                 continue;
             }
-            BigDecimal bedarf = gruppe.bedarf[stufe[i]];
+
+            BigDecimal bedarf;
+            String stufeText;
+            if (status[i] == 2) {
+                // volljährig mit eigenem Hausstand: Festbedarf
+                bedarf = DuesseldorferTabelle2026.BEDARF_VOLLJ_EIGENER_HAUSHALT;
+                stufeText = 'eig. Haushalt';
+            } else if (katA[i]) {
+                // minderjährig / privilegiert: Einstufung nach Pflichtigen-Einkommen
+                bedarf = gruppe.bedarf[stufe[i]];
+                stufeText = stufenNamen[stufe[i]] + (minderj[i] ? '' : ' (vollj.)');
+            } else {
+                // volljährig nicht privilegiert: Einstufung nach Gesamteinkommen
+                bedarf = bGruppe.bedarf[stufe[i]];
+                stufeText = 'ab 18 (vollj.)';
+            }
+
             BigDecimal zahl = bedarf.subtract(kindergeld[i]);
             if (zahl.compareTo(BigDecimal.ZERO) < 0) zahl = BigDecimal.ZERO;
-            if (mangelfall && einsatzSumme.compareTo(BigDecimal.ZERO) > 0) {
+            if (mangelfall && katA[i] && einsatzSumme.compareTo(BigDecimal.ZERO) > 0) {
                 zahl = verteilungsmasse.multiply(zahl).divide(einsatzSumme, 2, RoundingMode.HALF_UP);
             }
 
-            lblKindStufe[i].setText(stufenNamen[stufe[i]] + (minderj[i] ? '' : ' (vollj.)'));
+            lblKindStufe[i].setText(stufeText);
             txtKindBedarf[i].setText(betragFormat.format(bedarf));
             txtKindKindergeld[i].setText(betragFormat.format(kindergeld[i]));
             txtKindZahl[i].setText(betragFormat.format(zahl));
 
             summeBedarf = summeBedarf.add(bedarf);
             summeZahl = summeZahl.add(zahl);
+            if (katA[i]) summeZahlKatA = summeZahlKatA.add(zahl);
         }
 
         this.summeKindZahl = summeZahl;
         txtKindSummeBedarf.setText(betragFormat.format(summeBedarf));
         txtKindSummeZahl.setText(betragFormat.format(summeZahl));
 
-        BigDecimal restEink = pflBereinigt.subtract(summeZahl);
+        BigDecimal restEink = pflBereinigt.subtract(summeZahlKatA);
         txtKindRest.setText(betragFormat.format(restEink));
 
         String hinweis = "";
         if (mangelfall) {
-            hinweis = "Mangelfall: Zahlbeträge anteilig gekürzt; Selbstbehalt " + betragFormat.format(selbstbehalt) + " EUR.";
+            hinweis = "Mangelfall: Zahlbeträge der minderj./privilegierten Kinder anteilig gekürzt; Selbstbehalt " + betragFormat.format(selbstbehalt) + " EUR.";
         } else if (herabgestuft) {
             hinweis = "Herabstufung auf " + gruppe.getBezeichnung() + " wegen Bedarfskontrollbetrag.";
+        }
+        if (hatKatB) {
+            String sep = hinweis.isEmpty() ? "" : "  ";
+            hinweis = hinweis + sep + "Volljährige (nicht privilegiert): Einstufung nach Gesamteinkommen beider Eltern, Selbstbehalt 1.750 EUR; Barunterhalt anteilig nach Einkommen beider Eltern (hier nicht aufgeteilt).";
         }
         txtKindHinweis.setText(hinweis);
     }

@@ -715,6 +715,18 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     JTextField txtReparaturKostenMwst;
     JTextField txtReparaturKostenReg;
     JTextField txtReparaturKostenDiff;
+    JTextField txtReparaturKostenBrutto;
+    JTextField txtNfaBrutto;
+    JTextField txtKostenGutachtenBrutto;
+    JTextField txtAbschleppKostenBrutto;
+    JTextField txtStandgeldBrutto;
+    JTextField txtMietwagenKostenBrutto;
+    JTextField txtAbmeldeKostenBrutto;
+    JTextField txtAnmeldeKostenBrutto;
+    JTextField txtSonstigeKosten4Brutto;
+    JTextField txtSonstigeKosten5Brutto;
+    JTextField txtSonstigeKosten6Brutto;
+    JTextField txtWiederbeschaffungswertBrutto;
     JTextField txtNfa;
     JTextField txtNfaMwst;
     JTextField txtNfaReg;
@@ -2357,7 +2369,7 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             label(text: 'Position')
                                         }
                                         td {
-                                            label(text: 'Betrag (netto)')
+                                            label(text: 'Betrag (brutto)')
                                         }
                                         td {
                                             label(text: 'inkl. USt.')
@@ -3076,20 +3088,39 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                     
                             
                             
-                                }   
-                        
-                            }     
+                                }
+
+                            }
                         }
                     }
-            
-            
+
+
+                    tr {
+                        td (colspan: 6) {
+                            panel(visible: false) {
+                                txtReparaturKostenBrutto   = formattedTextField(id: 'nReparaturKostenBrutto',   name: "_REPAKOSTEN_BRUTTO",       clientPropertyJlawyerdescription: "Reparaturkosten brutto",        format: betragFormat, text: '0,00', columns: 7, enabled: false)
+                                txtNfaBrutto               = formattedTextField(id: 'nNfaBrutto',                name: "_NFA_BRUTTO",              clientPropertyJlawyerdescription: "Neu-für-alt brutto",            format: betragFormat, text: '0,00', columns: 7, enabled: false)
+                                txtKostenGutachtenBrutto   = formattedTextField(id: 'nKostenGutachtenBrutto',    name: "_KOSTENGUTACHTEN_BRUTTO",  clientPropertyJlawyerdescription: "Gutachtenkosten brutto",        format: betragFormat, text: '0,00', columns: 7, enabled: false)
+                                txtAbschleppKostenBrutto   = formattedTextField(id: 'nAbschleppKostenBrutto',    name: "_KOSTENABSCHLEPP_BRUTTO",  clientPropertyJlawyerdescription: "Abschleppkosten brutto",        format: betragFormat, text: '0,00', columns: 7, enabled: false)
+                                txtStandgeldBrutto         = formattedTextField(id: 'nStandgeldBrutto',          name: "_KOSTENSTANDGELD_BRUTTO",  clientPropertyJlawyerdescription: "Standgeld brutto",              format: betragFormat, text: '0,00', columns: 7, enabled: false)
+                                txtMietwagenKostenBrutto   = formattedTextField(id: 'nMietwagenKostenBrutto',    name: "_KOSTENMIETW_BRUTTO",      clientPropertyJlawyerdescription: "Mietwagenkosten brutto",        format: betragFormat, text: '0,00', columns: 7, enabled: false)
+                                txtAbmeldeKostenBrutto     = formattedTextField(id: 'nAbmeldeKostenBrutto',      name: "_KOSTENABMELDE_BRUTTO",    clientPropertyJlawyerdescription: "Abmeldekosten brutto",          format: betragFormat, text: '0,00', columns: 7, enabled: false)
+                                txtAnmeldeKostenBrutto     = formattedTextField(id: 'nAnmeldeKostenBrutto',      name: "_KOSTENANMELDE_BRUTTO",    clientPropertyJlawyerdescription: "Anmeldekosten brutto",          format: betragFormat, text: '0,00', columns: 7, enabled: false)
+                                txtSonstigeKosten4Brutto   = formattedTextField(id: 'nSonstigeKosten4Brutto',    name: "_KOSTENSONST4_BRUTTO",     clientPropertyJlawyerdescription: "Sonstige Kosten 4 brutto",      format: betragFormat, text: '0,00', columns: 7, enabled: false)
+                                txtSonstigeKosten5Brutto   = formattedTextField(id: 'nSonstigeKosten5Brutto',    name: "_KOSTENSONST5_BRUTTO",     clientPropertyJlawyerdescription: "Sonstige Kosten 5 brutto",      format: betragFormat, text: '0,00', columns: 7, enabled: false)
+                                txtSonstigeKosten6Brutto   = formattedTextField(id: 'nSonstigeKosten6Brutto',    name: "_KOSTENSONST6_BRUTTO",     clientPropertyJlawyerdescription: "Sonstige Kosten 6 brutto",      format: betragFormat, text: '0,00', columns: 7, enabled: false)
+                                txtWiederbeschaffungswertBrutto = formattedTextField(id: 'nWiederbeschaffungswertBrutto', name: "_WIEDERBESCHAWERT_BRUTTO", clientPropertyJlawyerdescription: "Wiederbeschaffungswert brutto", format: betragFormat, text: '0,00', columns: 7, enabled: false)
+                            }
+                        }
+                    }
+
                     tr  {
                         td (align: 'right') {
                             panel {
-                        
+
                             }
                         }
-                    }   
+                    }
                 }  
             }
         }
@@ -3485,8 +3516,36 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
         txtTotalKosten.text = betragFormat.format(sub1.add(sub2).add(sub3));
         txtTotalDifferenz.text = betragFormat.format(totalDiff);
 
+        berechnenBrutto();
+
     }
-    
+
+    private void setBrutto(JTextField value, JTextField mwst, JTextField brutto) {
+        try {
+            BigDecimal v = new BigDecimal(betragFormat.parse(value.text).toString())
+            BigDecimal m = (mwst == null) ? BigDecimal.ZERO : new BigDecimal(betragFormat.parse(mwst.text).toString())
+            brutto.setText(betragFormat.format(v.add(m).setScale(2, RoundingMode.HALF_UP)))
+        } catch (Throwable t) {
+            // ungültiger Betrag: Brutto-Feld unverändert lassen
+        }
+    }
+
+    private void berechnenBrutto() {
+        setBrutto(txtReparaturKosten,        txtReparaturKostenMwst,   txtReparaturKostenBrutto)
+        setBrutto(txtNfa,                    txtNfaMwst,               txtNfaBrutto)
+        setBrutto(txtKostenGutachten,        txtKostenGutachtenMwst,   txtKostenGutachtenBrutto)
+        setBrutto(txtAbschleppKosten,        txtAbschleppKostenMwst,   txtAbschleppKostenBrutto)
+        setBrutto(txtStandgeld,              txtStandgeldMwst,         txtStandgeldBrutto)
+        setBrutto(txtMietwagenKosten,        txtMietwagenKostenMwst,   txtMietwagenKostenBrutto)
+        setBrutto(txtAbmeldeKosten,          txtAbmeldeKostenMwst,     txtAbmeldeKostenBrutto)
+        setBrutto(txtAnmeldeKosten,          txtAnmeldeKostenMwst,     txtAnmeldeKostenBrutto)
+        setBrutto(txtSonstigeKosten4,        txtSonstigeKosten4Mwst,   txtSonstigeKosten4Brutto)
+        setBrutto(txtSonstigeKosten5,        txtSonstigeKosten5Mwst,   txtSonstigeKosten5Brutto)
+        setBrutto(txtSonstigeKosten6,        txtSonstigeKosten6Mwst,   txtSonstigeKosten6Brutto)
+        // Totalschaden: eingegebener Wiederbeschaffungswert ist bereits brutto
+        setBrutto(txtWiederbeschaffungswert, null,                     txtWiederbeschaffungswertBrutto)
+    }
+
     private void berechnenTotalschaden(JTextField value, JTextField mwst, JTextField reg, JTextField diff, boolean stRegel, boolean stDiff, boolean stNeutral) {
         try {
             BigDecimal vat = BigDecimal.ZERO;

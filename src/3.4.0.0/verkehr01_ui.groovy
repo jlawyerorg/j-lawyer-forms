@@ -838,7 +838,8 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     JComboBox cmbFahrzeugart;
     JTextField txtNutzungsAusfallVon;
     JTextField txtNutzungsAusfallBis;
-    
+    JTextField txtNutzungsAusfallTage;
+
     JTextField txtSummeSchaden;
     JTextField txtSummeReguliert;
     JTextField txtSummeDifferenz;
@@ -1718,9 +1719,19 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
                                             }
                                         }
                                         td {
-                                            
+
                                         }
-                                        
+
+                                    }
+                                    tr {
+                                        td {
+                                            label(text: '   Tage:')
+                                        }
+                                        td {
+                                            txtNutzungsAusfallTage=textField(id: 'sNutzungsAusfallTage', clientPropertyJlawyerdescription: "Nutzungsausfall Anzahl Tage", name: "_NUTZAUSFALLTAGE", columns: 10, text: '', enabled: false)
+                                        }
+                                        td {
+                                        }
                                     }
                                     tr {
                                         td {
@@ -3659,7 +3670,22 @@ public class verkehr01_ui implements com.jdimension.jlawyer.client.plugins.form.
     }
     
     private void berechnenNutzungsausfall(JTextField value, JTextField reg, JTextField diff, String ausfallGruppe, JTextField from, JTextField to, String fahrzeugTyp) {
-        
+
+        // Anzahl Tage anzeigen, sobald beide Datumsangaben vorhanden sind
+        if ("".equals(from.getText()) || "".equals(to.getText())) {
+            txtNutzungsAusfallTage.setText("");
+        } else {
+            try {
+                DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+                LocalDateTime fromDay = LocalDateTime.parse(from.getText() + " 00:00", dayFormatter);
+                LocalDateTime toDay = LocalDateTime.parse(to.getText() + " 24:00", dayFormatter);
+                long days = ChronoUnit.DAYS.between(fromDay, toDay);
+                txtNutzungsAusfallTage.setText(days > 0 ? String.valueOf(days) : "");
+            } catch (Exception e) {
+                txtNutzungsAusfallTage.setText("");
+            }
+        }
+
         if("".equals(from.getText()) || "".equals(to.getText()) || "".equals(ausfallGruppe)  || "".equals(ausfallGruppe)) {
             value.setText(betragFormat.format(0f));
             diff.setText(betragFormat.format(0f));

@@ -865,6 +865,14 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
     JTextField txtVaterWeitere2Datum = null;
     JButton btnVaterWeitere2Datum = null;
 
+    // Abschluss
+    JCheckBox chkAbschlussRechnungVersendet = null;
+    JCheckBox chkAbschlussRechnungBuchhaltung = null;
+    JCheckBox chkAbschlussGutachtenPasswort = null;
+    JCheckBox chkAbschlussGutachtenArchiviert = null;
+    JLabel lblAbschlussPasswort = null;
+    JTextField txtAbschlussPasswort = null;
+
     // Liste aller Status-Comboboxen
     def statusComboBoxes = [];
 
@@ -1545,6 +1553,10 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
             txt.setVisible(chk.isSelected());
             btn.setVisible(chk.isSelected());
         }
+
+        // Sichtbarkeit des Abschluss-Passwortfeldes setzen
+        lblAbschlussPasswort.setVisible(chkAbschlussGutachtenPasswort.isSelected());
+        txtAbschlussPasswort.setVisible(chkAbschlussGutachtenPasswort.isSelected());
 
         // Fortschritt aktualisieren
         updateProgress();
@@ -4886,6 +4898,53 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                             }
                         }
 
+                        panel(name: 'Abschluss') {
+                            tableLayout (cellpadding: 5) {
+                                tr {
+                                    td (colspan: 2) {
+                                        label (text: 'Abschluss', font: UIManager.getFont("Label.font").deriveFont(Font.BOLD, UIManager.getFont("Label.font").size + 2))
+                                    }
+                                }
+                                tr {
+                                    td (colspan: 2) {
+                                        chkAbschlussRechnungVersendet=checkBox(text: 'Rechnung versendet', name: "_ABSCHLUSS_RECHNUNGVERSENDET", clientPropertyJlawyerdescription: "Rechnung versendet", selected: false)
+                                    }
+                                }
+                                tr {
+                                    td (colspan: 2) {
+                                        chkAbschlussRechnungBuchhaltung=checkBox(text: 'Rechnung im Ordner Buchhaltung abgelegt', name: "_ABSCHLUSS_RECHNUNGBUCHHALTUNG", clientPropertyJlawyerdescription: "Rechnung im Ordner Buchhaltung abgelegt", selected: false)
+                                    }
+                                }
+                                tr {
+                                    td {
+                                        chkAbschlussGutachtenPasswort=checkBox(text: 'Gutachten mit Passwort geschützt', name: "_ABSCHLUSS_GUTACHTENPASSWORT", clientPropertyJlawyerdescription: "Gutachten mit Passwort geschützt", selected: false)
+                                    }
+                                    td {
+                                        panel {
+                                            tableLayout (cellpadding: 0) {
+                                                tr {
+                                                    td {
+                                                        lblAbschlussPasswort=label(text: 'Passwort:', visible: false)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        txtAbschlussPasswort=textField(name: "_ABSCHLUSS_PASSWORT", clientPropertyJlawyerdescription: "Passwort Gutachten", text: '', columns:20, visible: false)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                tr {
+                                    td (colspan: 2) {
+                                        chkAbschlussGutachtenArchiviert=checkBox(text: 'Gutachten archiviert und in j-lawyer abgelegt', name: "_ABSCHLUSS_GUTACHTENARCHIVIERT", clientPropertyJlawyerdescription: "Gutachten archiviert und in j-lawyer abgelegt", selected: false)
+                                    }
+                                }
+                            }
+                        }
+
 
 
                     }
@@ -4940,6 +4999,14 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
         chkVaterBesondere.addActionListener {
             txtVaterBesondereDatum.setVisible(chkVaterBesondere.isSelected());
             btnVaterBesondereDatum.setVisible(chkVaterBesondere.isSelected());
+            SCRIPTPANEL.revalidate();
+            SCRIPTPANEL.repaint();
+        }
+
+        // Abschluss: Passwortfeld nur anzeigen, wenn Gutachten mit Passwort geschützt
+        chkAbschlussGutachtenPasswort.addActionListener {
+            lblAbschlussPasswort.setVisible(chkAbschlussGutachtenPasswort.isSelected());
+            txtAbschlussPasswort.setVisible(chkAbschlussGutachtenPasswort.isSelected());
             SCRIPTPANEL.revalidate();
             SCRIPTPANEL.repaint();
         }

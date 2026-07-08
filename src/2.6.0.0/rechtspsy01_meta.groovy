@@ -547,6 +547,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 name = "Gutachten"
 description = "Bearbeitung rechtspsychologischer Gutachten"
-version = "1.4.0";
+version = "1.5.0";
 author = "Jens Kutschke"
-updated = "03.03.2026"
+updated = "08.07.2026"

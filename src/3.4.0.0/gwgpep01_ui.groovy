@@ -666,6 +666,9 @@ import groovy.swing.SwingBuilder
 import java.awt.BorderLayout as BL
 import java.awt.Component
 import java.awt.Container
+import java.awt.FlowLayout
+import javax.swing.ImageIcon
+import javax.swing.JButton
 import javax.swing.JPanel
 import javax.swing.JTabbedPane
 import javax.swing.JTextField
@@ -682,6 +685,10 @@ public class gwgpep01_ui implements com.jdimension.jlawyer.client.plugins.form.F
 
     JRadioButton radioPartnerNatPerson = null;
     JRadioButton radioPartnerJurPerson = null;
+
+    JTextField txtErfDatum = null;
+    JTextField txtNpGebDatum = null;
+    JTextField txtWbNpGebDatum = null;
 
     JPanel pnlNatPerson = null;
     JPanel pnlJurPerson = null;
@@ -707,6 +714,7 @@ public class gwgpep01_ui implements com.jdimension.jlawyer.client.plugins.form.F
 
     JCheckBox chkPepAmtBeendet = null;
     JTextField txtPepAmtBeendetSeit = null;
+    JButton btnPepAmtBeendetSeit = null;
     JRadioButton radioPepBeendetRisiko = null;
     JRadioButton radioPepBeendetKeinRisiko = null;
 
@@ -791,6 +799,7 @@ public class gwgpep01_ui implements com.jdimension.jlawyer.client.plugins.form.F
 
         boolean beendet=pep && chkPepAmtBeendet.isSelected();
         txtPepAmtBeendetSeit.setEnabled(beendet);
+        btnPepAmtBeendetSeit.setEnabled(beendet);
         radioPepBeendetRisiko.setEnabled(beendet);
         radioPepBeendetKeinRisiko.setEnabled(beendet);
     }
@@ -801,45 +810,46 @@ public class gwgpep01_ui implements com.jdimension.jlawyer.client.plugins.form.F
 
         swing.edt {
             SCRIPTPANEL=panel(size: [300, 300]) {
-                borderLayout()
-                tabbedPane(id: 'tabs', tabPlacement: JTabbedPane.LEFT, constraints: BL.CENTER) {
+                vbox {
+                    tabbedPane(id: 'tabs', tabPlacement: JTabbedPane.LEFT) {
 
                     // ############ Allgemein ############
                     panel(name: 'Allgemein') {
-                        borderLayout()
-                        scrollPane(constraints: BL.CENTER) {
-                            panel {
-                                tableLayout (cellpadding: 5) {
-                                    tr {
-                                        td (colspan: 2, align: 'left') {
-                                            label(text: '<html><b>Dokumentationsbogen</b> zur Aufzeichnung der erhobenen Angaben und eingeholten Informationen nach dem Gesetz<br/>über das Aufspüren von Gewinnen aus schweren Straftaten (Geldwäschegesetz)</html>')
-                                        }
+                        tableLayout (cellpadding: 5) {
+                            tr {
+                                td (colspan: 2, align: 'left') {
+                                    label(text: '<html><b>Dokumentationsbogen</b> zur Aufzeichnung der erhobenen Angaben und eingeholten Informationen nach dem Gesetz<br/>über das Aufspüren von Gewinnen aus schweren Straftaten (Geldwäschegesetz)</html>')
+                                }
+                            }
+                            tr {
+                                td (colfill:true, align: 'left', valign: 'TOP') {
+                                    label(text: 'Name und Anschrift der aufzeichnenden Stelle:')
+                                }
+                                td (align: 'left') {
+                                    scrollPane {
+                                        textArea(name: "_STELLE", clientPropertyJlawyerdescription: "Name und Anschrift der aufzeichnenden Stelle", lineWrap:true, wrapStyleWord:true, columns:50, rows:4, editable:true)
                                     }
-                                    tr {
-                                        td (colfill:true, align: 'left', valign: 'TOP') {
-                                            label(text: 'Name und Anschrift der aufzeichnenden Stelle:')
-                                        }
-                                        td (align: 'left') {
-                                            scrollPane {
-                                                textArea(name: "_STELLE", clientPropertyJlawyerdescription: "Name und Anschrift der aufzeichnenden Stelle", lineWrap:true, wrapStyleWord:true, columns:50, rows:4, editable:true)
-                                            }
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true, align: 'left') {
-                                            label(text: 'Bearbeiter/in:')
-                                        }
-                                        td (align: 'left') {
-                                            textField(name: "_BEARBEITER", text: '', clientPropertyJlawyerdescription: "Bearbeiter/in", columns:40)
-                                        }
-                                    }
-                                    tr {
-                                        td (colfill:true, align: 'left') {
-                                            label(text: 'Datum der Aufzeichnung:')
-                                        }
-                                        td (align: 'left') {
-                                            textField(name: "_ERFDATUM", text: '', clientPropertyJlawyerdescription: "Datum der Aufzeichnung", columns:10)
-                                        }
+                                }
+                            }
+                            tr {
+                                td (colfill:true, align: 'left') {
+                                    label(text: 'Bearbeiter/in:')
+                                }
+                                td (align: 'left') {
+                                    textField(name: "_BEARBEITER", text: '', clientPropertyJlawyerdescription: "Bearbeiter/in", columns:40)
+                                }
+                            }
+                            tr {
+                                td (colfill:true, align: 'left') {
+                                    label(text: 'Datum der Aufzeichnung:')
+                                }
+                                td (align: 'left') {
+                                    panel {
+                                        flowLayout(alignment: FlowLayout.LEFT, hgap: 0, vgap: 0)
+                                        txtErfDatum = textField(name: "_ERFDATUM", text: '', clientPropertyJlawyerdescription: "Datum der Aufzeichnung", columns:10)
+                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                            GuiLib.dateSelector(txtErfDatum, true);
+                                        })
                                     }
                                 }
                             }
@@ -848,781 +858,774 @@ public class gwgpep01_ui implements com.jdimension.jlawyer.client.plugins.form.F
 
                     // ############ 1 Vertragspartner ############
                     panel(name: '1 Vertragspartner') {
-                        borderLayout()
-                        scrollPane(constraints: BL.CENTER) {
-                            panel {
-                                tableLayout (cellpadding: 5) {
+                        tableLayout (cellpadding: 5) {
 
-                                    tr {
-                                        td (colfill:true, align: 'left') {
-                                            panel(border: titledBorder(title: 'Art des Vertragspartners')) {
-                                                tableLayout (cellpadding: 5) {
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            grpPartnerTyp = buttonGroup(id:'grpPartnerTyp')
-                                                            radioPartnerNatPerson = radioButton (text: 'a) natürliche Person', name: "_PARTNATPERSON", clientPropertyJlawyerdescription: "Vertragspartner ist eine natürliche Person", buttonGroup: grpPartnerTyp, selected: true, actionPerformed: {
-                                                                toggleVertragspartnerTyp()
-                                                            })
-                                                        }
-                                                        td (colfill:true, align: 'left') {
-                                                            radioPartnerJurPerson = radioButton (text: 'b) juristische Person oder Personengesellschaft', name: "_PARTJURPERSON", clientPropertyJlawyerdescription: "Vertragspartner ist eine juristische Person oder Personengesellschaft", buttonGroup: grpPartnerTyp, selected: false, actionPerformed: {
-                                                                toggleVertragspartnerTyp()
-                                                            })
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colspan: 2, align: 'left') {
-                                                            label(text: '<html><i>Handelt es sich bei dem Vertragspartner um einen Einzelkaufmann, ist dieser wie eine natürliche Person zu behandeln<br/>&ndash; hier ist der Inhaber des Unternehmens aufzuzeichnen.</i></html>')
-                                                        }
-                                                    }
+                            tr {
+                                td (colfill:true, align: 'left') {
+                                    panel(border: titledBorder(title: 'Art des Vertragspartners')) {
+                                        tableLayout (cellpadding: 5) {
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    grpPartnerTyp = buttonGroup(id:'grpPartnerTyp')
+                                                    radioPartnerNatPerson = radioButton (text: 'a) natürliche Person', name: "_PARTNATPERSON", clientPropertyJlawyerdescription: "Vertragspartner ist eine natürliche Person", buttonGroup: grpPartnerTyp, selected: true, actionPerformed: {
+                                                        toggleVertragspartnerTyp()
+                                                    })
+                                                }
+                                                td (colfill:true, align: 'left') {
+                                                    radioPartnerJurPerson = radioButton (text: 'b) juristische Person oder Personengesellschaft', name: "_PARTJURPERSON", clientPropertyJlawyerdescription: "Vertragspartner ist eine juristische Person oder Personengesellschaft", buttonGroup: grpPartnerTyp, selected: false, actionPerformed: {
+                                                        toggleVertragspartnerTyp()
+                                                    })
+                                                }
+                                            }
+                                            tr {
+                                                td (colspan: 2, align: 'left') {
+                                                    label(text: '<html><i>Handelt es sich bei dem Vertragspartner um einen Einzelkaufmann, ist dieser wie eine natürliche Person zu behandeln<br/>&ndash; hier ist der Inhaber des Unternehmens aufzuzeichnen.</i></html>')
                                                 }
                                             }
                                         }
                                     }
-
-                                    tr {
-                                        td (colfill:true, align: 'left') {
-                                            pnlNatPerson = panel(border: titledBorder(title: 'a) natürliche Person')) {
-                                                tableLayout (cellpadding: 5) {
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'Anrede:')
-                                                        }
-                                                        td (align: 'left') {
-                                                            comboBox(items: ['', 'Frau', 'Herr'], name: "_NPANREDE", clientPropertyJlawyerdescription: "Anrede des Vertragspartners", editable: true)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'Name:')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_NPNAME", text: '', clientPropertyJlawyerdescription: "Name des Vertragspartners", columns:40)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'Vorname(n):')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_NPVORNAME", text: '', clientPropertyJlawyerdescription: "Vorname(n) des Vertragspartners", columns:40)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colspan: 2, align: 'left') {
-                                                            panel(border: titledBorder(title: 'Identifizierung')) {
-                                                                tableLayout (cellpadding: 3) {
-                                                                    tr {
-                                                                        td (colspan: 2, align: 'left') {
-                                                                            grpNpIdent = buttonGroup(id:'grpNpIdent')
-                                                                            radioButton (text: 'Ausweis-/Passkopie ist erstellt und liegt bei', name: "_NPIDAUSWEISKOPIE", clientPropertyJlawyerdescription: "Identifizierung: Ausweis-/Passkopie ist erstellt und liegt bei", buttonGroup: grpNpIdent, selected: false)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (colspan: 2, align: 'left') {
-                                                                            radioButton (text: 'wurde bereits früher identifiziert und die dabei erhobenen Daten wurden aufgezeichnet', name: "_NPIDFRUEHER", clientPropertyJlawyerdescription: "Identifizierung: wurde bereits früher identifiziert und die dabei erhobenen Daten wurden aufgezeichnet", buttonGroup: grpNpIdent, selected: false)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (colfill:true, align: 'left') {
-                                                                            radioButton (text: 'wurde identifiziert durch den nach § 7 GwG zuverlässigen Dritten:', name: "_NPIDDRITTER", clientPropertyJlawyerdescription: "Identifizierung: wurde identifiziert durch einen nach § 7 GwG zuverlässigen Dritten (Unterlagen liegen bei)", buttonGroup: grpNpIdent, selected: false)
-                                                                        }
-                                                                        td (align: 'left') {
-                                                                            txtNpIdDritterName = textField(name: "_NPIDDRITTERNAME", text: '', clientPropertyJlawyerdescription: "Identifizierung: Bezeichnung des nach § 7 GwG zuverlässigen Dritten", columns:40)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (colspan: 2, align: 'left') {
-                                                                            radioButton (text: 'wird folgendermaßen identifiziert (Angaben unten)', name: "_NPIDHIER", clientPropertyJlawyerdescription: "Identifizierung: wird folgendermaßen identifiziert", buttonGroup: grpNpIdent, selected: true)
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'Geburtsdatum:')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_NPGEBDATUM", text: '', clientPropertyJlawyerdescription: "Geburtsdatum des Vertragspartners", columns:10)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'Geburtsort:')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_NPGEBORT", text: '', clientPropertyJlawyerdescription: "Geburtsort des Vertragspartners", columns:30)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'Staatsangehörigkeit:')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_NPSTAATSANG", text: '', clientPropertyJlawyerdescription: "Staatsangehörigkeit des Vertragspartners", columns:30)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'Anschrift (Straße, Hausnummer, PLZ und Ort):')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_NPANSCHRIFT", text: '', clientPropertyJlawyerdescription: "Anschrift des Vertragspartners", columns:50)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colspan: 2, align: 'left') {
-                                                            panel(border: titledBorder(title: 'Vorlage eines gültigen amtlichen Ausweises')) {
-                                                                tableLayout (cellpadding: 3) {
-                                                                    tr {
-                                                                        td (colfill:true, align: 'left') {
-                                                                            grpNpAusweis = buttonGroup(id:'grpNpAusweis')
-                                                                            radioButton (text: 'Personalausweis', name: "_NPAUSWPERSO", clientPropertyJlawyerdescription: "Ausweisart: Personalausweis", buttonGroup: grpNpAusweis, selected: true)
-                                                                        }
-                                                                        td (colfill:true, align: 'left') {
-                                                                            radioButton (text: 'Reisepass', name: "_NPAUSWPASS", clientPropertyJlawyerdescription: "Ausweisart: Reisepass", buttonGroup: grpNpAusweis, selected: false)
-                                                                        }
-                                                                        td (colfill:true, align: 'left') {
-                                                                            radioButton (text: 'Sonstiges:', name: "_NPAUSWSONST", clientPropertyJlawyerdescription: "Ausweisart: Sonstiges", buttonGroup: grpNpAusweis, selected: false)
-                                                                        }
-                                                                        td (align: 'left') {
-                                                                            txtNpAuswSonstText = textField(name: "_NPAUSWSONSTTEXT", text: '', clientPropertyJlawyerdescription: "Ausweisart: Bezeichnung des sonstigen Ausweises", columns:30)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (colfill:true, align: 'left') {
-                                                                            label(text: 'ausstellende Behörde:')
-                                                                        }
-                                                                        td (colspan: 3, align: 'left') {
-                                                                            textField(name: "_NPAUSWBEHOERDE", text: '', clientPropertyJlawyerdescription: "ausstellende Behörde des Ausweises", columns:40)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (colfill:true, align: 'left') {
-                                                                            label(text: 'Ausweisnummer:')
-                                                                        }
-                                                                        td (colspan: 3, align: 'left') {
-                                                                            textField(name: "_NPAUSWNR", text: '', clientPropertyJlawyerdescription: "Ausweisnummer", columns:30)
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left', valign: 'TOP') {
-                                                            label(text: '<html>Ergänzende Angaben<br/><i>(z. B. Identifizierung mittels<br/>elektronischer Signatur oder<br/>elektronischem Identitätsnachweis)</i></html>')
-                                                        }
-                                                        td (align: 'left') {
-                                                            scrollPane {
-                                                                textArea(name: "_NPERGAENZEND", clientPropertyJlawyerdescription: "Ergänzende Angaben zur Identifizierung des Vertragspartners", lineWrap:true, wrapStyleWord:true, columns:50, rows:5, editable:true)
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true, align: 'left') {
-                                            pnlJurPerson = panel(border: titledBorder(title: 'b) juristische Person oder Personengesellschaft')) {
-                                                tableLayout (cellpadding: 5) {
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'Firma bzw. Name oder Bezeichnung:')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_JPFIRMA", text: '', clientPropertyJlawyerdescription: "Firma bzw. Name oder Bezeichnung des Vertragspartners", columns:50)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colspan: 2, align: 'left') {
-                                                            panel(border: titledBorder(title: 'Identifizierung')) {
-                                                                tableLayout (cellpadding: 3) {
-                                                                    tr {
-                                                                        td (colspan: 2, align: 'left') {
-                                                                            grpJpIdent = buttonGroup(id:'grpJpIdent')
-                                                                            radioButton (text: 'Kopie/Ausdruck eines Handels-/Genossenschaftsregisterauszugs o. ä. ist erstellt und liegt bei', name: "_JPIDREGAUSZUG", clientPropertyJlawyerdescription: "Identifizierung: Registerauszug ist erstellt und liegt bei", buttonGroup: grpJpIdent, selected: false)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (colspan: 2, align: 'left') {
-                                                                            radioButton (text: 'wurde bereits früher identifiziert und die dabei erhobenen Daten wurden aufgezeichnet', name: "_JPIDFRUEHER", clientPropertyJlawyerdescription: "Identifizierung: wurde bereits früher identifiziert und die dabei erhobenen Daten wurden aufgezeichnet", buttonGroup: grpJpIdent, selected: false)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (colfill:true, align: 'left') {
-                                                                            radioButton (text: 'wurde identifiziert durch den nach § 7 GwG zuverlässigen Dritten:', name: "_JPIDDRITTER", clientPropertyJlawyerdescription: "Identifizierung: wurde identifiziert durch einen nach § 7 GwG zuverlässigen Dritten (Unterlagen liegen bei)", buttonGroup: grpJpIdent, selected: false)
-                                                                        }
-                                                                        td (align: 'left') {
-                                                                            textField(name: "_JPIDDRITTERNAME", text: '', clientPropertyJlawyerdescription: "Identifizierung: Bezeichnung des nach § 7 GwG zuverlässigen Dritten", columns:40)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (colspan: 2, align: 'left') {
-                                                                            radioButton (text: 'wird folgendermaßen identifiziert (Angaben unten)', name: "_JPIDHIER", clientPropertyJlawyerdescription: "Identifizierung: wird folgendermaßen identifiziert", buttonGroup: grpJpIdent, selected: true)
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'Rechtsform:')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_JPRECHTSFORM", text: '', clientPropertyJlawyerdescription: "Rechtsform des Vertragspartners", columns:30)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'Registernummer (soweit vorhanden):')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_JPREGNR", text: '', clientPropertyJlawyerdescription: "Registernummer des Vertragspartners", columns:30)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'Anschrift des Sitzes oder der Hauptniederlassung:')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_JPANSCHRIFT", text: '', clientPropertyJlawyerdescription: "Anschrift des Sitzes oder der Hauptniederlassung des Vertragspartners", columns:50)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left', valign: 'TOP') {
-                                                            label(text: '<html>Namen der Mitglieder des Vertretungsorgans<br/>oder der gesetzlichen Vertreter <i>(i. d. R. maximal 5)</i>:</html>')
-                                                        }
-                                                        td (align: 'left') {
-                                                            scrollPane {
-                                                                textArea(name: "_JPVERTRETER", clientPropertyJlawyerdescription: "Namen der Mitglieder des Vertretungsorgans oder der gesetzlichen Vertreter", lineWrap:true, wrapStyleWord:true, columns:50, rows:5, editable:true)
-                                                            }
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colspan: 2, align: 'left') {
-                                                            panel(border: titledBorder(title: 'Vertretungsorgan ist selbst eine juristische Person')) {
-                                                                tableLayout (cellpadding: 3) {
-                                                                    tr {
-                                                                        td (colspan: 2, align: 'left') {
-                                                                            chkJpVertrJurPerson = checkBox(text: '<html>Ein Mitglied des Vertretungsorgans oder des gesetzlichen Vertreters ist eine juristische Person<br/>(z. B. die GmbH in einer GmbH & Co. KG), die folgendermaßen identifiziert wird:</html>', name: "_JPVERTRJURPERSON", clientPropertyJlawyerdescription: "Ein Mitglied des Vertretungsorgans ist eine juristische Person", selected: false, actionPerformed: {
-                                                                                toggleVertretungJurPerson()
-                                                                            })
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (colfill:true, align: 'left') {
-                                                                            label(text: 'Firma bzw. Name oder Bezeichnung:')
-                                                                        }
-                                                                        td (align: 'left') {
-                                                                            txtJpVjpFirma = textField(name: "_JPVJPFIRMA", text: '', clientPropertyJlawyerdescription: "Vertretungsorgan (juristische Person): Firma bzw. Name oder Bezeichnung", columns:50)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (colfill:true, align: 'left') {
-                                                                            label(text: 'Rechtsform:')
-                                                                        }
-                                                                        td (align: 'left') {
-                                                                            txtJpVjpRechtsform = textField(name: "_JPVJPRECHTSFORM", text: '', clientPropertyJlawyerdescription: "Vertretungsorgan (juristische Person): Rechtsform", columns:30)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (colfill:true, align: 'left') {
-                                                                            label(text: 'Registernummer (soweit vorhanden):')
-                                                                        }
-                                                                        td (align: 'left') {
-                                                                            txtJpVjpRegNr = textField(name: "_JPVJPREGNR", text: '', clientPropertyJlawyerdescription: "Vertretungsorgan (juristische Person): Registernummer", columns:30)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (colfill:true, align: 'left') {
-                                                                            label(text: 'Anschrift des Sitzes oder der Hauptniederlassung:')
-                                                                        }
-                                                                        td (align: 'left') {
-                                                                            txtJpVjpAnschrift = textField(name: "_JPVJPANSCHRIFT", text: '', clientPropertyJlawyerdescription: "Vertretungsorgan (juristische Person): Anschrift des Sitzes oder der Hauptniederlassung", columns:50)
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-
                                 }
                             }
+
+                            tr {
+                                td (colfill:true, align: 'left') {
+                                    pnlNatPerson = panel(border: titledBorder(title: 'a) natürliche Person')) {
+                                        tableLayout (cellpadding: 5) {
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'Anrede:')
+                                                }
+                                                td (align: 'left') {
+                                                    comboBox(items: ['', 'Frau', 'Herr'], name: "_NPANREDE", clientPropertyJlawyerdescription: "Anrede des Vertragspartners", editable: true)
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'Name:')
+                                                }
+                                                td (align: 'left') {
+                                                    textField(name: "_NPNAME", text: '', clientPropertyJlawyerdescription: "Name des Vertragspartners", columns:40)
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'Vorname(n):')
+                                                }
+                                                td (align: 'left') {
+                                                    textField(name: "_NPVORNAME", text: '', clientPropertyJlawyerdescription: "Vorname(n) des Vertragspartners", columns:40)
+                                                }
+                                            }
+                                            tr {
+                                                td (colspan: 2, align: 'left') {
+                                                    panel(border: titledBorder(title: 'Identifizierung')) {
+                                                        tableLayout (cellpadding: 3) {
+                                                            tr {
+                                                                td (colspan: 2, align: 'left') {
+                                                                    grpNpIdent = buttonGroup(id:'grpNpIdent')
+                                                                    radioButton (text: 'Ausweis-/Passkopie ist erstellt und liegt bei', name: "_NPIDAUSWEISKOPIE", clientPropertyJlawyerdescription: "Identifizierung: Ausweis-/Passkopie ist erstellt und liegt bei", buttonGroup: grpNpIdent, selected: false)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (colspan: 2, align: 'left') {
+                                                                    radioButton (text: 'wurde bereits früher identifiziert und die dabei erhobenen Daten wurden aufgezeichnet', name: "_NPIDFRUEHER", clientPropertyJlawyerdescription: "Identifizierung: wurde bereits früher identifiziert und die dabei erhobenen Daten wurden aufgezeichnet", buttonGroup: grpNpIdent, selected: false)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (colfill:true, align: 'left') {
+                                                                    radioButton (text: 'wurde identifiziert durch den nach § 7 GwG zuverlässigen Dritten:', name: "_NPIDDRITTER", clientPropertyJlawyerdescription: "Identifizierung: wurde identifiziert durch einen nach § 7 GwG zuverlässigen Dritten (Unterlagen liegen bei)", buttonGroup: grpNpIdent, selected: false)
+                                                                }
+                                                                td (align: 'left') {
+                                                                    txtNpIdDritterName = textField(name: "_NPIDDRITTERNAME", text: '', clientPropertyJlawyerdescription: "Identifizierung: Bezeichnung des nach § 7 GwG zuverlässigen Dritten", columns:40)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (colspan: 2, align: 'left') {
+                                                                    radioButton (text: 'wird folgendermaßen identifiziert (Angaben unten)', name: "_NPIDHIER", clientPropertyJlawyerdescription: "Identifizierung: wird folgendermaßen identifiziert", buttonGroup: grpNpIdent, selected: true)
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'Geburtsdatum:')
+                                                }
+                                                td (align: 'left') {
+                                                    panel {
+                                                        flowLayout(alignment: FlowLayout.LEFT, hgap: 0, vgap: 0)
+                                                        txtNpGebDatum = textField(name: "_NPGEBDATUM", text: '', clientPropertyJlawyerdescription: "Geburtsdatum des Vertragspartners", columns:10)
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                            GuiLib.dateSelector(txtNpGebDatum, true);
+                                                        })
+                                                    }
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'Geburtsort:')
+                                                }
+                                                td (align: 'left') {
+                                                    textField(name: "_NPGEBORT", text: '', clientPropertyJlawyerdescription: "Geburtsort des Vertragspartners", columns:30)
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'Staatsangehörigkeit:')
+                                                }
+                                                td (align: 'left') {
+                                                    textField(name: "_NPSTAATSANG", text: '', clientPropertyJlawyerdescription: "Staatsangehörigkeit des Vertragspartners", columns:30)
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'Anschrift (Straße, Hausnummer, PLZ und Ort):')
+                                                }
+                                                td (align: 'left') {
+                                                    textField(name: "_NPANSCHRIFT", text: '', clientPropertyJlawyerdescription: "Anschrift des Vertragspartners", columns:50)
+                                                }
+                                            }
+                                            tr {
+                                                td (colspan: 2, align: 'left') {
+                                                    panel(border: titledBorder(title: 'Vorlage eines gültigen amtlichen Ausweises')) {
+                                                        tableLayout (cellpadding: 3) {
+                                                            tr {
+                                                                td (colfill:true, align: 'left') {
+                                                                    grpNpAusweis = buttonGroup(id:'grpNpAusweis')
+                                                                    radioButton (text: 'Personalausweis', name: "_NPAUSWPERSO", clientPropertyJlawyerdescription: "Ausweisart: Personalausweis", buttonGroup: grpNpAusweis, selected: true)
+                                                                }
+                                                                td (colfill:true, align: 'left') {
+                                                                    radioButton (text: 'Reisepass', name: "_NPAUSWPASS", clientPropertyJlawyerdescription: "Ausweisart: Reisepass", buttonGroup: grpNpAusweis, selected: false)
+                                                                }
+                                                                td (colfill:true, align: 'left') {
+                                                                    radioButton (text: 'Sonstiges:', name: "_NPAUSWSONST", clientPropertyJlawyerdescription: "Ausweisart: Sonstiges", buttonGroup: grpNpAusweis, selected: false)
+                                                                }
+                                                                td (align: 'left') {
+                                                                    txtNpAuswSonstText = textField(name: "_NPAUSWSONSTTEXT", text: '', clientPropertyJlawyerdescription: "Ausweisart: Bezeichnung des sonstigen Ausweises", columns:30)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (colfill:true, align: 'left') {
+                                                                    label(text: 'ausstellende Behörde:')
+                                                                }
+                                                                td (colspan: 3, align: 'left') {
+                                                                    textField(name: "_NPAUSWBEHOERDE", text: '', clientPropertyJlawyerdescription: "ausstellende Behörde des Ausweises", columns:40)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (colfill:true, align: 'left') {
+                                                                    label(text: 'Ausweisnummer:')
+                                                                }
+                                                                td (colspan: 3, align: 'left') {
+                                                                    textField(name: "_NPAUSWNR", text: '', clientPropertyJlawyerdescription: "Ausweisnummer", columns:30)
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left', valign: 'TOP') {
+                                                    label(text: '<html>Ergänzende Angaben<br/><i>(z. B. Identifizierung mittels<br/>elektronischer Signatur oder<br/>elektronischem Identitätsnachweis)</i></html>')
+                                                }
+                                                td (align: 'left') {
+                                                    scrollPane {
+                                                        textArea(name: "_NPERGAENZEND", clientPropertyJlawyerdescription: "Ergänzende Angaben zur Identifizierung des Vertragspartners", lineWrap:true, wrapStyleWord:true, columns:50, rows:5, editable:true)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            tr {
+                                td (colfill:true, align: 'left') {
+                                    pnlJurPerson = panel(border: titledBorder(title: 'b) juristische Person oder Personengesellschaft')) {
+                                        tableLayout (cellpadding: 5) {
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'Firma bzw. Name oder Bezeichnung:')
+                                                }
+                                                td (align: 'left') {
+                                                    textField(name: "_JPFIRMA", text: '', clientPropertyJlawyerdescription: "Firma bzw. Name oder Bezeichnung des Vertragspartners", columns:50)
+                                                }
+                                            }
+                                            tr {
+                                                td (colspan: 2, align: 'left') {
+                                                    panel(border: titledBorder(title: 'Identifizierung')) {
+                                                        tableLayout (cellpadding: 3) {
+                                                            tr {
+                                                                td (colspan: 2, align: 'left') {
+                                                                    grpJpIdent = buttonGroup(id:'grpJpIdent')
+                                                                    radioButton (text: 'Kopie/Ausdruck eines Handels-/Genossenschaftsregisterauszugs o. ä. ist erstellt und liegt bei', name: "_JPIDREGAUSZUG", clientPropertyJlawyerdescription: "Identifizierung: Registerauszug ist erstellt und liegt bei", buttonGroup: grpJpIdent, selected: false)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (colspan: 2, align: 'left') {
+                                                                    radioButton (text: 'wurde bereits früher identifiziert und die dabei erhobenen Daten wurden aufgezeichnet', name: "_JPIDFRUEHER", clientPropertyJlawyerdescription: "Identifizierung: wurde bereits früher identifiziert und die dabei erhobenen Daten wurden aufgezeichnet", buttonGroup: grpJpIdent, selected: false)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (colfill:true, align: 'left') {
+                                                                    radioButton (text: 'wurde identifiziert durch den nach § 7 GwG zuverlässigen Dritten:', name: "_JPIDDRITTER", clientPropertyJlawyerdescription: "Identifizierung: wurde identifiziert durch einen nach § 7 GwG zuverlässigen Dritten (Unterlagen liegen bei)", buttonGroup: grpJpIdent, selected: false)
+                                                                }
+                                                                td (align: 'left') {
+                                                                    textField(name: "_JPIDDRITTERNAME", text: '', clientPropertyJlawyerdescription: "Identifizierung: Bezeichnung des nach § 7 GwG zuverlässigen Dritten", columns:40)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (colspan: 2, align: 'left') {
+                                                                    radioButton (text: 'wird folgendermaßen identifiziert (Angaben unten)', name: "_JPIDHIER", clientPropertyJlawyerdescription: "Identifizierung: wird folgendermaßen identifiziert", buttonGroup: grpJpIdent, selected: true)
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'Rechtsform:')
+                                                }
+                                                td (align: 'left') {
+                                                    textField(name: "_JPRECHTSFORM", text: '', clientPropertyJlawyerdescription: "Rechtsform des Vertragspartners", columns:30)
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'Registernummer (soweit vorhanden):')
+                                                }
+                                                td (align: 'left') {
+                                                    textField(name: "_JPREGNR", text: '', clientPropertyJlawyerdescription: "Registernummer des Vertragspartners", columns:30)
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'Anschrift des Sitzes oder der Hauptniederlassung:')
+                                                }
+                                                td (align: 'left') {
+                                                    textField(name: "_JPANSCHRIFT", text: '', clientPropertyJlawyerdescription: "Anschrift des Sitzes oder der Hauptniederlassung des Vertragspartners", columns:50)
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left', valign: 'TOP') {
+                                                    label(text: '<html>Namen der Mitglieder des Vertretungsorgans<br/>oder der gesetzlichen Vertreter <i>(i. d. R. maximal 5)</i>:</html>')
+                                                }
+                                                td (align: 'left') {
+                                                    scrollPane {
+                                                        textArea(name: "_JPVERTRETER", clientPropertyJlawyerdescription: "Namen der Mitglieder des Vertretungsorgans oder der gesetzlichen Vertreter", lineWrap:true, wrapStyleWord:true, columns:50, rows:5, editable:true)
+                                                    }
+                                                }
+                                            }
+                                            tr {
+                                                td (colspan: 2, align: 'left') {
+                                                    panel(border: titledBorder(title: 'Vertretungsorgan ist selbst eine juristische Person')) {
+                                                        tableLayout (cellpadding: 3) {
+                                                            tr {
+                                                                td (colspan: 2, align: 'left') {
+                                                                    chkJpVertrJurPerson = checkBox(text: '<html>Ein Mitglied des Vertretungsorgans oder des gesetzlichen Vertreters ist eine juristische Person<br/>(z. B. die GmbH in einer GmbH & Co. KG), die folgendermaßen identifiziert wird:</html>', name: "_JPVERTRJURPERSON", clientPropertyJlawyerdescription: "Ein Mitglied des Vertretungsorgans ist eine juristische Person", selected: false, actionPerformed: {
+                                                                        toggleVertretungJurPerson()
+                                                                    })
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (colfill:true, align: 'left') {
+                                                                    label(text: 'Firma bzw. Name oder Bezeichnung:')
+                                                                }
+                                                                td (align: 'left') {
+                                                                    txtJpVjpFirma = textField(name: "_JPVJPFIRMA", text: '', clientPropertyJlawyerdescription: "Vertretungsorgan (juristische Person): Firma bzw. Name oder Bezeichnung", columns:50)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (colfill:true, align: 'left') {
+                                                                    label(text: 'Rechtsform:')
+                                                                }
+                                                                td (align: 'left') {
+                                                                    txtJpVjpRechtsform = textField(name: "_JPVJPRECHTSFORM", text: '', clientPropertyJlawyerdescription: "Vertretungsorgan (juristische Person): Rechtsform", columns:30)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (colfill:true, align: 'left') {
+                                                                    label(text: 'Registernummer (soweit vorhanden):')
+                                                                }
+                                                                td (align: 'left') {
+                                                                    txtJpVjpRegNr = textField(name: "_JPVJPREGNR", text: '', clientPropertyJlawyerdescription: "Vertretungsorgan (juristische Person): Registernummer", columns:30)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (colfill:true, align: 'left') {
+                                                                    label(text: 'Anschrift des Sitzes oder der Hauptniederlassung:')
+                                                                }
+                                                                td (align: 'left') {
+                                                                    txtJpVjpAnschrift = textField(name: "_JPVJPANSCHRIFT", text: '', clientPropertyJlawyerdescription: "Vertretungsorgan (juristische Person): Anschrift des Sitzes oder der Hauptniederlassung", columns:50)
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
                         }
                     }
 
                     // ############ 2 wirtschaftlich Berechtigter ############
                     panel(name: '2 wirtsch. Berechtigter') {
-                        borderLayout()
-                        scrollPane(constraints: BL.CENTER) {
-                            panel {
-                                tableLayout (cellpadding: 5) {
+                        tableLayout (cellpadding: 5) {
 
-                                    tr {
-                                        td (colfill:true, align: 'left') {
-                                            pnlWbNatPerson = panel(border: titledBorder(title: 'Der Vertragspartner ist eine natürliche Person')) {
-                                                tableLayout (cellpadding: 5) {
-                                                    tr {
-                                                        td (colspan: 2, align: 'left') {
-                                                            grpWbNp = buttonGroup(id:'grpWbNp')
-                                                            radioButton (text: 'Es gibt keinen wirtschaftlich Berechtigten.', name: "_WBNPKEINER", clientPropertyJlawyerdescription: "Es gibt keinen wirtschaftlich Berechtigten", buttonGroup: grpWbNp, selected: true)
-                                                        }
+                            tr {
+                                td (colfill:true, align: 'left') {
+                                    pnlWbNatPerson = panel(border: titledBorder(title: 'Der Vertragspartner ist eine natürliche Person')) {
+                                        tableLayout (cellpadding: 5) {
+                                            tr {
+                                                td (colspan: 2, align: 'left') {
+                                                    grpWbNp = buttonGroup(id:'grpWbNp')
+                                                    radioButton (text: 'Es gibt keinen wirtschaftlich Berechtigten.', name: "_WBNPKEINER", clientPropertyJlawyerdescription: "Es gibt keinen wirtschaftlich Berechtigten", buttonGroup: grpWbNp, selected: true)
+                                                }
+                                            }
+                                            tr {
+                                                td (colspan: 2, align: 'left') {
+                                                    radioButton (text: '<html>Es gibt einen wirtschaftlich Berechtigten. Die nach Ziffer 1a) benannte Person handelt<br/><b>auf Veranlassung</b> (z. B. als Treuhänder) von:</html>', name: "_WBNPVORHANDEN", clientPropertyJlawyerdescription: "Es gibt einen wirtschaftlich Berechtigten; der Vertragspartner handelt auf Veranlassung", buttonGroup: grpWbNp, selected: false)
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'Name:')
+                                                }
+                                                td (align: 'left') {
+                                                    textField(name: "_WBNPNAME", text: '', clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: Name", columns:40)
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'Vorname(n):')
+                                                }
+                                                td (align: 'left') {
+                                                    textField(name: "_WBNPVORNAME", text: '', clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: Vorname(n)", columns:40)
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'Geburtsdatum:')
+                                                }
+                                                td (align: 'left') {
+                                                    panel {
+                                                        flowLayout(alignment: FlowLayout.LEFT, hgap: 0, vgap: 0)
+                                                        txtWbNpGebDatum = textField(name: "_WBNPGEBDATUM", text: '', clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: Geburtsdatum", columns:10)
+                                                        button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                            GuiLib.dateSelector(txtWbNpGebDatum, true);
+                                                        })
                                                     }
-                                                    tr {
-                                                        td (colspan: 2, align: 'left') {
-                                                            radioButton (text: '<html>Es gibt einen wirtschaftlich Berechtigten. Die nach Ziffer 1a) benannte Person handelt<br/><b>auf Veranlassung</b> (z. B. als Treuhänder) von:</html>', name: "_WBNPVORHANDEN", clientPropertyJlawyerdescription: "Es gibt einen wirtschaftlich Berechtigten; der Vertragspartner handelt auf Veranlassung", buttonGroup: grpWbNp, selected: false)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'Name:')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_WBNPNAME", text: '', clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: Name", columns:40)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'Vorname(n):')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_WBNPVORNAME", text: '', clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: Vorname(n)", columns:40)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'Geburtsdatum:')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_WBNPGEBDATUM", text: '', clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: Geburtsdatum", columns:10)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'Geburtsort:')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_WBNPGEBORT", text: '', clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: Geburtsort", columns:30)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'Staatsangehörigkeit:')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_WBNPSTAATSANG", text: '', clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: Staatsangehörigkeit", columns:30)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'Anschrift:')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_WBNPANSCHRIFT", text: '', clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: Anschrift", columns:50)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colspan: 2, align: 'left') {
-                                                            label(text: '<html><i>Geburtsdatum, Geburtsort, Staatsangehörigkeit und Anschrift sind nur zu erheben, soweit dies in Ansehung des im Einzelfall<br/>bestehenden Risikos der Geldwäsche oder der Terrorismusfinanzierung angemessen ist.</i></html>')
-                                                        }
-                                                    }
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'Geburtsort:')
+                                                }
+                                                td (align: 'left') {
+                                                    textField(name: "_WBNPGEBORT", text: '', clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: Geburtsort", columns:30)
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'Staatsangehörigkeit:')
+                                                }
+                                                td (align: 'left') {
+                                                    textField(name: "_WBNPSTAATSANG", text: '', clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: Staatsangehörigkeit", columns:30)
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'Anschrift:')
+                                                }
+                                                td (align: 'left') {
+                                                    textField(name: "_WBNPANSCHRIFT", text: '', clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: Anschrift", columns:50)
+                                                }
+                                            }
+                                            tr {
+                                                td (colspan: 2, align: 'left') {
+                                                    label(text: '<html><i>Geburtsdatum, Geburtsort, Staatsangehörigkeit und Anschrift sind nur zu erheben, soweit dies in Ansehung des im Einzelfall<br/>bestehenden Risikos der Geldwäsche oder der Terrorismusfinanzierung angemessen ist.</i></html>')
                                                 }
                                             }
                                         }
                                     }
-
-                                    tr {
-                                        td (colfill:true, align: 'left') {
-                                            pnlWbJurPerson = panel(border: titledBorder(title: 'Der Vertragspartner ist eine juristische Person/Personengesellschaft')) {
-                                                tableLayout (cellpadding: 5) {
-
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            panel(border: titledBorder(title: 'Wirtschaftlich Berechtigte bei Gesellschaften')) {
-                                                                tableLayout (cellpadding: 3) {
-                                                                    tr {
-                                                                        td (align: 'left') {
-                                                                            grpWbJp = buttonGroup(id:'grpWbJp')
-                                                                            radioButton (text: '<html>Es besteht keine Pflicht zur Abklärung der wirtschaftlich Berechtigten, weil die nach Ziffer 1b) benannte Person eine<br/>Gesellschaft ist, die an einem organisierten Markt im Sinne des § 2 Abs. 5 des Wertpapierhandelsgesetzes notiert ist<br/>und dem Gemeinschaftsrecht entsprechenden Transparenzanforderungen im Hinblick auf Stimmrechtsanteile oder<br/>gleichwertigen internationalen Standards unterliegt.</html>', name: "_WBJPBOERSE", clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: keine Abklärungspflicht, da börsennotierte Gesellschaft", buttonGroup: grpWbJp, selected: false)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (align: 'left') {
-                                                                            radioButton (text: '<html>Es gibt keinen wirtschaftlich Berechtigten, da von keiner natürlichen Person unmittelbar oder mittelbar mehr als 25 %<br/>der Gesellschaftsanteile oder mehr als 25 % der Stimmrechtsanteile an der nach Ziffer 1b) genannten Person<br/>gehalten werden.</html>', name: "_WBJPKEINER", clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: es gibt keinen (keine Beteiligung über 25 %)", buttonGroup: grpWbJp, selected: true)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (align: 'left') {
-                                                                            radioButton (text: '<html>Es gibt einen/mehrere wirtschaftlich Berechtigte, die unmittelbar oder mittelbar mehr als 25 % der Gesellschafts-<br/>anteile oder mehr als 25 % der Stimmrechtsanteile an der nach Ziffer 1b) genannten Person halten. Eine Dokumentation<br/>der Angaben ist nicht erforderlich, da eine Kopie/Ausdruck der aktuellen Gesellschafterliste o. ä. erstellt und diesem<br/>Dokumentationsbogen beigefügt ist.</html>', name: "_WBJPLISTEBEI", clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: vorhanden, Gesellschafterliste ist beigefügt", buttonGroup: grpWbJp, selected: false)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (align: 'left') {
-                                                                            radioButton (text: '<html>Nachfolgende natürliche Personen halten unmittelbar oder mittelbar <b>mehr als 25 % der Kapitalanteile</b> oder <b>mehr<br/>als 25 % der Stimmrechte</b> an der nach Ziffer 1b) benannten Person. Eine Kopie/Ausdruck der aktuellen Gesellschafter-<br/>liste wurde nicht erstellt, so dass die nachfolgende Identifizierung erfolgt:</html>', name: "_WBJPNAMEN", clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: vorhanden, Identifizierung erfolgt nachfolgend", buttonGroup: grpWbJp, selected: false)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (align: 'left') {
-                                                                            label(text: 'Namen der Personen mit über 25 %-Anteil an der juristischen Person/Personengesellschaft:')
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (align: 'left') {
-                                                                            scrollPane {
-                                                                                textArea(name: "_WBJPPERSONEN", clientPropertyJlawyerdescription: "Namen der Personen mit über 25 %-Anteil an der juristischen Person/Personengesellschaft", lineWrap:true, wrapStyleWord:true, columns:60, rows:5, editable:true)
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (align: 'left') {
-                                                                            label(text: '<html><i>Soweit in Ansehung des im Einzelfall bestehenden Risikos der Geldwäsche oder der Terrorismusfinanzierung weitere Daten erhoben<br/>werden, bitte weitere Daten gesondert aufzeichnen.</i></html>')
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            panel(border: titledBorder(title: 'Wirtschaftlich Berechtigte bei rechtsfähigen Stiftungen und vergleichbaren Rechtsformen')) {
-                                                                tableLayout (cellpadding: 3) {
-                                                                    tr {
-                                                                        td (align: 'left') {
-                                                                            label(text: 'Nachfolgende natürliche Personen sind wirtschaftlich Berechtigte, da sie')
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (align: 'left') {
-                                                                            checkBox(text: '<html>als Treugeber handeln oder auf sonstige Weise in der unter Ziffer 1b) benannten fremdnützigen Gestaltung<br/>(Stiftung, Treuhandgestaltungen etc.) mindestens 25 % des verwalteten Vermögens kontrollieren;</html>', name: "_WBSTTREUGEBER", clientPropertyJlawyerdescription: "Stiftung: Treugeber bzw. Kontrolle über mindestens 25 % des verwalteten Vermögens", selected: false)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (align: 'left') {
-                                                                            checkBox(text: 'in Höhe von mindestens 25 % als Begünstigte des verwalteten Vermögens bestimmt worden sind;', name: "_WBSTBEGUENSTIGT", clientPropertyJlawyerdescription: "Stiftung: Begünstigte in Höhe von mindestens 25 % des verwalteten Vermögens", selected: false)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (align: 'left') {
-                                                                            checkBox(text: '<html>auf sonstige Weise unmittelbar oder mittelbar beherrschenden Einfluss auf die Vermögensverwaltung oder<br/>Ertragsverteilung ausüben;</html>', name: "_WBSTEINFLUSS", clientPropertyJlawyerdescription: "Stiftung: beherrschender Einfluss auf Vermögensverwaltung oder Ertragsverteilung", selected: false)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (align: 'left') {
-                                                                            label(text: '<html>Namen der Personen mit einer mindestens 25%-igen Kontrolle oder Begünstigung an der fremdnützigen<br/>Gestaltung oder mit beherrschendem Einfluss:</html>')
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (align: 'left') {
-                                                                            scrollPane {
-                                                                                textArea(name: "_WBSTPERSONEN", clientPropertyJlawyerdescription: "Namen der Personen mit mindestens 25%-iger Kontrolle/Begünstigung oder beherrschendem Einfluss", lineWrap:true, wrapStyleWord:true, columns:60, rows:4, editable:true)
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (align: 'left') {
-                                                                            label(text: '<html>Der/die Begünstigte des verwalteten Vermögens wurde bisher noch nicht bestimmt. Das Vermögen soll jedoch<br/>zugunsten der nachfolgenden Gruppe verwaltet bzw. verteilt werden (Name der Begünstigtengruppe):</html>')
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (align: 'left') {
-                                                                            textField(name: "_WBSTGRUPPE", text: '', clientPropertyJlawyerdescription: "Name der Begünstigtengruppe", columns:60)
-                                                                        }
-                                                                    }
-                                                                    tr {
-                                                                        td (align: 'left') {
-                                                                            checkBox(text: 'Es gibt bei dieser Rechtsform keinen wirtschaftlich Berechtigten im oben genannten Sinne.', name: "_WBSTKEINER", clientPropertyJlawyerdescription: "Stiftung: es gibt keinen wirtschaftlich Berechtigten im oben genannten Sinne", selected: false)
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true, align: 'left') {
-                                            panel(border: titledBorder(title: 'Feststellung durch einen nach § 7 GwG zuverlässigen Dritten')) {
-                                                tableLayout (cellpadding: 5) {
-                                                    tr {
-                                                        td (colspan: 2, align: 'left') {
-                                                            checkBox(text: '<html>Die Feststellung und Identifizierung des wirtschaftlich Berechtigten wurde vorgenommen durch den nach § 7 GwG<br/>zuverlässigen Dritten; die entsprechenden Unterlagen liegen bei.</html>', name: "_WBDRITTER", clientPropertyJlawyerdescription: "Feststellung des wirtschaftlich Berechtigten durch einen nach § 7 GwG zuverlässigen Dritten", selected: false)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'zuverlässiger Dritter:')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_WBDRITTERNAME", text: '', clientPropertyJlawyerdescription: "Bezeichnung des nach § 7 GwG zuverlässigen Dritten (wirtschaftlich Berechtigter)", columns:50)
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-
                                 }
                             }
+
+                            tr {
+                                td (colfill:true, align: 'left') {
+                                    pnlWbJurPerson = panel(border: titledBorder(title: 'Der Vertragspartner ist eine juristische Person/Personengesellschaft')) {
+                                        tableLayout (cellpadding: 5) {
+
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    panel(border: titledBorder(title: 'Wirtschaftlich Berechtigte bei Gesellschaften')) {
+                                                        tableLayout (cellpadding: 3) {
+                                                            tr {
+                                                                td (align: 'left') {
+                                                                    grpWbJp = buttonGroup(id:'grpWbJp')
+                                                                    radioButton (text: '<html>Es besteht keine Pflicht zur Abklärung der wirtschaftlich Berechtigten, weil die nach Ziffer 1b) benannte Person eine<br/>Gesellschaft ist, die an einem organisierten Markt im Sinne des § 2 Abs. 5 des Wertpapierhandelsgesetzes notiert ist<br/>und dem Gemeinschaftsrecht entsprechenden Transparenzanforderungen im Hinblick auf Stimmrechtsanteile oder<br/>gleichwertigen internationalen Standards unterliegt.</html>', name: "_WBJPBOERSE", clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: keine Abklärungspflicht, da börsennotierte Gesellschaft", buttonGroup: grpWbJp, selected: false)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (align: 'left') {
+                                                                    radioButton (text: '<html>Es gibt keinen wirtschaftlich Berechtigten, da von keiner natürlichen Person unmittelbar oder mittelbar mehr als 25 %<br/>der Gesellschaftsanteile oder mehr als 25 % der Stimmrechtsanteile an der nach Ziffer 1b) genannten Person<br/>gehalten werden.</html>', name: "_WBJPKEINER", clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: es gibt keinen (keine Beteiligung über 25 %)", buttonGroup: grpWbJp, selected: true)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (align: 'left') {
+                                                                    radioButton (text: '<html>Es gibt einen/mehrere wirtschaftlich Berechtigte, die unmittelbar oder mittelbar mehr als 25 % der Gesellschafts-<br/>anteile oder mehr als 25 % der Stimmrechtsanteile an der nach Ziffer 1b) genannten Person halten. Eine Dokumentation<br/>der Angaben ist nicht erforderlich, da eine Kopie/Ausdruck der aktuellen Gesellschafterliste o. ä. erstellt und diesem<br/>Dokumentationsbogen beigefügt ist.</html>', name: "_WBJPLISTEBEI", clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: vorhanden, Gesellschafterliste ist beigefügt", buttonGroup: grpWbJp, selected: false)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (align: 'left') {
+                                                                    radioButton (text: '<html>Nachfolgende natürliche Personen halten unmittelbar oder mittelbar <b>mehr als 25 % der Kapitalanteile</b> oder <b>mehr<br/>als 25 % der Stimmrechte</b> an der nach Ziffer 1b) benannten Person. Eine Kopie/Ausdruck der aktuellen Gesellschafter-<br/>liste wurde nicht erstellt, so dass die nachfolgende Identifizierung erfolgt:</html>', name: "_WBJPNAMEN", clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: vorhanden, Identifizierung erfolgt nachfolgend", buttonGroup: grpWbJp, selected: false)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (align: 'left') {
+                                                                    label(text: 'Namen der Personen mit über 25 %-Anteil an der juristischen Person/Personengesellschaft:')
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (align: 'left') {
+                                                                    scrollPane {
+                                                                        textArea(name: "_WBJPPERSONEN", clientPropertyJlawyerdescription: "Namen der Personen mit über 25 %-Anteil an der juristischen Person/Personengesellschaft", lineWrap:true, wrapStyleWord:true, columns:60, rows:5, editable:true)
+                                                                    }
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (align: 'left') {
+                                                                    label(text: '<html><i>Soweit in Ansehung des im Einzelfall bestehenden Risikos der Geldwäsche oder der Terrorismusfinanzierung weitere Daten erhoben<br/>werden, bitte weitere Daten gesondert aufzeichnen.</i></html>')
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    panel(border: titledBorder(title: 'Wirtschaftlich Berechtigte bei rechtsfähigen Stiftungen und vergleichbaren Rechtsformen')) {
+                                                        tableLayout (cellpadding: 3) {
+                                                            tr {
+                                                                td (align: 'left') {
+                                                                    label(text: 'Nachfolgende natürliche Personen sind wirtschaftlich Berechtigte, da sie')
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (align: 'left') {
+                                                                    checkBox(text: '<html>als Treugeber handeln oder auf sonstige Weise in der unter Ziffer 1b) benannten fremdnützigen Gestaltung<br/>(Stiftung, Treuhandgestaltungen etc.) mindestens 25 % des verwalteten Vermögens kontrollieren;</html>', name: "_WBSTTREUGEBER", clientPropertyJlawyerdescription: "Stiftung: Treugeber bzw. Kontrolle über mindestens 25 % des verwalteten Vermögens", selected: false)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (align: 'left') {
+                                                                    checkBox(text: 'in Höhe von mindestens 25 % als Begünstigte des verwalteten Vermögens bestimmt worden sind;', name: "_WBSTBEGUENSTIGT", clientPropertyJlawyerdescription: "Stiftung: Begünstigte in Höhe von mindestens 25 % des verwalteten Vermögens", selected: false)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (align: 'left') {
+                                                                    checkBox(text: '<html>auf sonstige Weise unmittelbar oder mittelbar beherrschenden Einfluss auf die Vermögensverwaltung oder<br/>Ertragsverteilung ausüben;</html>', name: "_WBSTEINFLUSS", clientPropertyJlawyerdescription: "Stiftung: beherrschender Einfluss auf Vermögensverwaltung oder Ertragsverteilung", selected: false)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (align: 'left') {
+                                                                    label(text: '<html>Namen der Personen mit einer mindestens 25%-igen Kontrolle oder Begünstigung an der fremdnützigen<br/>Gestaltung oder mit beherrschendem Einfluss:</html>')
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (align: 'left') {
+                                                                    scrollPane {
+                                                                        textArea(name: "_WBSTPERSONEN", clientPropertyJlawyerdescription: "Namen der Personen mit mindestens 25%-iger Kontrolle/Begünstigung oder beherrschendem Einfluss", lineWrap:true, wrapStyleWord:true, columns:60, rows:4, editable:true)
+                                                                    }
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (align: 'left') {
+                                                                    label(text: '<html>Der/die Begünstigte des verwalteten Vermögens wurde bisher noch nicht bestimmt. Das Vermögen soll jedoch<br/>zugunsten der nachfolgenden Gruppe verwaltet bzw. verteilt werden (Name der Begünstigtengruppe):</html>')
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (align: 'left') {
+                                                                    textField(name: "_WBSTGRUPPE", text: '', clientPropertyJlawyerdescription: "Name der Begünstigtengruppe", columns:60)
+                                                                }
+                                                            }
+                                                            tr {
+                                                                td (align: 'left') {
+                                                                    checkBox(text: 'Es gibt bei dieser Rechtsform keinen wirtschaftlich Berechtigten im oben genannten Sinne.', name: "_WBSTKEINER", clientPropertyJlawyerdescription: "Stiftung: es gibt keinen wirtschaftlich Berechtigten im oben genannten Sinne", selected: false)
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+
+                            tr {
+                                td (colfill:true, align: 'left') {
+                                    panel(border: titledBorder(title: 'Feststellung durch einen nach § 7 GwG zuverlässigen Dritten')) {
+                                        tableLayout (cellpadding: 5) {
+                                            tr {
+                                                td (colspan: 2, align: 'left') {
+                                                    checkBox(text: '<html>Die Feststellung und Identifizierung des wirtschaftlich Berechtigten wurde vorgenommen durch den nach § 7 GwG<br/>zuverlässigen Dritten; die entsprechenden Unterlagen liegen bei.</html>', name: "_WBDRITTER", clientPropertyJlawyerdescription: "Feststellung des wirtschaftlich Berechtigten durch einen nach § 7 GwG zuverlässigen Dritten", selected: false)
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'zuverlässiger Dritter:')
+                                                }
+                                                td (align: 'left') {
+                                                    textField(name: "_WBDRITTERNAME", text: '', clientPropertyJlawyerdescription: "Bezeichnung des nach § 7 GwG zuverlässigen Dritten (wirtschaftlich Berechtigter)", columns:50)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
                         }
                     }
 
                     // ############ 3 Geschäftsbeziehung ############
                     panel(name: '3 Geschäftsbeziehung') {
-                        borderLayout()
-                        scrollPane(constraints: BL.CENTER) {
-                            panel {
-                                tableLayout (cellpadding: 5) {
+                        tableLayout (cellpadding: 5) {
 
-                                    tr {
-                                        td (colfill:true, align: 'left') {
-                                            panel(border: titledBorder(title: 'a) Allgemeine Informationen')) {
-                                                tableLayout (cellpadding: 5) {
-                                                    tr {
-                                                        td (align: 'left') {
-                                                            label(text: '<html>Allgemeine Informationen wie z. B. Beschreibung der Produkte/Leistungen; Datum des Vertragsabschlusses;<br/>Vertrags-, Rechnungs- oder Buchungsbelegnummer etc. <i>(anhand der Angaben muss eine zweifelsfreie Zuordnung<br/>zu einem bestimmten Geschäftsvorfall möglich sein)</i>:</html>')
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (align: 'left') {
-                                                            scrollPane {
-                                                                textArea(name: "_GBALLGEMEIN", clientPropertyJlawyerdescription: "Allgemeine Informationen zur Geschäftsbeziehung bzw. Transaktion", lineWrap:true, wrapStyleWord:true, columns:60, rows:6, editable:true)
-                                                            }
-                                                        }
+                            tr {
+                                td (colfill:true, align: 'left') {
+                                    panel(border: titledBorder(title: 'a) Allgemeine Informationen')) {
+                                        tableLayout (cellpadding: 5) {
+                                            tr {
+                                                td (align: 'left') {
+                                                    label(text: '<html>Allgemeine Informationen wie z. B. Beschreibung der Produkte/Leistungen; Datum des Vertragsabschlusses;<br/>Vertrags-, Rechnungs- oder Buchungsbelegnummer etc. <i>(anhand der Angaben muss eine zweifelsfreie Zuordnung<br/>zu einem bestimmten Geschäftsvorfall möglich sein)</i>:</html>')
+                                                }
+                                            }
+                                            tr {
+                                                td (align: 'left') {
+                                                    scrollPane {
+                                                        textArea(name: "_GBALLGEMEIN", clientPropertyJlawyerdescription: "Allgemeine Informationen zur Geschäftsbeziehung bzw. Transaktion", lineWrap:true, wrapStyleWord:true, columns:60, rows:6, editable:true)
                                                     }
                                                 }
                                             }
                                         }
                                     }
-
-                                    tr {
-                                        td (colfill:true, align: 'left') {
-                                            panel(border: titledBorder(title: 'b) Hintergrund der Geschäftsbeziehung (nicht erforderlich bei Gelegenheitskunden)')) {
-                                                tableLayout (cellpadding: 5) {
-                                                    tr {
-                                                        td (colspan: 2, align: 'left') {
-                                                            grpGbHintergrund = buttonGroup(id:'grpGbHintergrund')
-                                                            radioButton (text: '<html>Der Zweck und die Art der angestrebten Geschäftsbeziehung ergeben sich bereits zweifelsfrei aus dem Typ<br/>der Geschäftsbeziehung.</html>', name: "_GBHGTYPISCH", clientPropertyJlawyerdescription: "Hintergrund: ergibt sich zweifelsfrei aus dem Typ der Geschäftsbeziehung", buttonGroup: grpGbHintergrund, selected: true)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colspan: 2, align: 'left') {
-                                                            radioButton (text: '<html>Der Zweck und die Art der angestrebten Geschäftsbeziehung wurden ermittelt durch den nach § 7 GwG<br/>zuverlässigen Dritten; die entsprechenden Unterlagen liegen bei.</html>', name: "_GBHGDRITTER", clientPropertyJlawyerdescription: "Hintergrund: ermittelt durch einen nach § 7 GwG zuverlässigen Dritten", buttonGroup: grpGbHintergrund, selected: false)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'zuverlässiger Dritter:')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_GBHGDRITTERNAME", text: '', clientPropertyJlawyerdescription: "Bezeichnung des nach § 7 GwG zuverlässigen Dritten (Hintergrund der Geschäftsbeziehung)", columns:50)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colspan: 2, align: 'left') {
-                                                            radioButton (text: 'Der Zweck und die Art der angestrebten Geschäftsbeziehung wurden wie folgt ermittelt:', name: "_GBHGERMITTELT", clientPropertyJlawyerdescription: "Hintergrund: wurde wie folgt ermittelt", buttonGroup: grpGbHintergrund, selected: false)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colspan: 2, align: 'left') {
-                                                            scrollPane {
-                                                                textArea(name: "_GBHGERMITTELTTEXT", clientPropertyJlawyerdescription: "Ermittlung von Zweck und Art der angestrebten Geschäftsbeziehung", lineWrap:true, wrapStyleWord:true, columns:60, rows:4, editable:true)
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-
                                 }
                             }
+
+                            tr {
+                                td (colfill:true, align: 'left') {
+                                    panel(border: titledBorder(title: 'b) Hintergrund der Geschäftsbeziehung (nicht erforderlich bei Gelegenheitskunden)')) {
+                                        tableLayout (cellpadding: 5) {
+                                            tr {
+                                                td (colspan: 2, align: 'left') {
+                                                    grpGbHintergrund = buttonGroup(id:'grpGbHintergrund')
+                                                    radioButton (text: '<html>Der Zweck und die Art der angestrebten Geschäftsbeziehung ergeben sich bereits zweifelsfrei aus dem Typ<br/>der Geschäftsbeziehung.</html>', name: "_GBHGTYPISCH", clientPropertyJlawyerdescription: "Hintergrund: ergibt sich zweifelsfrei aus dem Typ der Geschäftsbeziehung", buttonGroup: grpGbHintergrund, selected: true)
+                                                }
+                                            }
+                                            tr {
+                                                td (colspan: 2, align: 'left') {
+                                                    radioButton (text: '<html>Der Zweck und die Art der angestrebten Geschäftsbeziehung wurden ermittelt durch den nach § 7 GwG<br/>zuverlässigen Dritten; die entsprechenden Unterlagen liegen bei.</html>', name: "_GBHGDRITTER", clientPropertyJlawyerdescription: "Hintergrund: ermittelt durch einen nach § 7 GwG zuverlässigen Dritten", buttonGroup: grpGbHintergrund, selected: false)
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'zuverlässiger Dritter:')
+                                                }
+                                                td (align: 'left') {
+                                                    textField(name: "_GBHGDRITTERNAME", text: '', clientPropertyJlawyerdescription: "Bezeichnung des nach § 7 GwG zuverlässigen Dritten (Hintergrund der Geschäftsbeziehung)", columns:50)
+                                                }
+                                            }
+                                            tr {
+                                                td (colspan: 2, align: 'left') {
+                                                    radioButton (text: 'Der Zweck und die Art der angestrebten Geschäftsbeziehung wurden wie folgt ermittelt:', name: "_GBHGERMITTELT", clientPropertyJlawyerdescription: "Hintergrund: wurde wie folgt ermittelt", buttonGroup: grpGbHintergrund, selected: false)
+                                                }
+                                            }
+                                            tr {
+                                                td (colspan: 2, align: 'left') {
+                                                    scrollPane {
+                                                        textArea(name: "_GBHGERMITTELTTEXT", clientPropertyJlawyerdescription: "Ermittlung von Zweck und Art der angestrebten Geschäftsbeziehung", lineWrap:true, wrapStyleWord:true, columns:60, rows:4, editable:true)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
                         }
                     }
 
                     // ############ 4 PEP ############
                     panel(name: '4 PEP') {
-                        borderLayout()
-                        scrollPane(constraints: BL.CENTER) {
-                            panel {
-                                tableLayout (cellpadding: 5) {
+                        tableLayout (cellpadding: 5) {
 
-                                    tr {
-                                        td (align: 'left') {
-                                            label(text: '<html><b>Politisch Exponierte Personen (PEP)</b> sind natürliche Personen, die ein wichtiges öffentliches Amt ausüben oder ausgeübt<br/>haben, also hochrangige Führungspersonen, wie Staatschefs, Regierungschefs, Minister, stellvertretende Minister und<br/>Staatssekretäre, Parlamentsmitglieder, Mitglieder von obersten Gerichten, Verfassungsgerichten oder sonstigen hochrangigen<br/>Institutionen der Justiz, Mitglieder der Rechnungshöfe oder der Vorstände von Zentralbanken, Botschafter, Geschäftsträger und<br/>hochrangige Offiziere der Streitkräfte sowie Mitglieder der Verwaltungs-, Leitungs- oder Aufsichtsorgane staatlicher Unternehmen.<br/>Auf Bundesländerebene gelten nur die Ministerpräsidenten als PEP.</html>')
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true, align: 'left') {
-                                            panel(border: titledBorder(title: 'Ergebnis des angemessenen risikoorientierten Verfahrens')) {
-                                                tableLayout (cellpadding: 5) {
-                                                    tr {
-                                                        td (align: 'left') {
-                                                            grpPep = buttonGroup(id:'grpPep')
-                                                            radioPepKeine = radioButton (text: '<html>a) <b>weder</b> der Vertragspartner <b>noch</b> der/die wirtschaftlich Berechtigte (soweit vorhanden) ist eine politisch<br/>exponierte Person, ein unmittelbares Familienmitglied einer politisch exponierten Person oder eine einer politisch<br/>exponierten Person bekanntermaßen nahestehende Person.</html>', name: "_PEPKEINE", clientPropertyJlawyerdescription: "weder Vertragspartner noch wirtschaftlich Berechtigter ist eine politisch exponierte Person", buttonGroup: grpPep, selected: true, actionPerformed: {
-                                                                togglePep()
-                                                            })
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (align: 'left') {
-                                                            radioPepVorhanden = radioButton (text: '<html>b) der Vertragspartner und/oder der/die wirtschaftlich Berechtigte(n) ist eine <b>politisch exponierte Person</b> im<br/>vorgenannten Sinne bzw. ein unmittelbares Familienmitglied einer politisch exponierten Person bzw. eine einer<br/>politisch exponierten Person bekanntermaßen nahestehende Person.</html>', name: "_PEPVORHANDEN", clientPropertyJlawyerdescription: "Vertragspartner und/oder wirtschaftlich Berechtigter ist eine politisch exponierte Person", buttonGroup: grpPep, selected: false, actionPerformed: {
-                                                                togglePep()
-                                                            })
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    tr {
-                                        td (colfill:true, align: 'left') {
-                                            pnlPepDetails = panel(border: titledBorder(title: 'Angaben zur politisch exponierten Person')) {
-                                                tableLayout (cellpadding: 5) {
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            checkBox(text: 'der/die Vertragspartner/in', name: "_PEPISTPARTNER", clientPropertyJlawyerdescription: "politisch exponierte Person: der/die Vertragspartner/in", selected: false)
-                                                        }
-                                                        td (align: 'left') {
-                                                            checkBox(text: 'der/die wirtschaftlich Berechtigte(n)', name: "_PEPISTWB", clientPropertyJlawyerdescription: "politisch exponierte Person: der/die wirtschaftlich Berechtigte(n)", selected: false)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'Genaue Bezeichnung der Rolle/Funktion:')
-                                                        }
-                                                        td (align: 'left') {
-                                                            textField(name: "_PEPFUNKTION", text: '', clientPropertyJlawyerdescription: "genaue Bezeichnung der Rolle/Funktion der politisch exponierten Person", columns:50)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colspan: 2, align: 'left') {
-                                                            chkPepAmtInland = checkBox(text: '<html>Dieses wichtige öffentliche Amt wird im Inland oder als im Inland gewählte(r) Abgeordnete(r) des Europäischen<br/>Parlaments ausgeübt. Eine individuelle Bewertung ergab:</html>', name: "_PEPAMTINLAND", clientPropertyJlawyerdescription: "wichtiges öffentliches Amt wird im Inland bzw. als im Inland gewählte(r) Abgeordnete(r) des EP ausgeübt", selected: false, actionPerformed: {
-                                                                togglePepAmt()
-                                                            })
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            grpPepInland = buttonGroup(id:'grpPepInland')
-                                                            radioPepInlandRisiko = radioButton (text: 'besondere Risiken (weiter bei c)', name: "_PEPINLANDRISIKO", clientPropertyJlawyerdescription: "Bewertung Amt im Inland: besondere Risiken", buttonGroup: grpPepInland, selected: false)
-                                                        }
-                                                        td (align: 'left') {
-                                                            radioPepInlandKeinRisiko = radioButton (text: 'keine besonderen Risiken', name: "_PEPINLANDKEINRISIKO", clientPropertyJlawyerdescription: "Bewertung Amt im Inland: keine besonderen Risiken", buttonGroup: grpPepInland, selected: false)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colspan: 2, align: 'left') {
-                                                            chkPepAmtBeendet = checkBox(text: '<html>Dieses wichtige öffentliche Amt wird seit mindestens einem Jahr nicht mehr ausgeübt.<br/>Eine individuelle Bewertung ergab:</html>', name: "_PEPAMTBEENDET", clientPropertyJlawyerdescription: "wichtiges öffentliches Amt wird seit mindestens einem Jahr nicht mehr ausgeübt", selected: false, actionPerformed: {
-                                                                togglePepAmt()
-                                                            })
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            label(text: 'nicht mehr ausgeübt seit:')
-                                                        }
-                                                        td (align: 'left') {
-                                                            txtPepAmtBeendetSeit = textField(name: "_PEPAMTBEENDETSEIT", text: '', clientPropertyJlawyerdescription: "wichtiges öffentliches Amt nicht mehr ausgeübt seit", columns:10)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colfill:true, align: 'left') {
-                                                            grpPepBeendet = buttonGroup(id:'grpPepBeendet')
-                                                            radioPepBeendetRisiko = radioButton (text: 'besondere Risiken (weiter bei c)', name: "_PEPBEENDETRISIKO", clientPropertyJlawyerdescription: "Bewertung beendetes Amt: besondere Risiken", buttonGroup: grpPepBeendet, selected: false)
-                                                        }
-                                                        td (align: 'left') {
-                                                            radioPepBeendetKeinRisiko = radioButton (text: 'keine besonderen Risiken', name: "_PEPBEENDETKEINRISIKO", clientPropertyJlawyerdescription: "Bewertung beendetes Amt: keine besonderen Risiken", buttonGroup: grpPepBeendet, selected: false)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colspan: 2, align: 'left') {
-                                                            label(text: '<html>c) Hinsichtlich der Herkunft der Vermögenswerte, die im Rahmen der Geschäftsbeziehung oder der Transaktion<br/>eingesetzt werden, wurden folgende Informationen in Erfahrung gebracht:</html>')
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colspan: 2, align: 'left') {
-                                                            scrollPane {
-                                                                textArea(name: "_PEPVERMOEGENSHERKUNFT", clientPropertyJlawyerdescription: "Informationen zur Herkunft der eingesetzten Vermögenswerte", lineWrap:true, wrapStyleWord:true, columns:60, rows:5, editable:true)
-                                                            }
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (colspan: 2, align: 'left') {
-                                                            checkBox(text: 'Ein Vorgesetzter hat der Begründung der Geschäftsbeziehung zugestimmt.', name: "_PEPVORGESETZTER", clientPropertyJlawyerdescription: "ein Vorgesetzter hat der Begründung der Geschäftsbeziehung zugestimmt", selected: false)
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-
+                            tr {
+                                td (align: 'left') {
+                                    label(text: '<html><b>Politisch Exponierte Personen (PEP)</b> sind natürliche Personen, die ein wichtiges öffentliches Amt ausüben oder ausgeübt<br/>haben, also hochrangige Führungspersonen, wie Staatschefs, Regierungschefs, Minister, stellvertretende Minister und<br/>Staatssekretäre, Parlamentsmitglieder, Mitglieder von obersten Gerichten, Verfassungsgerichten oder sonstigen hochrangigen<br/>Institutionen der Justiz, Mitglieder der Rechnungshöfe oder der Vorstände von Zentralbanken, Botschafter, Geschäftsträger und<br/>hochrangige Offiziere der Streitkräfte sowie Mitglieder der Verwaltungs-, Leitungs- oder Aufsichtsorgane staatlicher Unternehmen.<br/>Auf Bundesländerebene gelten nur die Ministerpräsidenten als PEP.</html>')
                                 }
                             }
+
+                            tr {
+                                td (colfill:true, align: 'left') {
+                                    panel(border: titledBorder(title: 'Ergebnis des angemessenen risikoorientierten Verfahrens')) {
+                                        tableLayout (cellpadding: 5) {
+                                            tr {
+                                                td (align: 'left') {
+                                                    grpPep = buttonGroup(id:'grpPep')
+                                                    radioPepKeine = radioButton (text: '<html>a) <b>weder</b> der Vertragspartner <b>noch</b> der/die wirtschaftlich Berechtigte (soweit vorhanden) ist eine politisch<br/>exponierte Person, ein unmittelbares Familienmitglied einer politisch exponierten Person oder eine einer politisch<br/>exponierten Person bekanntermaßen nahestehende Person.</html>', name: "_PEPKEINE", clientPropertyJlawyerdescription: "weder Vertragspartner noch wirtschaftlich Berechtigter ist eine politisch exponierte Person", buttonGroup: grpPep, selected: true, actionPerformed: {
+                                                        togglePep()
+                                                    })
+                                                }
+                                            }
+                                            tr {
+                                                td (align: 'left') {
+                                                    radioPepVorhanden = radioButton (text: '<html>b) der Vertragspartner und/oder der/die wirtschaftlich Berechtigte(n) ist eine <b>politisch exponierte Person</b> im<br/>vorgenannten Sinne bzw. ein unmittelbares Familienmitglied einer politisch exponierten Person bzw. eine einer<br/>politisch exponierten Person bekanntermaßen nahestehende Person.</html>', name: "_PEPVORHANDEN", clientPropertyJlawyerdescription: "Vertragspartner und/oder wirtschaftlich Berechtigter ist eine politisch exponierte Person", buttonGroup: grpPep, selected: false, actionPerformed: {
+                                                        togglePep()
+                                                    })
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            tr {
+                                td (colfill:true, align: 'left') {
+                                    pnlPepDetails = panel(border: titledBorder(title: 'Angaben zur politisch exponierten Person')) {
+                                        tableLayout (cellpadding: 5) {
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    checkBox(text: 'der/die Vertragspartner/in', name: "_PEPISTPARTNER", clientPropertyJlawyerdescription: "politisch exponierte Person: der/die Vertragspartner/in", selected: false)
+                                                }
+                                                td (align: 'left') {
+                                                    checkBox(text: 'der/die wirtschaftlich Berechtigte(n)', name: "_PEPISTWB", clientPropertyJlawyerdescription: "politisch exponierte Person: der/die wirtschaftlich Berechtigte(n)", selected: false)
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'Genaue Bezeichnung der Rolle/Funktion:')
+                                                }
+                                                td (align: 'left') {
+                                                    textField(name: "_PEPFUNKTION", text: '', clientPropertyJlawyerdescription: "genaue Bezeichnung der Rolle/Funktion der politisch exponierten Person", columns:50)
+                                                }
+                                            }
+                                            tr {
+                                                td (colspan: 2, align: 'left') {
+                                                    chkPepAmtInland = checkBox(text: '<html>Dieses wichtige öffentliche Amt wird im Inland oder als im Inland gewählte(r) Abgeordnete(r) des Europäischen<br/>Parlaments ausgeübt. Eine individuelle Bewertung ergab:</html>', name: "_PEPAMTINLAND", clientPropertyJlawyerdescription: "wichtiges öffentliches Amt wird im Inland bzw. als im Inland gewählte(r) Abgeordnete(r) des EP ausgeübt", selected: false, actionPerformed: {
+                                                        togglePepAmt()
+                                                    })
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    grpPepInland = buttonGroup(id:'grpPepInland')
+                                                    radioPepInlandRisiko = radioButton (text: 'besondere Risiken (weiter bei c)', name: "_PEPINLANDRISIKO", clientPropertyJlawyerdescription: "Bewertung Amt im Inland: besondere Risiken", buttonGroup: grpPepInland, selected: false)
+                                                }
+                                                td (align: 'left') {
+                                                    radioPepInlandKeinRisiko = radioButton (text: 'keine besonderen Risiken', name: "_PEPINLANDKEINRISIKO", clientPropertyJlawyerdescription: "Bewertung Amt im Inland: keine besonderen Risiken", buttonGroup: grpPepInland, selected: false)
+                                                }
+                                            }
+                                            tr {
+                                                td (colspan: 2, align: 'left') {
+                                                    chkPepAmtBeendet = checkBox(text: '<html>Dieses wichtige öffentliche Amt wird seit mindestens einem Jahr nicht mehr ausgeübt.<br/>Eine individuelle Bewertung ergab:</html>', name: "_PEPAMTBEENDET", clientPropertyJlawyerdescription: "wichtiges öffentliches Amt wird seit mindestens einem Jahr nicht mehr ausgeübt", selected: false, actionPerformed: {
+                                                        togglePepAmt()
+                                                    })
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    label(text: 'nicht mehr ausgeübt seit:')
+                                                }
+                                                td (align: 'left') {
+                                                    panel {
+                                                        flowLayout(alignment: FlowLayout.LEFT, hgap: 0, vgap: 0)
+                                                        txtPepAmtBeendetSeit = textField(name: "_PEPAMTBEENDETSEIT", text: '', clientPropertyJlawyerdescription: "wichtiges öffentliches Amt nicht mehr ausgeübt seit", columns:10)
+                                                        btnPepAmtBeendetSeit = button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                            GuiLib.dateSelector(txtPepAmtBeendetSeit, true);
+                                                        })
+                                                    }
+                                                }
+                                            }
+                                            tr {
+                                                td (colfill:true, align: 'left') {
+                                                    grpPepBeendet = buttonGroup(id:'grpPepBeendet')
+                                                    radioPepBeendetRisiko = radioButton (text: 'besondere Risiken (weiter bei c)', name: "_PEPBEENDETRISIKO", clientPropertyJlawyerdescription: "Bewertung beendetes Amt: besondere Risiken", buttonGroup: grpPepBeendet, selected: false)
+                                                }
+                                                td (align: 'left') {
+                                                    radioPepBeendetKeinRisiko = radioButton (text: 'keine besonderen Risiken', name: "_PEPBEENDETKEINRISIKO", clientPropertyJlawyerdescription: "Bewertung beendetes Amt: keine besonderen Risiken", buttonGroup: grpPepBeendet, selected: false)
+                                                }
+                                            }
+                                            tr {
+                                                td (colspan: 2, align: 'left') {
+                                                    label(text: '<html>c) Hinsichtlich der Herkunft der Vermögenswerte, die im Rahmen der Geschäftsbeziehung oder der Transaktion<br/>eingesetzt werden, wurden folgende Informationen in Erfahrung gebracht:</html>')
+                                                }
+                                            }
+                                            tr {
+                                                td (colspan: 2, align: 'left') {
+                                                    scrollPane {
+                                                        textArea(name: "_PEPVERMOEGENSHERKUNFT", clientPropertyJlawyerdescription: "Informationen zur Herkunft der eingesetzten Vermögenswerte", lineWrap:true, wrapStyleWord:true, columns:60, rows:5, editable:true)
+                                                    }
+                                                }
+                                            }
+                                            tr {
+                                                td (colspan: 2, align: 'left') {
+                                                    checkBox(text: 'Ein Vorgesetzter hat der Begründung der Geschäftsbeziehung zugestimmt.', name: "_PEPVORGESETZTER", clientPropertyJlawyerdescription: "ein Vorgesetzter hat der Begründung der Geschäftsbeziehung zugestimmt", selected: false)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
                         }
                     }
 
                     // ############ 5 Grund der Aufzeichnung ############
                     panel(name: '5 Grund') {
-                        borderLayout()
-                        scrollPane(constraints: BL.CENTER) {
-                            panel {
-                                tableLayout (cellpadding: 5) {
-                                    tr {
-                                        td (colfill:true, align: 'left') {
-                                            panel(border: titledBorder(title: 'Grund der Aufzeichnung')) {
-                                                tableLayout (cellpadding: 5) {
-                                                    tr {
-                                                        td (align: 'left') {
-                                                            checkBox(text: 'Verdacht der Geldwäsche oder Terrorismusfinanzierung', name: "_GRDVERDACHT", clientPropertyJlawyerdescription: "Grund der Aufzeichnung: Verdacht der Geldwäsche oder Terrorismusfinanzierung", selected: false)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (align: 'left') {
-                                                            checkBox(text: 'Zweifel über Identitätsangaben', name: "_GRDZWEIFEL", clientPropertyJlawyerdescription: "Grund der Aufzeichnung: Zweifel über Identitätsangaben", selected: false)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (align: 'left') {
-                                                            label(text: '<html><i>Wenn ich eine Person bin, die gewerblich mit Gütern handelt:</i></html>')
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (align: 'left') {
-                                                            checkBox(text: 'Annahme von Bargeld im Wert von 15.000 Euro und mehr', name: "_GRDBARGELD15T", clientPropertyJlawyerdescription: "Grund der Aufzeichnung: Annahme von Bargeld im Wert von 15.000 Euro und mehr", selected: false)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (align: 'left') {
-                                                            label(text: '<html><i>Wenn ich ein sonstiger Verpflichteter bin (Finanzunternehmen, Versicherungsvermittler, Rechtsdienstleister,<br/>Dienstleister für Treuhandvermögen und Treuhänder, Immobilienmakler):</i></html>')
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (align: 'left') {
-                                                            checkBox(text: 'Begründung einer Geschäftsbeziehung', name: "_GRDGESCHBEZIEHUNG", clientPropertyJlawyerdescription: "Grund der Aufzeichnung: Begründung einer Geschäftsbeziehung", selected: false)
-                                                        }
-                                                    }
-                                                    tr {
-                                                        td (align: 'left') {
-                                                            checkBox(text: 'Durchführung von Transaktionen im Wert ab 15.000 Euro außerhalb einer bestehenden Geschäftsbeziehung', name: "_GRDTRANSAKTION15T", clientPropertyJlawyerdescription: "Grund der Aufzeichnung: Transaktionen im Wert ab 15.000 Euro außerhalb einer bestehenden Geschäftsbeziehung", selected: false)
-                                                        }
-                                                    }
+                        tableLayout (cellpadding: 5) {
+                            tr {
+                                td (colfill:true, align: 'left') {
+                                    panel(border: titledBorder(title: 'Grund der Aufzeichnung')) {
+                                        tableLayout (cellpadding: 5) {
+                                            tr {
+                                                td (align: 'left') {
+                                                    checkBox(text: 'Verdacht der Geldwäsche oder Terrorismusfinanzierung', name: "_GRDVERDACHT", clientPropertyJlawyerdescription: "Grund der Aufzeichnung: Verdacht der Geldwäsche oder Terrorismusfinanzierung", selected: false)
+                                                }
+                                            }
+                                            tr {
+                                                td (align: 'left') {
+                                                    checkBox(text: 'Zweifel über Identitätsangaben', name: "_GRDZWEIFEL", clientPropertyJlawyerdescription: "Grund der Aufzeichnung: Zweifel über Identitätsangaben", selected: false)
+                                                }
+                                            }
+                                            tr {
+                                                td (align: 'left') {
+                                                    label(text: '<html><i>Wenn ich eine Person bin, die gewerblich mit Gütern handelt:</i></html>')
+                                                }
+                                            }
+                                            tr {
+                                                td (align: 'left') {
+                                                    checkBox(text: 'Annahme von Bargeld im Wert von 15.000 Euro und mehr', name: "_GRDBARGELD15T", clientPropertyJlawyerdescription: "Grund der Aufzeichnung: Annahme von Bargeld im Wert von 15.000 Euro und mehr", selected: false)
+                                                }
+                                            }
+                                            tr {
+                                                td (align: 'left') {
+                                                    label(text: '<html><i>Wenn ich ein sonstiger Verpflichteter bin (Finanzunternehmen, Versicherungsvermittler, Rechtsdienstleister,<br/>Dienstleister für Treuhandvermögen und Treuhänder, Immobilienmakler):</i></html>')
+                                                }
+                                            }
+                                            tr {
+                                                td (align: 'left') {
+                                                    checkBox(text: 'Begründung einer Geschäftsbeziehung', name: "_GRDGESCHBEZIEHUNG", clientPropertyJlawyerdescription: "Grund der Aufzeichnung: Begründung einer Geschäftsbeziehung", selected: false)
+                                                }
+                                            }
+                                            tr {
+                                                td (align: 'left') {
+                                                    checkBox(text: 'Durchführung von Transaktionen im Wert ab 15.000 Euro außerhalb einer bestehenden Geschäftsbeziehung', name: "_GRDTRANSAKTION15T", clientPropertyJlawyerdescription: "Grund der Aufzeichnung: Transaktionen im Wert ab 15.000 Euro außerhalb einer bestehenden Geschäftsbeziehung", selected: false)
                                                 }
                                             }
                                         }
@@ -1676,6 +1679,7 @@ public class gwgpep01_ui implements com.jdimension.jlawyer.client.plugins.form.F
                         }
                     }
 
+                    }
                 }
             }
         }

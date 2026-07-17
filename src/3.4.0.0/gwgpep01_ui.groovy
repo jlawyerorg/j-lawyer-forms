@@ -666,6 +666,9 @@ import groovy.swing.SwingBuilder
 import java.awt.BorderLayout as BL
 import java.awt.Component
 import java.awt.Container
+import java.awt.FlowLayout
+import javax.swing.ImageIcon
+import javax.swing.JButton
 import javax.swing.JPanel
 import javax.swing.JTabbedPane
 import javax.swing.JTextField
@@ -682,6 +685,10 @@ public class gwgpep01_ui implements com.jdimension.jlawyer.client.plugins.form.F
 
     JRadioButton radioPartnerNatPerson = null;
     JRadioButton radioPartnerJurPerson = null;
+
+    JTextField txtErfDatum = null;
+    JTextField txtNpGebDatum = null;
+    JTextField txtWbNpGebDatum = null;
 
     JPanel pnlNatPerson = null;
     JPanel pnlJurPerson = null;
@@ -707,6 +714,7 @@ public class gwgpep01_ui implements com.jdimension.jlawyer.client.plugins.form.F
 
     JCheckBox chkPepAmtBeendet = null;
     JTextField txtPepAmtBeendetSeit = null;
+    JButton btnPepAmtBeendetSeit = null;
     JRadioButton radioPepBeendetRisiko = null;
     JRadioButton radioPepBeendetKeinRisiko = null;
 
@@ -791,6 +799,7 @@ public class gwgpep01_ui implements com.jdimension.jlawyer.client.plugins.form.F
 
         boolean beendet=pep && chkPepAmtBeendet.isSelected();
         txtPepAmtBeendetSeit.setEnabled(beendet);
+        btnPepAmtBeendetSeit.setEnabled(beendet);
         radioPepBeendetRisiko.setEnabled(beendet);
         radioPepBeendetKeinRisiko.setEnabled(beendet);
     }
@@ -838,7 +847,13 @@ public class gwgpep01_ui implements com.jdimension.jlawyer.client.plugins.form.F
                                             label(text: 'Datum der Aufzeichnung:')
                                         }
                                         td (align: 'left') {
-                                            textField(name: "_ERFDATUM", text: '', clientPropertyJlawyerdescription: "Datum der Aufzeichnung", columns:10)
+                                            panel {
+                                                flowLayout(alignment: FlowLayout.LEFT, hgap: 0, vgap: 0)
+                                                txtErfDatum = textField(name: "_ERFDATUM", text: '', clientPropertyJlawyerdescription: "Datum der Aufzeichnung", columns:10)
+                                                button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                    GuiLib.dateSelector(txtErfDatum, true);
+                                                })
+                                            }
                                         }
                                     }
                                 }
@@ -945,7 +960,13 @@ public class gwgpep01_ui implements com.jdimension.jlawyer.client.plugins.form.F
                                                             label(text: 'Geburtsdatum:')
                                                         }
                                                         td (align: 'left') {
-                                                            textField(name: "_NPGEBDATUM", text: '', clientPropertyJlawyerdescription: "Geburtsdatum des Vertragspartners", columns:10)
+                                                            panel {
+                                                                flowLayout(alignment: FlowLayout.LEFT, hgap: 0, vgap: 0)
+                                                                txtNpGebDatum = textField(name: "_NPGEBDATUM", text: '', clientPropertyJlawyerdescription: "Geburtsdatum des Vertragspartners", columns:10)
+                                                                button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                    GuiLib.dateSelector(txtNpGebDatum, true);
+                                                                })
+                                                            }
                                                         }
                                                     }
                                                     tr {
@@ -1204,7 +1225,13 @@ public class gwgpep01_ui implements com.jdimension.jlawyer.client.plugins.form.F
                                                             label(text: 'Geburtsdatum:')
                                                         }
                                                         td (align: 'left') {
-                                                            textField(name: "_WBNPGEBDATUM", text: '', clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: Geburtsdatum", columns:10)
+                                                            panel {
+                                                                flowLayout(alignment: FlowLayout.LEFT, hgap: 0, vgap: 0)
+                                                                txtWbNpGebDatum = textField(name: "_WBNPGEBDATUM", text: '', clientPropertyJlawyerdescription: "wirtschaftlich Berechtigter: Geburtsdatum", columns:10)
+                                                                button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                    GuiLib.dateSelector(txtWbNpGebDatum, true);
+                                                                })
+                                                            }
                                                         }
                                                     }
                                                     tr {
@@ -1539,7 +1566,13 @@ public class gwgpep01_ui implements com.jdimension.jlawyer.client.plugins.form.F
                                                             label(text: 'nicht mehr ausgeübt seit:')
                                                         }
                                                         td (align: 'left') {
-                                                            txtPepAmtBeendetSeit = textField(name: "_PEPAMTBEENDETSEIT", text: '', clientPropertyJlawyerdescription: "wichtiges öffentliches Amt nicht mehr ausgeübt seit", columns:10)
+                                                            panel {
+                                                                flowLayout(alignment: FlowLayout.LEFT, hgap: 0, vgap: 0)
+                                                                txtPepAmtBeendetSeit = textField(name: "_PEPAMTBEENDETSEIT", text: '', clientPropertyJlawyerdescription: "wichtiges öffentliches Amt nicht mehr ausgeübt seit", columns:10)
+                                                                btnPepAmtBeendetSeit = button(text: '', icon: new ImageIcon(getClass().getResource("/icons/schedule.png")), actionPerformed: {
+                                                                    GuiLib.dateSelector(txtPepAmtBeendetSeit, true);
+                                                                })
+                                                            }
                                                         }
                                                     }
                                                     tr {

@@ -666,8 +666,10 @@ import groovy.swing.SwingBuilder
 import java.awt.BorderLayout as BL
 import java.awt.Component
 import java.awt.Container
+import java.awt.Dimension
 import java.awt.FlowLayout
 import javax.swing.ImageIcon
+import javax.swing.ScrollPaneConstants
 import javax.swing.JButton
 import javax.swing.JPanel
 import javax.swing.JTabbedPane
@@ -1638,7 +1640,11 @@ public class gwgpep01_ui implements com.jdimension.jlawyer.client.plugins.form.F
                     // ############ Hilfe ############
                     panel(name: 'Hilfe') {
                         borderLayout()
-                        scrollPane(constraints: BL.CENTER) {
+                        scrollPane(constraints: BL.CENTER,
+                                   horizontalScrollBarPolicy: ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER,
+                                   verticalScrollBarPolicy: ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                                   preferredSize: new Dimension(100, 100),
+                                   minimumSize: new Dimension(100, 100)) {
                             editorPane(contentType: 'text/html', editable: false, text: '''<html>
                                 <body>
                                 <h2>Geldw&auml;schegesetz / PEP-Pr&uuml;fung</h2>

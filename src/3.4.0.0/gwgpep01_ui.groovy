@@ -678,7 +678,9 @@ import javax.swing.JTextArea
 import javax.swing.JRadioButton
 import javax.swing.JCheckBox
 import java.util.ArrayList
+import java.text.SimpleDateFormat
 import com.jdimension.jlawyer.client.plugins.form.FormPluginCallback
+import com.jdimension.jlawyer.client.settings.UserSettings
 
 public class gwgpep01_ui implements com.jdimension.jlawyer.client.plugins.form.FormPluginMethods {
 
@@ -689,6 +691,7 @@ public class gwgpep01_ui implements com.jdimension.jlawyer.client.plugins.form.F
     JRadioButton radioPartnerJurPerson = null;
 
     JTextField txtErfDatum = null;
+    JTextField txtBearbeiter = null;
     JTextField txtNpGebDatum = null;
     JTextField txtWbNpGebDatum = null;
 
@@ -834,11 +837,24 @@ public class gwgpep01_ui implements com.jdimension.jlawyer.client.plugins.form.F
                                 }
                             }
                             tr {
+                                td (align: 'left') {
+                                    label(text: '')
+                                }
+                                td (align: 'left') {
+                                    checkBox(text: 'Prüfung durchgeführt', name: "_PRUEFUNGDURCHGEFUEHRT", clientPropertyJlawyerdescription: "Prüfung durchgeführt", selected: false, actionPerformed: { evt ->
+                                        if (evt.source.isSelected()) {
+                                            txtBearbeiter.setText(UserSettings.getInstance().getCurrentUser().getPrincipalId());
+                                            txtErfDatum.setText(new SimpleDateFormat("dd.MM.yyyy").format(new Date()));
+                                        }
+                                    })
+                                }
+                            }
+                            tr {
                                 td (colfill:true, align: 'left') {
                                     label(text: 'Bearbeiter/in:')
                                 }
                                 td (align: 'left') {
-                                    textField(name: "_BEARBEITER", text: '', clientPropertyJlawyerdescription: "Bearbeiter/in", columns:40)
+                                    txtBearbeiter = textField(name: "_BEARBEITER", text: '', clientPropertyJlawyerdescription: "Bearbeiter/in", columns:40)
                                 }
                             }
                             tr {

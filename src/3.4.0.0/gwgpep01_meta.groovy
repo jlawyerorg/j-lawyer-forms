@@ -663,6 +663,6 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 */
 name = "Geldwäschegesetz / PEP-Prüfung"
 description = "Falldatenblatt zur Dokumentation der Prüfung nach dem Geldwäschegesetz (Identifizierung, wirtschaftlich Berechtigter, politisch exponierte Personen)"
-version = "1.1.1"
+version = "1.1.2"
 author = "Jens Kutschke"
-updated = "17.07.2026"
+updated = "30.07.2026"

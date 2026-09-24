@@ -2292,7 +2292,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                         cmbStatus080 = comboBox(
                                                             items: colorMap.keySet() as java.util.List,
                                                             name: "_080STATUS",
-                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Aktenanalyse/ Anknüpfungstatsachen",
+                                                            clientPropertyJlawyerdescription: "Bearbeitungsstatus Aktenanalyse/Anknüpfungstatsachen",
                                                             editable: false
                                                         )
                                                         statusComboBoxes << cmbStatus080
@@ -2303,7 +2303,7 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                         }
                                                     }
                                                     td {
-                                                        label (text: 'Aktenanalyse/ Anknüpfungstatsachen')
+                                                        label (text: 'Aktenanalyse/Anknüpfungstatsachen')
                                                     }
                                                     td {
                                                         panel {
@@ -2327,6 +2327,34 @@ public class rechtspsy01_ui implements com.jdimension.jlawyer.client.plugins.for
                                                     }
                                                     td {
                                                         textField(name: "_080ANMERK", clientPropertyJlawyerdescription: "", text: '', columns:30)
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        checkBox(text: 'erstellt mit KI', name: "_081KI", clientPropertyJlawyerdescription: "Aktenanalyse erstellt mit KI", selected: false)
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                }
+                                                tr {
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        label (text: 'überprüft durch')
+                                                    }
+                                                    td {
+                                                        label (text: ' ')
+                                                    }
+                                                    td {
+                                                        textField(name: "_082PRUEF", clientPropertyJlawyerdescription: "Aktenanalyse überprüft durch", text: '', columns:30)
                                                     }
                                                 }
                                                 tr {

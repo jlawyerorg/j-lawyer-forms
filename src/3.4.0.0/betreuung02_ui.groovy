@@ -1063,18 +1063,14 @@ public class betreuung02_ui implements com.jdimension.jlawyer.client.plugins.for
             if (ersteZwoelfMonate) {
                 if (stationaer) {
                     pauschale = vermoegend ? 305 : 275
-                    lblnr.text = vermoegend ? '2.1.1.2' : '2.1.1.1'
                 } else {
                     pauschale = vermoegend ? 427 : 324
-                    lblnr.text = vermoegend ? '2.1.2.2' : '2.1.2.1'
                 }
             } else {
                 if (stationaer) {
                     pauschale = vermoegend ? 155 : 130
-                    lblnr.text = vermoegend ? '2.2.1.2' : '2.2.1.1'
                 } else {
                     pauschale = vermoegend ? 250 : 190
-                    lblnr.text = vermoegend ? '2.2.2.2' : '2.2.2.1'
                 }
             }
         } else {
@@ -1082,21 +1078,24 @@ public class betreuung02_ui implements com.jdimension.jlawyer.client.plugins.for
             if (ersteZwoelfMonate) {
                 if (stationaer) {
                     pauschale = vermoegend ? 233 : 208
-                    lblnr.text = vermoegend ? '1.1.1.2' : '1.1.1.1'
                 } else {
                     pauschale = vermoegend ? 325 : 247
-                    lblnr.text = vermoegend ? '1.1.2.2' : '1.1.2.1'
                 }
             } else {
                 if (stationaer) {
                     pauschale = vermoegend ? 115 : 98
-                    lblnr.text = vermoegend ? '1.2.1.2' : '1.2.1.1'
                 } else {
                     pauschale = vermoegend ? 192 : 144
-                    lblnr.text = vermoegend ? '1.2.2.2' : '1.2.2.1'
                 }
             }
         }
+
+        // Nr. gemaess Anlage zu § 8 Abs. 1 VBVG (ab 01.01.2026):
+        // Stufe . Vermoegensstatus (1=nicht mittellos, 2=mittellos) . Wohnform (1=stationaer, 2=andere) . Zeitraum (1=Monat 1-12, 2=ab Monat 13)
+        lblnr.text = (stufe2 ? '2' : '1') + '.' +
+                     (vermoegend ? '1' : '2') + '.' +
+                     (stationaer ? '1' : '2') + '.' +
+                     (ersteZwoelfMonate ? '1' : '2')
         return pauschale
     }
 
